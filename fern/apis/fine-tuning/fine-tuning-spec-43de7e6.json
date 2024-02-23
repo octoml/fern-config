@@ -1,0 +1,998 @@
+{
+    "components": {
+      "schemas": {
+        "BaseEngine": {
+          "description": "BaseEngine",
+          "enum": [
+            "text/llama-2-7b",
+            "text/llama-2-13b-chat",
+            "text/llama-2-70b-chat",
+            "text/codellama-7b-instruct",
+            "text/codellama-13b-instruct",
+            "text/codellama-34b-instruct",
+            "text/mistral-7b-instruct",
+            "text/mixtral-8x7b-instruct",
+            "image/controlnet-sd15",
+            "image/controlnet-sdxl",
+            "image/stable-diffusion-v1-5",
+            "image/stable-diffusion-xl-v1-0",
+            "image/stable-diffusion-ssd",
+            "audio/tortoise-tts",
+            "audio/rvc"
+          ],
+          "title": "BaseEngine",
+          "type": "string"
+        },
+        "CreateTuneRequest": {
+          "description": "The create tune request.",
+          "properties": {
+            "continue_on_rejection": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "description": "Continue fine-tuning if any asset was rejected.",
+              "title": "Continue On Rejection"
+            },
+            "description": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Description for the tune.",
+              "title": "Description"
+            },
+            "details": {
+              "description": "Details of the tune.",
+              "discriminator": {
+                "mapping": {
+                  "lora_tune": "#/components/schemas/LoraTune-Input",
+                  "text_to_speech_latent_tune": "#/components/schemas/TextToSpeechLatentTune"
+                },
+                "propertyName": "tune_type"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LoraTune-Input"
+                },
+                {
+                  "$ref": "#/components/schemas/TextToSpeechLatentTune"
+                }
+              ],
+              "title": "Details"
+            },
+            "name": {
+              "description": "The name of the tune.",
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "details"
+          ],
+          "title": "CreateTuneRequest",
+          "type": "object"
+        },
+        "HTTPValidationError": {
+          "properties": {
+            "detail": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              },
+              "title": "Detail",
+              "type": "array"
+            }
+          },
+          "title": "HTTPValidationError",
+          "type": "object"
+        },
+        "ListTunesResponse": {
+          "description": "The list tunes response.",
+          "properties": {
+            "data": {
+              "description": "List of tunes.",
+              "items": {
+                "$ref": "#/components/schemas/Tune"
+              },
+              "title": "Data",
+              "type": "array"
+            },
+            "has_more": {
+              "description": "True if it has more items than the returned list.",
+              "title": "Has More",
+              "type": "boolean"
+            },
+            "total": {
+              "description": "Total number of tunes.",
+              "title": "Total",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "has_more",
+            "total",
+            "data"
+          ],
+          "title": "ListTunesResponse",
+          "type": "object"
+        },
+        "LoraTune-Input": {
+          "description": "A LoRA Tune.",
+          "properties": {
+            "base_checkpoint": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/LoraTuneCheckpoint"
+                }
+              ],
+              "description": "The base checkpoint used for this LoRA Tune."
+            },
+            "files": {
+              "description": "The files used for this LoRA Tune.",
+              "items": {
+                "$ref": "#/components/schemas/LoraTuneFile"
+              },
+              "title": "Files",
+              "type": "array"
+            },
+            "resize_images": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "description": "Resize training images to the \"native\" dimensions of the respective engine prior to tuning. Images will be proportinally resized to such that the shorter edge will fit the native dimension. For Stable Diffusion 1.5, this is 512 pixels, and for Stable Diffusion XL, this is 1024 pixels. If the shorter edge is shorter than the native dimension, no scaling up will be performed.",
+              "title": "Resize Images"
+            },
+            "seed": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The seed used for this LoRA Tune.",
+              "title": "Seed"
+            },
+            "steps": {
+              "description": "The number of steps used for this LoRA Tune.",
+              "title": "Steps",
+              "type": "integer"
+            },
+            "trigger_words": {
+              "description": "The trigger words used for this tune. As of now, only one trigger word is supported. `List` is used for future-proofing.",
+              "items": {
+                "type": "string"
+              },
+              "title": "Trigger Words",
+              "type": "array"
+            },
+            "tune_type": {
+              "const": "lora_tune",
+              "default": "lora_tune",
+              "description": "Tune type.",
+              "title": "Tune Type"
+            }
+          },
+          "required": [
+            "base_checkpoint",
+            "steps",
+            "files",
+            "trigger_words"
+          ],
+          "title": "LoraTune",
+          "type": "object"
+        },
+        "LoraTune-Output": {
+          "description": "A LoRA Tune.",
+          "properties": {
+            "base_checkpoint": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/LoraTuneCheckpoint"
+                }
+              ],
+              "description": "The base checkpoint used for this LoRA Tune."
+            },
+            "files": {
+              "description": "The files used for this LoRA Tune.",
+              "items": {
+                "$ref": "#/components/schemas/LoraTuneFile"
+              },
+              "title": "Files",
+              "type": "array"
+            },
+            "resize_images": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "description": "Resize training images to the \"native\" dimensions of the respective engine prior to tuning. Images will be proportinally resized to such that the shorter edge will fit the native dimension. For Stable Diffusion 1.5, this is 512 pixels, and for Stable Diffusion XL, this is 1024 pixels. If the shorter edge is shorter than the native dimension, no scaling up will be performed.",
+              "title": "Resize Images"
+            },
+            "seed": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The seed used for this LoRA Tune.",
+              "title": "Seed"
+            },
+            "steps": {
+              "description": "The number of steps used for this LoRA Tune.",
+              "title": "Steps",
+              "type": "integer"
+            },
+            "trigger_words": {
+              "description": "The trigger words used for this tune. As of now, only one trigger word is supported. `List` is used for future-proofing.",
+              "items": {
+                "type": "string"
+              },
+              "title": "Trigger Words",
+              "type": "array"
+            },
+            "tune_type": {
+              "const": "lora_tune",
+              "default": "lora_tune",
+              "description": "Tune type.",
+              "title": "Tune Type"
+            }
+          },
+          "required": [
+            "base_checkpoint",
+            "steps",
+            "files",
+            "trigger_words"
+          ],
+          "title": "LoraTune",
+          "type": "object"
+        },
+        "LoraTuneCheckpoint": {
+          "description": "A checkpoint used for a LoRA Tune.",
+          "properties": {
+            "checkpoint_id": {
+              "description": "The checkpoint asset ID.",
+              "title": "Checkpoint Id",
+              "type": "string"
+            },
+            "engine": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/BaseEngine"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Tune engine."
+            },
+            "name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The name of the checkpoint. This is cached from asset lake in case the asset is deleted.",
+              "title": "Name"
+            }
+          },
+          "required": [
+            "checkpoint_id"
+          ],
+          "title": "LoraTuneCheckpoint",
+          "type": "object"
+        },
+        "LoraTuneFile": {
+          "description": "An input file to a LoRA tune with its caption.",
+          "properties": {
+            "caption": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The caption used when the LoRA tune was requested.",
+              "title": "Caption"
+            },
+            "file_id": {
+              "description": "The ID of the file on asset lake.",
+              "title": "File Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "file_id"
+          ],
+          "title": "LoraTuneFile",
+          "type": "object"
+        },
+        "TextToSpeechLatentTune": {
+          "description": "A TextToSpeechLatentTune.",
+          "properties": {
+            "asset_ids": {
+              "description": "The Asset Lake asset ids used for this task.",
+              "items": {
+                "type": "string"
+              },
+              "title": "Asset Ids",
+              "type": "array"
+            },
+            "inline_assets": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": false,
+              "description": "All assets provided inline.",
+              "title": "Inline Assets"
+            },
+            "tune_type": {
+              "const": "text_to_speech_latent_tune",
+              "default": "text_to_speech_latent_tune",
+              "description": "Tune type.",
+              "title": "Tune Type"
+            }
+          },
+          "required": [
+            "asset_ids"
+          ],
+          "title": "TextToSpeechLatentTune",
+          "type": "object"
+        },
+        "Tune": {
+          "description": "A tune base class.",
+          "properties": {
+            "created_at": {
+              "description": "The time this tune task was created.",
+              "format": "date-time",
+              "title": "Created At",
+              "type": "string"
+            },
+            "deleted_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The time this tune task was deleted.",
+              "title": "Deleted At"
+            },
+            "description": {
+              "description": "The description of the tune.",
+              "title": "Description",
+              "type": "string"
+            },
+            "details": {
+              "description": "Tune details.",
+              "discriminator": {
+                "mapping": {
+                  "lora_tune": "#/components/schemas/LoraTune-Output",
+                  "text_to_speech_latent_tune": "#/components/schemas/TextToSpeechLatentTune"
+                },
+                "propertyName": "tune_type"
+              },
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LoraTune-Output"
+                },
+                {
+                  "$ref": "#/components/schemas/TextToSpeechLatentTune"
+                }
+              ],
+              "title": "Details"
+            },
+            "id": {
+              "description": "The ID of the LoRA tune.",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "description": "The name of the tune.",
+              "title": "Name",
+              "type": "string"
+            },
+            "output_lora_ids": {
+              "description": "The output LoRA IDs, if the task was successful.",
+              "items": {
+                "type": "string"
+              },
+              "title": "Output Lora Ids",
+              "type": "array"
+            },
+            "result": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TuneResult"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Tune result."
+            },
+            "status": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TuneStatus"
+                }
+              ],
+              "description": "The status of the associated task."
+            },
+            "status_details": {
+              "description": "The details of the status, only used when the associated task failed.",
+              "title": "Status Details",
+              "type": "string"
+            },
+            "succeeded_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The time the tune task succeeded.",
+              "title": "Succeeded At"
+            },
+            "tenant_id": {
+              "description": "The tenant who requested the LoRA tune.",
+              "format": "uuid",
+              "title": "Tenant Id",
+              "type": "string"
+            },
+            "tune_type": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TuneType"
+                }
+              ],
+              "description": "The type of this tune."
+            },
+            "updated_at": {
+              "description": "The time this tune task was updated.",
+              "format": "date-time",
+              "title": "Updated At",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "tenant_id",
+            "name",
+            "description",
+            "tune_type",
+            "details",
+            "status",
+            "status_details",
+            "output_lora_ids",
+            "created_at",
+            "updated_at"
+          ],
+          "title": "Tune",
+          "type": "object"
+        },
+        "TuneResult": {
+          "description": "Tune result on worker.",
+          "properties": {
+            "number_of_available_assets": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Number of assets from tune request that are available.",
+              "title": "Number Of Available Assets"
+            },
+            "output_assets": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Tune generated assets. This field is filled only when tune was successful.",
+              "title": "Output Assets"
+            },
+            "rejected_assets": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Tune rejected assets.",
+              "title": "Rejected Assets"
+            },
+            "unready_assets": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Tune unready assets.",
+              "title": "Unready Assets"
+            }
+          },
+          "title": "TuneResult",
+          "type": "object"
+        },
+        "TuneStatus": {
+          "description": "The status of the tune job.",
+          "enum": [
+            "pending",
+            "running",
+            "succeeded",
+            "cancelled",
+            "failed"
+          ],
+          "title": "TuneStatus",
+          "type": "string"
+        },
+        "TuneType": {
+          "description": "The type of tune requested.",
+          "enum": [
+            "lora_tune",
+            "text_to_speech_latent_tune",
+            "text_to_speech_rvc_tune",
+            "text_to_speech_tortoise_tune"
+          ],
+          "title": "TuneType",
+          "type": "string"
+        },
+        "ValidationError": {
+          "properties": {
+            "loc": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "title": "Location",
+              "type": "array"
+            },
+            "msg": {
+              "title": "Message",
+              "type": "string"
+            },
+            "type": {
+              "title": "Error Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "title": "ValidationError",
+          "type": "object"
+        }
+      }
+    },
+    "info": {
+      "title": "fine-tuning-api-server",
+      "version": "0.1.0"
+    },
+    "openapi": "3.1.0",
+    "paths": {
+      "/health": {
+        "get": {
+          "description": "Healthcheck server endpoint.",
+          "operationId": "health_check_health_get",
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "title": "Response Health Check Health Get",
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            }
+          },
+          "summary": "Health Check",
+          "tags": [
+            "tune"
+          ]
+        }
+      },
+      "/v1/tune": {
+        "post": {
+          "description": "Spawn a tune.",
+          "operationId": "create_tune_v1_tune_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTuneRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "201": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tune"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              },
+              "description": "Validation Error"
+            }
+          },
+          "summary": "Create Tune",
+          "tags": [
+            "tune"
+          ]
+        }
+      },
+      "/v1/tune/{tune_id}": {
+        "delete": {
+          "description": "Delete the specified tune.",
+          "operationId": "delete_tune_v1_tune__tune_id__delete",
+          "parameters": [
+            {
+              "description": "The ID of the tune.",
+              "in": "path",
+              "name": "tune_id",
+              "required": true,
+              "schema": {
+                "description": "The ID of the tune.",
+                "title": "Tune Id",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "title": "Response Delete Tune V1 Tune  Tune Id  Delete",
+                    "type": "object"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              },
+              "description": "Validation Error"
+            }
+          },
+          "summary": "Delete Tune",
+          "tags": [
+            "tune"
+          ]
+        },
+        "get": {
+          "description": "Get the specific tune.",
+          "operationId": "get_tune_v1_tune__tune_id__get",
+          "parameters": [
+            {
+              "description": "The ID of the tune.",
+              "in": "path",
+              "name": "tune_id",
+              "required": true,
+              "schema": {
+                "description": "The ID of the tune.",
+                "title": "Tune Id",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tune"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              },
+              "description": "Validation Error"
+            }
+          },
+          "summary": "Get Tune",
+          "tags": [
+            "tune"
+          ]
+        }
+      },
+      "/v1/tune/{tune_id}/cancel": {
+        "post": {
+          "description": "Cancel the specified tune.",
+          "operationId": "cancel_tune_v1_tune__tune_id__cancel_post",
+          "parameters": [
+            {
+              "description": "The ID of the tune to cancel.",
+              "in": "path",
+              "name": "tune_id",
+              "required": true,
+              "schema": {
+                "description": "The ID of the tune to cancel.",
+                "title": "Tune Id",
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Tune"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              },
+              "description": "Validation Error"
+            }
+          },
+          "summary": "Cancel Tune",
+          "tags": [
+            "tune"
+          ]
+        }
+      },
+      "/v1/tunes": {
+        "get": {
+          "description": "List all tunes owned by the current user.",
+          "operationId": "list_tunes_v1_tunes_get",
+          "parameters": [
+            {
+              "description": "Offset into the results.",
+              "in": "query",
+              "name": "offset",
+              "required": false,
+              "schema": {
+                "default": 0,
+                "description": "Offset into the results.",
+                "gte": 0,
+                "title": "Offset",
+                "type": "integer"
+              }
+            },
+            {
+              "description": "The max number of results to be shown (limit 100).",
+              "in": "query",
+              "name": "limit",
+              "required": false,
+              "schema": {
+                "default": 100,
+                "description": "The max number of results to be shown (limit 100).",
+                "gte": 1,
+                "lte": 100,
+                "title": "Limit",
+                "type": "integer"
+              }
+            },
+            {
+              "description": "The name of the tune to filter on.",
+              "in": "query",
+              "name": "name",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The name of the tune to filter on.",
+                "title": "Name"
+              }
+            },
+            {
+              "description": "The type of the tune to filter on.",
+              "in": "query",
+              "name": "tune_type",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/TuneType"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The type of the tune to filter on.",
+                "title": "Tune Type"
+              }
+            },
+            {
+              "description": "The base checkpoint ID for the LoRA tune.",
+              "in": "query",
+              "name": "base_checkpoint_id",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The base checkpoint ID for the LoRA tune.",
+                "title": "Base Checkpoint Id"
+              }
+            },
+            {
+              "description": "The trigger words to filter on.",
+              "in": "query",
+              "name": "trigger_words",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The trigger words to filter on.",
+                "title": "Trigger Words"
+              }
+            },
+            {
+              "description": "The engine type.",
+              "in": "query",
+              "name": "engine",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The engine type.",
+                "title": "Engine"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ListTunesResponse"
+                  }
+                }
+              },
+              "description": "Successful Response"
+            },
+            "422": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              },
+              "description": "Validation Error"
+            }
+          },
+          "summary": "List Tunes",
+          "tags": [
+            "tune"
+          ]
+        }
+      }
+    }
+  }
