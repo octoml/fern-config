@@ -1,0 +1,24 @@
+name: api
+display-name: OctoAI
+
+error-discrimination:
+  strategy: status-code
+
+auth: BearerAuthScheme
+auth-schemes: 
+  BearerAuthScheme: 
+    scheme: bearer
+    token: 
+      name: api_key
+      env: OCTOAI_TOKEN
+
+default-environment: Production
+# environments:
+#   Production:
+#     urls:
+#       Default: https://api.octoai.cloud
+#       ImageGen: https://image.octoai.cloud
+#       TextGen: https://text.octoai.cloud
+environments:
+  Production: https://api.octoai.cloud
+  

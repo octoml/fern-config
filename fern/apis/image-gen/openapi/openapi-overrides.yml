@@ -1,0 +1,38 @@
+paths:
+  /generate/ssd:
+    post:
+      x-fern-sdk-method-name: generateSsd
+  /generate/controlnet-sdxl:
+    post:
+      x-fern-sdk-method-name: generateControlnetSdxl
+  /generate/controlnet-sd15:
+    post:
+      x-fern-sdk-method-name: generateControlnetSd15
+  /generate/sdxl:
+    post:
+      x-fern-sdk-method-name: generateSdxl
+  /generate/sd:
+    post:
+      x-fern-sdk-method-name: generateSd
+  # Hide healthcheck
+  /healthcheck:
+    get:
+      x-fern-ignore: true
+components:
+  schemas:
+    HTTPValidationError:
+      x-fern-type-name: HTTPValidationError
+    ImageEncoding:
+      x-fern-type-name: ImageEncoding
+    ImageGeneration:
+      x-fern-type-name: ImageGeneration
+    ImageGenerationRequest:
+      x-fern-type-name: ImageGenerationRequest
+    ImageGenerationResponse:
+      x-fern-type-name: ImageGenerationResponse
+    SDXLStyles:
+      x-fern-type-name: SDXLStyles
+    Scheduler:
+      x-fern-type-name: Scheduler
+    ValidationError:
+      x-fern-type-name: ValidationError

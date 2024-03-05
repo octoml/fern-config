@@ -1,0 +1,2 @@
+openapi: ./openapi/openapi.json
+openapi-overrides: ./openapi/openapi-overrides.yml

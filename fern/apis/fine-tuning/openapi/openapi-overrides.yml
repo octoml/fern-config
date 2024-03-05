@@ -1,0 +1,52 @@
+paths:
+  # Hide healthcheck
+  /health:
+    get:
+      x-fern-ignore: true
+  /v1/tune:
+    post:
+      x-fern-sdk-method-name: create
+  /v1/tune/{tune_id}:
+    get:
+      x-fern-sdk-method-name: get
+    delete:
+      x-fern-sdk-method-name: delete
+  /v1/tune/{tune_id}/cancel:
+    post:
+      x-fern-sdk-method-name: cancel
+  /v1/tunes:
+    get:
+      x-fern-sdk-method-name: list
+components:
+  schemas:
+    BaseEngine:
+      x-fern-type-name: BaseEngine
+    CreateTuneRequest:
+      x-fern-type-name: CreateTuneRequest
+    HTTPValidationError:
+      x-fern-type-name: HTTPValidationError
+    ListTunesResponse:
+      x-fern-type-name: ListTunesResponse
+    LoraTune-Input:
+      x-fern-type-name: LoraTune
+    LoraTune-Output:
+      x-fern-type-name: LoraTune
+    LoraTuneCheckpoint:
+      x-fern-type-name: LoraTuneCheckpoint
+    LoraTuneFile:
+      x-fern-type-name: LoraTuneFile
+    TextToSpeechLatentTune:
+      x-fern-type-name: TextToSpeechLatentTune
+    Tune:
+      x-fern-type-name: Tune
+      properties:
+        details:
+          x-fern-type-name: TuneDetails
+    TuneResult:
+      x-fern-type-name: TuneResult
+    TuneStatus:
+      x-fern-type-name: TuneStatus
+    TuneType:
+      x-fern-type-name: TuneType
+    ValidationError:
+      x-fern-type-name: ValidationError

@@ -1,0 +1,51 @@
+paths:
+  /v1/chat/completions:
+    post:
+      x-fern-sdk-method-name: createChatCompletion
+  /v1/completions:
+    post:
+      x-fern-sdk-method-name: createCompletion
+components:
+  schemas:
+    ChatCompletionChoice:
+      x-fern-type-name: ChatCompletionChoice
+    ChatCompletionChunk:
+      x-fern-type-name: ChatCompletionChunk
+    ChatCompletionChunkChoice:
+      x-fern-type-name: ChatCompletionChunkChoice
+    ChatCompletionDelta:
+      x-fern-type-name: ChatCompletionDelta
+    ChatCompletionRequestExt:
+      x-fern-type-name: ChatCompletionRequestExt
+    ChatCompletionRequestExtVLLM:
+      x-fern-type-name: ChatCompletionRequestExtVLLM
+    ChatCompletionResponse:
+      x-fern-type-name: ChatCompletionResponse
+    ChatCompletionResponseFormat:
+      x-fern-type-name: ChatCompletionResponseFormat
+    ChatFnCall:
+      x-fern-type-name: ChatFnCall
+    ChatMessage:
+      x-fern-type-name: ChatMessage
+    CompletionChoice:
+      x-fern-type-name: CompletionChoice
+    CompletionResponse:
+      x-fern-type-name: CompletionResponse
+    CreateChatCompletionRequest:
+      x-fern-type-name: CreateChatCompletionRequest
+    CreateCompletionRequest:
+      x-fern-type-name: CreateCompletionRequest
+    ErrorResponse:
+      x-fern-type-name: ErrorResponse
+    FinishReason:
+      x-fern-type-name: FinishReason
+    Function:
+      x-fern-type-name: Function
+    HTTPValidationError:
+      x-fern-type-name: HTTPValidationError
+    LogProbs:
+      x-fern-type-name: LogProbs
+    UsageStats:
+      x-fern-type-name: UsageStats
+    ValidationError:
+      x-fern-type-name: ValidationError
