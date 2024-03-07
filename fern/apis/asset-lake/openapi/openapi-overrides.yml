@@ -1,0 +1,90 @@
+paths:
+  # Hide healthcheck
+  /health:
+    get:
+      x-fern-ignore: true
+  /v1/assets:
+    get:
+      x-fern-sdk-method-name: list
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
+    post:
+      x-fern-sdk-method-name: create
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
+  /v1/assets/{asset_id}:
+    delete:
+      x-fern-sdk-method-name: delete
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
+  /v1/assets/{asset_id}/complete-upload:
+    post:
+      x-fern-sdk-method-name: completeUpload
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
+  /v1/assets/{asset_owner_and_name_or_id}:
+    get:
+      x-fern-sdk-method-name: get
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
+components:
+  schemas:
+    Asset:
+      x-fern-type-name: Asset
+    AssetType:
+      x-fern-type-name: AssetType
+    BaseEngine:
+      x-fern-type-name: BaseEngine
+    CheckpointData:
+      x-fern-type-name: CheckpointData
+    CompleteAssetUploadRequest:
+      x-fern-type-name: CompleteAssetUploadRequest
+    CompleteAssetUploadResponse:
+      x-fern-type-name: CompleteAssetUploadResponse
+    CreateAssetRequest:
+      x-fern-type-name: CreateAssetRequest
+    CreateAssetResponse:
+      x-fern-type-name: CreateAssetResponse
+    DataType:
+      x-fern-type-name: DataType
+    DeleteAssetResponse:
+      x-fern-type-name: DeleteAssetResponse
+    FileData:
+      x-fern-type-name: FileData
+    FileExtension:
+      x-fern-type-name: FileExtension
+    FileFormat:
+      x-fern-type-name: FileFormat
+    FileStructure:
+      x-fern-type-name: FileStructure
+    HTTPValidationError:
+      x-fern-type-name: HTTPValidationError
+    LatentData:
+      x-fern-type-name: LatentData
+    ListAssetsResponse:
+      x-fern-type-name: ListAssetsResponse
+    LoraData:
+      x-fern-type-name: LoraData
+    NoTransferApi:
+      x-fern-type-name: NoTransferApi
+    PresignedUrlTransferApi:
+      x-fern-type-name: PresignedUrlTransferApi
+    RetrieveAssetResponse:
+      x-fern-type-name: RetrieveAssetResponse
+    Status:
+      x-fern-type-name: Status
+    StsTransferApi:
+      x-fern-type-name: StsTransferApi
+    TextualInversionData:
+      x-fern-type-name: TextualInversionData
+    TransferApiType:
+      x-fern-type-name: TransferApiType
+    VAEData:
+      x-fern-type-name: VAEData
+    ValidationError:
+      x-fern-type-name: ValidationError
