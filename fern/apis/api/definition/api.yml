@@ -13,12 +13,9 @@ auth-schemes:
       env: OCTOAI_TOKEN
 
 default-environment: Production
-# environments:
-#   Production:
-#     urls:
-#       Default: https://api.octoai.cloud
-#       ImageGen: https://image.octoai.cloud
-#       TextGen: https://text.octoai.cloud
 environments:
-  Production: https://api.octoai.cloud
-  
+  Production:
+    urls:
+      Default: https://api.octoai.cloud
+      ImageGen: https://image.octoai.cloud
+      TextGen: https://text.octoai.cloud

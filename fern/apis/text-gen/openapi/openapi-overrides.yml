@@ -2,9 +2,15 @@ paths:
   /v1/chat/completions:
     post:
       x-fern-sdk-method-name: createChatCompletion
+      servers:
+      - url: https://text.octoai.cloud
+        x-name: TextGen
   /v1/completions:
     post:
       x-fern-sdk-method-name: createCompletion
+      servers:
+      - url: https://text.octoai.cloud
+        x-name: TextGen
 components:
   schemas:
     ChatCompletionChoice:
