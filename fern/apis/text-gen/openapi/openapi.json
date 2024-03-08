@@ -2,7 +2,7 @@
     "components": {
       "schemas": {
         "ChatCompletionChoice": {
-          "description": "An OpenAI API compatible chat completion choice.",
+          "description": "An OpenAI and Anthropic API compatible chat completion choice.",
           "properties": {
             "finish_reason": {
               "anyOf": [
