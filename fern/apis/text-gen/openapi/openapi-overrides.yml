@@ -2,12 +2,24 @@ paths:
   /v1/chat/completions:
     post:
       x-fern-sdk-method-name: createChatCompletion
+      x-fern-streaming:
+        stream-condition: $request.stream
+        response:
+          $ref: "#/components/schemas/ChatCompletionResponse"
+        response-stream:
+          $ref: "#/components/schemas/ChatCompletionChunk"
       servers:
-      - url: https://text.octoai.cloud
+      - url: https://text.octoai.run
         x-name: TextGen
   /v1/completions:
     post:
       x-fern-sdk-method-name: createCompletion
+      x-fern-streaming:
+        stream-condition: $request.stream
+        response:
+          $ref: "#/components/schemas/CompletionResponse"
+        response-stream:
+          $ref: "#/components/schemas/CompletionResponse"
       servers:
-      - url: https://text.octoai.cloud
+      - url: https://text.octoai.run
         x-name: TextGen
