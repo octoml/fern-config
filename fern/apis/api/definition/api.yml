@@ -18,4 +18,4 @@ environments:
     urls:
       Default: https://api.octoai.cloud
       ImageGen: https://image.octoai.cloud
-      TextGen: https://text.octoai.cloud
+      TextGen: https://text.octoai.run
