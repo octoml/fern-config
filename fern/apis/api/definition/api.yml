@@ -17,5 +17,5 @@ environments:
   Production:
     urls:
       Default: https://api.octoai.cloud
-      ImageGen: https://image.octoai.cloud
+      ImageGen: https://image.octoai.run
       TextGen: https://text.octoai.run
