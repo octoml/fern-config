@@ -32,4 +32,8 @@ groups:
           skipResponseValidation: true
           allowCustomFetcher: true
           includeApiReference: true
+          extraDependencies:
+            '@aws-sdk/client-s3': '^3.540.0'
+            'aws-sdk-client-mock': '^4.0.0'
+            'aws-sdk-client-mock-jest': '^4.0.0'
         smart-casing: true
