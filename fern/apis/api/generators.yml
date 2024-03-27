@@ -1,8 +1,8 @@
 groups:
-  local:
+  python-sdk-local:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 0.11.9
+        version: 0.13.1
         config:
           improved_imports: true
           pydantic_config:
@@ -15,11 +15,11 @@ groups:
         smart-casing: true
         output:
           location: local-file-system
-          path: ../../../octoai-python-sdk-fern
+          path: ../../../generated/octoai-python-sdk-fern
   python-sdk:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 0.11.9
+        version: 0.13.1
         # output:
         #   location: pypi
         #   package-name: "octoai"
@@ -28,7 +28,11 @@ groups:
           repository: octoml/octoai-python-sdk-fern
           mode: pull-request
         config:
-          client_class_name: OctoAI
+          client:
+            class_name: BaseOctoAI
+            filename: base_client.py
+            exported_class_name: OctoAI
+            exported_filename: client.py
           improved_imports: true
           pydantic_config:
             use_str_enums: true
