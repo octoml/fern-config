@@ -1,1276 +1,1357 @@
 {
-    "components": {
-      "schemas": {
-        "Asset": {
-          "properties": {
-            "asset_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/AssetType"
-                }
-              ],
-              "description": "Asset type."
-            },
-            "created_at": {
-              "description": "Asset creation time.",
-              "title": "Created At",
-              "type": "string"
-            },
-            "data": {
-              "description": "Asset data.",
-              "discriminator": {
-                "mapping": {
-                  "checkpoint": "#/components/schemas/CheckpointData",
-                  "file": "#/components/schemas/FileData",
-                  "latent": "#/components/schemas/LatentData",
-                  "lora": "#/components/schemas/LoraData",
-                  "textual_inversion": "#/components/schemas/TextualInversionData",
-                  "vae": "#/components/schemas/VAEData"
-                },
-                "propertyName": "asset_type"
+  "components": {
+    "schemas": {
+      "Asset": {
+        "properties": {
+          "asset_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssetType"
+              }
+            ],
+            "description": "Asset type."
+          },
+          "created_at": {
+            "description": "Asset creation time.",
+            "title": "Created At",
+            "type": "string"
+          },
+          "data": {
+            "description": "Asset data.",
+            "discriminator": {
+              "mapping": {
+                "checkpoint": "#/components/schemas/CheckpointData",
+                "file": "#/components/schemas/FileData",
+                "latent": "#/components/schemas/LatentData",
+                "lora": "#/components/schemas/LoraData",
+                "textual_inversion": "#/components/schemas/TextualInversionData",
+                "vae": "#/components/schemas/VAEData"
               },
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/FileData"
-                },
-                {
-                  "$ref": "#/components/schemas/CheckpointData"
-                },
-                {
-                  "$ref": "#/components/schemas/LoraData"
-                },
-                {
-                  "$ref": "#/components/schemas/TextualInversionData"
-                },
-                {
-                  "$ref": "#/components/schemas/VAEData"
-                },
-                {
-                  "$ref": "#/components/schemas/LatentData"
-                }
-              ],
-              "title": "Data"
+              "propertyName": "asset_type"
             },
-            "description": {
-              "description": "Description.",
-              "title": "Description",
-              "type": "string"
-            },
-            "file_structure": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileStructure"
-                }
-              ],
-              "default": "single_file",
-              "description": "File structure."
-            },
-            "hf_repo": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Hugging Face repository.",
-              "title": "Hf Repo"
-            },
-            "id": {
-              "description": "Asset id.",
-              "title": "Id",
-              "type": "string"
-            },
-            "is_public": {
-              "default": false,
-              "description": "True if asset is public.",
-              "title": "Is Public",
-              "type": "boolean"
-            },
-            "name": {
-              "description": "Asset name.",
-              "title": "Name",
-              "type": "string"
-            },
-            "size_bytes": {
-              "description": "Size in bytes.",
-              "format": "int64",
-              "title": "Size Bytes",
-              "type": "integer"
-            },
-            "status": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/Status"
-                }
-              ],
-              "description": "Asset status."
-            },
-            "status_details": {
-              "description": "Asset status.",
-              "title": "Status Details",
-              "type": "string"
-            },
-            "tenant_uuid": {
-              "description": "Asset tenant ID.",
-              "format": "uuid",
-              "title": "Tenant Uuid",
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "asset_type",
-            "name",
-            "description",
-            "size_bytes",
-            "status",
-            "status_details",
-            "created_at",
-            "data",
-            "tenant_uuid"
-          ],
-          "title": "Asset",
-          "type": "object"
-        },
-        "AssetType": {
-          "enum": [
-            "file",
-            "checkpoint",
-            "lora",
-            "textual_inversion",
-            "vae",
-            "latent"
-          ],
-          "title": "AssetType",
-          "type": "string"
-        },
-        "BaseEngine": {
-          "enum": [
-            "text/llama-2-7b",
-            "text/llama-2-13b-chat",
-            "text/llama-2-70b-chat",
-            "text/codellama-7b-instruct",
-            "text/codellama-13b-instruct",
-            "text/codellama-34b-instruct",
-            "text/mistral-7b-instruct",
-            "text/mixtral-8x7b-instruct",
-            "image/controlnet-sd15",
-            "image/controlnet-sdxl",
-            "image/stable-diffusion-v1-5",
-            "image/stable-diffusion-xl-v1-0",
-            "image/stable-diffusion-ssd",
-            "audio/tortoise-tts",
-            "audio/rvc"
-          ],
-          "title": "BaseEngine",
-          "type": "string"
-        },
-        "CheckpointData": {
-          "properties": {
-            "asset_type": {
-              "const": "checkpoint",
-              "default": "checkpoint",
-              "description": "Asset type.",
-              "title": "Asset Type"
-            },
-            "data_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/DataType"
-                }
-              ],
-              "default": "fp16",
-              "description": "Data type."
-            },
-            "engine": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/BaseEngine"
-                }
-              ],
-              "description": "Engine type."
-            },
-            "file_format": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileFormat"
-                }
-              ],
-              "default": "safetensors",
-              "description": "File format."
-            }
-          },
-          "required": [
-            "engine"
-          ],
-          "title": "CheckpointData",
-          "type": "object"
-        },
-        "CompleteAssetUploadRequest": {
-          "properties": {
-            "token": {
-              "default": "",
-              "deprecated": true,
-              "description": "Unused",
-              "title": "Token",
-              "type": "string"
-            }
-          },
-          "title": "CompleteAssetUploadRequest",
-          "type": "object"
-        },
-        "CompleteAssetUploadResponse": {
-          "properties": {
-            "error": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Error.",
-              "title": "Error"
-            }
-          },
-          "title": "CompleteAssetUploadResponse",
-          "type": "object"
-        },
-        "CreateAssetRequest": {
-          "properties": {
-            "asset_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/AssetType"
-                }
-              ],
-              "description": "Asset type."
-            },
-            "data": {
-              "description": "Data specific to the asset type; use the class named ${asset_type}Data",
-              "title": "Data",
-              "type": "object"
-            },
-            "description": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Asset descriptions.",
-              "title": "Description"
-            },
-            "hf_repo": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Hugging Face repository.",
-              "title": "Hf Repo"
-            },
-            "is_public": {
-              "default": false,
-              "description": "True if asset is public.",
-              "title": "Is Public",
-              "type": "boolean"
-            },
-            "name": {
-              "description": "Asset name.",
-              "title": "Name",
-              "type": "string"
-            },
-            "transfer_api_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/TransferApiType"
-                }
-              ],
-              "default": "presigned-url",
-              "description": "Transfer API type."
-            },
-            "url": {
-              "anyOf": [
-                {
-                  "format": "uri",
-                  "maxLength": 2083,
-                  "minLength": 1,
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Upload the contents of the url as the asset.",
-              "title": "Url"
-            }
-          },
-          "required": [
-            "asset_type",
-            "name",
-            "description",
-            "data"
-          ],
-          "title": "CreateAssetRequest",
-          "type": "object"
-        },
-        "CreateAssetResponse": {
-          "properties": {
-            "asset": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/Asset"
-                }
-              ],
-              "description": "Asset."
-            },
-            "token": {
-              "default": "",
-              "deprecated": true,
-              "description": "Unused. Present for compatibility purposes.",
-              "title": "Token",
-              "type": "string"
-            },
-            "transfer_api": {
-              "description": "Asset transfer API.",
-              "discriminator": {
-                "mapping": {
-                  "none": "#/components/schemas/NoTransferApi",
-                  "presigned-url": "#/components/schemas/PresignedUrlTransferApi",
-                  "sts": "#/components/schemas/StsTransferApi"
-                },
-                "propertyName": "type"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FileData"
               },
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/PresignedUrlTransferApi"
-                },
-                {
-                  "$ref": "#/components/schemas/StsTransferApi"
-                },
-                {
-                  "$ref": "#/components/schemas/NoTransferApi"
-                }
-              ],
-              "title": "Transfer Api"
-            }
-          },
-          "required": [
-            "asset",
-            "transfer_api"
-          ],
-          "title": "CreateAssetResponse",
-          "type": "object"
-        },
-        "DataType": {
-          "enum": [
-            "fp16",
-            "fp32",
-            "int4",
-            "int8"
-          ],
-          "title": "DataType",
-          "type": "string"
-        },
-        "DeleteAssetResponse": {
-          "properties": {
-            "deleted_at": {
-              "description": "Deletion time.",
-              "title": "Deleted At",
-              "type": "string"
-            },
-            "id": {
-              "description": "Asset ID.",
-              "title": "Id",
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "deleted_at"
-          ],
-          "title": "DeleteAssetResponse",
-          "type": "object"
-        },
-        "FileData": {
-          "properties": {
-            "asset_type": {
-              "const": "file",
-              "default": "file",
-              "description": "Asset type.",
-              "title": "Asset Type"
-            },
-            "file_format": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileExtension"
-                }
-              ],
-              "default": "unknown",
-              "description": "File format."
-            },
-            "preview_url": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Preview URL.",
-              "title": "Preview Url"
-            },
-            "version": {
-              "default": "",
-              "description": "Version.",
-              "title": "Version",
-              "type": "string"
-            }
-          },
-          "title": "FileData",
-          "type": "object"
-        },
-        "FileExtension": {
-          "enum": [
-            "unknown",
-            "png",
-            "jpg",
-            "jpeg",
-            "txt",
-            "mp3",
-            "wav"
-          ],
-          "title": "FileExtension",
-          "type": "string"
-        },
-        "FileFormat": {
-          "enum": [
-            "safetensors",
-            "pt"
-          ],
-          "title": "FileFormat",
-          "type": "string"
-        },
-        "FileStructure": {
-          "enum": [
-            "unknown",
-            "single_file",
-            "multiple_files"
-          ],
-          "title": "FileStructure",
-          "type": "string"
-        },
-        "HTTPValidationError": {
-          "properties": {
-            "detail": {
-              "items": {
-                "$ref": "#/components/schemas/ValidationError"
+              {
+                "$ref": "#/components/schemas/CheckpointData"
               },
-              "title": "Detail",
-              "type": "array"
-            }
-          },
-          "title": "HTTPValidationError",
-          "type": "object"
-        },
-        "LatentData": {
-          "properties": {
-            "asset_type": {
-              "const": "latent",
-              "default": "latent",
-              "description": "Asset type.",
-              "title": "Asset Type"
-            },
-            "engine": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/BaseEngine"
-                }
-              ],
-              "description": "Engine type."
-            },
-            "file_format": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileFormat"
-                }
-              ],
-              "default": "safetensors",
-              "description": "File format."
-            }
-          },
-          "required": [
-            "engine"
-          ],
-          "title": "LatentData",
-          "type": "object"
-        },
-        "ListAssetsResponse": {
-          "properties": {
-            "data": {
-              "description": "List of assets.",
-              "items": {
-                "$ref": "#/components/schemas/Asset"
+              {
+                "$ref": "#/components/schemas/LoraData"
               },
-              "title": "Data",
-              "type": "array"
-            },
-            "has_more": {
-              "description": "True if there are more asset to show.",
-              "title": "Has More",
-              "type": "boolean"
-            },
-            "total": {
-              "description": "Total number of assets.",
-              "title": "Total",
-              "type": "integer"
-            }
-          },
-          "required": [
-            "has_more",
-            "total",
-            "data"
-          ],
-          "title": "ListAssetsResponse",
-          "type": "object"
-        },
-        "LoraData": {
-          "properties": {
-            "asset_type": {
-              "const": "lora",
-              "default": "lora",
-              "description": "Asset type.",
-              "title": "Asset Type"
-            },
-            "data_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/DataType"
-                }
-              ],
-              "default": "fp16",
-              "description": "Data type."
-            },
-            "engine": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/BaseEngine"
-                }
-              ],
-              "description": "Engine type."
-            },
-            "file_format": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileFormat"
-                }
-              ],
-              "default": "safetensors",
-              "description": "File format."
-            },
-            "trigger_words": {
-              "anyOf": [
-                {
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Trigger words.",
-              "title": "Trigger Words"
-            }
-          },
-          "required": [
-            "engine"
-          ],
-          "title": "LoraData",
-          "type": "object"
-        },
-        "NoTransferApi": {
-          "description": "This type exists to avoid Optional[TransferApi] so openapi-generator can work.\n\nIn this class, type is not added to TransferApiType because it is not a valid\nTransferApiType. It exists only to note that no TransferApi is defined.",
-          "properties": {
-            "type": {
-              "const": "none",
-              "default": "none",
-              "description": "URL type.",
-              "title": "Type"
-            }
-          },
-          "title": "NoTransferApi",
-          "type": "object"
-        },
-        "PresignedUrlTransferApi": {
-          "properties": {
-            "get_url": {
-              "description": "Get asset URL.",
-              "title": "Get Url",
-              "type": "string"
-            },
-            "put_url": {
-              "description": "Asset URL to upload.",
-              "title": "Put Url",
-              "type": "string"
-            },
-            "type": {
-              "const": "presigned-url",
-              "default": "presigned-url",
-              "description": "URL type.",
-              "title": "Type"
-            }
-          },
-          "required": [
-            "get_url",
-            "put_url"
-          ],
-          "title": "PresignedUrlTransferApi",
-          "type": "object"
-        },
-        "RetrieveAssetResponse": {
-          "properties": {
-            "asset": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/Asset"
-                }
-              ],
-              "description": "Asset."
-            },
-            "transfer_api": {
-              "description": "Transfer API.",
-              "discriminator": {
-                "mapping": {
-                  "none": "#/components/schemas/NoTransferApi",
-                  "presigned-url": "#/components/schemas/PresignedUrlTransferApi",
-                  "sts": "#/components/schemas/StsTransferApi"
-                },
-                "propertyName": "type"
+              {
+                "$ref": "#/components/schemas/TextualInversionData"
               },
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/PresignedUrlTransferApi"
-                },
-                {
-                  "$ref": "#/components/schemas/StsTransferApi"
-                },
-                {
-                  "$ref": "#/components/schemas/NoTransferApi"
-                }
-              ],
-              "title": "Transfer Api"
-            }
+              {
+                "$ref": "#/components/schemas/VAEData"
+              },
+              {
+                "$ref": "#/components/schemas/LatentData"
+              }
+            ],
+            "title": "Data"
           },
-          "required": [
-            "asset",
-            "transfer_api"
-          ],
-          "title": "RetrieveAssetResponse",
-          "type": "object"
-        },
-        "Status": {
-          "enum": [
-            "ready_to_upload",
-            "uploaded",
-            "ready",
-            "deleted",
-            "rejected",
-            "error"
-          ],
-          "title": "Status",
-          "type": "string"
-        },
-        "StsTransferApi": {
-          "properties": {
-            "aws_access_key_id": {
-              "description": "AWS access key.",
-              "title": "Aws Access Key Id",
-              "type": "string"
-            },
-            "aws_secret_access_key": {
-              "description": "AWS secret accesss key.",
-              "title": "Aws Secret Access Key",
-              "type": "string"
-            },
-            "aws_session_token": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "AWS session token.",
-              "title": "Aws Session Token"
-            },
-            "s3_bucket": {
-              "description": "S3 bucket.",
-              "title": "S3 Bucket",
-              "type": "string"
-            },
-            "s3_endpoint_url": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "S3 endpoint URL.",
-              "title": "S3 Endpoint Url"
-            },
-            "s3_key": {
-              "description": "S3 key.",
-              "title": "S3 Key",
-              "type": "string"
-            },
-            "s3_url": {
-              "description": "S3 full URL.",
-              "title": "S3 Url",
-              "type": "string"
-            },
-            "type": {
-              "const": "sts",
-              "default": "sts",
-              "description": "URL type.",
-              "title": "Type"
-            }
+          "description": {
+            "description": "Description.",
+            "title": "Description",
+            "type": "string"
           },
-          "required": [
-            "aws_access_key_id",
-            "aws_secret_access_key",
-            "s3_bucket",
-            "s3_key",
-            "s3_url"
-          ],
-          "title": "StsTransferApi",
-          "type": "object"
-        },
-        "TextualInversionData": {
-          "properties": {
-            "asset_type": {
-              "const": "textual_inversion",
-              "default": "textual_inversion",
-              "description": "Asset type.",
-              "title": "Asset Type"
-            },
-            "data_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/DataType"
-                }
-              ],
-              "default": "fp16",
-              "description": "Data type."
-            },
-            "engine": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/BaseEngine"
-                }
-              ],
-              "description": "Engine type."
-            },
-            "file_format": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileFormat"
-                }
-              ],
-              "default": "safetensors",
-              "description": "File format."
-            },
-            "trigger_words": {
-              "default": [],
-              "description": "Trigger words.",
-              "items": {
+          "file_structure": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileStructure"
+              }
+            ],
+            "default": "single_file",
+            "description": "File structure."
+          },
+          "hf_repo": {
+            "anyOf": [
+              {
                 "type": "string"
               },
-              "title": "Trigger Words",
-              "type": "array"
-            }
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Hugging Face repository.",
+            "title": "Hf Repo"
           },
-          "required": [
-            "engine"
-          ],
-          "title": "TextualInversionData",
-          "type": "object"
-        },
-        "TransferApiType": {
-          "enum": [
-            "presigned-url",
-            "sts"
-          ],
-          "title": "TransferApiType",
-          "type": "string"
-        },
-        "VAEData": {
-          "properties": {
-            "asset_type": {
-              "const": "vae",
-              "default": "vae",
-              "description": "Asset type.",
-              "title": "Asset Type"
-            },
-            "data_type": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/DataType"
-                }
-              ],
-              "default": "fp16",
-              "description": "Data type."
-            },
-            "engine": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/BaseEngine"
-                }
-              ],
-              "description": "Engine type."
-            },
-            "file_format": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/FileFormat"
-                }
-              ],
-              "default": "safetensors",
-              "description": "File format."
-            }
+          "id": {
+            "description": "Asset id.",
+            "title": "Id",
+            "type": "string"
           },
-          "required": [
-            "engine"
-          ],
-          "title": "VAEData",
-          "type": "object"
+          "is_public": {
+            "default": false,
+            "description": "True if asset is public.",
+            "title": "Is Public",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "Asset name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "size_bytes": {
+            "description": "Size in bytes.",
+            "format": "int64",
+            "title": "Size Bytes",
+            "type": "integer"
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Status"
+              }
+            ],
+            "description": "Asset status."
+          },
+          "status_details": {
+            "description": "Asset status.",
+            "title": "Status Details",
+            "type": "string"
+          },
+          "status_info": {
+            "default": {},
+            "description": "Asset status info.",
+            "title": "Status Info",
+            "type": "object"
+          },
+          "tenant_uuid": {
+            "description": "Asset tenant ID.",
+            "format": "uuid",
+            "title": "Tenant Uuid",
+            "type": "string"
+          }
         },
-        "ValidationError": {
-          "properties": {
-            "loc": {
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "integer"
-                  }
-                ]
+        "required": [
+          "id",
+          "asset_type",
+          "name",
+          "description",
+          "size_bytes",
+          "status",
+          "status_details",
+          "created_at",
+          "data",
+          "tenant_uuid"
+        ],
+        "title": "Asset",
+        "type": "object"
+      },
+      "AssetType": {
+        "enum": [
+          "file",
+          "checkpoint",
+          "lora",
+          "textual_inversion",
+          "vae",
+          "latent"
+        ],
+        "title": "AssetType",
+        "type": "string"
+      },
+      "BaseEngine": {
+        "enum": [
+          "text/llama-2-7b",
+          "text/llama-2-13b",
+          "text/llama-2-70b",
+          "text/codellama-7b",
+          "text/codellama-13b",
+          "text/codellama-34b",
+          "text/codellama-70b",
+          "text/mistral-7b",
+          "text/mixtral-8x7b",
+          "image/controlnet-sd15",
+          "image/controlnet-sdxl",
+          "image/stable-diffusion-v1-5",
+          "image/stable-diffusion-xl-v1-0",
+          "image/stable-diffusion-ssd",
+          "audio/tortoise-tts",
+          "audio/rvc"
+        ],
+        "title": "BaseEngine",
+        "type": "string"
+      },
+      "BaseEngineType": {
+        "enum": [
+          "text",
+          "image",
+          "audio"
+        ],
+        "title": "BaseEngineType",
+        "type": "string"
+      },
+      "CheckpointData": {
+        "properties": {
+          "asset_type": {
+            "const": "checkpoint",
+            "default": "checkpoint",
+            "description": "Asset type.",
+            "title": "Asset Type"
+          },
+          "data_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataType"
+              }
+            ],
+            "default": "fp16",
+            "description": "Data type."
+          },
+          "engine": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseEngine"
+              }
+            ],
+            "description": "Engine type."
+          },
+          "file_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileFormat"
+              }
+            ],
+            "default": "safetensors",
+            "description": "File format."
+          }
+        },
+        "required": [
+          "engine"
+        ],
+        "title": "CheckpointData",
+        "type": "object"
+      },
+      "CompleteAssetUploadRequest": {
+        "properties": {
+          "token": {
+            "default": "",
+            "deprecated": true,
+            "description": "Unused",
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "title": "CompleteAssetUploadRequest",
+        "type": "object"
+      },
+      "CompleteAssetUploadResponse": {
+        "properties": {
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
               },
-              "title": "Location",
-              "type": "array"
-            },
-            "msg": {
-              "title": "Message",
-              "type": "string"
-            },
-            "type": {
-              "title": "Error Type",
-              "type": "string"
-            }
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Error.",
+            "title": "Error"
+          }
+        },
+        "title": "CompleteAssetUploadResponse",
+        "type": "object"
+      },
+      "CreateAssetRequest": {
+        "properties": {
+          "asset_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssetType"
+              }
+            ],
+            "description": "Asset type."
           },
-          "required": [
-            "loc",
-            "msg",
-            "type"
-          ],
-          "title": "ValidationError",
-          "type": "object"
-        }
+          "data": {
+            "description": "Asset data.",
+            "discriminator": {
+              "mapping": {
+                "checkpoint": "#/components/schemas/CheckpointData",
+                "file": "#/components/schemas/FileData",
+                "latent": "#/components/schemas/LatentData",
+                "lora": "#/components/schemas/LoraData",
+                "textual_inversion": "#/components/schemas/TextualInversionData",
+                "vae": "#/components/schemas/VAEData"
+              },
+              "propertyName": "asset_type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FileData"
+              },
+              {
+                "$ref": "#/components/schemas/CheckpointData"
+              },
+              {
+                "$ref": "#/components/schemas/LoraData"
+              },
+              {
+                "$ref": "#/components/schemas/TextualInversionData"
+              },
+              {
+                "$ref": "#/components/schemas/VAEData"
+              },
+              {
+                "$ref": "#/components/schemas/LatentData"
+              }
+            ],
+            "title": "Data"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Asset descriptions.",
+            "title": "Description"
+          },
+          "hf_repo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "HuggingFace repository.",
+            "title": "Hf Repo"
+          },
+          "hf_token_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "OctoAI secret name for HuggingFace token.",
+            "title": "Hf Token Secret"
+          },
+          "is_public": {
+            "default": false,
+            "description": "True if asset is public.",
+            "title": "Is Public",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "Asset name.",
+            "title": "Name",
+            "type": "string"
+          },
+          "skip_validation": {
+            "default": false,
+            "description": "Skip asset validation.",
+            "title": "Skip Validation",
+            "type": "boolean"
+          },
+          "transfer_api_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferApiType"
+              }
+            ],
+            "default": "presigned-url",
+            "description": "Transfer API type."
+          },
+          "url": {
+            "anyOf": [
+              {
+                "format": "uri",
+                "maxLength": 2083,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Upload the contents of the url as the asset.",
+            "title": "Url"
+          }
+        },
+        "required": [
+          "asset_type",
+          "name",
+          "description",
+          "data"
+        ],
+        "title": "CreateAssetRequest",
+        "type": "object"
+      },
+      "CreateAssetResponse": {
+        "properties": {
+          "asset": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Asset"
+              }
+            ],
+            "description": "Asset."
+          },
+          "token": {
+            "default": "",
+            "deprecated": true,
+            "description": "Unused. Present for compatibility purposes.",
+            "title": "Token",
+            "type": "string"
+          },
+          "transfer_api": {
+            "description": "Asset transfer API.",
+            "discriminator": {
+              "mapping": {
+                "none": "#/components/schemas/NoTransferApi",
+                "presigned-url": "#/components/schemas/PresignedUrlTransferApi",
+                "sts": "#/components/schemas/StsTransferApi"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PresignedUrlTransferApi"
+              },
+              {
+                "$ref": "#/components/schemas/StsTransferApi"
+              },
+              {
+                "$ref": "#/components/schemas/NoTransferApi"
+              }
+            ],
+            "title": "Transfer Api"
+          }
+        },
+        "required": [
+          "asset",
+          "transfer_api"
+        ],
+        "title": "CreateAssetResponse",
+        "type": "object"
+      },
+      "DataType": {
+        "enum": [
+          "fp16",
+          "fp32",
+          "int4",
+          "int8"
+        ],
+        "title": "DataType",
+        "type": "string"
+      },
+      "DeleteAssetResponse": {
+        "properties": {
+          "deleted_at": {
+            "description": "Deletion time.",
+            "title": "Deleted At",
+            "type": "string"
+          },
+          "id": {
+            "description": "Asset ID.",
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "deleted_at"
+        ],
+        "title": "DeleteAssetResponse",
+        "type": "object"
+      },
+      "FileData": {
+        "properties": {
+          "asset_type": {
+            "const": "file",
+            "default": "file",
+            "description": "Asset type.",
+            "title": "Asset Type"
+          },
+          "file_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileExtension"
+              }
+            ],
+            "default": "unknown",
+            "description": "File format."
+          },
+          "preview_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Preview URL.",
+            "title": "Preview Url"
+          },
+          "version": {
+            "default": "",
+            "description": "Version.",
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "title": "FileData",
+        "type": "object"
+      },
+      "FileExtension": {
+        "enum": [
+          "unknown",
+          "png",
+          "jpg",
+          "jpeg",
+          "txt",
+          "mp3",
+          "wav"
+        ],
+        "title": "FileExtension",
+        "type": "string"
+      },
+      "FileFormat": {
+        "enum": [
+          "safetensors",
+          "pt"
+        ],
+        "title": "FileFormat",
+        "type": "string"
+      },
+      "FileStructure": {
+        "enum": [
+          "unknown",
+          "single_file",
+          "multiple_files"
+        ],
+        "title": "FileStructure",
+        "type": "string"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "LatentData": {
+        "properties": {
+          "asset_type": {
+            "const": "latent",
+            "default": "latent",
+            "description": "Asset type.",
+            "title": "Asset Type"
+          },
+          "engine": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseEngine"
+              }
+            ],
+            "description": "Engine type."
+          },
+          "file_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileFormat"
+              }
+            ],
+            "default": "safetensors",
+            "description": "File format."
+          }
+        },
+        "required": [
+          "engine"
+        ],
+        "title": "LatentData",
+        "type": "object"
+      },
+      "ListAssetsResponse": {
+        "properties": {
+          "data": {
+            "description": "List of assets.",
+            "items": {
+              "$ref": "#/components/schemas/Asset"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "has_more": {
+            "description": "True if there are more asset to show.",
+            "title": "Has More",
+            "type": "boolean"
+          },
+          "total": {
+            "description": "Total number of assets.",
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "has_more",
+          "total",
+          "data"
+        ],
+        "title": "ListAssetsResponse",
+        "type": "object"
+      },
+      "LoraData": {
+        "properties": {
+          "asset_type": {
+            "const": "lora",
+            "default": "lora",
+            "description": "Asset type.",
+            "title": "Asset Type"
+          },
+          "data_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataType"
+              }
+            ],
+            "default": "fp16",
+            "description": "Data type."
+          },
+          "engine": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseEngine"
+              }
+            ],
+            "description": "Engine type."
+          },
+          "file_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileFormat"
+              }
+            ],
+            "default": "safetensors",
+            "description": "File format."
+          },
+          "trigger_words": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Trigger words.",
+            "title": "Trigger Words"
+          }
+        },
+        "required": [
+          "engine"
+        ],
+        "title": "LoraData",
+        "type": "object"
+      },
+      "NoTransferApi": {
+        "description": "This type exists to avoid Optional[TransferApi] so openapi-generator can work.\n\nIn this class, type is not added to TransferApiType because it is not a valid\nTransferApiType. It exists only to note that no TransferApi is defined.",
+        "properties": {
+          "type": {
+            "const": "none",
+            "default": "none",
+            "description": "URL type.",
+            "title": "Type"
+          }
+        },
+        "title": "NoTransferApi",
+        "type": "object"
+      },
+      "PresignedUrlTransferApi": {
+        "properties": {
+          "get_url": {
+            "description": "Get asset URL.",
+            "title": "Get Url",
+            "type": "string"
+          },
+          "put_url": {
+            "description": "Asset URL to upload.",
+            "title": "Put Url",
+            "type": "string"
+          },
+          "type": {
+            "const": "presigned-url",
+            "default": "presigned-url",
+            "description": "URL type.",
+            "title": "Type"
+          }
+        },
+        "required": [
+          "get_url",
+          "put_url"
+        ],
+        "title": "PresignedUrlTransferApi",
+        "type": "object"
+      },
+      "RetrieveAssetResponse": {
+        "properties": {
+          "asset": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Asset"
+              }
+            ],
+            "description": "Asset."
+          },
+          "transfer_api": {
+            "description": "Transfer API.",
+            "discriminator": {
+              "mapping": {
+                "none": "#/components/schemas/NoTransferApi",
+                "presigned-url": "#/components/schemas/PresignedUrlTransferApi",
+                "sts": "#/components/schemas/StsTransferApi"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PresignedUrlTransferApi"
+              },
+              {
+                "$ref": "#/components/schemas/StsTransferApi"
+              },
+              {
+                "$ref": "#/components/schemas/NoTransferApi"
+              }
+            ],
+            "title": "Transfer Api"
+          }
+        },
+        "required": [
+          "asset",
+          "transfer_api"
+        ],
+        "title": "RetrieveAssetResponse",
+        "type": "object"
+      },
+      "Status": {
+        "enum": [
+          "ready_to_upload",
+          "uploaded",
+          "ready",
+          "deleted",
+          "rejected",
+          "error",
+          "uploading"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "StsTransferApi": {
+        "properties": {
+          "aws_access_key_id": {
+            "description": "AWS access key.",
+            "title": "Aws Access Key Id",
+            "type": "string"
+          },
+          "aws_secret_access_key": {
+            "description": "AWS secret accesss key.",
+            "title": "Aws Secret Access Key",
+            "type": "string"
+          },
+          "aws_session_token": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "AWS session token.",
+            "title": "Aws Session Token"
+          },
+          "s3_bucket": {
+            "description": "S3 bucket.",
+            "title": "S3 Bucket",
+            "type": "string"
+          },
+          "s3_endpoint_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "S3 endpoint URL.",
+            "title": "S3 Endpoint Url"
+          },
+          "s3_key": {
+            "description": "S3 key.",
+            "title": "S3 Key",
+            "type": "string"
+          },
+          "s3_url": {
+            "description": "S3 full URL.",
+            "title": "S3 Url",
+            "type": "string"
+          },
+          "type": {
+            "const": "sts",
+            "default": "sts",
+            "description": "URL type.",
+            "title": "Type"
+          }
+        },
+        "required": [
+          "aws_access_key_id",
+          "aws_secret_access_key",
+          "s3_bucket",
+          "s3_key",
+          "s3_url"
+        ],
+        "title": "StsTransferApi",
+        "type": "object"
+      },
+      "TextualInversionData": {
+        "properties": {
+          "asset_type": {
+            "const": "textual_inversion",
+            "default": "textual_inversion",
+            "description": "Asset type.",
+            "title": "Asset Type"
+          },
+          "data_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataType"
+              }
+            ],
+            "default": "fp16",
+            "description": "Data type."
+          },
+          "engine": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseEngine"
+              }
+            ],
+            "description": "Engine type."
+          },
+          "file_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileFormat"
+              }
+            ],
+            "default": "safetensors",
+            "description": "File format."
+          },
+          "trigger_words": {
+            "default": [],
+            "description": "Trigger words.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Trigger Words",
+            "type": "array"
+          }
+        },
+        "required": [
+          "engine"
+        ],
+        "title": "TextualInversionData",
+        "type": "object"
+      },
+      "TransferApiType": {
+        "enum": [
+          "presigned-url",
+          "sts"
+        ],
+        "title": "TransferApiType",
+        "type": "string"
+      },
+      "VAEData": {
+        "properties": {
+          "asset_type": {
+            "const": "vae",
+            "default": "vae",
+            "description": "Asset type.",
+            "title": "Asset Type"
+          },
+          "data_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataType"
+              }
+            ],
+            "default": "fp16",
+            "description": "Data type."
+          },
+          "engine": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BaseEngine"
+              }
+            ],
+            "description": "Engine type."
+          },
+          "file_format": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FileFormat"
+              }
+            ],
+            "default": "safetensors",
+            "description": "File format."
+          }
+        },
+        "required": [
+          "engine"
+        ],
+        "title": "VAEData",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "asset-lake-api-server",
+    "version": "0.1"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Check"
       }
     },
-    "info": {
-      "title": "asset-lake-api-server",
-      "version": "0.1"
-    },
-    "openapi": "3.1.0",
-    "paths": {
-      "/health": {
-        "get": {
-          "operationId": "health_check_health_get",
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {}
+    "/v1/assets": {
+      "get": {
+        "operationId": "list_assets_v1_assets_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
                 }
-              },
-              "description": "Successful Response"
+              ],
+              "title": "Name"
             }
           },
-          "summary": "Health Check"
-        }
-      },
-      "/v1/assets": {
-        "get": {
-          "operationId": "list_assets_v1_assets_get",
-          "parameters": [
-            {
-              "in": "query",
-              "name": "name",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Name"
-              }
-            },
-            {
-              "in": "query",
-              "name": "is_public",
-              "required": false,
-              "schema": {
-                "default": false,
-                "title": "Is Public",
-                "type": "boolean"
-              }
-            },
-            {
-              "in": "query",
-              "name": "data_type",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "$ref": "#/components/schemas/DataType"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Data Type"
-              }
-            },
-            {
-              "in": "query",
-              "name": "asset_type",
-              "required": false,
-              "schema": {
-                "items": {
-                  "$ref": "#/components/schemas/AssetType"
-                },
-                "title": "Asset Type",
-                "type": "array"
-              }
-            },
-            {
-              "in": "query",
-              "name": "engine",
-              "required": false,
-              "schema": {
-                "items": {
-                  "$ref": "#/components/schemas/BaseEngine"
-                },
-                "title": "Engine",
-                "type": "array"
-              }
-            },
-            {
-              "in": "query",
-              "name": "limit",
-              "required": false,
-              "schema": {
-                "default": 100,
-                "gte": 1,
-                "lte": 100,
-                "title": "Limit",
-                "type": "integer"
-              }
-            },
-            {
-              "in": "query",
-              "name": "offset",
-              "required": false,
-              "schema": {
-                "default": 0,
-                "gte": 0,
-                "title": "Offset",
-                "type": "integer"
-              }
-            },
-            {
-              "in": "query",
-              "name": "get_preview_urls",
-              "required": false,
-              "schema": {
-                "default": false,
-                "title": "Get Preview Urls",
-                "type": "boolean"
-              }
-            },
-            {
-              "in": "query",
-              "name": "asset_ids",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Asset Ids"
-              }
-            },
-            {
-              "in": "query",
-              "name": "owner",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Owner"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ListAssetsResponse"
-                  }
-                }
-              },
-              "description": "Successful Response"
-            },
-            "422": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              },
-              "description": "Validation Error"
+          {
+            "in": "query",
+            "name": "is_public",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Is Public",
+              "type": "boolean"
             }
           },
-          "summary": "List Assets",
-          "tags": [
-            "assets"
-          ]
+          {
+            "in": "query",
+            "name": "data_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/DataType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Data Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "asset_type",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/AssetType"
+              },
+              "title": "Asset Type",
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "engine",
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/BaseEngine"
+              },
+              "title": "Engine",
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "engine_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/BaseEngineType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Engine Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "gte": 1,
+              "lte": 100,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "gte": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "get_preview_urls",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Get Preview Urls",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "asset_ids",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Asset Ids"
+            }
+          },
+          {
+            "in": "query",
+            "name": "owner",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Owner"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAssetsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
         },
-        "post": {
-          "operationId": "create_asset_v1_assets_post",
-          "requestBody": {
+        "summary": "List Assets",
+        "tags": [
+          "assets"
+        ]
+      },
+      "post": {
+        "operationId": "create_asset_v1_assets_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssetRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateAssetRequest"
+                  "$ref": "#/components/schemas/CreateAssetResponse"
                 }
               }
             },
-            "required": true
+            "description": "Successful Response"
           },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CreateAssetResponse"
-                  }
-                }
-              },
-              "description": "Successful Response"
-            },
-            "422": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              },
-              "description": "Validation Error"
-            }
-          },
-          "summary": "Create Asset",
-          "tags": [
-            "assets"
-          ]
-        }
-      },
-      "/v1/assets/{asset_id}": {
-        "delete": {
-          "operationId": "delete_asset_v1_assets__asset_id__delete",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "asset_id",
-              "required": true,
-              "schema": {
-                "title": "Asset Id",
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/DeleteAssetResponse"
-                  }
-                }
-              },
-              "description": "Successful Response"
-            },
-            "422": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              },
-              "description": "Validation Error"
-            }
-          },
-          "summary": "Delete Asset",
-          "tags": [
-            "assets"
-          ]
-        }
-      },
-      "/v1/assets/{asset_id}/complete-upload": {
-        "post": {
-          "operationId": "complete_asset_upload_v1_assets__asset_id__complete_upload_post",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "asset_id",
-              "required": true,
-              "schema": {
-                "title": "Asset Id",
-                "type": "string"
-              }
-            }
-          ],
-          "requestBody": {
+          "422": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompleteAssetUploadRequest"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/CompleteAssetUploadResponse"
-                  }
-                }
-              },
-              "description": "Successful Response"
-            },
-            "422": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              },
-              "description": "Validation Error"
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Asset",
+        "tags": [
+          "assets"
+        ]
+      }
+    },
+    "/v1/assets/{asset_id}": {
+      "delete": {
+        "operationId": "delete_asset_v1_assets__asset_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "asset_id",
+            "required": true,
+            "schema": {
+              "title": "Asset Id",
+              "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteAssetResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
           },
-          "summary": "Complete Asset Upload",
-          "tags": [
-            "assets"
-          ]
-        }
-      },
-      "/v1/assets/{asset_owner_and_name_or_id}": {
-        "get": {
-          "operationId": "retrieve_asset_v1_assets__asset_owner_and_name_or_id__get",
-          "parameters": [
-            {
-              "in": "path",
-              "name": "asset_owner_and_name_or_id",
-              "required": true,
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Asset",
+        "tags": [
+          "assets"
+        ]
+      }
+    },
+    "/v1/assets/{asset_id}/complete-upload": {
+      "post": {
+        "operationId": "complete_asset_upload_v1_assets__asset_id__complete_upload_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "asset_id",
+            "required": true,
+            "schema": {
+              "title": "Asset Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
               "schema": {
-                "title": "Asset Owner And Name Or Id",
-                "type": "string"
+                "$ref": "#/components/schemas/CompleteAssetUploadRequest"
               }
-            },
-            {
-              "in": "query",
-              "name": "transfer_api_type",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "$ref": "#/components/schemas/TransferApiType"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "default": "presigned-url",
-                "title": "Transfer Api Type"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/RetrieveAssetResponse"
-                  }
-                }
-              },
-              "description": "Successful Response"
-            },
-            "422": {
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              },
-              "description": "Validation Error"
             }
           },
-          "summary": "Retrieve Asset",
-          "tags": [
-            "assets"
-          ]
-        }
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteAssetUploadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Complete Asset Upload",
+        "tags": [
+          "assets"
+        ]
+      }
+    },
+    "/v1/assets/{asset_owner_and_name_or_id}": {
+      "get": {
+        "operationId": "retrieve_asset_v1_assets__asset_owner_and_name_or_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "asset_owner_and_name_or_id",
+            "required": true,
+            "schema": {
+              "title": "Asset Owner And Name Or Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "transfer_api_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TransferApiType"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": "presigned-url",
+              "title": "Transfer Api Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetrieveAssetResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retrieve Asset",
+        "tags": [
+          "assets"
+        ]
       }
     }
   }
+}
