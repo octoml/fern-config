@@ -2,7 +2,7 @@ groups:
   python-sdk-local:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 0.13.1
+        version: 0.13.2
         config:
           improved_imports: true
           pydantic_config:
