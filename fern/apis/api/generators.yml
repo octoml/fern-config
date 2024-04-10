@@ -3,10 +3,10 @@ groups:
     generators:
       - name: fernapi/fern-python-sdk
         version: 0.11.9
-        # output: 
-        #   location: pypi
-        #   package-name: "octoai"
-        #   token: ${PYPI_TOKEN}
+        output: 
+          location: pypi
+          package-name: "octoai"
+          token: ${PYPI_TOKEN}
         github:
           repository: octoml/octoai-python-sdk-fern
           mode: pull-request
@@ -20,10 +20,10 @@ groups:
     generators:
       - name: fernapi/fern-typescript-node-sdk
         version: 0.12.9
-        # output:
-        #   location: npm
-        #   package-name: "@octoai/octoai-node-client"
-        #   token: ${NPM_TOKEN}
+        output:
+          location: npm
+          package-name: "@octoai/sdk"
+          token: ${NPM_TOKEN}
         github:
           repository: octoml/octoai-typescript-sdk-fern
           mode: pull-request
