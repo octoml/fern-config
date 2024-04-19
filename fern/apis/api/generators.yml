@@ -59,10 +59,10 @@ groups:
     generators:
       - name: fernapi/fern-typescript-node-sdk
         version: 0.15.0-rc0
-        output:
-          location: npm
-          package-name: "@octoai/sdk"
-          token: ${NPM_TOKEN}
+        # output:
+        #   location: npm
+        #   package-name: "@octoai/sdk"
+        #   token: ${NPM_TOKEN}
         github:
           repository: octoml/octoai-typescript-sdk-fern
           mode: pull-request
