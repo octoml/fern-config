@@ -4,6 +4,7 @@ paths:
       x-fern-sdk-method-name: createChatCompletion
       x-fern-streaming:
         stream-condition: $request.stream
+        format: sse
         response:
           $ref: "#/components/schemas/ChatCompletionResponse"
         response-stream:
@@ -16,6 +17,7 @@ paths:
       x-fern-sdk-method-name: createCompletion
       x-fern-streaming:
         stream-condition: $request.stream
+        format: sse
         response:
           $ref: "#/components/schemas/CompletionResponse"
         response-stream:
