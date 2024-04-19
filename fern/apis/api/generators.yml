@@ -37,10 +37,28 @@ groups:
             boto3: "^1.34.75"
             types-boto3: "^1.0"
         smart-casing: true
+  ts-sdk-local:
+    generators:
+      - name: fernapi/fern-typescript-node-sdk
+        version: 0.15.0-rc0
+        output:
+          location: local-file-system
+          path: ../../../generated/octoai-typescript-sdk-fern
+        config:
+          namespaceExport: OctoAI
+          skipResponseValidation: true
+          allowCustomFetcher: true
+          outputSourceFiles: true
+          includeApiReference: true
+          extraDependencies:
+            '@aws-sdk/client-s3': '^3.540.0'
+            'aws-sdk-client-mock': '^4.0.0'
+            'aws-sdk-client-mock-jest': '^4.0.0'
+        smart-casing: true
   ts-sdk:
     generators:
       - name: fernapi/fern-typescript-node-sdk
-        version: 0.12.9
+        version: 0.15.0-rc0
         output:
           location: npm
           package-name: "@octoai/sdk"
