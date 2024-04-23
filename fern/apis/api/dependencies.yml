@@ -1,5 +1,5 @@
 dependencies:
-  asset-lake: ../asset-lake
+  asset-orchestrator: ../asset-orchestrator
   fine-tuning: ../fine-tuning
   image-gen: ../image-gen
   text-gen: ../text-gen
