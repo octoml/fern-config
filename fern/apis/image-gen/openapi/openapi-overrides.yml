@@ -29,6 +29,12 @@ paths:
       servers:
       - url: https://image.octoai.cloud
         x-name: ImageGen
+  /generate/svd:
+    post:
+      x-fern-sdk-method-name: generateSvd
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   # Hide healthcheck
   /healthcheck:
     get:
