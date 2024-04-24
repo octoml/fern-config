@@ -14,7 +14,6 @@ paths:
   /generate/sdxl:
     post:
       x-fern-sdk-method-name: generateSdxl
-      
   /generate/sd:
     post:
       x-fern-sdk-method-name: generateSd
