@@ -1,5 +1,5 @@
 dependencies:
-  asset-orchestrator: ../asset-orchestrator
+  asset-library: ../asset-library
   fine-tuning: ../fine-tuning
   image-gen: ../image-gen
   text-gen: ../text-gen
