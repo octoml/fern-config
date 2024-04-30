@@ -1,3 +1,10 @@
+servers:
+- url: https://text.octoai.run
+  description: Production
+  x-name: TextGen
+- url: https://text.securelink.octo.ai
+  description: SecureLink
+  x-name: TextGen
 paths:
   /v1/chat/completions:
     post:
@@ -9,9 +16,6 @@ paths:
           $ref: "#/components/schemas/ChatCompletionResponse"
         response-stream:
           $ref: "#/components/schemas/ChatCompletionChunk"
-      servers:
-      - url: https://text.octoai.run
-        x-name: TextGen
   /v1/completions:
     post:
       x-fern-sdk-method-name: createCompletion
@@ -22,6 +26,3 @@ paths:
           $ref: "#/components/schemas/CompletionResponse"
         response-stream:
           $ref: "#/components/schemas/CompletionResponse"
-      servers:
-      - url: https://text.octoai.run
-        x-name: TextGen

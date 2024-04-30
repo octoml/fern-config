@@ -1,3 +1,10 @@
+servers:
+- url: https://api.octoai.cloud
+  description: Production
+  x-name: Default
+- url: https://api.securelink.octo.ai
+  description: SecureLink
+  x-name: Default
 paths:
   # Hide healthcheck
   /health:
@@ -29,9 +36,6 @@ paths:
   /v1/tunes:
     get:
       x-fern-sdk-method-name: list
-      servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
 components:
   schemas:
     LoraTune-Input:
