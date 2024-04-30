@@ -1,10 +1,11 @@
 servers:
 - url: https://api.octoai.cloud
   description: Production
-  x-name: Default
+  x-name: Production
+  x-fern-server-name: Default
 - url: https://api.securelink.octo.ai
-  description: SecureLink
   x-name: Default
+  x-fern-server-name: SecureLink
 paths:
   # Hide healthcheck
   /health:
@@ -13,26 +14,14 @@ paths:
   /v1/tune:
     post:
       x-fern-sdk-method-name: create
-      servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
   /v1/tune/{tune_id}:
     get:
       x-fern-sdk-method-name: get
-      servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
     delete:
       x-fern-sdk-method-name: delete
-      servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
   /v1/tune/{tune_id}/cancel:
     post:
       x-fern-sdk-method-name: cancel
-      servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
   /v1/tunes:
     get:
       x-fern-sdk-method-name: list

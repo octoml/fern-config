@@ -1,10 +1,11 @@
 servers:
 - url: https://text.octoai.run
-  description: Production
   x-name: TextGen
+  x-fern-server-name: Production
 - url: https://text.securelink.octo.ai
   description: SecureLink
   x-name: TextGen
+  x-fern-server-name: SecureLink
 paths:
   /v1/chat/completions:
     post:
