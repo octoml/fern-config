@@ -26,7 +26,7 @@ groups:
           package-name: "octoai"
           token: ${PYPI_TOKEN}
         github:
-          repository: octoml/octoai-python-sdk-fern
+          repository: fern-api/github-app-test
         config:
           inline_request_params: true
           client:
@@ -65,7 +65,7 @@ groups:
           package-name: "@octoai/sdk"
           token: ${NPM_TOKEN}
         github:
-          repository: octoml/octoai-typescript-sdk-fern
+          repository: fern-api/github-app-test
         config:
           namespaceExport: OctoAI
           skipResponseValidation: true

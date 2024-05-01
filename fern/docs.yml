@@ -1,5 +1,5 @@
 instances:
-  - url: https://octoai.docs.buildwithfern.com
+  - url: https://octoai.docs.dev.buildwithfern.com
 title: OctoAI | Documentation
 navigation:
   - api: API Reference
