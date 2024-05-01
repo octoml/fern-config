@@ -1,0 +1,12 @@
+instances:
+  - url: https://octoai.docs.buildwithfern.com
+title: OctoAI | Documentation
+navigation:
+  - api: API Reference
+    api-name: api
+    snippets: 
+      python: octoai
+      typescript: "@octoai/sdk"
+colors:
+  accentPrimary: '#ffffff'
+  background: '#000000'
