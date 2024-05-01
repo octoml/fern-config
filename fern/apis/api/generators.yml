@@ -4,6 +4,7 @@ groups:
       - name: fernapi/fern-python-sdk
         version: 1.5.1-rc1
         config:
+          inline_request_params: true
           client:
             class_name: BaseOctoAI
             filename: base_client.py
@@ -27,6 +28,7 @@ groups:
         github:
           repository: octoml/octoai-python-sdk-fern
         config:
+          inline_request_params: true
           client:
             class_name: BaseOctoAI
             filename: base_client.py
