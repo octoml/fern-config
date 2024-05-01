@@ -19,3 +19,8 @@ environments:
       Default: https://api.octoai.cloud
       ImageGen: https://image.octoai.run
       TextGen: https://text.octoai.run
+  SecureLink:
+    urls: 
+      Default: https://api.securelink.octo.ai
+      ImageGen: https://image.securelink.octo.ai
+      TextGen: https://text.securelink.octo.ai
