@@ -123,6 +123,21 @@
             "format": "uuid",
             "title": "Tenant Uuid",
             "type": "string"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "format": "uri",
+                "maxLength": 2083,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Asset URL.",
+            "title": "Url"
           }
         },
         "required": [
@@ -226,6 +241,12 @@
       },
       "CompleteAssetUploadRequest": {
         "properties": {
+          "skip_validation": {
+            "default": false,
+            "description": "Skip asset validation.",
+            "title": "Skip Validation",
+            "type": "boolean"
+          },
           "token": {
             "default": "",
             "deprecated": true,
@@ -615,6 +636,18 @@
             "default": "lora",
             "description": "Asset type.",
             "title": "Asset Type"
+          },
+          "checkpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Base checkpoint.",
+            "title": "Checkpoint"
           },
           "data_type": {
             "allOf": [
