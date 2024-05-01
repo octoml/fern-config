@@ -1,10 +1,3 @@
-servers:
-- url: https://api.octoai.cloud
-  x-name: Default
-  x-fern-server-name: Production
-- url: https://api.securelink.octo.ai
-  x-name: Default
-  x-fern-server-name: SecureLink
 paths:
   # Hide healthcheck
   /health:
@@ -13,14 +6,29 @@ paths:
   /v1/assets:
     get:
       x-fern-sdk-method-name: list
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
     post:
       x-fern-sdk-method-name: create
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
   /v1/assets/{asset_id}:
     delete:
       x-fern-sdk-method-name: delete
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
   /v1/assets/{asset_id}/complete-upload:
     post:
       x-fern-sdk-method-name: completeUpload
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default
   /v1/assets/{asset_owner_and_name_or_id}:
     get:
       x-fern-sdk-method-name: get
+      servers:
+      - url: https://api.octoai.cloud
+        x-name: Default

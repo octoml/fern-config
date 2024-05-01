@@ -1,29 +1,40 @@
-servers:
-- url: https://image.octoai.cloud
-  x-name: ImageGen
-  x-fern-server-name: Production
-- url: https://image.securelink.octo.ai
-  x-name: ImageGen
-  x-fern-server-name: SecureLink
 paths:
   /generate/ssd:
     post:
       x-fern-sdk-method-name: generateSsd
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   /generate/controlnet-sdxl:
     post:
       x-fern-sdk-method-name: generateControlnetSdxl
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   /generate/controlnet-sd15:
     post:
       x-fern-sdk-method-name: generateControlnetSd15
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   /generate/sdxl:
     post:
       x-fern-sdk-method-name: generateSdxl
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   /generate/sd:
     post:
       x-fern-sdk-method-name: generateSd
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   /generate/svd:
     post:
       x-fern-sdk-method-name: generateSvd
+      servers:
+      - url: https://image.octoai.cloud
+        x-name: ImageGen
   # Hide healthcheck
   /healthcheck:
     get:
