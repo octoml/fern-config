@@ -1,0 +1,67 @@
+---
+title: August 2023 Release Notes
+subtitle: OctoAI product updates and release notes for August 2023
+slug: release-notes/2023/august
+---
+
+
+<div className='changelog-status'>
+
+<span>Added</span>
+</div>
+
+## August 30, 2023
+
+OctoAI made several additions including: Llama 2 70B model, real-time streaming capabilities to Whisper, and updated the domain for newly created endpoints.
+
+<div className="changelog">
+    - Added Llama2 70B quickstart template endpoint. We can also host custom Llama2 LoRAs/ checkpoints.
+
+    - Enabled users to upload data via URL in the authoring experience (CLI + Python SDK)
+
+    - Added real-time streaming capabilities to our Whisper audio flow, with a React hook called use Whisper for ease of integration into web/mobile apps. [Learn more about this change](https://github.com/octoml/octoai-template-apps/tree/main/real-time-audio-conversation).
+
+    - Changed the domain for all newly created endpoints from `octoai.cloud` to `octoai.run` Existing endpoints on `octoai.cloud` will still work, but we suggest that you start changing your code to call endpoints from `octoai.run` instead of `octoai.cloud`, since we'll also update existing endpoints in about a month.
+</div>
+
+
+<div className='changelog-status'>
+
+<span>Improved</span>
+</div>
+
+## August 16, 2023
+
+There were some new additions to our docs about Image Generation, some improvements in the backend, and a faster version of Stable Diffusion 1.5.
+
+<div className="changelog">
+    - Added a new section in our Docs on Image Generation, including how to fine-tune and use Stable Diffusion.
+
+    - Reduced cold start substantially on endpoints created with our authoring experience (can be multiple minutes of improvement depending on the model). Upgrade to the latest version of the CLI and SDK and author new endpoints to get faster cold start for your custom models.
+
+    - Improved error boundaries in the UI. Users would be less likely to run into the "Whoops Beta Mode engaged" message in the UI.
+
+    - Enabled concurrency handling improvements to all new endpoints created from now on. We will also be gradually rolling out this change on previously created endpoints in upcoming weeks.
+
+    - A faster version of SD XL with dimension 1024x1024 is now available under private preview. We'd be gradually rolling out this new version over the next week or so.
+
+    - Reminder: OctoAI's quickstart template endpoints are for demo/testing purposes only. On these endpoints, we rate-limit to 15 inferences per hour. If you would like to exceed this limit for production use, please clone the endpoint to your own account.
+</div>
+
+<div className='changelog-status'>
+
+<span>Added</span>
+</div>
+
+## August 10, 2023
+
+There have been some additions to the OctoAI platform: Stable Diffusion 1.5 template feature additions, Whisper feature additions, and private registry updates.
+
+<div className="changelog">
+    - Whisper Template Feature Additions: Multi-hour long audio files are now supported. Furthermore, you can specify a URL to the audio input file (e.g. MP3, WAV, or MP4 formats), instead of uploading a file from your local environment.
+    - Private Registry: OctoAI's container authoring experience has been upgraded. Users are no longer required to provide registry credentials to get started. Images can be uploaded directly to a private OctoAI Registry. User uploaded images to OctoAI's Registry are accessible only to you and OctoAI services i.e. no other user can view or access your images.
+    - Stable Diffusion 1.5 Template Feature Additions: OctoAI's Stable Diffusion endpoint, running on A10Gs, has been upgraded to include the following features to help users customize styling and achieve higher-quality images:
+        - Popular Checkpoints like DreamShaper and Realistic Vision, Low Rank Adaptations (LoRAs), and Textual Inversions. Note: LoRA weights must sum up to 1.
+        - Additional image dimensions.
+        - We updated the web user interface.
+</div>

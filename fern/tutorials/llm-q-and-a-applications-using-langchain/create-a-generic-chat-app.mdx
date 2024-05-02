@@ -1,0 +1,117 @@
+---
+title: 'Code walkthrough: generic chat app'
+subtitle: Build a chatbot that responds to a user interactively
+slug: tutorials/llm-q-and-a-applications-using-langchain/create-a-generic-chat-app
+---
+
+
+### Prerequisite
+
+Make sure you've followed the steps in [LLM application examples](environment-setup.mdx) to clone our example repo, create your own OctoAI LLM endpoint, and set up your local environment.
+
+### Code walkthrough for creating a simple chat app
+
+Below is an explanation of the code in [chatbot app](https://github.com/octoml/hackathon-2023-rag/blob/main/pdf-qa/chat%5Fmain.py)
+
+First, we import the necessary libraries for logging, environment variables, the OctoAI-hosted LLM, the LangChain library, and LlamaIndex's LMPredictor:
+
+```Python Python
+import logging
+import os
+import sys
+from dotenv import load_dotenv
+from langchain.llms.octoai_endpoint import OctoAIEndpoint
+from langchain import PromptTemplate, LLMChain
+```
+
+Next, we set the current directory and load environment variables from a .env file to get credentials for the OctoAI endpoint:
+
+```Python Python
+# Get the current file's directory
+current_dir = os.path.dirname(os.path.abspath(**file**))  
+
+# Change the current working directory
+os.chdir(current_dir)  
+
+# Load environment variables
+load_dotenv()
+```
+
+Then we define a function to handle exiting the program:
+
+```Python Python
+def handle_exit():  
+    """Print a goodbye message and exit the program."""  
+    print("\nGoodbye!\n")  
+    sys.exit(1)
+```
+
+Next, we define the main ask() function which will interactively ask questions to the model:
+
+```Python Python
+def ask():  
+    """Interactively ask questions to the language model."""  
+    print("Loading...")
+    
+    # Load necessary values from environment
+    endpoint_url = os.getenv("ENDPOINT_URL")
+
+    # Set up the language model and predictor
+    llm = OctoAIEndpoint(
+        endpoint_url=endpoint_url,
+        model_kwargs={
+            "model": "llama-2-70b-chat-fp16",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "Below is an instruction that describes a task. Write a response that appropriately completes the request.",
+                }
+            ],
+            "stream": False,
+            "max_tokens": 256,
+        },
+    )
+
+```
+
+We load the endpoint URL from the environment, instantiate the OctoAI LLM endpoint, and create an LLMPredictor.
+
+```Python Python
+
+    # Define a prompt template
+    template = "{question}"
+    prompt = PromptTemplate(template=template, input_variables=["question"])
+
+    # Set up the language model chain
+    llm_chain = LLMChain(prompt=prompt, llm=llm)
+```
+
+We define a prompt template with a \{question} placeholder, create a PromptTemplate, and construct an LLMChain to generate responses.
+
+```Python Python
+
+     while True:
+            # Collect user's prompt
+            user_prompt = input("\nPrompt: ")
+            if user_prompt.lower() == "exit":
+                handle_exit()
+
+            # Generate and print the response
+            start_time = time.time()
+
+            response = llm_chain(user_prompt)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            response = str(response).lstrip("\n").split("\n")[-1]
+            print(f"Response({round(elapsed_time, 1)} sec): {response}") 
+   
+```
+
+We provide an example prompt/response, then enter a loop to collect user prompts and generate responses until the user exits.
+
+Finally, we call the ask() function:
+
+```Python Python
+if __name__ == "__main__":  
+    ask()
+```

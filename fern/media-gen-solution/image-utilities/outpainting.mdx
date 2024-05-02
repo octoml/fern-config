@@ -1,0 +1,138 @@
+---
+title: Outpainting
+subtitle: Extend beyond the canvas of an existing image.
+slug: media-gen-solution/image-utilities/outpainting
+---
+
+
+Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. 
+
+ <CardGroup cols={2}>
+  <Card title="Init Image">
+ ![](https://www.datocms-assets.com/45680/1709590599-1_9gkzwelnahqfyilgqpatxa.png?max-w=2000&auto=compress) 
+ </Card>
+  <Card title="Output Image">
+ ![](https://www.datocms-assets.com/45680/1709591655-download-13.jpeg?max-w=2000&auto=compress) 
+  </Card>
+  </CardGroup>
+
+Outpainting works both with SDXL and SD1.5. 
+At a high level, outpainting works like this:
+* Choose an existing image you’d like to outpaint.
+* Create a source image that places your original image within a larger canvas.
+* Create a black and white mask image.
+* Use init_image (source image), mask_image (your mask image), a text prompt and outpainting parameter as inputs to Image Gen API to generate a new image.
+
+In the following example we will leverage the SD1.5 engine so we’ll start with a 512x512 image. 
+
+<CardGroup cols={2}>
+  <Card title="Init Image (512X512)">
+ ![](https://www.datocms-assets.com/45680/1709590599-1_9gkzwelnahqfyilgqpatxa.png?max-w=2000&auto=compress) 
+  </Card>
+</CardGroup>
+
+You can extend the image in any direction, but for this example we’ll extend the width from 512 → 768. Supported resolutions for SD1.5 are:
+
+`(W, H): (768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)
+`
+
+Support resolutions for SDXL are: 
+
+`(W, H): {(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}`
+
+Two images are required for the next step. An init_image and mask_image are required in order to perform the outpainting to 768 pixels. Convert both images to base64.
+
+ <CardGroup cols={2}>
+  <Card title="Init Image (768X512)">
+ ![](https://www.datocms-assets.com/45680/1709590612-init-image-outpainting.jpg?max-w=2000&auto=compress) 
+ </Card>
+  <Card title="Mask Image">
+ ![](https://www.datocms-assets.com/45680/1709590621-mask-outpainting.jpg?max-w=2000&auto=compress) 
+  </Card>
+  </CardGroup>
+
+**Example Code for Outpainting**:
+```Python Python
+import requests
+import json
+import os
+import base64
+import time
+import io
+import PIL.Image
+
+def _process_test(url):
+    
+    image = PIL.Image.open("init-image-outpainting.jpg")
+    mask = PIL.Image.open("mask-outpainting.jpg")
+    # with PIL.Image.open("init-image-outpainting.png") as im:
+    #     rgb_im = im.convert('RGBA')
+    # rgb_im.save('init.jpg')
+    # image = PIL.Image.open("init.jpg")
+
+    # with PIL.Image.open("mask-outpainting.png") as it:
+    #     rgb_it = it.convert('RGBA')
+    # rgb_it.save('mask.jpg')
+    # mask = PIL.Image.open("mask.jpg")
+
+    # Create a BytesIO buffer to hold the image data
+    image_buffer = io.BytesIO()
+    image.save(image_buffer, format='JPEG')
+    image_bytes = image_buffer.getvalue()
+    encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+    # Create a BytesIO buffer to hold the image data
+    mask_buffer = io.BytesIO()
+    mask.save(mask_buffer, format='JPEG')
+    mask_bytes = mask_buffer.getvalue()
+    encoded_mask = base64.b64encode(mask_bytes).decode('utf-8')
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "portrait view, cartoon sketch of a woman, green grass with fall foliage in the back, blurry background, blue and grey sky",
+        "negative_prompt": "path, leaves on the ground, bad anatomy, bad hands, three hands, three legs, bad arms, missing legs, missing arms, poorly drawn face, bad face, fused face, cloned face, worst face, three crus, extra crus, fused crus, worst feet, three feet, fused feet, fused thigh, three thigh, fused thigh, extra thigh, worst thigh, missing fingers, extra fingers, ugly fingers, long fingers, horn, extra eyes, 2girl, amputation",
+        "width": 768,
+        "height": 512,
+        "num_images": 1,
+        "sampler": "DDPM",
+        "steps": 40,
+        "cfg_scale": 12,
+        "style_preset": "base",
+        "outpainting": "true",
+        "init_image": encoded_image,
+        "mask_image": encoded_mask,
+        "strength": 1
+    }
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+        "X-OctoAI-Queue-Dispatch": "true"
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+    print(response.json())
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sd")
+    ```
+
+Here's the outpainted output that the above code generates: 
+
+<CardGroup cols={2}>
+  <Card title="Output image">
+ ![](https://www.datocms-assets.com/45680/1709591655-download-13.jpeg?max-w=2000&auto=compress) 
+  </Card>
+</CardGroup>
+

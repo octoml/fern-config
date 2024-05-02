@@ -1,0 +1,100 @@
+---
+title: CLI installation
+subtitle: How to install the OctoAI CLI
+slug: cli/cli-and-sdk-installation
+---
+
+
+## Latest CLI release
+You can install the latest CLI and Python SDK using the script below, with compatibility for both Mac and Linux systems. 
+
+```bash
+curl https://s3.amazonaws.com/downloads.octoai.cloud/octoai/install_octoai_cli_and_sdk.sh -sSfL | sh
+```
+
+### Verify the installation
+
+```bash
+octoai version
+```
+
+```bash
+octoai --help
+```
+
+You can also verify the `octoai-sdk` has successfully installed in your correct environment.
+
+```bash
+python3 -m pip show octoai-sdk
+```
+
+This should provide an output similar to (though likely with different version numbers):
+
+```
+Name: octoai-sdk
+Version: 0.7.1
+Summary: A runtime library for OctoAI.
+Home-page: 
+Author: OctoAI
+Author-email: 
+License: 
+Location: /Users/sliu/anaconda3/envs/sdk-dev/lib/python3.10/site-packages
+Requires: boto3, chevron, click, fastapi, httpx, numpy, pillow, pydantic, python-dateutil, python-multipart, pyyaml, soundfile, types-pyyaml, types-requests, uvicorn
+Required-by:
+```
+
+## Uninstall the CLI and Python SDK
+
+Our installation script installs the OctoAI binary to `usr/local/bin`. You can remove it with:
+
+```bash
+rm -rf /usr/local/bin/octoai
+```
+You can uninstall the Python SDK using:
+
+```python
+python3 -m pip uninstall octoai-sdk
+```
+
+If you used another method of installation such as brew, rpm, etc, please follow the directions from those services.
+
+If you choose not to install the CLI and SDK using the installation script, you can alternatively use brew or apt. For most people, it is recommended you use the installation script.
+
+Please note, if you install the CLI using brew or apt, you will also need to install the SDK directly from PIP. You can review the installation shell script from [CLI & SDK Installation](/bring-your-own-model/cli-and-sdk-installation) to verify a compatible SDK version number if you run into difficulties, and also review there how to verify the installation was successful for both the SDK and CLI.
+
+### Latest Python SDK Release
+
+Much of the CLI is dependent on the SDK. You can view our full release history on PyPI [here](https://pypi.org/project/octoai-sdk/).
+
+If you choose not to use the installation script, you can use `pip` to install the `octoai-sdk` Python package directly. We strongly recommend that you install OctoAI in a `virtualenv`, to avoid conflicting with your system packages.
+
+```Python
+python3 -m pip install octoai-sdk
+```
+
+If you've already installed a previous version of the `octoai-sdk`, you can also upgrade using:
+
+```Python
+python3 -m pip install --upgrade octoai-sdk
+```
+
+### Alternate CLI Installation Options
+
+After installing the Python SDK, you can then install the CLI.
+
+Mac:
+
+```Shell
+brew tap octoml/tap
+brew install octoai
+```
+
+Debian:
+
+```Shell
+sudo add-apt-repository -y 'deb [trusted=yes] https://repo.fury.io/octoml/ /'
+sudo apt update
+sudo apt install octoai
+```
+
+Please see the individual package manager for how to remove an installation, as their directions may change over time.

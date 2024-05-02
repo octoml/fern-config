@@ -1,0 +1,272 @@
+---
+title: Fine-tuning Stable Diffusion
+subtitle: Create custom assets with OctoAI's fine-tuning of Stable Diffusion models.
+slug: media-gen-solution/fine-tuning-stable-diffusion/fine-tuning-stable-diffusion
+---
+
+
+OctoAI lets you fine-tune Stable Diffusion to customize generated images. Fine-tuning is a process of training a model with additional data for your task. There's a few simple steps:
+
+1. Configure fine-tuning settings & upload your images
+2. Run the fine-tuning job
+3. Use the fine-tuned asset (a LoRA) in your image generation requests
+
+We're using the LoRA fine-tuning method, which is an acronym for Low-Rank Adaptation. It's a fast and effective way to fine-tune Stable Diffusion. Fine-tuning is supported for Stable Diffusion v1.5 and Stable Diffusion XL. Fine-tuning is available in the OctoAI web UI or via the fine-tuning API. 
+
+### Web UI Guide
+
+In the web UI, navigate to the **Tuning & Datasets** page from the **Media Gen Solution** menu to get started - any previously tuned models will also be listed here. Click on “New Tune” to continue.
+
+#### Configure settings
+
+Specify the name of your fine-tune, the trigger word of the subject you're fine-tuning, and the base checkpoint. The base checkpoint can be the default Stable Diffusion v1.5 checkpoint, default Stable Diffusion XL checkpoint, or any custom checkpoint.
+
+The trigger word can be used in your inference requests to customize the images with your subject. We generally recommend using a unique trigger word, such as "sks1", that's unlikely to be associated with a different subject in Stable Diffusion. Alternatively, you can use an existing concept as the trigger word value - such as "in the style of a cartoon drawing" - to update Stable Diffusion's understanding of that concept. 
+
+Then, specify the number of steps to train. A range of 400 to 1,200 steps works well in most cases, and a good guideline is about 75 to 100 steps per training image. The model can underfit if the numer of training steps is too low, resulting in poor quality. If it's too high, the model can overfit and struggle to represent details that aren't represented in the training images. 
+
+![](https://www.datocms-assets.com/45680/1706909266-cf08950-screenshot_2023-11-20_at_5-55-26_pm.png?max-w=2000&auto=compress) 
+
+#### Upload images & tune
+
+Next, upload your training images and start tuning. We recommend using varied images, including different backgrounds, lightings, and distances. Finding a balance between variation and consistency can help improve image generation quality. All uploaded images used for fine-tuning must comply with our [terms of service](https://octo.ai/legals/terms-of-use/).
+
+Optionally, you can provide captions for each image that describe the custom subject. This can help improve fine-tuning and the quality of generated images. Make sure to include your trigger word in the caption.
+
+When you're ready, click "Start Tuning", and the fine-tune job will progress from pending to running before completing.
+
+#### Generating images
+
+When complete, the fine-tuned asset is stored in your Asset Library and available for image generation. You can launch the Text to Image or Image to Image tool to start generating images with your custom asset. 
+
+![](https://www.datocms-assets.com/45680/1703619348-new-tune-stored-in-asset-library-on-octoai.png?max-w=2000&auto=compress) 
+
+### API Guide
+
+Complete fine-tuning API parameters are organized in our [API Reference documentation](../../api-reference/fine-tuning/create-tune.mdx). 
+
+#### Upload images
+
+First, upload your training images using the [AssetOrchestrator Python Client](/python-sdk/asset-orchestrator-client#creating-file-assets-from-a-folder-of-images) or [CLI](../uploading-a-custom-asset-to-the-octoai-asset-library.mdx). 
+
+**Python client**
+
+You can easily upload individual image files, or a folder with multiple files. Here's an example uploading the `image1.jpeg` file with the name `image1` from the file path `finetuning_images`:
+
+```Python Python
+from octoai.clients.asset_orch import AssetOrchestrator, FileData, FileExtension
+
+asset_orch = AssetOrchestrator()
+
+asset = asset_orch.create(
+    file="finetuning_images/image1.jpeg",
+    data=FileData(FileExtension.JPEG),
+    name="image1",
+    description="Fine-tuning image",
+)
+
+print(asset)
+print(asset_orch.list(name="image1"))
+
+asset_orch.list()
+```
+
+You'll receive a response with the asset ID, name, and status:
+
+```Python Python
+id: asset_01hf3a2qw7ek6vshbhd9c9yywd, name: image1, status: Status.UPLOADED
+```
+
+Here's an example uploading a folder of images. This code snippet gets the files in the folder named `finetuning_images`, then splits on the `.` to get the files\_format extension (jpg, jpeg, or png). Then the file names are used to set the asset names:
+
+```Python Python
+import os
+from octoai.clients.asset_orch import AssetOrchestrator, FileData
+
+if __name__ == "__main__":
+    # OCTOAI_TOKEN set as an environment variable so do not need to pass a token.
+    asset_orch = AssetOrchestrator()
+
+    dir_path = "./finetuning_images/"  # Set your dir_path here to your file assets.
+    files = []
+    # Get a list of files in the folder
+    for file_path in os.listdir(dir_path):
+        if os.path.isfile(os.path.join(dir_path, file_path)):
+            files.append(file_path)
+    for file in files:
+        # Use the file names to get file_format and the asset_name.
+        split_file_name = file.split(".")
+        asset_name = split_file_name[0]
+        file_format = split_file_name[1]
+        file_data = FileData(
+            file_format=file_format,
+        )
+        asset = asset_orch.create(
+            file=dir_path + file,
+            data=file_data,
+            name=asset_name,
+        )
+
+        print(asset)
+```
+
+The final `print(asset)` will return a response with each asset ID, name, and status:
+
+**CLI**
+
+Alternatively, you can upload images using the OctoAI CLI. Here's the CLI command using the same `image1.jpeg` example: 
+
+```bash bash
+octoai asset create \
+  --upload-from-file finetuning_images/image1.jpeg \
+  --name image1 \
+  --type file
+```
+
+#### Configure settings & tune
+
+Next, create your fine-tune. In the examples in this section, we're fine-tuning Stable Diffusion XL with images of a bulldog. We specify the base checkpoint, trigger word, training steps, and fine-tune name. Also included are the individual training images and corresponding captions. We recommend including captions, describing the context of the subject, to improve fine-tuning quality. Be sure to include your trigger word within the caption. 
+
+**Python Client**
+
+```Python Python
+from octoai.client import Client
+
+if __name__ == "__main__":
+  client = Client()
+  
+  # create a fine tuning job
+  tune = client.tune.create(
+    name="sks1-bulldog-01",
+    base_checkpoint="asset_01hdpjv7bxe1n99eazrv23ca1k",
+    engine="image/stable-diffusion-xl-v1-0",
+    files={
+      "asset_01hekxwwg1fzjv48sfy5s2xmnj": "sks1 bulldog playing at the beach",
+      "asset_01hekxwqgrev5t3ser2w2qf8bm": "sks1 bulldog playing with a bone",
+      "asset_01hekxwj3bekpvr52kne3c6ca7": "sks1 bulldog looking up",
+      "asset_01hekxwdc8eqrrahjm3ekze356": "sks1 bulldog resting in the grass",
+      "asset_01hekxw80kfdmrdh7ny3vyvf0h": "sks1 bulldog running at the park",
+    },
+    trigger_words="sks1",
+    steps=800,
+  )
+  print(f"Tune {tune.name} status: {tune.status}")
+  
+  # check the status of a fine tuning job
+  tune = client.tune.get(tune.id)
+  print(f"Tune {tune.name} status: {tune.status}")
+  
+  # when the job finishes, check the asset ids of the resulted loras
+  # (the tune will take some time to complete)
+  if tune.status == "succeded":
+    print(f"Generated LoRAs: {tune.output_lora_ids}"
+  
+```
+
+Full API details and parameters [are available here](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#module-octoai.clients.fine%5Ftuning).
+
+**REST API**
+
+```bash bash
+curl -X POST "https://api.octoai.cloud/v1/tune" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OCTOAI_TOKEN" \
+  --data '
+{
+  "details": {
+    "base_checkpoint": {
+      "name": "default-sdxl",
+      "checkpoint_id": "asset_01hdpjv7bxe1n99eazrv23ca1k"
+    },
+    "tune_type": "lora_tune",
+    "files": [
+      {
+        "file_id": "asset_01hekxwwg1fzjv48sfy5s2xmnj",
+        "caption": "sks1 bulldog playing at the beach"
+      },
+      {
+        "file_id": "asset_01hekxwqgrev5t3ser2w2qf8bm",
+        "caption": "sks1 bulldog playing with a bone"
+      },
+      {
+        "file_id": "asset_01hekxwj3bekpvr52kne3c6ca7",
+        "caption": "sks1 bulldog looking up"
+      },
+      {
+        "file_id": "asset_01hekxwdc8eqrrahjm3ekze356",
+        "caption": "sks1 bulldog resting in the grass"
+      },
+      {
+        "file_id": "asset_01hekxw80kfdmrdh7ny3vyvf0h",
+        "caption": "sks1 bulldog running at the park"
+      }
+    ],
+    "trigger_words": [
+      "sks1"
+    ],
+    "steps": 800
+  },
+  "tune_type": "lora_tune",
+  "description": "sks1 bulldog",
+  "name": "sks1-bulldog-01"
+}
+```
+
+Full API details and parameters [are available here](../../api-reference/fine-tuning/create-tune.mdx). Using the `continue_on_rejection` boolean parameter, you can optionally continue with the fine-tune job if any of the training images are identified as NSFW. 
+
+You'll receive a response that includes the tune ID, which you can use to monitor the status of the job. 
+
+#### Monitor fine-tuning status
+
+You can check the status of a fine-tune job by running a GET on the tune ID:
+
+```bash bash
+curl "https://api.octoai.cloud/v1/tune/tune_01hen39pazf6s9jqpkfj05y0vx" \
+ -H "Authorization: Bearer $OCTOAI_TOKEN"
+```
+
+#### Generating images
+
+When complete, the fine-tuned asset is stored in your Asset Library and available for image generation. You can generate images by including the LoRA in your image generation request. 
+
+```bash bash
+curl -X POST "<https://image.octoai.run/generate/sdxl">  
+    -H "Content-Type: application/json"  
+    -H "Authorization: Bearer $OCTOAI_TOKEN"  
+    --data-raw '{  
+        "prompt": "A photo of a sks1 bulldog running in space",  
+        "negative_prompt": "Blurry photo, distortion, low-res, poor quality",  
+        "loras": {  
+            "sks1-bulldog-01": 0.9  
+        },  
+        "width": 1024,  
+        "height": 1024,  
+        "num_images": 1,  
+        "sampler": "DDIM",  
+        "steps": 30,  
+        "cfg_scale": 12,  
+        "use_refiner": true,  
+        "high_noise_frac": 0.8,  
+        "style_preset": "base"  
+    }'
+```
+
+### General fine-tuning tips
+
+#### Image captions
+
+Image captions can improve quality by providing additional context and details to the trained model. Whenever possible, we suggest using image captions - and be sure to include your trigger word in each caption.
+
+You can also include the subject class - such as person, animal, or object - to improve quality. As an example, you could fine-tune images of a specific bulldog with an example caption `sks1 bulldog playing at the beach` where `sks1` is the trigger word and `bulldog` is the subject class. 
+
+#### Image variation
+
+We recommend some amount of variation in your images. If every image is close-up, the fine-tuned model may be limited to representing that distance. It's also helpful to have some level of consistency among the images to ensure the model learns the intended subject. Finding the right balance between consistency and variation can require a few iterations, and we encourage you to experiment!
+
+#### Managing fine-tunes and assets
+
+You can separately manage a fine-tune job, and the corresponding LoRA created by a fine-tune. Deleting a fine-tune job won't automatically delete the training images nor LoRA created during fine-tuning, and vice versa. Additionally, fine-tune names must be unique. You may encounter an error if you try to create a fine-tune with a duplicate name. 
+
+#### Fine-tuning duration
+
+Fine-tuning Stable Diffusion v1.5 usually takes about 3-7 minutes, and Stable Diffusion XL takes about 10-20 minutes. Increasing the number of training steps will extend the fine-tuning duration.

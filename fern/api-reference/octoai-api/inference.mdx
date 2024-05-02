@@ -1,0 +1,108 @@
+---
+title: Inference
+slug: api-reference/octoai-api/inference
+---
+
+
+### Limitations
+
+Asynchronous inference request size is currently limited to 10mb. Asynchronous inference output data is stored for 24 hours, then automatically deleted. 
+
+A long-running inference with duration greater than 1 minute may occasionally encounter an error. If this happens, re-submit your request or reach out to us for help.
+
+### Create inference
+
+```bash bash
+POST https://image.octoai.run/generate/sdxl
+```
+
+Starts an inference at the specified endpoint URL for the data inputs you provide. The request is synchronous by default, and you can optionally specify the request as asynchronous. Input parameters are included in the cURL example of each endpoint. 
+
+API requests to your endpoints must be authenticated with a token - you can generate a token from the Account [Settings](https://octoai.cloud/settings) page. Be sure to include your token in the header of your requests. 
+
+Example synchronous cURL request:
+
+```bash bash
+curl -X POST "https://image.octoai.run/generate/sdxl" \
+ -H "Content-Type: application/json" \
+ -H "authorization: Bearer $OCTOAI_TOKEN" \
+ --data-raw '{"prompt": "A photo of a cute cat astronaut in space"}'
+```
+
+#### Asynchronous inference
+
+You can create an asynchronous inference by specifying `X-OctoAI-Async: 1` in the request header. 
+
+Example asynchronous cURL request:
+
+```bash bash
+curl -X POST "https://image.octoai.run/generate/sdxl" \
+ -H "Content-Type: application/json" \
+ -H "authorization: Bearer $OCTOAI_TOKEN" \
+ -H "X-OctoAI-Async:1" \
+ --data-raw '{"prompt": "A photo of a cute cat astronaut in space"}'
+```
+
+You’ll receive a response ID and poll URL where you can poll for the status and results: 
+
+```bash bash
+"response_id": "778bbfd58c-hz95k",
+"poll_url": "https://async.octoai.run/v1/requests/778bbfd58c-hz95k"
+```
+
+### Get inference
+
+#### Poll for status
+
+```bash bash
+GET https://async.octoai.run/v1/requests/response_id
+```
+
+Use the `poll_url` to return the status of an inference, which will be one of these values: 
+
+* `pending`: the inference is waiting or starting up
+* `running`: the inference is in progress
+* `completed`: the inference is finished
+
+Example poll cURL request:
+
+```bash bash
+curl -X GET "https://async.octoai.run/v1/requests/778bbfd58c-hz95k" \
+ -H "Authorization: Bearer $OCTOAI_TOKEN"
+```
+
+Example pending poll response:
+
+
+
+```bash bash
+ "status": "pending"
+```
+
+#### Get inference data
+
+When completed, the provided `response_url` will include the inference data. Asynchronous inference output data is stored for 24 hours, then automatically deleted. 
+
+
+
+```bash bash
+GET https://async.octoai.run/v1/responses/response_id
+```
+
+Example completed poll response:
+
+
+
+```bash bash
+"status": "completed",
+"response_url": "https://async.octoai.run/v1/responses/778bbfd58c-hz95k"
+```
+
+Example cURL request for completed inference data:
+
+
+
+```bash bash
+curl -X GET "https://async.octoai.run/v1/responses/778bbfd58c-hz95k" \
+ -H "Authorization: Bearer $OCTOAI_TOKEN"
+```

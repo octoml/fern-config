@@ -1,0 +1,18 @@
+---
+title: Pulling containers from a private registry
+slug: >-
+  compute-service/create-endpoint-from-existing-container/pulling-containers-from-a-private-registry
+---
+
+
+> **Contact us at customer-success@octo.ai to request access to the Compute Service.**
+
+When you create an endpoint from a custom container, you will see the following page, which has a field for a "Registry Credential." By default, this field is set to "Public," which requires that your container is available for anyone on the internet to pull and no registry credentials will be attached. If your container is instead stored in a private registry, click on the dropdown and then the + sign next to add a "New registry credential".
+![](https://www.datocms-assets.com/45680/1711726378-new-endpoint.png?max-w=2000&auto=compress)
+
+When you click a model will open where you can set a name for the credential, enter the username and password for the registry. 
+![](https://www.datocms-assets.com/45680/1711726364-add-registry-credential.png?max-w=2000&auto=compress)
+
+* For example, if you are storing your container in a private repository within DockerHub, you can set the credential name to "docker" and look for your DockerHub username in the top right area of the navigation bar in the DockerHub [ UI](https://hub.docker.com/settings/security) once you've logged in. To get your DockerHub access token, go to your DockerHub Account Settings Security [page](https://hub.docker.com/settings/security), then click the New Access Token button.
+
+Once you've added all the fields in the modal and clicked Save, the Registry Credential field will automatically change to the credential you just set up. Complete the remaining fields to create the endpoint.

@@ -1,0 +1,33 @@
+---
+title: LlamaIndex Integration
+subtitle: >-
+  A developer building AI apps can now access highly optimized LLMs and
+  Embeddings models on OctoAI.
+slug: integrations/llamaindex
+---
+
+## Introduction
+LlamaIndex strives to help manage the interactions between your language modles and private DataTransfer. 
+If you are building your application and using LlamaIndex you benefit from the vast ecosystem of integrations, and top LLMs amd Embeddings models hosted by OctoAI.
+
+
+## Using OctoAI's LLMs and LangChain
+Get started reviewing more about [LlamaIndex](https://docs.llamaindex.ai/en/stable/), and [signing up for a free OctoAI account](https://identity.octoml.ai/oauth/account/sign-up?redirectUrl=https%3A%2F%2Foctoai.cloud%2Foauth%2Fcallback). 
+If you want to utilize models offered by OctoAI through LlamaIndex review the following code snippet to see an example of using the OctoAI embeddings with the `OctoAIEmbedding` class:
+
+```python 
+from llama_index.embeddings.octoai import OctoAIEmbedding
+embed_model = OctoAIEmbedding(api_key=OCTOAI_API_KEY)
+
+embeddings = embed_model.get_text_embedding("Once upon a time in Seattle.")
+assert len(embeddings) == 1024
+```
+See another example using OctoAI's Llama 2 13B model:
+
+```python 
+from llama_index.llms.octoai import OctoAI
+octoai = OctoAI(model="llama-2-13b-chat", token=OCTOAI_API_KEY)
+response = octoai.complete("Octopi can not play chess because...")
+```
+
+If you are using LlamaIndex you can easily switch model provider, and enjoy using models hosted and optimized for scale on OctoAI.  

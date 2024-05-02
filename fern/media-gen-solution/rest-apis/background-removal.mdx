@@ -1,0 +1,34 @@
+---
+title: Background Removal REST API
+subtitle: >-
+  Background removal takes an existing image you provide and removes those parts
+  of the image considered to be “background.
+slug: media-gen-solution/rest-apis/background-removal
+---
+
+
+Background removal takes an existing image you provide and removes those parts of the image considered to be “background.”
+
+## Request payload
+**Parameters:**
+* `init_image` (str, required) - A base64-encoded image whose background should get removed.
+* `alpha_matting` (bool; false) - If true, apply matting on the alpha channel.
+* `alpha_matting_foreground_threshold` (number in [0, 255]; 240) - When `alpha_matting` is `true`, mask pixels larger than this value are considered foreground pixels.
+* `alpha_matting_background_threshold` (number in [0, 255]; 10) - When `alpha_matting` is `true`, mask pixels smaller than this value are considered background pixels.
+* `alpha_matting_erode_size` (number; 10) - When `alpha_matting` is true, size of the erosion structure to apply, in pixels.
+* `only_mask` (bool; false) - When true, return only a single-channel image containing a foreground-background mask. Foreground pixels have values closer to 255, and background pixels have values closer to 0.
+* `post_process_mask` (bool; true) - When `true`, apply morphological operations to the mask to smooth it.
+* `bgcolor` (list[int]; optional) - When given, replace background pixels with this color in the output image.
+
+## Response
+* `image_b64` (str) - Base64-encoded png containing the processed image.
+* `removed_for_safety` (bool) - When `true`, background removal was not performed because `init_image` was found to have violated our terms of service.
+
+### cURL example
+
+```bash
+curl -X POST "https://image.octoai.run/background-removal" \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer $OCTOAI_TOKEN" \
+     -d '{"init_image": "$BASE64_IMAGE_HERE"}'
+```

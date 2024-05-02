@@ -1,0 +1,14 @@
+---
+title: Samplers
+subtitle: >-
+  Stable Diffusion Samplers utilize diffusion models to iteratively refine
+  noise, producing high-quality images with remarkable fidelity and coherence.
+slug: media-gen-solution/optimizations/samplers
+---
+
+
+Stable Diffusion Samplers encompass various techniques within generative modeling, each offering unique advantages and applications. These samplers operate by iteratively refining noise to generate high-quality images. By gradually diffusing noise while conditioning on observed data, these samplers excel at capturing intricate details and complex patterns, yielding visually stunning outputs across various domains.
+
+When selecting a sampler, considerations such as computational efficiency, convergence speed, and applicability to specific tasks are crucial. The choice of sampler depends on the specific requirements and constraints of the task at hand, with practitioners often experimenting to find the optimal balance between performance and efficacy.
+
+Supported samplers within OctoAI's Image Gen API include: `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. These are regular samplers. Premium samplers (priced twice as the regular samplers) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.

@@ -1,0 +1,27 @@
+---
+title: Environment Setup for the Q&A app
+slug: tutorials/llm-q-and-a-applications-using-langchain/environment-setup
+---
+
+
+## Environment setup
+
+To run our example app, there are four simple steps to take:
+
+1. Use a Llama2 demo model in your OctoAI account by visiting [https://octoai.cloud/text/chat?model=llama-2-13b-chat](https://octoai.cloud/text/chat?model=llama-2-13b-chat)
+2. Paste the Endpoint URL in a file called `.env` in the root directory of the project.
+
+
+```Bash Bash
+ENDPOINT_URL="https://text.octoai.run/v1/chat/completions"
+```
+
+1. Get an API Token from [your OctoAI account page](https://octoai.cloud/settings).
+2. Paste your API key in a file called `.env` in the root directory of the project.
+
+
+```Bash Bash
+OCTOAI_API_TOKEN=<your key here>
+```
+
+The next few pages will walk you through the detailed code in the repo.

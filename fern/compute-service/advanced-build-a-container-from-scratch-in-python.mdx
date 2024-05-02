@@ -1,0 +1,234 @@
+---
+title: 'Advanced: build a container from scratch in Python'
+slug: compute-service/advanced-build-a-container-from-scratch-in-python
+---
+
+
+> **Contact us at customer-success@octo.ai to request access to the Compute Service.**
+
+You can use our CLI to easily create containers for any model written in Python. However, note that OctoAI is able to run **any** container with an HTTP server, so you are always welcome to build containers in your own ways (with the understanding that using custom containers means potentially longer cold start/ fewer optimizations).
+
+If you prefer to create your own container from scratch, this tutorial will walk you through one example of how to do so.
+
+* In this example, we will build a container for a [Flan-T5 small model](https://huggingface.co/google/flan-t5-small) from the Hugging Face `transformers` library. This model is commonly used for text generation and question answering, but note that because it's small it does not yield outputs that are as high-quality as other OctoAI LLM endpoints.
+* An equivalent example for Hugging Face `diffusers` models can be found in the same GitHub [repo](https://github.com/octoml/octocloud-templates/tree/main).
+
+## Prerequisites
+
+* Sign up for a Docker Hub [account](https://hub.docker.com/)
+* Download [Docker desktop](https://www.docker.com/products/docker-desktop/) on your local machine
+* [Authenticate](https://docs.docker.com/engine/reference/commandline/login/) the Docker CLI on your machine
+
+## Example code
+
+All the code in this tutorial can be found at this GitHub [repo](https://github.com/octoml/octocloud-templates/tree/main).
+
+## Step-by-step walkthrough
+
+#### Prepare Python code for running an inference
+
+First, we define how to run an inference on this model in `model.py`. The core steps include initializing the model and tokenizer using the `transformers` Python library, then running a `predict()` function that tokenizes the text input, runs the model, then de-tokenizes the model back into a text format.
+
+```py model.py
+"""Model wrapper for serving flan-t5-small."""
+import argparse
+import typing
+
+import torch
+from transformers import T5ForConditionalGeneration, T5Tokenizer
+
+_MODEL_NAME = "google/flan-t5-small"
+"""The model's name on HuggingFace."""
+
+_DEVICE: str = "cuda:0" if torch.cuda.is_available() else "cpu"
+"""Device on which to serve the model."""
+
+class Model:
+    """Wrapper for a flan-t5-small Text Generation model."""
+
+    def __init__(self):
+        """Initialize the model."""
+        self._tokenizer = T5Tokenizer.from_pretrained(_MODEL_NAME)
+        self._model = T5ForConditionalGeneration.from_pretrained(_MODEL_NAME).to(
+            _DEVICE
+        )
+
+    def predict(self, inputs: typing.Dict[str, str]) -> typing.Dict[str, str]:
+        """Return a dict containing the completion of the given prompt.
+
+        :param inputs: dict of inputs containing a prompt and optionally the max length
+            of the completion to generate.
+        :return: a dict containing the generated completion.
+        """
+        prompt = inputs.get("prompt", None)
+        max_length = inputs.get("max_length", 2048)
+
+        input_ids = self._tokenizer(prompt, return_tensors="pt").input_ids.to(_DEVICE)
+        output = self._model.generate(input_ids, max_length=max_length)
+        result = self._tokenizer.decode(output[0], skip_special_tokens=True)
+
+        return {"completion": result}
+
+    @classmethod
+    def fetch(cls) -> None:
+        """Pre-fetches the model for implicit caching by Transfomers."""
+        # Running the constructor is enough to fetch this model.
+        cls()
+
+def main():
+    """Entry point for interacting with this model via CLI."""
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fetch", action="store_true")
+    args = parser.parse_args()
+
+    if args.fetch:
+        Model.fetch()
+
+if __name__ == "__main__":
+    main()
+```
+
+#### Create a server
+
+Next, we wrap this model in a [Sanic](https://sanic.dev/en/) server in `server.py`. Sanic is a Python 3.7+ web server and web framework that’s written to go fast. In our server file, we define the following:
+
+* A default port on which to serve inferences. The port can be any positive number, as long as it's not in use by another application. 80 is commonly used for HTTP, and 443 is often for HTTPS. In this case we choose 8000.
+* Two server routes that OctoAI containers should have:  
+   * a route for inference requests (e.g. "`/predict`"). This route for inference requests must receive JSON inputs and JSON outputs.  
+   * a route for health checks (e.g. "`/healthcheck`"). See [Healthcheck path in custom containers](health-check-path-in-custom-containers.mdx) for a detailed explanation.
+* Number of workers (not required). Typical best practice is to make this number some function of the # of CPU cores that the server has access to and should use.
+
+```py server.py
+"""HTTP Inference serving interface using sanic."""
+import os
+
+import model
+from sanic import Request, Sanic, response
+
+_DEFAULT_PORT = 8000
+"""Default port to serve inference on."""
+
+# Load and initialize the model on startup globally, so it can be reused.
+model_instance = model.Model()
+"""Global instance of the model to serve."""
+
+server = Sanic("server")
+"""Global instance of the web server."""
+
+@server.route("/healthcheck", methods=["GET"])
+def healthcheck(_: Request) -> response.JSONResponse:
+    """Responds to healthcheck requests.
+
+    :param request: the incoming healthcheck request.
+    :return: json responding to the healthcheck.
+    """
+    return response.json({"healthy": "yes"})
+
+@server.route("/predict", methods=["POST"])
+def predict(request: Request) -> response.JSONResponse:
+    """Responds to inference/prediction requests.
+
+    :param request: the incoming request containing inputs for the model.
+    :return: json containing the inference results.
+    """
+    inputs = request.json
+    output = model_instance.predict(inputs)
+    return response.json(output)
+
+def main():
+    """Entry point for the server."""
+    port = int(os.environ.get("SERVING_PORT", _DEFAULT_PORT))
+    server.run(host="0.0.0.0", port=port, workers=1)
+
+if __name__ == "__main__":
+    main()
+```
+
+In our toy example, the line `model_instance = model.Model()` executes first, so by the time the server is instantiated our model is ready. That is why the code in our "/healthcheck" route is very straightforward in this example. In your own container, make sure your "/healthcheck" returns 200 only after your model is fully loaded and ready to take inferences.
+
+#### Package the server in a Dockerfile
+
+Now we can package the server by defining a requirements.txt file and a Dockerfile:
+
+```bash requirements.txt
+sanic==23.3.0
+torch==2.0.0+cu118 
+--extra-index-url https://download.pytorch.org/whl/cu118
+sentencepiece==0.1.97 
+transformers==4.27.4
+```
+
+```Dockerfile Dockerfile
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+ARG SERVING_PORT=8000
+ENV SERVING_PORT=$SERVING_PORT
+
+WORKDIR /
+
+RUN apt update && \
+    apt install -y python3-pip
+
+# Upgrade pip and install the copied in requirements.
+RUN pip install --no-cache-dir --upgrade pip
+ADD requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy in the files necessary to fetch, run and serve the model.
+ADD model.py .
+ADD server.py .
+
+# Fetch the model and cache it locally.
+RUN python3 model.py --fetch
+
+# Expose the serving port.
+EXPOSE $SERVING_PORT
+
+# Run the server to handle inference requests.
+CMD python3 -u server.py
+```
+
+Along with installing the dependencies, the Dockerfile also downloads the model into the image at build time. Because the model isn't too big, we can cache it in the Docker image for faster startup without impacting the image size too much. If your model is larger, you may want to pull it on container start instead of caching it in the Docker image. This may affect your container startup time, but keeps the image itself slim.
+
+#### Build a Docker image using the Dockerfile
+
+```bash bash
+$ DOCKER_REGISTRY="XXX" # Put your Docker Hub username here  
+$ cd ./flan-t5-small  
+$ docker build -t "$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic" -f Dockerfile .
+```
+
+#### Test the image locally
+
+Run this Docker image locally on a GPU to test that it can run inferences as expected:
+
+```bash bash
+$ docker run --gpus=all -d --rm  
+    -p 8000:8000 --env SERVER_PORT=8000  
+    --name "flan-t5-small-pytorch-sanic"  
+  	"$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic"
+```
+
+..and in a separate terminal run the following command one or more times
+
+```bash bash
+$ curl -X GET http://localhost:8000/healthcheck
+```
+
+... until you see `{"healthy":true}` in the terminal output. Now, you can get an inference by running:
+
+```bash bash
+$ curl -X POST http://localhost:8000/predict \
+    -H "Content-Type: application/json" \
+    --data '{"prompt":"What state is Los Angeles in?","max_length":100}'
+```
+
+#### Push the image to a cloud registry
+
+Push your Docker image to Docker Hub with:
+
+```bash bash
+$ docker push "$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic"
+```
+
+Now that you have your container, [create an endpoint](create-endpoint-from-existing-container/create-custom-endpoints-from-a-container.mdx) to establish your endpoint on OctoAI.

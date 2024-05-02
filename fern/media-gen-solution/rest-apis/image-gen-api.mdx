@@ -1,0 +1,321 @@
+---
+title: Image Gen REST API
+slug: media-gen-solution/rest-apis/image-gen-api
+---
+
+
+All of our image generation models are accessible via REST API. Below you can see a simple cURL/Python SDK and Typescript SDK example for our image gen endpoints, along with explanations of all parameters.
+
+Our URL for image generations is at `https://image.octoai.run/generate/{engine_id}`, where engine_id is one of the following:
+
+1. `sdxl`: Stable DiffusionXL v1.0
+2. `sd`: Stable Diffusion v1.5
+3. `controlnet-sdxl`: ControlNet SDXL
+4. `controlnet-sd15`: ControlNet SD1.5
+
+This includes text-to-image, image-to-image, controlnets, photo merge, inpainting and outpainting.
+
+**Input Sample**
+
+<CodeGroup>
+```bash cURL
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN" -X POST "https://image.octoai.run/generate/sdxl" \
+    -d '{
+        "prompt": "The angel of death Hyperrealistic, splash art, concept art, mid shot, intricately detailed, color depth, dramatic, 2/3 face angle, side light, colorful background",
+        "negative_prompt": "ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, signature, cut off, draft",
+        "sampler": "DDIM",
+        "cfg_scale": 11,
+        "height": 1024,
+        "width": 1024,
+        "seed": 2748252853,
+        "steps": 20,
+        "num_images": 1,
+        "high_noise_frac": 0.7,
+        "strength": 0.92,
+        "use_refiner": true,
+        "style_preset": "3d-model"
+    }' > response.json
+```
+
+```Python Python
+import requests
+import os
+import base64
+import io
+import PIL.Image
+
+def _process_test(url):
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "Face of a yellow cat, high resolution, sitting on a park bench",
+        "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+        "steps": 30,
+        "width": 1024,
+        "height": 1024,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sdxl")
+```
+
+```typescript Typescript
+import fs from 'fs';
+import { Client } from '@octoai/client';
+
+const client = new Client(OCTOAI_TOKEN);
+const endpointUrl = 'https://image.octoai.run/generate/sdxl';
+
+const inputs = {
+  prompt: 'A photo of a cute cat astronaut in space',
+  negative_prompt: 'Blurry photo, distortion, low-res, poor quality',
+  width: 1024,
+  height: 1024,
+  num_images: 1,
+  sampler: 'DDIM',
+  steps: 30,
+  cfg_scale: 12,
+  use_refiner: true,
+  high_noise_frac: 0.8,
+  style_preset: 'base',
+};
+
+const outputs = await client.infer<any>(endpointUrl, inputs);
+
+outputs.images.forEach((output, i) => {
+  const buffer = Buffer.from(output.image_b64, 'base64');
+  fs.writeFileSync(`result${i}.jpg`, buffer);
+});
+```
+
+</CodeGroup>
+
+### Image Generation Arguments
+
+- `prompt`: A string describing the image to generate.
+  - We currently have a 77 token limit on prompts for SDXL and 231 for SD 1.5
+  - You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)` . The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
+- `prompt_2`: This only applies to SDXL. By default, setting only `prompt` copies the input to both `prompt` and `prompt_2`. When `prompt` and `prompt_2` are both set, they have very different functionality. The second prompt is meant for more human readable descriptions of the desired image.
+  - For example, `prompt` is used for "word salad" style control of the image. This is the type of prompting you are likely familiar with from SD 1.5\. Prompts like the following work well:  
+     `prompt = "photorealistic, high definition, masterpiece, sharp lines"  
+`  
+     whereas `prompt_2` is meant for more human readable descriptions of the desired image. For example:  
+     `prompt_2 = "A portrait of a handsome cat wearing a little hat. The cat is in front of a colorful background.  
+`
+- `negative_prompt` `Optional`: A string indicating a prompt for guidance to steer away from. Unused when not provided.
+- `negative_prompt_2`: This only applies to SDXL. This prompt is meant for human readable descriptions of what you don’t want the image, e.g. you would say “Low resolution” in `negative_prompt` then “Bad hands” in `negative_prompt_2`.
+- `sampler` `Optional`: A string specifying which scheduler to use when generating an image. Defaults to `DDIM`. Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
+- `height` `Optional`: An integer specifying the height of the output image. Defaults to `1024` for SDXL and `512` for SD 1.5.
+- `width` `Optional`: An integer specifying the width of the output image. Defaults to `1024` for SDXL and `512` for SD 1.5.
+
+**Supported Output Resolutions (Width x Height)** are as follows:
+
+For SDXL:
+
+```
+(1024, 1024),(896, 1152),(832, 1216),(768,
+1344),(640, 1536),(1536, 640),(1344, 768),
+(1216, 832),(1152, 896)
+```
+
+For SD1.5
+
+```
+(512, 512),(640, 512),(768, 512),(512, 704),
+(512, 768),(576, 768),(640, 768),(576, 1024),
+(1024, 576)
+```
+
+<Note>
+  `init_image` and `mask_image` will be resized to the specified resolution
+  before applying img2img or inpainting.
+</Note>
+
+- `cfg_scale` `Optional`: How strictly the diffusion process adheres to the prompt text (higher values keep your image closer to your prompt). When not set defaults to `12`.
+- `steps` `Optional`: How many steps of diffusion to perform. The higher this is, the higher the image clarity will be but proportionally increases the runtime. Defaults to `30` when not set.
+- `num_images`: An integer describing the number of images to generate. Defaults to `1`
+- `seed` `Optional`: An integer that fixes the random noise of the model. Using the same seed guarantees the same output image, which can be useful for testing or replication. Use `null` to select a random seed.
+- `use_refiner`: This only applies to SDXL. A boolean `true` or `false` determines whether to use the refiner or not
+- `high_noise_frac` `Optional`: This only applies to SDXL. A floating point or integer determining how much noise should be applied using the base model vs. the refiner. A value of `0.8` will apply the base model at 80% and Refiner at 20%. Defaults to `0.8` when not set.
+- `checkpoint`: Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+- `loras`: Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+- `textual_inversions`: Here you can specify textual inversions and their corresponding trigger words. Note that using a custom asset increases generation time.
+- `vae`: Here you can specify variational autoencoders. Note that using a custom asset increases generation time.
+
+Here’s an example of how to mix OctoAI assets (checkpoints, loras, and textual_inversions) in the same API request.
+
+<Note>
+  OoctoAI assets require an “octoai:” prefix but your private assets DO NOT.
+  Asset names need to be unique per account
+</Note>
+
+```json
+payload = {
+    ...
+	"checkpoint": "octoai:realcartoon",
+    "loras": {
+        "octoai:crayon-style": 0.7,
+        "your-custom-lora": 0.3
+    },
+    "textual_inversions": {
+        "octoai:NegativeXL": "negativeXL_D",
+    },
+	"vae": "your_vae_name"
+    ...
+}
+```
+
+- `style_preset` `Optional`: This only applies to SDXL. Used to guide the output image towards a particular style. Defaults to `None`. Supported values for styles present include `base`, `3d-model`, `Abstract`,`Advertising`, `Alien`, `analog-film`, `anime`,`Architectural`, `cinematic`, `Collage`,`comic-book`, `Craft Clay`, `Cubist`,`digital-art`, `Disco`,`Dreamscape`,`Dystopian`, `enhance`, `Fairy Tale`,`fantasy-art`, `Fighting Game`, `Film Noir`, `Flat Papercut`, `Food Photography`, `Gothic`, `Graffiti`, `Grunge`, `HDR`, `Horror`, `Hyperrealism`, `Impressionist`, `isometric`, `Kirigami`, `line-art`,`Long Exposure`,`low-poly`,`Minimalist`,`modeling-compound`,`Monochrome`,`Nautical`,
+  `Neon Noir`,`neon-punk`,`origami`,`Paper Mache`, `Paper Quilling`,`Papercut Collage`,`Papercut Shadow Box`,`photographic`,`pixel-art`,`Pointillism`,`Pop Art`,`Psychedelic`,`Real Estate`,`Renaissance`,`Retro Arcade`,`Retro Game`,`RPG Fantasy`,`Game`,`Silhouette`,`Space`,`Stacked Papercut`,`Stained Glass`,`Steampunk`,`Strategy Game`,`Surrealist`,`Techwear Fashion`,`Thick Layered Papercut`,`tile-texture`,`Tilt-Shift`,
+  `Tribal`,`Typography`,`Watercolor`,`Zentangle`
+
+- `init_image` `Optional`: Only applicable for Img2Img and inpainting use cases i.e. to use an image as a starting point for image generation. Argument takes an image encoded as a string in base64 format.
+  <Note>Use .jpg format to ensure best latency </Note>
+- `strength` `Optional`: Only applicable for img2img use cases. A floating point or integer determines how much noise should be applied. Values that approach `1.0` allow for high variation i.e. ignoring the image entirely, but will also produce images that are not semantically consistent with the input and `0.0` keeps the input image as-is. Defaults to `0.8` when not set.
+- `mask_image` `Optional`: Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
+  - Use .jpg format to ensure best latency
+- `outpainting` `Optional`: Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
+- `transfer_images` `Optional`: This is our [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature. Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s). Argument takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer.
+
+```json
+payload = {
+    ...
+        "prompt": "A trigger_word_1 sitting on a golden throne",
+        "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+        "checkpoint": "octoai:RealVisXL",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 2,
+        "sampler": "K_EULER_ANCESTRAL",
+        "steps": 20,
+        "cfg_scale": 7.5,
+        "transfer_images": {"trigger_word_1": ["$BASE64_IMAGE_1", "$BASE64_IMAGE_2"]
+    ...
+}
+```
+
+- `controlnet` `Optional`: Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. We offer the following list of public OctoAI controlnet checkpoints in the OctoAI Asset Library.
+
+  ```
+  octoai:canny_sdxl
+  octoai:depth_sdxl
+  octoai:openpose_sdxl
+  octoai:canny_sd15
+  octoai:depth_sd15
+  octoai:inpaint_sd15
+  octoai:ip2p_sd15
+  octoai:lineart_sd15
+  octoai:openpose_sd15
+  octoai:scribble_sd15
+  octoai:tile_sd15
+  ```
+
+  Other than using the default controlnet checkpoints, you can also upload private ControlNet checkpoints into the OctoAI Asset Library and then use those checkpoints at generation time via the parameter `controlnet`. For custom controlnet checkpoints, make sure to provide your own ControlNet mask in the `controlnet_image` parameter
+
+- `controlnet_conditioning_scale` `Optional`: Only applicable if using Controlnets. Argument determines how strong the effect of the controlnet will be. Defaults to `1`
+
+- `controlnet_early_stop` `Optional`:Only applicable if using Controlnets. If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.
+
+- `controlnet_image` `Optional`: Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation.
+
+- `controlnet_preprocess` `Optional`:Only applicable if using Controlnets. Argument takes in a boolean value to determine whether or not to apply automatic ControlNet preprocessing. For the privileged set of controlnet checkpoints listed above, we default to helping you autogenerate the corresponding controlnet map/mask that will be fed into the controlnet, but you can override the default by additionally specifying a `controlnet_preprocess: false` parameter.
+
+Python Example for ControlNet Canny with a custom controlnet map:
+
+```Python Python
+import base64
+import io
+import os
+import time
+
+import PIL.Image
+import requests
+
+import cv2 as cv2
+
+import matplotlib.pyplot as plt  # Import Matplotlib
+
+def _process_test(endpoint_url):
+    image_path = "cat.jpeg"
+    img = cv2.imread(image_path)
+    img = cv2.resize(img, (1024, 1024)) # Resize to a resolution supported by OctoAI SDXL
+
+    edges = cv2.Canny(img,100,200) # 100 and 200 are thresholds for determining canny edges
+
+    height, width = edges.shape
+
+    # Convert Canny edge map to PIL Image
+    edges_image = PIL.Image.fromarray(edges)
+
+    # Create a BytesIO buffer to hold the image data
+    image_buffer = io.BytesIO()
+    edges_image.save(image_buffer, format='JPEG')
+    image_bytes = image_buffer.getvalue()
+    encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+    model_request = {
+        "controlnet_image": encoded_image,
+        "controlnet": "octoai:canny_sdxl",
+        "controlnet_preprocess": false,
+        "prompt": (
+            "A photo of a cute tiger astronaut in space"
+        ),
+        "negative_prompt": "low quality, bad quality, sketches, unnatural",
+        "steps": 20,
+        "num_images": 1,
+        "seed": 768072361,
+        "height": height,
+        "width": width
+    }
+
+    prod_token = os.environ.get("OCTOAI_TOKEN")  # noqa
+
+    reply = requests.post(
+        f"{endpoint_url}",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {prod_token}",
+        },
+        json=model_request,
+    )
+
+    if reply.status_code != 200:
+        print(reply.text)
+        exit(-1)
+
+    img_list = reply.json()["images"]
+    print(img_list)
+
+    for i, idict in enumerate(img_list):
+        ibytes = idict['image_b64']
+        img_bytes = base64.b64decode(ibytes)
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    endpoint = "https://image.octoai.run/generate/controlnet-sdxl"
+
+    # Change this line to call either a10 or a100
+    _process_test(endpoint)
+
+```

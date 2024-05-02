@@ -1,0 +1,736 @@
+---
+title: Create a container and endpoint using the CLI
+slug: compute-service/create-custom-endpoint-using-the-cli
+---
+
+
+> **Contact us at customer-success@octo.ai to request access to the Compute Service.**
+
+## Overview
+
+The `octoai` command-line interface (CLI) makes it easy for you create a custom endpoint for OctoAI Compute Service. The `octoai` CLI guides you through the process of creating an initial valid Python application with an example model, building it, and deploying it. 
+
+The `octoai` CLI includes some endpoint scaffolds with example models that you can deploy and try out right away. After you complete that initial workflow, you can follow the instructions in this document to modify the initial application to use the model or code of your choice on OctoAI Compute Service.
+
+## Prerequisites
+
+### Install the CLI and SDK
+
+Follow [CLI & SDK Installation](/compute-service/cli-and-sdk-installation) to make sure you have the CLI and SDK installed. This guide assumes you are running the latest version of the `octoai` CLI.
+
+### Install Docker
+
+Docker is required to build and push container images for custom endpoints.
+
+For Mac, follow these instructions: [Install Docker Desktop](https://docs.docker.com/desktop/install/mac-install/).
+
+For Linux, follow these instructions: [Install Docker Engine](https://docs.docker.com/engine/install/ubuntu/).
+
+Make sure that docker is running before you proceed! You can confirm by running `docker info`.
+
+Docker buildx is also required, and it is included with recent versions of Docker. You can confirm that you have it installed by looking for `buildx` in the output of `docker info`, or by running `docker buildx`.
+
+### Export Your OctoAI Token on the Terminal
+
+An OctoAI token authenticates you when interacting with the OctoAI Compute Service programatically.
+
+Go to [OctoAI Compute Service](https://octoai.cloud/endpoints) and log in. Then:
+
+1. Click **Settings** (the gear icon on the left).
+2. Provide a name for your token under **API Tokens**.
+3. Click **Generate**.
+4. Copy the access token that appears.
+
+On your terminal window, add the token as an environment variable:
+
+```Shell Shell
+export OCTOAI_TOKEN=<PasteYourOctoAITokenHere>
+```
+
+## Create Your First Endpoint
+
+Use the `octoai` CLI to create a directory on your computer with the application code for your first endpoint. Run this command:
+
+```Shell Shell
+octoai init
+```
+
+The CLI offers you to choose one of the existing _scaffolds_, which are endpoint examples ready to deploy that showcase how to use the service with different models. The following scaffolds are available:
+
+* **hello-world** (a simple example)
+* **flan-t5** (text-in, text-out, adaptable to generative text use cases)
+* **wav2vec** (audio-in, text-out, adaptable for speech to text use cases)
+* **yolov8** (image-in, image-out, adaptable for computer vision use cases)
+
+Use the Up/Down arrow keys to navigate and choose a scaffold, then press Enter.
+
+The rest of this section shows the deployment process using the `hello-world` scaffold. After you complete this tutorial, be sure to check out the other scaffolds to see how use different kinds models in your endpoints.
+
+The CLI then prompts you for more details:
+
+* **Directory**: the directory name to create. Type `hello-world` and press Enter.
+* **Endpoint name:** the name of the endpoint. Type `hello-world` and press Enter.
+* **Hardware**: which hardware to run on. Use the Up/Down arrow keys to select `gpu.t4.medium` and press Enter
+* **Secrets**: the set of secrets to make available to your container. Use the Up/Down arrow keys to select `None/No more` and press Enter.
+* **Environment variables**: the set of environment variables and their values to make available to your container. Use the Up/Down arrow keys to select `None/No more` and press Enter.
+
+For more information about secrets and environment variables, see [Setting up secrets or environment variables for your custom endpoints](create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints.mdx).
+
+The CLI shows the following guidance:
+
+```Shell Shell
+Initialized project in directory. Build your endpoint with:
+
+	cd directory
+	octoai build
+
+You can configure your project by editing the octoai.yaml file.
+
+For the OctoAI CLI developer documentation, please visit https://docs.octoai.cloud/docs/cli/cli-configuration-reference
+```
+
+### Directory Structure
+
+The `hello-world` directory contains the following files:
+
+* `octoai.yaml` \- Stores the configuration of your endpoint to be used at deployment time.
+* `requirements.txt` \- Lists any additional Python requirement packages for your application.
+* `service.py` \- Contains the logic of your endpoint.
+* `test_request.py` \- Contains example code to send requests to your endpoint.
+
+### Service Code Structure
+
+The code in `service.py` looks like this:
+
+```Python Python
+"""Example OctoAI service scaffold: Hello World."""
+from octoai.service import Service
+
+class HelloService(Service):
+    """An OctoAI service extends octoai.service.Service."""
+
+    def setup(self):
+        """Perform intialization."""
+        print("Setting up.")
+
+    def infer(self, prompt: str) -> str:
+        """Perform inference."""
+        return prompt
+```
+
+The `octoai.service.Service` class is an abstract class that any endpoint has to implement.
+
+The `octoai.types` package contains type definitions that help endpoints and clients work with data formats such as images and audio while communicating over HTTP.
+
+The `Service.setup()` method is run at endpoint initialization. This method typically contains setup code that should not be run for every inference, such as downloading model weights from the network and making those available in a member variable in memory to be used by the `Service.infer()` method.
+
+The `Service.infer()` method is run for every inference request. This method defines the interface of the endpoint (inputs, outputs, and their types) and contains code to perform inference with the model of your choice and return a response. Note that types and type annotations are required, as the OpenAPI specification for the endpoint is automatically generated from the parameters (names and types) and return type in the `infer()` method definition. The OpenAPI specification is available at `/docs` once the endpoint is deployed.
+
+The APIs that are available to you (as well as other examples) are covered later in this document. For more information, see the [API reference documentation](https://octoml.github.io/octoai-python-sdk/octoai.html).
+
+## Build your Endpoint
+
+Inside the `hello-world` directory, run the following command:
+
+```Shell Shell
+octoai build
+```
+
+This command builds a Docker container for your endpoint. The first time you run this command, it can take a long time (\~15 min), since this process has to download large amounts of data. Subsequent builds (of this endpoint or any other endpoint you create) on the same machine are much faster.
+
+When the build completes, the `octoai` CLI shows the name of the image tag:
+
+```JSON JSON
+{"tag":"docker.io/YourDockerUserName/hello-world:SomeTag"}
+```
+
+The `octoai` CLI keeps track of this value for you, so you do not need to remember it.
+
+## Run Your Endpoint Locally
+
+Before deploying your endpoint, you can run the container locally and send it a request to verify that it is working properly.
+
+<Note>
+
+**Target Platforms**
+
+The images are built for target `linux/amd64` so they can be deployed to OctoAI Compute Service. If your computer is of a different architecture (for example, an M1/M2 Macbook), running the container locally can be slow (up to 15 min for `yolov8`).
+
+The scaffolds included on the `octoai` CLI all work locally without a GPU. However, other models that require GPU acceleration may not run locally at all if a GPU is not available in your system.
+
+To test locally, run this command:
+
+</Note>
+
+```Shell Shell
+octoai run --command "python3 test_request.py"
+```
+
+The command `octoai run --command "python3 test_request.py"` does two things: it runs your endpoint container locally in the background, and it runs the python script `test_request.py` to send a request to the endpoint container. After a few seconds, the output should be similar to this:
+
+```JSON JSON
+{'output': 'Hello World!', ...}
+```
+
+### Two-Terminal Workflow
+
+During development, it is often useful to have one terminal running the endpoint and showing its logs while sending a request from a separate terminal. This helps you iterate on your code and clearly see client and server errors separately, so you can make the appropriate fixes. Follow these steps:
+
+First, run `octoai run -l`. This runs the endpoint in the foreground and displays the server logs as they occur. If there are any issues with your endpoint implementation code, you will see errors here either at initialization or when processing client requests.
+
+```Shell Shell
+$ octoai run -l
+Starting container: octoai-local-6585
+Initializing container: octoai-local-6585
+Running container in foreground
+2023-10-10 18:24:46,529 INFO server.py:638 run
+2023-10-10 18:24:46,532 INFO server.py:520 Using service in service.HelloService.
+2023-10-10 18:24:46,534 INFO server.py:520 Using service in service.HelloService.
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+2023-10-10 18:24:46,545 INFO server.py:347 status: State.UNINITIALIZED -> State.LAUNCH_PREDICT_LOOP
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+2023-10-10 18:24:47,027 INFO server.py:347 status: State.LAUNCH_PREDICT_LOOP -> State.SETUP_SERVICE
+2023-10-10 18:24:47,028 INFO server.py:347 status: State.SETUP_SERVICE -> State.RUNNING
+```
+
+Second, open a new terminal and run `python3 test_request.py`. This runs the Python client code that sends a request to your endpoint. You typically will see the same response as before, but if there are errors returned to the client, you will see them here.
+
+```Shell Shell
+$ python3 test_request.py
+{'output': 'Hello world!', 'analytics': {'inference_time_ms': 5.74e-06, 'performance_time_ms': 0.694469}}
+```
+
+## Deploy Your Endpoint
+
+To deploy your endpoint, run this command:
+
+```Shell Shell
+octoai deploy
+```
+
+This command reads the endpoint configuration from `octoai.yaml` and uses those settings to create the endpoint. After reading the endpoint configuration, this command pushes your container to Docker Hub. If this is the first endpoint you created, this may take a while depending on the speed of your internet connection. When the push is complete, the CLI shows you the URL of your new endpoint:
+
+```JSON JSON
+{"name":"hello-world", "endpoint": "https://hello-world-<hash>.octoai.run"}
+```
+
+The endpoint URL starts with your endpoint name and has additional characters added (shown as `<hash>` in the example above).
+
+You can now verify your endpoint has been created with:
+
+```Shell Shell
+octoai endpoint list
+```
+
+## Modify Your Endpoint
+
+The `octoai` CLI stores your deployment configuration in the `octai.yaml` configuration file. Initially this file is populated using the answers to the prompts that you provided when running `octoai init`:
+
+```YAML YAML
+endpoint_config:
+  name: hello-world
+  hardware: gpu.t4.medium
+  registry:
+    host: docker.io
+    path: <YourDockerHubUserName>/hello-world
+```
+
+The configuration file supports additional directives that enable you to customize different aspects of your deployment. For example, you can specify your maximum number of replicas:
+
+```YAML YAML
+endpoint_config:
+  name: hello-world
+  hardware: gpu.t4.medium
+  max-replicas: 5
+  registry:
+    host: docker.io
+    path: <YourDockerHubUserName>/hello-world
+```
+
+Then you can redeploy your endpoint:
+
+```Shell Shell
+octoai deploy
+```
+
+You can verify that the endpoint has been updated:
+
+```Shell Shell
+octoai endpoint list
+```
+
+Notice that the `REPLICAS` field now shows `[0-5]` instead of `[0-3]` as was the previous default.
+
+For a list of all supported configuration directives, see the [Configuration Reference](#reference-octoaiyaml-configuration-file) section.
+
+## Send a Request to Your Endpoint
+
+Ensure you installed the [OctoAI Python SDK](#install-the-octoai-python-sdk). Then, to send a request to your endpoint:
+
+```Shell Shell
+export OCTOAI_TOKEN=(paste your OctoAI API token from octoai.cloud/settings)
+python3 test_request.py --endpoint https://hello-world-<hash>.octoai.run
+```
+
+When you first send this request, your endpoint is performing a cold start, which means that no replicas were running and the first one has to start and load your container. This may take one to two minutes for the example scaffolds. After this time, you should see a response similar to this:
+
+```JSON JSON
+{'output': 'Hello World!', ...}
+```
+
+Once you have an active replica, you can run the test command repeatedly and the endpoint responds quickly. OctoAI Compute Service lets you control the minimum and maximum number of replicas for your endpoint either from the web user interface or from the `octoai` CLI:
+
+* To see your endpoint in the web user interface, go to [https://octoai.cloud/endpoints](https://octoai.cloud/endpoints). Then click **hello-world**. To edit the endpoint, click **Edit**. On the next screen you can set the minimum and maximum number of replicas.
+* To use the CLI to update the minimum and maximum number of replicas, you can edit the `octoai.yaml` configuration file and redeploy your endpoint with `octoai deploy`.
+
+Congratulations! You have now created your first endpoint on OctoAI Compute Service and ran remote inference.
+
+### Client Code Structure
+
+The client code in `test_request.py` looks like this:
+
+```Python Python
+from octoai.client import Client
+
+inputs = {"prompt": "Hello world!"}
+
+def main(endpoint):
+    """Run inference against the endpoint."""
+    # create an OctoAI client
+    client = Client()
+
+    # perform inference
+    response = client.infer(endpoint_url=f"{endpoint}/infer", inputs=inputs)
+
+    # show the response
+    print(response)
+```
+
+The `octoai.client.Client` class enables you to query your endpoint as shown here.
+
+## View Endpoint Logs
+
+Now that your endpoint has served one inference, there are some logs available for you to view. OctoAI Compute Service lets you view the server logs for your endpoint using the web user interface or the `octoai` CLI:
+
+* To view the server logs using the web interface, go to [https://octoai.cloud/endpoints](https://octoai.cloud/endpoints). Then click **hello-world**. Then click the **Logs** button on the top right of the page.
+* To view the server logs using the CLI, use the `octoai logs --name hello-world` command.
+
+For example, using the CLI the logs look similar to this:
+
+```Text Text
+$ octoai logs --name hello-world
+19s   hello-world-<hash>   octoai server                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+18s   hello-world-<hash>   Using service in service.HelloService.
+18s   hello-world-<hash>   run
+18s   hello-world-<hash>   Setting up.
+15s   hello-world-<hash>   Started server process [1]
+15s   hello-world-<hash>   Waiting for application startup.
+15s   hello-world-<hash>   Application startup complete.
+15s   hello-world-<hash>   Uvicorn running on http://0.0.0.0:8080
+13s   hello-world-<hash>   1.2.3.4:1234 - "POST /infer HTTP/1.1" 200 OK
+```
+
+## Customize Your Endpoint
+
+Once you have built and deployed a `hello-world` endpoint to OctoAI Compute Service, it is time to customize the endpoint for your use case. To customize your endpoint, you will need:
+
+* A list Python dependencies for your model of interest
+* Example Python code to load your model of interest
+* Example Python code to perform inference with your model of interest
+
+Then you can modify the Hello World endpoint implementation to call your model of interest instead. Depending on the modality of your model of interest, it may be easier to start with a different scaffold than `hello-world` (such as `flan-t5`, `wav2vec`, or `yolov8`).
+
+### Use a HuggingFace Model
+
+This section shows you how to modify the `hello-world` endpoint implementation to call the Flan-T5 model from HuggingFace instead. You can follow the process outlined here to use any other HuggingFace model of your interest.
+
+#### Step 1: Add Python Requirements
+
+The `hello-world` endpoint implementation contains an empty `requirements.txt` file. 
+
+Edit this file and add the corresponding requirements for Flan-T5:
+
+```Text Text
+sentencepiece==0.1.99
+torch==2.0.1
+transformers==4.29.2
+```
+
+#### Step 2: Add Custom Model Code
+
+The `hello-world` endpoint implementation has an empty `Service.setup()` method in `service.py`, since it does not use any model, and a trivial `Service.infer()` method.
+
+Edit `service.py` and add the required imports, the model loading code, and the model inferencing code:
+
+```Python Python
+# add these imports
+from transformers import T5ForConditionalGeneration, T5Tokenizer
+
+from octoai.service import Service
+
+class T5Service(Service):
+    """An OctoAI service extends octoai.service.Service."""
+
+    # update this method as shown here
+    def setup(self):
+        """Download model weights to disk."""
+        self.tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small")
+        self.model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small")
+
+    # update this method as shown here
+    def infer(self, prompt: str) -> str:
+        """Perform inference with the model."""
+        inputs = self.tokenizer(prompt, return_tensors="pt")
+        outputs = self.model.generate(**inputs)
+        response = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+
+        return response[0]
+```
+
+In this case, our model of interest is of the same modality as the `hello-world` examples. For more information on how to use other modalities, see [Send and Receive Images](#send-and-receive-images) and [Send and Receive Audio](#send-and-receive-audio).
+
+#### Step 3: Modify Sample Client Code
+
+The `hello-world` endpoint implementation has a sample `test_request.py` that makes a request to your endpoint. In this case, our model of interest is of the same modality as the `hello-world` example, so you can just change the prompt. 
+
+```Python Python
+import argparse
+
+from octoai.client import Client
+
+inputs = {"prompt": "What country is California in?"}
+...
+```
+
+#### Step 4: Modify the Deployment Configuration
+
+The `hello-world` endpoint implementation has a minimal `octoai.yaml` file.
+
+Update it to change the endpoint name and image tag:
+
+```Shell Shell
+endpoint_config:
+  name: flan-t5
+  hardware: gpu.t4.medium
+  regcred-key: dockerhub
+  registry:
+    host: docker.io
+    path: <YourDockerHubUserName>/flan-t5
+```
+
+#### Step 5: Build and Deploy
+
+Once you have modified the endpoint implementation, rebuild and test your endpoint:
+
+```Shell Shell
+octoai build
+octoai run --command "python3 test_request.py"
+```
+
+Then, deploy your updated endpoint:
+
+```Shell Shell
+octoai deploy
+octoai endpoint list
+python3 test_request.py --endpoint https://flan-t5-<hash>.octoai.run
+```
+
+Congratulations! You have now customized your first endpoint on OctoAI Compute Service.
+
+### Modify the Dockerfile
+
+The `octoai` CLI generates and uses a pre-defined Dockerfile to build a container for your endpoint. The CLI does not expose this Dockerfile by default, since most endpoints can be created successfully without having to view or change this file. However, the `octoai` CLI provides options for you to view and modify the Dockerfile if your use case requires it. For example, your model may require that you install additional native libraries in the container.
+
+Keep in mind that you do not need to view or modify the Dockerfile to specify Python dependencies, since you can provide those in the `requirements.txt` file in your project directory.
+
+To view and modify the Dockerfile:
+
+1. Inside your project directory, run `octoai build -g`. Instead of building the container, this command generates a `Dockerfile` inside your project directory.
+2. Inspect and modify the resulting `Dockerfile` as needed.
+3. Build your container with `octoai build`. The build command uses the `Dockerfile` in your project directory to build your container (if one is available), instead of the pre-defined one. Note that using your own Dockerfile can increase cold start times for your endpoint. Contact us if you would like assistance on this subject.
+
+<Note>
+
+**Older versions and the `-d` flag**
+
+Versions of `octoai` prior to 0.4.5 require that you build with the `-d` flag to use your custom Dockerfile. Versions 0.4.5 and above always use a custom `Dockerfile` if it is available in the project directory.
+</Note>
+
+After you have built the container for your endpoint using a customized Dockerfile, you can continue with deployment in the same manner as before by running `octoai deploy`.
+
+### Include Model Weights in the Container
+
+The `Service.setup()` method typically contains code that downloads model weights to disk. When you build an endpoint as described so far, this method is called right after the server starts, and the weights are downloaded to disk before the server can serve the first request.
+
+The `octoai` CLI also enables you to run `Service.setup()` at container build time, such that the model weights downloaded to the local filesystem become part of the container image instead. In most cases, there is no clear benefit to embedding your weights with the container, since the container image will be larger and take longer to download, even if the server can serve requests soon after starting.
+
+To include your model weights in your container image, add the `--setup` option to `octoai build`:
+
+```Shell Shell
+octoai build --setup
+```
+
+### Send and Receive Images
+
+The `octoai.types` package contains helpful classes if you are customizing your endpoint to use a model that receives or generates images. To define an endpoint for a model that receives or generates images in `service.py`, use the `Image` type as a parameter or return type in the `Service.infer()` signature. For example, this would be for a model that takes images as Python Pillow objects as input and generates text
+
+```Python Python
+from octoai.service import Service
+from octoai.types import Image
+
+class MyService(Service):
+
+    def infer(self, image: Image) -> str:
+        image_pil = image.to_pil()
+        output = self.model(image_pil)
+        
+        return output[0]
+```
+
+For a detailed example on how to send and receive images, see the `yolov8` scaffold when running `octoai init`. For a list of useful methods available to send and receive images, see the [API reference documentation](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.types.Image).
+
+### Send and Receive Audio
+
+The `octoai.types` package contains helpful classes if you are customizing your endpoint to use a model that receives or generates audio. To define an endpoint for a model that receives or generates audio in `service.py`, use the `Audio` type as a parameter or return type in the `Service.infer()` signature. For example, this would be for a model that takes audio as input and generates text:
+
+```Python Python
+from octoai.service import Service
+from octoai.types import Audio
+
+class MyService(Service):
+
+    def infer(self, audio: Audio) -> str:
+        audio_array, sampling_rate = audio.to_numpy()
+        output = self.model(audio_array, sampling_rate)
+        
+        return output[0]
+```
+
+For a detailed example on how to send and receive audio, see the `wav2vec` scaffold when running `octoai init`. For a list of useful methods available to send and receive audio, see the [API Reference documentation](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.types.Audio).
+
+### Send and Receive Video
+
+The `octoai.types` package contains helpful classes if you are customizing your endpoint to use a model that receives or generates video. To define an endpoint for a model that receives or generates video in `service.py`, use the `Video` type as a parameter or return type in the `Service.infer()` signature. For example, this would be for a model that takes video as input and generates text:
+
+```Python Python
+from octoai.service import Service
+from octoai.types import Video
+
+class MyService(Service):
+
+    def infer(self, video: Video) -> str:
+        video_frames = video.to_numpy()
+        output = self.model(video_frames)
+        
+        return output[0]
+```
+
+For a list of useful methods available to send and receive video, see the [API Reference documentation](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.types.Video). The `Video` type was added in SDK version 0.5.0.
+
+### Send Media as URL References
+
+You can create instances of the pre-defined media types (`Image`, `Audio`, and `Video`) from local files and from remote HTTP URLs.
+
+The first approach is the `.from_file()` function, such as `Image.from_file("my_file.jpg")`. When you send an `Image` object created like this to your endpoint, the image data is encoded as base64\. This approach is advantageous when your media assets are not available as remote URLs already or when you are working with smaller files, such that the base64 encoding and decoding penalty is small.
+
+The second approach is the `.from_url()` function, such as `Image.from_url("http://myserver.net/my_file.jpg")`. When you send an `Image` object created like this to your endpoint, the image data is not included in the request, just the URL reference is. Inside your endpoint implementation, when you call methods that need the image data, such as `Image.to_pil()`, the image is downloaded then and data is accessed. This approach is advantageous when your media assets are already available as remote URLs or when you are working with large files, such that the base64 encoding and decoding penalty is noticeable.
+
+For more information, see the [API Reference documentation](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.types.Media.from%5Ffile). Support for URL media references was added in SDK version 0.5.0.
+
+### Send Binary Files as Form Data
+
+In addition to sending media either as base-64 encoded data or as URL references as described in the previous sections, you can also define an additional API route for your model that accepts form data. You can use this feature to upload any kind of binary file directly to your model.
+
+To support form data uploads, you implement the `Service.infer_form_data()` method in your endpoint. For example:
+
+```Python Python
+from typing import Any, Dict
+
+from octoai.service import Service, path
+from octoai.types import File
+
+class FormDataService(Service):
+    def setup(self):
+        print("Setting up FormDataService")
+
+    def infer(self, data: str) -> str:
+        # the endpoint will expose both methods
+        return "Use /infer-form-data for form data inference"
+
+    @path("/infer-form-data")
+    def infer_form_data(self, file: File, metadata: str) -> Dict[str, Any]:
+        # this simple example shows the file information
+        # you can instead send the file contents to your model
+        return {
+            "file_name": file.filename,
+            "file_content_type": file.content_type,
+            "file_size": file.size,
+            "metadata": metadata,
+        }
+```
+
+You can customize the API route where your implementation of `infer_form_data` will be exposed within your endpoint using the `@path()` annotation.
+
+<Note>
+
+**Argument Types for Form Data**
+
+The `Service.infer_form_data()` signature can only contain arguments of types `octoai.types.File` or `str`. If you need to provide additional metadata with your files, such as a JSON object, you can serialize it as a string so you can receive it inside the service implementation.
+</Note>
+
+To send a file with some metadata to the endpoint implementation in the previous example, you can use the `httpx` library as follows.
+
+```Python Python
+import httpx
+
+response = httpx.post(
+    "https://<your-endpoint>.octoai.run/infer-form-data",
+    files={"file": open("audio.wav", "rb")},
+    data={"metadata": "Some info about this audio file"},
+)
+```
+
+### Support Multiple Routes
+
+The OctoAI SDK enables you to define additional routes in your endpoint. The following example shows how to define two additional endpoints in a `Service` implementation:
+
+```Python Python
+from octoai.service import Service, path
+
+class MultipleRoutesService(Service):
+  
+  def setup(self):
+    print("Setting up MultipleRoutesService")
+  
+  # the infer() endpoint is always required
+  def infer(self, prompt: str) -> str:
+    return prompt
+  
+  # this method is exposed as /new-route
+  @path("/new-route")
+  def my_new_route(self, input_text: str):
+    return input_text
+  
+  # this method is exposed as /my-new-route2
+  def my_new_route2(self, input_text: str):
+    return input_text
+```
+
+You can customize the path where new methods are exposed by specifying the `@path` annotation. If you do not provide this annotation, the method will be exposed using the method name with underscores replaced by dashes.
+
+This feature was introduced in SDK version 0.7.2 (CLI version 0.5.8).
+
+## Reference: `octoai.yaml` Configuration File
+
+The following snippet shows a fully populated configuration file with all supported directives you can use to configure your endpoint for deployment.
+
+```YAML YAML
+endpoint_config:
+  name: yolov8                  # Unique endpoint name (required)
+  display-name: Yolov8          # User-visible endpoint name. (optional)
+  description: Object Detection # User-visible endpoint description. (optional)
+  hardware: gpu.t4.medium       # Use a T4 hardware type (required)
+  min-replicas: 1               # Keep a minimum of one replica (optional)
+  max-replicas: 3               # scale up up to 3 replicas (optional)
+  scaledown-in-seconds: 30      # scale down after 30 seconds of inactivity. (optional)
+  concurrency-per-replica: 2    # Concurrent requests sent to replica (optional)
+  public: false                 # Whether the endpoint is publicly visible (optional)
+  regcred-key: dockerhub        # Registry credentials for OctoAI to pull your image (optional)
+  secrets:                      # Secrets stored in OctoAI to surface as env. variables (optional)
+  - mykey
+  - mysecondkey
+  env_overrides:                # Environment variables to set in each replica (optional)
+    key1: value1
+    key2: value2
+  registry:                       
+    host: docker.io             # Registry hostname (required)
+    path: username/yolov8       # Registry path to image (required)
+    tag: v1                     # Tag (optional; not recommended to be set. Defaults to a generated UUID.)
+  service-module: app.service   # Path to python module to run (optional); defaults to "service"
+```
+
+## Appendix: OpenAPI Specification and Pydantic Types
+
+Endpoints that you create using the `octoai` CLI expose the signature of your `Service.infer()` method as an [OpenAPI](https://github.com/OAI/OpenAPI-Specification) specification that is exposed in the `/docs` HTTP path of your endpoint. Clients of your endpoint can reference this API specification to understand how to query your endpoint using the correct input names and types, as well as identify the type of the output that your endpoint returns.
+
+For most models, you can use primitive Python types and the [pre-defined types](https://octoml.github.io/octoai-python-sdk/octoai.html#module-octoai.types) (`Image`, `Audio`, and `Video`) from the OctoAI Python SDK in your `Service.infer()` signature. However, some models use custom schemas in some of their inputs or outputs. For example, the YOLOv8 model included in one of the scaffolds returns a list of predictions that have the following schema:
+
+```JSON JSON
+[{
+    'name': 'bus',
+    'class': 5,
+    'confidence': 0.95,
+    'box': {
+        'x1': 2.91,
+        'x2': 809.51,
+        'y1': 230.68,
+        'y2': 881.00
+    }
+}, ...]
+```
+
+For a model like this, you could define your return type as a list of dictionaries:
+
+```Python Python
+def infer(self, image: Image) -> Dict[str, Any]:
+```
+
+However, the OpenAPI specification that the endpoint provides to your client would not give them any information about the schema of the predictions. To address this limitation, the OctoAI Python SDK enables you to define custom entity classes using [Pydantic](https://docs.pydantic.dev/latest/) models to capture these schemas and include them in the OpenAPI specification of the endpoint. For example, the YOLOv8 scaffold that you can select when creating a new endpoint with `octoai init` defines the following entities to capture the structure of the prediction shown above:
+
+```Python Python
+class Box(BaseModel):
+    """Represents corners of a detection box."""
+
+    x1: float
+    x2: float
+    y1: float
+    y2: float
+
+class Detection(BaseModel):
+    """Represents a detection."""
+
+    name: str
+    class_: int = Field(..., alias="class")
+    confidence: float
+    box: Box
+
+class YOLOResponse(BaseModel):
+    """Response includes list of detections and rendered image."""
+
+    detections: List[Detection]
+    image_with_boxes: Image
+```
+
+Then the `infer()` signature in the `YOLOv8Service` implementation returns a `YOLOResponse`:
+
+```Python Python
+def infer(self, image: Image) -> YOLOResponse:
+    ...
+    # Return detection data and a rendered image with boxes
+    return YOLOResponse(
+        detections=[Detection(**d) for d in detections],
+        image_with_boxes=Image.from_pil(img_out_pil),
+    )
+```
+
+The `YOLOResponse` entity (and any other Pydantic model you use as a return type) is converted automatically to JSON before the endpoint sends it to the client.
+
+For Pydantic models you use as input arguments in `infer()`, the JSON data that the client provides must conform to the parameters of the entity, and it is converted to a Pydantic object automatically.
+
+## Appendix: Using a Custom Docker Registry
+
+Endpoints that you create with the `octoai` CLI use the OctoAI Compute Registry, which works seamlessly with your OctoAI authorization token. However, if you would prefer to use some other registry (such us DockerHub), you can configure your endpoint to do so.
+
+1. **Obtain your credentials for your custom registry.** For example, for DockerHub, you can generate an access token from the _Account Settings_ page.
+2. **Log into Docker on your terminal.** Use the `docker login` command with your registry username and access token as your password.
+3. **Provide your registry credentials to the OctoAI Compute Service**. To provide registry credentials using the web UI, see [Pulling containers from a private registry](create-endpoint-from-existing-container/pulling-containers-from-a-private-registry.mdx). To provide registry credentials using the `octoai` CLI, use the `octoai regcred create` command. To verify your registry credentials were created correctly, use the `octoai regcred list` command.
+
+To create a new endpoint that uses a custom Docker registry, issue the `--registry` option to the `octoai init` command with the registry URL. For example, for DockerHub:
+
+```Shell Shell
+octoai init --registry docker.io
+```
+
+The CLI will then prompt you for the image repository namespace (such as your DockerHub username) and the image repository name (which you could set to be the same as your endpoint name, or similar). Then the CLI will let you choose the right credentials to use to authenticate with the registry.

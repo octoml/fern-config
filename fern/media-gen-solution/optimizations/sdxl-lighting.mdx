@@ -1,0 +1,103 @@
+---
+title: SDXL Lighting for blazing fast generations
+subtitle: >-
+  A new technology called SDXL Lighting enables high-quality image generations
+  in less than 1 second
+slug: media-gen-solution/optimizations/sdxl-lighting
+---
+
+
+SDXL Lighting enable you to achieve high-quality output from SDXL with only 4-8 steps and less than 1 second of latency. This stands in stark contrast to generating images using SDXL model, which typically demands 30-40 steps to produce a good quality image in 3-3.5 seconds, and even more when incorporating custom assets like LoRAs. More importantly, SDXL Lighting is completely compatible with existing image customization techniques available on OctoAI such as SDXL LoRAs. Customers using this can achieve both fast inference speed and product differentiation via customization.
+
+You can use SDXL Lighting via OctoAI's [Image Gen API](../rest-apis/image-gen-api.mdx)
+
+The following guidelines must be adhered to ensure high quality of output:
+- Opt for 4-8 steps, with 8 steps being the recommended choice.
+- Maintain a low CFG Scale, ideally ranging from 1.4 to 4.0, with 3.0 as the optimal value.
+- Utilize any sampler, textual inversion, or style preset.
+- Note that additional LoRAs and VAEs will result in increased inference time.
+
+
+Below is an example for text2img with SDXL Lighting:
+
+**Example Code:**
+<CodeGroup>
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/sdxl" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "((glass orb)) with snowy christmas scene in it ",
+        "negative_prompt": "ornament, Blurry, low-res, poor quality",
+        "checkpoint": "octoai:lightning_sdxl",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 1,
+        "sampler": "DDIM",
+        "steps": 8,
+        "cfg_scale": 3,
+        "seed": 3327823665,
+        "use_refiner": false,
+        "style_preset": "base"
+    }' | jq -r ".images[0].image_b64" | base64 -d >result.jpg
+```
+
+```Python Python
+import os
+from octoai.clients.image_gen import Engine, ImageGenerator
+
+if __name__ == "__main__":
+    image_gen = ImageGenerator(token=os.environ.get("OCTOAI_TOKEN"))
+    image_gen_response = image_gen.generate(
+        engine=Engine.SDXL,
+        prompt="((glass orb)) with snowy christmas scene in it ",
+        negative_prompt="ornament, Blurry, low-res, poor quality",
+        checkpoint="octoai:lightning_sdxl",
+        width=1024,
+        height=1024,
+        num_images=1,
+        sampler="DDIM",
+        steps=8,
+        cfg_scale=3,
+        seed=3327823665,
+        use_refiner=False,
+        style_preset="base",
+    )
+    images = image_gen_response.images
+
+    for i, image in enumerate(images):
+        image.to_file(f"result{i}.jpg")
+```
+```typescript Typescript
+import fs from "fs";
+import { Client } from "@octoai/client";
+
+const client = new Client(OCTOAI_TOKEN);
+const endpointUrl = "https://image.octoai.run/generate/sdxl";
+
+const inputs = {
+  "prompt": "((glass orb)) with snowy christmas scene in it ",
+  "negative_prompt": "ornament, Blurry, low-res, poor quality",
+  "checkpoint": "octoai:lightning_sdxl",
+  "width": 1024,
+  "height": 1024,
+  "num_images": 1,
+  "sampler": "DDIM",
+  "steps": 8,
+  "cfg_scale": 3,
+  "seed": 3327823665,
+  "use_refiner": false,
+  "style_preset": "base"
+};
+
+const outputs = await client.infer<any>(endpointUrl, inputs);
+
+outputs.images.forEach((output, i) => {
+  const buffer = Buffer.from(output.image_b64, "base64");
+  fs.writeFileSync(`result${i}.jpg`, buffer);
+});
+```
+</CodeGroup>
+
+
+
