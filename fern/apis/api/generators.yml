@@ -2,7 +2,7 @@ groups:
   python-sdk-local:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 1.5.0-rc0
+        version: 1.5.2-rc0
         config:
           inline_request_params: true
           client:
@@ -20,7 +20,7 @@ groups:
   python-sdk:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 1.5.0-rc0
+        version: 1.5.2-rc0
         output:
           location: pypi
           package-name: "octoai"
