@@ -1,5 +1,5 @@
 instances:
-  - url: octoai.docs.buildwithfern.com
+  - url: octoai.docs.dev.buildwithfern.com
 title: OctoAI
 logo:
   light: assets/images/logo/octoai-logo-light.svg
@@ -295,3 +295,31 @@ navigation:
             path: release-notes/2023/may.mdx
   - tab: community
   - tab: support
+
+typography:
+  bodyFont:
+    name: Faktum
+    paths:
+      - path: ./assets/fonts/Faktum-Regular.woff2
+        weight: "400"
+        style: normal
+      - path: ./assets/fonts/Faktum-Medium.woff2
+        weight: "500"
+        style: normal
+      - path: ./assets/fonts/Faktum-SemiBold.woff2
+        weight: "600"
+        style: normal
+  headingsFont:
+    name: Faktum
+    paths:
+      - path: ./assets/fonts/Faktum-Regular.woff2
+        weight: "400"
+        style: normal
+      - path: ./assets/fonts/Faktum-Medium.woff2
+        weight: "500"
+        style: normal
+      - path: ./assets/fonts/Faktum-SemiBold.woff2
+        weight: "600"
+        style: normal
+
+css: ./style.css
