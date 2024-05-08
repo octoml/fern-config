@@ -51,7 +51,7 @@ layout:
   searchbar-placement: header
   header-height: 69px
   page-width: 1440px
-  # content-width: 724px
+  sidebar-width: 292px
 navigation:
   - tab: documentation
     layout:
