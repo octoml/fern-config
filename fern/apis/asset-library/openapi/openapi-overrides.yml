@@ -7,28 +7,36 @@ paths:
     get:
       x-fern-sdk-method-name: list
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
     post:
       x-fern-sdk-method-name: create
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
   /v1/assets/{asset_id}:
     delete:
       x-fern-sdk-method-name: delete
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
   /v1/assets/{asset_id}/complete-upload:
     post:
       x-fern-sdk-method-name: completeUpload
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
   /v1/assets/{asset_owner_and_name_or_id}:
     get:
       x-fern-sdk-method-name: get
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      x-fern-bearer:
+        name: apiKey
+        env: OCTOAI_API_KEY

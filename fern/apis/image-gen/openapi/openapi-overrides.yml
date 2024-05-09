@@ -1,41 +1,56 @@
 paths:
   /generate/ssd:
     post:
+      summary: "Generate SSD"
       x-fern-sdk-method-name: generateSsd
       servers:
-      - url: https://image.octoai.cloud
-        x-name: ImageGen
+        - url: https://image.octoai.cloud
+          x-name: ImageGen
   /generate/controlnet-sdxl:
     post:
+      summary: "Generate ControlNet SDXL"
       x-fern-sdk-method-name: generateControlnetSdxl
       servers:
-      - url: https://image.octoai.cloud
-        x-name: ImageGen
+        - url: https://image.octoai.cloud
+          x-name: ImageGen
   /generate/controlnet-sd15:
     post:
+      summary: "Generate ControlNet SD1.5"
       x-fern-sdk-method-name: generateControlnetSd15
       servers:
-      - url: https://image.octoai.cloud
-        x-name: ImageGen
+        - url: https://image.octoai.cloud
+          x-name: ImageGen
   /generate/sdxl:
     post:
+      summary: "Generate SDXL"
       x-fern-sdk-method-name: generateSdxl
       servers:
-      - url: https://image.octoai.cloud
-        x-name: ImageGen
+        - url: https://image.octoai.cloud
+          x-name: ImageGen
   /generate/sd:
     post:
+      summary: "Generate SD1.5"
       x-fern-sdk-method-name: generateSd
       servers:
-      - url: https://image.octoai.cloud
-        x-name: ImageGen
+        - url: https://image.octoai.cloud
+          x-name: ImageGen
   /generate/svd:
     post:
+      summary: "Generate SVD Animations"
       x-fern-sdk-method-name: generateSvd
       servers:
-      - url: https://image.octoai.cloud
-        x-name: ImageGen
+        - url: https://image.octoai.cloud
+          x-name: ImageGen
   # Hide healthcheck
   /healthcheck:
     get:
       x-fern-ignore: true
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      x-fern-bearer:
+        name: apiKey
+        env: OCTOAI_API_KEY

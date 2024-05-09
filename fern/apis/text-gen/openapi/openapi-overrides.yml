@@ -10,8 +10,8 @@ paths:
         response-stream:
           $ref: "#/components/schemas/ChatCompletionChunk"
       servers:
-      - url: https://text.octoai.run
-        x-name: TextGen
+        - url: https://text.octoai.run
+          x-name: TextGen
   /v1/completions:
     post:
       x-fern-sdk-method-name: createCompletion
@@ -23,5 +23,13 @@ paths:
         response-stream:
           $ref: "#/components/schemas/CompletionResponse"
       servers:
-      - url: https://text.octoai.run
-        x-name: TextGen
+        - url: https://text.octoai.run
+          x-name: TextGen
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      x-fern-bearer:
+        name: apiKey
+        env: OCTOAI_API_KEY
