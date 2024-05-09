@@ -1,5 +1,5 @@
 instances:
-  - url: octoai.docs.dev.buildwithfern.com
+  - url: octoai.docs.buildwithfern.com
 title: OctoAI
 logo:
   light: assets/images/logo/octoai-logo-light.svg
