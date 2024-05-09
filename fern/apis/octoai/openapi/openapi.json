@@ -1,0 +1,1662 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "OctoAI API",
+        "description": "Public API for OctoAI",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://api.octoai.cloud"
+        }
+    ],
+    "tags": [
+        {
+            "name": "account",
+            "description": "Accounts API"
+        },
+        {
+            "name": "endpoint",
+            "description": "Endpoints API"
+        },
+        {
+            "name": "public-endpoint",
+            "description": "Public Endpoints API"
+        },
+        {
+            "name": "secret",
+            "description": "Secrets API"
+        }
+    ],
+    "x-readme": {
+        "proxy-enabled": false,
+        "samples-languages": [
+            "curl"
+        ],
+        "explorer-enabled": true,
+        "samples-enabled": true
+    },
+    "paths": {
+        "/v1/account": {
+            "get": {
+                "tags": [
+                    "account"
+                ],
+                "description": "Return fields on an account",
+                "operationId": "getAccount",
+                "responses": {
+                    "200": {
+                        "description": "A description of the account",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Account"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "account"
+                ],
+                "description": "Create new account",
+                "operationId": "createAccount",
+                "requestBody": {
+                    "description": "Details of the account to create",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccountUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "A description of the new account",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Account"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "account"
+                ],
+                "description": "Update fields on account",
+                "operationId": "patchAccount",
+                "requestBody": {
+                    "description": "fields on the account to be updated",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AccountUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A description of the updated account",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Account"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/endpoint": {
+            "post": {
+                "tags": [
+                    "endpoint"
+                ],
+                "summary": "Create new endpoint",
+                "description": "Create new endpoint",
+                "operationId": "createEndpoint",
+                "requestBody": {
+                    "description": "Endpoint to add to the store",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EndpointCreate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "A description of the new endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EndpointResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/endpoint/{endpoint_name}": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Return description of an endpoint",
+                "operationId": "getEndpoint",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A description of the endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EndpointResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Delete an endpoint",
+                "operationId": "deleteEndpoint",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A message confirming deletion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "endpoint"
+                ],
+                "summary": "Updates an endpoint",
+                "description": "Updates an endpoint",
+                "operationId": "patchEndpoint",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "endpoint to be updated",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EndpointUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A description of the updated endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EndpointResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/endpoints": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Return list of endpoints",
+                "operationId": "getEndpoints",
+                "responses": {
+                    "200": {
+                        "description": "A set of endpoints",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EndpointResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/endpoint/{endpoint_name}/container/metadata": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Return container metadata",
+                "operationId": "getContainerMetadata",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Container metadata",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/ContainerResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/endpoint/{endpoint_name}/volume_token": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Returns a token for accessing the volume",
+                "operationId": "getEndpointVolumeToken",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Volume token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/VolumeToken"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/logs/{endpoint_name}": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Return endpoint logs",
+                "operationId": "getEndpointLogs",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "begin_time",
+                        "in": "query",
+                        "description": "Optional begin of time range",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "Optional end of time range",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "max_lines",
+                        "in": "query",
+                        "description": "Maximum number of lines to return",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 0,
+                            "maximum": 1000
+                        }
+                    },
+                    {
+                        "name": "replica_id",
+                        "in": "query",
+                        "description": "Replica for which to fetch log output",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A set of endpoint logs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/LogEntry"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/logs/{endpoint_name}/stream": {
+            "get": {
+                "description": "Return endpoint logs as stream",
+                "operationId": "getEndpointLogsStream",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "replica_id",
+                        "in": "query",
+                        "description": "Replica for which to fetch log output",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A set of endpoint logs",
+                        "headers": {
+                            "transfer-encoding": {
+                                "description": "Transfer encoding",
+                                "schema": {
+                                    "type": "string",
+                                    "enum": [
+                                        "chunked"
+                                    ]
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/LogEntry"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/events/{endpoint_name}": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Return endpoint events",
+                "operationId": "getEndpointEvents",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "begin_time",
+                        "in": "query",
+                        "description": "Optional begin of time range",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "end_time",
+                        "in": "query",
+                        "description": "Optional end of time range",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "max_lines",
+                        "in": "query",
+                        "description": "Maximum number of lines to return",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 0,
+                            "maximum": 1000
+                        }
+                    },
+                    {
+                        "name": "replica_id",
+                        "in": "query",
+                        "description": "Replica for which to fetch log output",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A set of events associated with the endpoint",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EventEntry"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/events/{endpoint_name}/stream": {
+            "get": {
+                "tags": [
+                    "endpoint"
+                ],
+                "description": "Return endpoint events as stream",
+                "operationId": "getEndpointEventsStream",
+                "parameters": [
+                    {
+                        "name": "endpoint_name",
+                        "in": "path",
+                        "description": "The endpoint name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "replica_id",
+                        "in": "query",
+                        "description": "Replica for which to fetch log output",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A set of events associated with the endpoint",
+                        "headers": {
+                            "transfer-encoding": {
+                                "description": "Transfer encoding",
+                                "schema": {
+                                    "type": "string",
+                                    "enum": [
+                                        "chunked"
+                                    ]
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EventEntry"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/secret": {
+            "post": {
+                "tags": [
+                    "secret"
+                ],
+                "description": "Create new secret",
+                "operationId": "createSecret",
+                "requestBody": {
+                    "description": "Secret to add to the store",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SecretKeyValue"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "A description of the new secret",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SecretKeyValue"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/secret/{key}": {
+            "get": {
+                "tags": [
+                    "secret"
+                ],
+                "summary": "Retrieve secret by key",
+                "operationId": "getSecret",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the secret to retrieve",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A description of the secret",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SecretKeyValue"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "secret"
+                ],
+                "summary": "Update secret by key",
+                "operationId": "updateSecret",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the secret to create or update",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "value"
+                                ],
+                                "properties": {
+                                    "value": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A description of the secret",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SecretKeyValue"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "secret"
+                ],
+                "summary": "Delete secret by key",
+                "operationId": "deleteSecret",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the secret to delete",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A message confirming deletion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/secrets": {
+            "get": {
+                "tags": [
+                    "secret"
+                ],
+                "description": "Return list of secrets",
+                "operationId": "getSecrets",
+                "responses": {
+                    "200": {
+                        "description": "A list of secret names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/registry-credential": {
+            "post": {
+                "tags": [
+                    "registry-credential"
+                ],
+                "description": "Create new registry credentials",
+                "operationId": "createRegistryCredential",
+                "requestBody": {
+                    "description": "registry credentials to add to the store",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistryCredential"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "A description of the new credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistryCredentialSummary"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/registry-credential/{key}": {
+            "get": {
+                "tags": [
+                    "registry-credential"
+                ],
+                "summary": "Retrieve registry credentials by key",
+                "operationId": "getRegistryCredential",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the registry credential to retrieve",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A description of the registry credential",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistryCredential"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "registry-credential"
+                ],
+                "summary": "Update registry credentials by key",
+                "operationId": "updateRegistryCredential",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the registry credential to create or update",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A description of the registry credential",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistryCredentialSummary"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "registry-credential"
+                ],
+                "summary": "Delete registry credentials by key",
+                "operationId": "deleteRegistryCredential",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "required": true,
+                        "description": "Key of the registry credential to delete",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A message confirming deletion",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/registry-credentials": {
+            "get": {
+                "tags": [
+                    "registry-credential"
+                ],
+                "description": "Return list of registry credentials",
+                "operationId": "getRegistryCredentials",
+                "responses": {
+                    "200": {
+                        "description": "A list of registry credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RegistryCredentialSummary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/public-endpoints": {
+            "get": {
+                "tags": [
+                    "public-endpoint"
+                ],
+                "description": "Return list of public, OctoAI-deployed endpoints",
+                "operationId": "getPublicEndpoints",
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "A list of OctoAI-deployed endpoints",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/HostedEndpoint"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/instance-types": {
+            "get": {
+                "tags": [
+                    "instance-types"
+                ],
+                "description": "Return list of available instance types to deploy an endpoint to",
+                "operationId": "getInstanceTypes",
+                "responses": {
+                    "200": {
+                        "description": "A list of available instance types to deploy an endpoint to",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/InstanceTypeInfo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AccountUpdate": {
+                "type": "object",
+                "required": [
+                    "country",
+                    "company"
+                ],
+                "properties": {
+                    "country": {
+                        "type": "string"
+                    },
+                    "company": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Account": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "email",
+                    "provider",
+                    "key",
+                    "status"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "provider": {
+                        "type": "string"
+                    },
+                    "key": {
+                        "type": "string"
+                    },
+                    "country": {
+                        "type": "string"
+                    },
+                    "company": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "ready_trial",
+                            "ready_billed",
+                            "suspended_billing",
+                            "suspended_tos",
+                            "error"
+                        ]
+                    }
+                }
+            },
+            "EndpointUpdate": {
+                "type": "object",
+                "properties": {
+                    "min_replicas": {
+                        "type": "integer",
+                        "description": "Minimum number of replicas",
+                        "minimum": 0,
+                        "maximum": 999
+                    },
+                    "max_replicas": {
+                        "type": "integer",
+                        "description": "Maximum number of replicas",
+                        "minimum": 0,
+                        "maximum": 999
+                    },
+                    "scale_to_zero": {
+                        "type": "integer",
+                        "description": "Time to scale to zero (in seconds)",
+                        "minimum": 0,
+                        "maximum": 3600
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "User-friendly name of the endpoint (e.g. Stable Diffusion 2.1)",
+                        "default": ""
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the endpoint",
+                        "default": ""
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "description": "URL of the docker image"
+                    },
+                    "registry_credential": {
+                        "type": "string",
+                        "description": "The key of a registry credential used to authenticate to a private registry"
+                    },
+                    "health_check_path": {
+                        "type": "string",
+                        "description": "URL path of a health check endpoint"
+                    },
+                    "visibility": {
+                        "type": "string",
+                        "description": "Visibility of the endpoint",
+                        "enum": [
+                            "private",
+                            "public"
+                        ]
+                    },
+                    "endpoint_state": {
+                        "type": "string",
+                        "description": "State of a endpoint",
+                        "enum": [
+                            "active",
+                            "disabled"
+                        ]
+                    },
+                    "env_overrides": {
+                        "type": "object",
+                        "additionalProperties": true,
+                        "description": "JSON object with environment variable overrides"
+                    },
+                    "instance_type": {
+                        "type": "string",
+                        "description": "Endpoint to query against"
+                    },
+                    "container_secrets": {
+                        "description": "A list of container secrets to inject as environment variables",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "concurrency_per_replica": {
+                        "description": "The maximum concurrency per replica",
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 500
+                    }
+                }
+            },
+            "EndpointCreate": {
+                "allOf": [
+                    {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "image_url",
+                            "port"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Name of the endpoint"
+                            },
+                            "display_name": {
+                                "type": "string",
+                                "description": "User-friendly name of the endpoint (e.g. Stable Diffusion 2.1)",
+                                "default": ""
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the endpoint",
+                                "default": ""
+                            },
+                            "image_url": {
+                                "type": "string",
+                                "description": "URL of the docker image"
+                            },
+                            "port": {
+                                "type": "integer",
+                                "description": "Port number of the endpoint"
+                            },
+                            "health_check_path": {
+                                "type": "string",
+                                "description": "URL path of a health check endpoint"
+                            },
+                            "auto_volume_experimental": {
+                                "description": "EXPERIMENTAL: autogenerate a volume for the endpoint",
+                                "type": "boolean"
+                            },
+                            "volumes_experimental": {
+                                "type": "array",
+                                "description": "EXPERIMENTAL: volumes to be used by this container",
+                                "uniqueItems": true,
+                                "items": {
+                                    "$ref": "#/components/schemas/VolumeExperimental"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/EndpointUpdate"
+                    }
+                ]
+            },
+            "VolumeExperimental": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "path",
+                    "mount"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "mount": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ContainerPort": {
+                "type": "object",
+                "required": [
+                    "port_num",
+                    "proto"
+                ],
+                "properties": {
+                    "port_num": {
+                        "type": "integer",
+                        "format": "uint16",
+                        "minimum": 0
+                    },
+                    "proto": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ContainerResponse": {
+                "type": "object",
+                "required": [
+                    "image_url",
+                    "digest",
+                    "exposed_ports",
+                    "labels",
+                    "env"
+                ],
+                "properties": {
+                    "image_url": {
+                        "type": "string",
+                        "description": "URL of the docker image"
+                    },
+                    "exposed_ports": {
+                        "type": "array",
+                        "description": "Ports exposed by container",
+                        "uniqueItems": true,
+                        "items": {
+                            "$ref": "#/components/schemas/ContainerPort"
+                        }
+                    },
+                    "labels": {
+                        "type": "object",
+                        "description": "Labels for container",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "env": {
+                        "type": "array",
+                        "description": "Env is a list of environment variables to be used in a container",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "VolumeToken": {
+                "type": "object",
+                "required": [
+                    "token"
+                ],
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "Opaque token for accessing the volume using OctoAI tooling (e.g. CLI)"
+                    }
+                }
+            },
+            "SecretKeyValue": {
+                "type": "object",
+                "required": [
+                    "key",
+                    "value"
+                ],
+                "properties": {
+                    "key": {
+                        "description": "Secret key",
+                        "type": "string"
+                    },
+                    "value": {
+                        "description": "Secret value",
+                        "type": "string"
+                    }
+                }
+            },
+            "RegistryCredential": {
+                "type": "object",
+                "required": [
+                    "key",
+                    "username",
+                    "password"
+                ],
+                "properties": {
+                    "key": {
+                        "description": "The lookup key for this credential",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "Username corresponding to this credential",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "The password for the credential",
+                        "type": "string"
+                    }
+                }
+            },
+            "RegistryCredentialSummary": {
+                "type": "object",
+                "required": [
+                    "key",
+                    "username"
+                ],
+                "properties": {
+                    "key": {
+                        "description": "The lookup key for this credntial",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "Username corresponding to this credential",
+                        "type": "string"
+                    }
+                }
+            },
+            "AggregationEnum": {
+                "type": "string",
+                "enum": [
+                    "1m",
+                    "30m",
+                    "1h",
+                    "24h"
+                ]
+            },
+            "MetricEntry": {
+                "type": "object",
+                "required": [
+                    "count_2xx",
+                    "count_3xx",
+                    "count_4xx",
+                    "count_5xx",
+                    "p99_millis",
+                    "p95_millis",
+                    "p50_millis"
+                ],
+                "properties": {
+                    "count_2xx": {
+                        "description": "the number of 2xx response codes",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "count_3xx": {
+                        "description": "the number of 3xx response codes",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "count_4xx": {
+                        "description": "the number of 4xx response codes",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "count_5xx": {
+                        "description": "the number of 5xx response codes",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "p99_millis": {
+                        "description": "the quantile for p99 response times in milliseconds",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "p95_millis": {
+                        "description": "the quantile for p95 response times in milliseconds",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "p50_millis": {
+                        "description": "the quantile for p50 response times in milliseconds",
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "EventEntry": {
+                "type": "object",
+                "required": [
+                    "timestamp",
+                    "event"
+                ],
+                "properties": {
+                    "timestamp": {
+                        "description": "time of the log entry (ISO8601 format)",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "replica_id": {
+                        "type": "string",
+                        "description": "optional replica id associated with the event"
+                    },
+                    "event": {
+                        "description": "event log data",
+                        "type": "object",
+                        "$ref": "#/components/schemas/Event"
+                    }
+                }
+            },
+            "Event": {
+                "type": "object",
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "level": {
+                        "type": "string",
+                        "enum": [
+                            "normal",
+                            "warning"
+                        ],
+                        "description": "type of event"
+                    },
+                    "type": {
+                        "description": "type of the event",
+                        "type": "string"
+                    },
+                    "endpoint": {
+                        "description": "name of the endpoint",
+                        "type": "string"
+                    },
+                    "tenant_id": {
+                        "description": "ID of the tenant",
+                        "type": "string"
+                    },
+                    "account_key": {
+                        "description": "Key of the account",
+                        "type": "string"
+                    },
+                    "instance_type": {
+                        "description": "type of instance this event occurred on",
+                        "type": "string"
+                    },
+                    "details": {
+                        "description": "extra details about this event",
+                        "type": "object"
+                    }
+                }
+            },
+            "LogEntry": {
+                "type": "object",
+                "required": [
+                    "timestamp",
+                    "replica_id",
+                    "data"
+                ],
+                "properties": {
+                    "timestamp": {
+                        "description": "time of the log entry (ISO8601 format)",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "replica_id": {
+                        "description": "unique ID of the replica",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "user-provided log data",
+                        "type": "string"
+                    }
+                }
+            },
+            "Replica": {
+                "type": "object",
+                "required": [
+                    "account_key",
+                    "endpoint_name",
+                    "replica_id",
+                    "status",
+                    "restarts",
+                    "age"
+                ],
+                "properties": {
+                    "account_key": {
+                        "type": "string",
+                        "description": "account key for this replica"
+                    },
+                    "endpoint_name": {
+                        "type": "string",
+                        "description": "endpoint name"
+                    },
+                    "replica_id": {
+                        "type": "string",
+                        "description": "unique ID of the replica"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "running",
+                            "succeeded",
+                            "failed",
+                            "unknown"
+                        ],
+                        "description": "status of the replica"
+                    },
+                    "restarts": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "age": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "number of seconds this replica has been ready. set to -1 if replica is not ready"
+                    }
+                }
+            },
+            "EndpointResponse": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/EndpointCreate"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "replicas"
+                        ],
+                        "properties": {
+                            "endpoint": {
+                                "type": "string",
+                                "description": "Endpoint to query against"
+                            },
+                            "replicas": {
+                                "type": "array",
+                                "description": "Active replicas for the endpoint",
+                                "items": {
+                                    "$ref": "#/components/schemas/Replica"
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "HostedEndpoint": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/EndpointCreate"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "endpoint"
+                        ],
+                        "properties": {
+                            "endpoint": {
+                                "type": "string",
+                                "description": "Endpoint to query against"
+                            },
+                            "is_live": {
+                                "type": "boolean",
+                                "description": "If this endpoint should be considered live or not"
+                            }
+                        }
+                    }
+                ]
+            },
+            "InstanceTypeInfo": {
+                "type": "object",
+                "required": [
+                    "instance_name",
+                    "display_name",
+                    "vcpu",
+                    "ram",
+                    "vram",
+                    "accelerator",
+                    "available",
+                    "price"
+                ],
+                "properties": {
+                    "instance_name": {
+                        "type": "string",
+                        "description": "String to specify when creating/updating an endpoint"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "User-friendly name of the instance type"
+                    },
+                    "vcpu": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Number of vCPUs available on the instance type"
+                    },
+                    "ram": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Amount of memory in GB available on the instance type"
+                    },
+                    "vram": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Amount of video memory in GB available on the instance type"
+                    },
+                    "accelerator": {
+                        "type": "string",
+                        "description": "Type of accelerator attached to this instance type",
+                        "enum": [
+                            "none",
+                            "gpu"
+                        ]
+                    },
+                    "available": {
+                        "type": "boolean",
+                        "description": "If the hardware target is available right now"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Price per second in dollars (e.g. 0.0001 for 1/100th of a cent) to use this instance type"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ]
+}

@@ -1,0 +1,203 @@
+x-fern-groups:
+  account:
+    summary: Account
+  endpoint:
+    summary: Endpoint
+  telemetry:
+    summary: Events & Logs
+  secret:
+    summary: Secret
+  registryCredential:
+    summary: Registry Credential
+  publicEndpoint:
+    summary: Public Endpoint
+  instanceTypes:
+    summary: Instance Types
+
+paths:
+  /v1/account:
+    get:
+      summary: Get fields on an account
+      x-fern-sdk-group-name:
+        - account
+      x-fern-sdk-method-name: getAccount
+    post:
+      x-fern-ignore: true
+      x-fern-sdk-group-name:
+        - account
+      x-fern-sdk-method-name: createAccount
+    patch:
+      summary: Update fields on an account
+      x-fern-sdk-group-name:
+        - account
+      x-fern-sdk-method-name: patchAccount
+  /v1/endpoint:
+    post:
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: createEndpoint
+  /v1/endpoint/{endpoint_name}:
+    get:
+      summary: Get description of an endpoint
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: getEndpoint
+    delete:
+      summary: Delete an endpoint
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: deleteEndpoint
+    patch:
+      summary: Update an endpoint
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: patchEndpoint
+  /v1/endpoints:
+    get:
+      summary: List endpoints
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: getEndpoints
+  /v1/endpoint/{endpoint_name}/container/metadata:
+    get:
+      summary: Get container metadata
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: getContainerMetadata
+  /v1/endpoint/{endpoint_name}/volume_token:
+    get:
+      summary: Get token for accessing the volume
+      x-fern-sdk-group-name:
+        - endpoint
+      x-fern-sdk-method-name: getEndpointVolumeToken
+  /v1/logs/{endpoint_name}:
+    get:
+      summary: Get endpoint logs
+      x-fern-sdk-group-name:
+        - telemetry
+      x-fern-sdk-method-name: getEndpointLogs
+  /v1/logs/{endpoint_name}/stream:
+    get:
+      summary: Get endpoint logs as stream
+      x-fern-sdk-group-name:
+        - telemetry
+      x-fern-sdk-method-name: getEndpointLogsStream
+  /v1/events/{endpoint_name}:
+    get:
+      summary: Get endpoint events
+      x-fern-sdk-group-name:
+        - telemetry
+      x-fern-sdk-method-name: getEndpointEvents
+  /v1/events/{endpoint_name}/stream:
+    get:
+      summary: Get endpoint events as stream
+      x-fern-sdk-group-name:
+        - telemetry
+      x-fern-sdk-method-name: getEndpointEventsStream
+  /v1/secret:
+    post:
+      summary: Create new secret
+      x-fern-sdk-group-name:
+        - secret
+      x-fern-sdk-method-name: createSecret
+  /v1/secret/{key}:
+    get:
+      x-fern-sdk-group-name:
+        - secret
+      x-fern-sdk-method-name: getSecret
+    put:
+      x-fern-sdk-group-name:
+        - secret
+      x-fern-sdk-method-name: updateSecret
+    delete:
+      x-fern-sdk-group-name:
+        - secret
+      x-fern-sdk-method-name: deleteSecret
+  /v1/secrets:
+    get:
+      summary: Get secret
+      x-fern-sdk-group-name:
+        - secret
+      x-fern-sdk-method-name: getSecrets
+  /v1/registry-credential:
+    post:
+      summary: Create new registry credentials
+      x-fern-sdk-group-name:
+        - registryCredential
+      x-fern-sdk-method-name: createRegistryCredential
+  /v1/registry-credential/{key}:
+    get:
+      summary: Retrieve registry credentials by key
+      x-fern-sdk-group-name:
+        - registryCredential
+      x-fern-sdk-method-name: getRegistryCredential
+    put:
+      summary: Update registry credentials
+      x-fern-sdk-group-name:
+        - registryCredential
+      x-fern-sdk-method-name: updateRegistryCredential
+    delete:
+      summary: Delete registry credentials
+      x-fern-sdk-group-name:
+        - registryCredential
+      x-fern-sdk-method-name: deleteRegistryCredential
+  /v1/registry-credentials:
+    get:
+      summary: Get registry credentials
+      x-fern-sdk-group-name:
+        - registryCredential
+      x-fern-sdk-method-name: getRegistryCredentials
+  /v1/public-endpoints:
+    get:
+      summary: List public, OctoAI-deployed endpoints
+      x-fern-sdk-group-name:
+        - publicEndpoint
+      x-fern-sdk-method-name: getPublicEndpoints
+  /v1/instance-types:
+    get:
+      summary: List hardware instance types
+      x-fern-sdk-group-name:
+        - instanceTypes
+      x-fern-sdk-method-name: getInstanceTypes
+components:
+  schemas:
+    AccountUpdate:
+      x-fern-type-name: AccountUpdate
+    Account:
+      x-fern-type-name: Account
+    EndpointUpdate:
+      x-fern-type-name: EndpointUpdate
+    EndpointCreate:
+      x-fern-type-name: EndpointCreate
+    VolumeExperimental:
+      x-fern-type-name: VolumeExperimental
+    ContainerPort:
+      x-fern-type-name: ContainerPort
+    ContainerResponse:
+      x-fern-type-name: ContainerResponse
+    VolumeToken:
+      x-fern-type-name: VolumeToken
+    SecretKeyValue:
+      x-fern-type-name: SecretKeyValue
+    RegistryCredential:
+      x-fern-type-name: RegistryCredential
+    RegistryCredentialSummary:
+      x-fern-type-name: RegistryCredentialSummary
+    AggregationEnum:
+      x-fern-type-name: AggregationEnum
+    MetricEntry:
+      x-fern-type-name: MetricEntry
+    EventEntry:
+      x-fern-type-name: EventEntry
+    Event:
+      x-fern-type-name: Event
+    LogEntry:
+      x-fern-type-name: LogEntry
+    Replica:
+      x-fern-type-name: Replica
+    EndpointResponse:
+      x-fern-type-name: EndpointResponse
+    HostedEndpoint:
+      x-fern-type-name: HostedEndpoint
+    InstanceTypeInfo:
+      x-fern-type-name: InstanceTypeInfo

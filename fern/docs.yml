@@ -227,6 +227,9 @@ navigation:
             path: api-reference/octoai-api/authentication.mdx
           - page: Inference
             path: api-reference/octoai-api/inference.mdx
+          - api: OctoAI API
+            api-name: octoai
+            flattened: true
       - api: Text Generation API
         api-name: text-gen
       - api: Image Generation API
