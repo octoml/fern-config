@@ -2,13 +2,13 @@ instances:
   - url: octoai.docs.buildwithfern.com
 title: OctoAI
 logo:
-  light: assets/images/logo/octoai-logo-light.svg
-  dark: assets/images/logo/octoai-logo-dark.svg
+  light: docs/assets/images/logo/octoai-logo-light.svg
+  dark: docs/assets/images/logo/octoai-logo-dark.svg
   href: https://octo.ai/
   height: 28
 background-image:
-  dark: assets/images/bg-universal.webp
-  light: assets/images/gradient-bg-light.svg
+  dark: docs/assets/images/bg-universal.webp
+  light: docs/assets/images/gradient-bg-light.svg
 favicon: favicon.png
 colors:
   accent-primary:
@@ -58,175 +58,175 @@ navigation:
       - section: Quickstart
         contents:
           - page: Quickstart
-            path: getting-started/quickstart.mdx
+            path: docs/getting-started/quickstart.mdx
           - page: Pricing & billing
-            path: getting-started/pricing-and-billing.mdx
+            path: docs/getting-started/pricing-and-billing.mdx
           - page: Text Gen REST API
-            path: text-gen-solution/rest-api.mdx
+            path: docs/text-gen-solution/rest-api.mdx
           - page: Migrate from OpenAI to OctoAI in 3 lines of code
-            path: text-gen-solution/migration-from-openai.mdx
+            path: docs/text-gen-solution/migration-from-openai.mdx
           - section: Media Gen REST APIs
             contents:
               - page: Image Gen
-                path: media-gen-solution/rest-apis/image-gen-api.mdx
+                path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
               - page: Video Gen
-                path: media-gen-solution/rest-apis/video-gen.mdx
+                path: docs/media-gen-solution/rest-apis/video-gen.mdx
               - page: Background Removal
-                path: media-gen-solution/rest-apis/background-removal.mdx
+                path: docs/media-gen-solution/rest-apis/background-removal.mdx
               - page: Upscaling
-                path: media-gen-solution/rest-apis/upscaling.mdx
+                path: docs/media-gen-solution/rest-apis/upscaling.mdx
               - page: Adetailer
-                path: media-gen-solution/rest-apis/adetailer.mdx
+                path: docs/media-gen-solution/rest-apis/adetailer.mdx
           - page: Inference models
-            path: getting-started/inference-models.mdx
+            path: docs/getting-started/inference-models.mdx
           - page: Create an API token
-            path: getting-started/how-to-create-an-octoai-access-token.mdx
+            path: docs/getting-started/how-to-create-an-octoai-access-token.mdx
       - section: Text Gen Solution
         contents:
           - page: Getting started
-            path: text-gen-solution/getting-started.mdx
+            path: docs/text-gen-solution/getting-started.mdx
           - page: Text Gen Python SDK
-            path: text-gen-solution/python-sdk.mdx
+            path: docs/text-gen-solution/python-sdk.mdx
           - page: Text Gen TypeScript SDK
-            path: text-gen-solution/typescript-sdk.mdx
+            path: docs/text-gen-solution/typescript-sdk.mdx
           - page: Using JSON mode with Text Gen endpoints
-            path: text-gen-solution/json-mode.mdx
+            path: docs/text-gen-solution/json-mode.mdx
           - page: Using Llama Guard to moderate text
-            path: text-gen-solution/llama-guard.mdx
+            path: docs/text-gen-solution/llama-guard.mdx
           - page: Using Unstructured.io for embedding documents
             path: >-
-              text-gen-solution/using-unstructured-io-for-embedding-documents.mdx
+              docs/text-gen-solution/using-unstructured-io-for-embedding-documents.mdx
       - section: Media Gen Solution
         contents:
           - page: Getting started
-            path: media-gen-solution/getting-started.mdx
+            path: docs/media-gen-solution/getting-started.mdx
           - section: Customizations
             contents:
               - page: Overview
-                path: media-gen-solution/customizations/overview.mdx
+                path: docs/media-gen-solution/customizations/overview.mdx
               - page: Checkpoints
-                path: media-gen-solution/customizations/checkpoints.mdx
+                path: docs/media-gen-solution/customizations/checkpoints.mdx
               - page: LoRAs
-                path: media-gen-solution/customizations/loras.mdx
+                path: docs/media-gen-solution/customizations/loras.mdx
               - page: Textual Inversions
-                path: media-gen-solution/customizations/textual-inversions.mdx
+                path: docs/media-gen-solution/customizations/textual-inversions.mdx
               - page: Prompt Weighting
-                path: media-gen-solution/customizations/prompt-weighting.mdx
+                path: docs/media-gen-solution/customizations/prompt-weighting.mdx
               - page: ControlNets
-                path: media-gen-solution/customizations/controlnets.mdx
+                path: docs/media-gen-solution/customizations/controlnets.mdx
           - section: Optimizations
             contents:
               - page: SDXL Lighting
-                path: media-gen-solution/optimizations/sdxl-lighting.mdx
+                path: docs/media-gen-solution/optimizations/sdxl-lighting.mdx
               - page: SSD
-                path: media-gen-solution/optimizations/ssd.mdx
+                path: docs/media-gen-solution/optimizations/ssd.mdx
               - page: Samplers
-                path: media-gen-solution/optimizations/samplers.mdx
+                path: docs/media-gen-solution/optimizations/samplers.mdx
           - page: Image Generator Python client
-            path: python-sdk/image-generator-client.mdx
+            path: docs/python-sdk/image-generator-client.mdx
           - section: Fine-tuning Stable Diffusion
             contents:
               - page: Overview
                 path: >-
-                  media-gen-solution/fine-tuning-stable-diffusion/fine-tuning-stable-diffusion.mdx
+                  docs/media-gen-solution/fine-tuning-stable-diffusion/fine-tuning-stable-diffusion.mdx
               - page: TypeScript SDK
                 path: >-
-                  media-gen-solution/fine-tuning-stable-diffusion/typescript-sdk-finetuning.mdx
+                  docs/media-gen-solution/fine-tuning-stable-diffusion/typescript-sdk-finetuning.mdx
           - section: Managing custom assets with Asset Library
             contents:
               - page: Uploading custom assets
                 path: >-
-                  media-gen-solution/uploading-a-custom-asset-to-the-octoai-asset-library.mdx
+                  docs/media-gen-solution/uploading-a-custom-asset-to-the-octoai-asset-library.mdx
               - page: Asset Library Python client
-                path: python-sdk/asset-orchestrator-client.mdx
+                path: docs/python-sdk/asset-orchestrator-client.mdx
               - page: Asset Library TypeScript client
-                path: typescript-sdk/asset-library.mdx
+                path: docs/typescript-sdk/asset-library.mdx
           - section: Supported image utilities
             contents:
               - page: Inpainting
-                path: media-gen-solution/image-utilities/inpainting.mdx
+                path: docs/media-gen-solution/image-utilities/inpainting.mdx
               - page: Outpainting
-                path: media-gen-solution/image-utilities/outpainting.mdx
+                path: docs/media-gen-solution/image-utilities/outpainting.mdx
               - page: Adetailer
-                path: media-gen-solution/image-utilities/adetailer.mdx
+                path: docs/media-gen-solution/image-utilities/adetailer.mdx
               - page: Photo Merge
-                path: media-gen-solution/image-utilities/photo-merge.mdx
+                path: docs/media-gen-solution/image-utilities/photo-merge.mdx
               - page: Upscaling
-                path: media-gen-solution/image-utilities/upscaling.mdx
+                path: docs/media-gen-solution/image-utilities/upscaling.mdx
               - page: Background Removal
-                path: media-gen-solution/image-utilities/bg-removal.mdx
+                path: docs/media-gen-solution/image-utilities/bg-removal.mdx
       - section: Compute Service
         contents:
           - page: Getting started
-            path: compute-service/compute-getting-started.mdx
+            path: docs/compute-service/compute-getting-started.mdx
           - section: Create an endpoint from an existing container
             contents:
               - page: Overview
                 path: >-
-                  compute-service/create-endpoint-from-existing-container/create-custom-endpoints-from-a-container.mdx
+                  docs/compute-service/create-endpoint-from-existing-container/create-custom-endpoints-from-a-container.mdx
               - page: Pulling containers from a private registry
                 path: >-
-                  compute-service/create-endpoint-from-existing-container/pulling-containers-from-a-private-registry.mdx
+                  docs/compute-service/create-endpoint-from-existing-container/pulling-containers-from-a-private-registry.mdx
               - page: Setting up account-wide secrets for your custom endpoints
                 path: >-
-                  compute-service/create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints.mdx
+                  docs/compute-service/create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints.mdx
           - page: Create a container and endpoint using the CLI
-            path: compute-service/create-custom-endpoint-using-the-cli.mdx
+            path: docs/compute-service/create-custom-endpoint-using-the-cli.mdx
           - page: "Advanced: build a container from scratch in Python"
             path: >-
-              compute-service/advanced-build-a-container-from-scratch-in-python.mdx
+              docs/compute-service/advanced-build-a-container-from-scratch-in-python.mdx
           - page: Healthcheck path in custom containers
-            path: compute-service/health-check-path-in-custom-containers.mdx
+            path: docs/compute-service/health-check-path-in-custom-containers.mdx
       - section: Private Deployment
         contents:
           - page: OctoStack
-            path: private-deployment/octostack.mdx
+            path: docs/private-deployment/octostack.mdx
           - page: SecureLink guide
-            path: private-deployment/secure-link.mdx
+            path: docs/private-deployment/secure-link.mdx
       - section: CLI
         contents:
           - page: CLI installation
-            path: cli/cli-and-sdk-installation.mdx
+            path: docs/cli/cli-and-sdk-installation.mdx
           - page: CLI reference
-            path: cli/cli-reference-guide.mdx
+            path: docs/cli/cli-reference-guide.mdx
       - section: Python SDK
         contents:
           - page: Python SDK installation
-            path: python-sdk/installation-and-setup.mdx
+            path: docs/python-sdk/installation-and-setup.mdx
           - page: Python SDK inference
-            path: python-sdk/python-sdk-inferences.mdx
+            path: docs/python-sdk/python-sdk-inferences.mdx
           - link: Python SDK reference
             href: https://octoml.github.io/octoai-python-sdk/octoai.html
       - section: TypeScript SDK
         contents:
           - page: TypeScript SDK installation
-            path: typescript-sdk/installation-and-setup.mdx
+            path: docs/typescript-sdk/installation-and-setup.mdx
           - page: TypeScript SDK inference
-            path: typescript-sdk/typescript-sdk-inferences.mdx
+            path: docs/typescript-sdk/typescript-sdk-inferences.mdx
           - link: TypeScript SDK reference
             href: https://octoml.github.io/octoai-typescript-sdk/
       - section: FAQs
         contents:
           - page: Rate limits
-            path: faqs/rate-limits.mdx
+            path: docs/faqs/rate-limits.mdx
           - page: Privacy & security
-            path: faqs/privacy-and-security.mdx
+            path: docs/faqs/privacy-and-security.mdx
           - page: RAG with OctoAI
-            path: faqs/rag.mdx
+            path: docs/faqs/rag.mdx
           - page: Service regions
-            path: faqs/service-regions.mdx
+            path: docs/faqs/service-regions.mdx
           - page: Multi-user accounts
-            path: faqs/multi-user-accounts.mdx
+            path: docs/faqs/multi-user-accounts.mdx
           - page: Open source licenses
-            path: faqs/open-source-licenses.mdx
+            path: docs/faqs/open-source-licenses.mdx
   - tab: apiReference
     layout:
       - section: OctoAI API
         contents:
           - page: Authentication
-            path: api-reference/octoai-api/authentication.mdx
+            path: docs/api-reference/octoai-api/authentication.mdx
           - page: Inference
-            path: api-reference/octoai-api/inference.mdx
+            path: docs/api-reference/octoai-api/inference.mdx
           - api: OctoAI API
             api-name: octoai
             flattened: true
@@ -243,60 +243,60 @@ navigation:
       - section: Tutorials
         contents:
           - page: Image Generation app E2E example
-            path: tutorials/image-generation-application-e2e-example.mdx
+            path: docs/tutorials/image-generation-application-e2e-example.mdx
           - section: LLM Q&A applications using LangChain
             contents:
               - page: Overview
                 path: >-
-                  tutorials/llm-q-and-a-applications-using-langchain/overview.mdx
+                  docs/tutorials/llm-q-and-a-applications-using-langchain/overview.mdx
               - page: Python Wrapper for LangChain
                 path: >-
-                  tutorials/llm-q-and-a-applications-using-langchain/python-wrapper-for-langchain.mdx
+                  docs/tutorials/llm-q-and-a-applications-using-langchain/python-wrapper-for-langchain.mdx
               - page: Environment Setup
                 path: >-
-                  tutorials/llm-q-and-a-applications-using-langchain/environment-setup.mdx
+                  docs/tutorials/llm-q-and-a-applications-using-langchain/environment-setup.mdx
               - page: Generic Chat App
                 path: >-
-                  tutorials/llm-q-and-a-applications-using-langchain/create-a-generic-chat-app.mdx
+                  docs/tutorials/llm-q-and-a-applications-using-langchain/create-a-generic-chat-app.mdx
               - page: "Code walkthrough: Q&A on a custom PDF"
                 path: >-
-                  tutorials/llm-q-and-a-applications-using-langchain/create-q-and-a-app-on-custom-pdf.mdx
+                  docs/tutorials/llm-q-and-a-applications-using-langchain/create-q-and-a-app-on-custom-pdf.mdx
           - section: Build a Movie Chatbot App
             contents:
               - page: Prerequisites & steps
                 path: >-
-                  tutorials/building-a-movie-chatbot-app/prerequisites-and-steps-to-build-movie-chatbot-app.mdx
+                  docs/tutorials/building-a-movie-chatbot-app/prerequisites-and-steps-to-build-movie-chatbot-app.mdx
               - page: "Code walkthrough: Movie Chatbot"
                 path: >-
-                  tutorials/building-a-movie-chatbot-app/building-a-movie-chatbot-app/movie-chatbot-csv-file.mdx
+                  docs/tutorials/building-a-movie-chatbot-app/building-a-movie-chatbot-app/movie-chatbot-csv-file.mdx
   - tab: releaseNotes
     layout:
       - section: "2024"
         contents:
           - page: March
-            path: release-notes/2024/march.mdx
+            path: docs/release-notes/2024/march.mdx
           - page: February
-            path: release-notes/2024/february.mdx
+            path: docs/release-notes/2024/february.mdx
           - page: January
-            path: release-notes/2024/january.mdx
+            path: docs/release-notes/2024/january.mdx
       - section: "2023"
         contents:
           - page: December
-            path: release-notes/2023/december.mdx
+            path: docs/release-notes/2023/december.mdx
           - page: November
-            path: release-notes/2023/november.mdx
+            path: docs/release-notes/2023/november.mdx
           - page: October
-            path: release-notes/2023/october.mdx
+            path: docs/release-notes/2023/october.mdx
           - page: September
-            path: release-notes/2023/september.mdx
+            path: docs/release-notes/2023/september.mdx
           - page: August
-            path: release-notes/2023/august.mdx
+            path: docs/release-notes/2023/august.mdx
           - page: July
-            path: release-notes/2023/july.mdx
+            path: docs/release-notes/2023/july.mdx
           - page: June
-            path: release-notes/2023/june.mdx
+            path: docs/release-notes/2023/june.mdx
           - page: May
-            path: release-notes/2023/may.mdx
+            path: docs/release-notes/2023/may.mdx
   - tab: community
   - tab: support
 
@@ -304,25 +304,25 @@ typography:
   bodyFont:
     name: Faktum
     paths:
-      - path: ./assets/fonts/Faktum-Regular.woff2
+      - path: ./docs/assets/fonts/Faktum-Regular.woff2
         weight: "400"
         style: normal
-      - path: ./assets/fonts/Faktum-Medium.woff2
+      - path: ./docs/assets/fonts/Faktum-Medium.woff2
         weight: "500"
         style: normal
-      - path: ./assets/fonts/Faktum-SemiBold.woff2
+      - path: ./docs/assets/fonts/Faktum-SemiBold.woff2
         weight: "600"
         style: normal
   headingsFont:
     name: Faktum
     paths:
-      - path: ./assets/fonts/Faktum-Regular.woff2
+      - path: ./docs/assets/fonts/Faktum-Regular.woff2
         weight: "400"
         style: normal
-      - path: ./assets/fonts/Faktum-Medium.woff2
+      - path: ./docs/assets/fonts/Faktum-Medium.woff2
         weight: "500"
         style: normal
-      - path: ./assets/fonts/Faktum-SemiBold.woff2
+      - path: ./docs/assets/fonts/Faktum-SemiBold.woff2
         weight: "600"
         style: normal
 
