@@ -12,7 +12,7 @@ OctoAI empowers you to customize images by leveraging assets like checkpoints, L
 
 This tutorial explains how to upload your own private assets to the Asset Library.
 
-1. First download the OctoAI CLI by following the instructions in [CLI Installation.](/bring-your-own-model/cli-and-sdk-installation) Check that it is properly installed by running the following in your terminal:
+1. First download the OctoAI CLI by following the instructions in [CLI Installation.](../cli/cli-and-sdk-installation.mdx) Check that it is properly installed by running the following in your terminal:
 
 ```bash bash
 $ octoai asset --help
@@ -59,7 +59,6 @@ octoai asset create \
   --data-type fp16 \
   --type checkpoint \
   --description "Dreamshaper v7"
-  --public false
 ```
 
 You can alternatively upload the file via public URL using `upload-from-url`:
@@ -73,5 +72,4 @@ octoai asset create \
   --data-type fp16 \
   --type checkpoint \
   --description "Dreamshaper v7"
-  --public false
 ```

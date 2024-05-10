@@ -6,28 +6,28 @@ slug: python-sdk/python-sdk-inferences
 
 ### OctoAI Python SDK at a glance
 
-If you need assistance with any specifics for using the OctoAI Python SDK, please see the [Python SDK Reference](https://octoml.github.io/octoai-python-sdk/octoai.html).
-
 The OctoAI Python SDK is intended to help you use OctoAI endpoints. At its simplest form, it allows you to run inferences against an endpoint by providing a dictionary with the necessary inputs.
 
 ```Python Python
-from octoai.client import Client
+import time
+from octoai.client import OctoAI
 
-client = Client()
+client = OctoAI()
 
 # It allows you to run inferences
 output = client.infer(endpoint_url="your-endpoint-url", inputs={"keyword": "dictionary"})
 
 # It also allows for inference streams for LLMs
 for token in client.infer_stream("your-endpoint-url", inputs={"keyword": "dictionary"}):
-  if token.get("object") == "chat.completion.chunk":
-    # Do stuff with the token
+    if token.get("object") == "chat.completion.chunk":
+        # Do stuff with the token
+        pass
 
 # And for server-side asynchronous inferences
 future = client.infer_async("your-endpoint-url", {"keyword": "dictionary"})
 # Typically, you'd collect additional futures then poll for status, but for the sake of example...
 while not client.is_future_ready(future):
-  time.sleep(1)
+    time.sleep(1)
 # Once the results are ready, you can use them in the same way as you
 # typically do for demo endpoints
 result = client.get_future_result(future)
@@ -35,140 +35,7 @@ result = client.get_future_result(future)
 # And includes healthChecks
 if client.health_check("your-healthcheck-url") == 200:
 	# Run some inferences
+    pass
 
 ```
 
-The [infer](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.infer) and [infer\_stream](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.infer%5Fstream) methods are synchronous. 
-
-#### Example: Whisper Speech Recognition
-
-Whisper is a natural language processing model that converts audio to text. Like with Stable Diffusion, we’ll use the base64 library for encoding an mp3 or a wav file into a base64 string. 
-
-```Python Python
-from octoai.client import Client
-import base64
-
-whisper_url = "https://whisper-demo-kk0powt97tmb.octoai.run/predict"
-whisper_health_check = "https://whisper-demo-kk0powt97tmb.octoai.run/healthcheck"
-
-# First, we need to convert an audio file to base64.
-file_path = "she_sells_seashells_by_the_sea_shore.wav"
-with open(file_path, "rb") as f:
-    encoded_audio = base64.b64encode(f.read())
-    base64_string = encoded_audio.decode("utf-8")
-
-# These are the inputs we will send to the endpoint, including the audio base64 string.
-inputs = {
-    "language": "en",
-    "task": "transcribe",
-    "audio": base64_string,
-}
-
-OCTOAI_TOKEN = "API Token goes here from guide on creating OctoAI API token"
-# The client will also identify if OCTOAI_TOKEN is set as an environment variable
-# So if you have it set, you can simply use:
-# client = Client()
-client = Client(token=OCTOAI_TOKEN)
-if client.health_check(whisper_health_check) == 200:
-  outputs = client.infer(endpoint_url=whisper_url, inputs=inputs)
-  transcription = outputs["transcription"]
-  assert "She sells seashells by the seashore" in transcription
-  assert (
-        "She sells seashells by the seashore"
-        in outputs["response"]["segments"][0]["text"]
-    )
-```
-
-With this particular test file, we will have “She sells seashells by the sea shore.” printed in our command line.
-
-#### Whisper Outputs
-
-The above `outputs` variable returns JSON in something like the following format.
-
-```json
-{
-  prediction_time_ms: 626.42526,
-  response: {
-    segments: [ [Object] ],
-    word_segments: [
-      [Object]
-    ]
-  },
-  transcription: ' She sells seashells by the seashore.'
-}
-
-```
-
-Each `segment` is an object that looks something like:
-
-```json
-{
-  start: 5.553,
-  end: 8.66,
-  text: ' She sells seashells by the seashore.',
-  words: [
-    {
-      word: 'She',
-      start: 5.553,
-      end: 5.633,
-      score: 0.945,
-      speaker: null
-    },
-    {
-      word: 'sells',
-      start: 5.653,
-      end: 5.814,
-      score: 0.328,
-      speaker: null
-    },
-    // etc...
-  ],
-  speaker: null
-}
-
-```
-
-Each `word_segment` is an object that looks something like:
-
-```
-{ word: 'She', start: 0.010, end: 0.093, score: 0.883, speaker: null }
-```
-
-### Python SDK asynchronous inference
-
-The asynchronous inference API addresses longer inferences so you can so you can provide responses faster to clients. The inference data is stored for 24 hours and is then deleted. This can be used simply in the Python SDK due to it managing your headers and also authentication, as well as providing helper methods to manage the responses received from the server.
-
-```Python Python
-from octoai.client import Client
-from octoai.types import Audio
-import time
-
-audio_base64 = Audio.from_file("she_sells_seashells.wav").audio_b64  # put your file location here
-inputs = {"language": "en", "task": "transcribe", "audio": audio_base64}
-OCTOAI_API_TOKEN = "API Token goes here from guide on creating OctoAI API token"
-# The client will also identify if OCTOAI_TOKEN is set as an environment variable
-client = Client(token=OCTOAI_API_TOKEN)
-
-whisper_url = "https://whisper-demo-kk0powt97tmb.octoai.run/predict"
-whisper_health_check = "https://whisper-demo-kk0powt97tmb.octoai.run/healthcheck"
-
-# First, you can verify the endpoint is healthy.
-if client.health_check(whisper_health_check) == 200:
-  future = client.infer_async(whisper_url, inputs)
-
-# Typically, you'd collect additional futures then poll for status,
-# but for the sake of example...
-while not client.is_future_ready(future):
-  time.sleep(1)
-
-# Once the results are ready, you can use them in the same way as you
-# typically do for demo endpoints
-result = client.get_future_result(future)
-
-assert (
-  "She sells seashells by the seashore"
-  in result["response"]["segments"][0]["text"]
-)
-```
-
-The pattern of creating a future with the same URL and inputs is the same regardless of the endpoint you're using.  If you merge these steps with [client.infer\_async](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.infer%5Fasync) and [client.is\_future\_ready](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.is%5Ffuture%5Fready) as well as [client.get\_future\_result](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.get%5Ffuture%5Fresult), all endpoints can be used asynchronously on the server side, allowing you to collect futures and poll for when one is ready then surface those results. 

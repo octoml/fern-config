@@ -32,9 +32,9 @@ tabs:
   apiReference:
     display-name: API Reference
     slug: api-reference
-  tutorials:
-    display-name: Tutorials
-    slug: tutorials
+  integrations:
+    display-name: Integrations
+    slug: integrations
   releaseNotes:
     display-name: Release Notes
     slug: release-notes
@@ -195,16 +195,14 @@ navigation:
             path: docs/python-sdk/installation-and-setup.mdx
           - page: Python SDK inference
             path: docs/python-sdk/python-sdk-inferences.mdx
-          - link: Python SDK reference
-            href: https://octoml.github.io/octoai-python-sdk/octoai.html
+          - page: Upgrading from octoai-sdk
+            path: docs/python-sdk/upgrading-from-old-sdk.mdx
       - section: TypeScript SDK
         contents:
           - page: TypeScript SDK installation
             path: docs/typescript-sdk/installation-and-setup.mdx
-          - page: TypeScript SDK inference
-            path: docs/typescript-sdk/typescript-sdk-inferences.mdx
-          - link: TypeScript SDK reference
-            href: https://octoml.github.io/octoai-typescript-sdk/
+          - page: Upgrading from @octoai/client
+            path: docs/typescript-sdk/upgrading-from-old-sdk.mdx
       - section: FAQs
         contents:
           - page: Rate limits
@@ -238,37 +236,22 @@ navigation:
         api-name: fine-tuning
       - api: Asset Library API
         api-name: asset-library
-  - tab: tutorials
+  - tab: integrations
     layout:
-      - section: Tutorials
+      - section: Integrations
         contents:
-          - page: Image Generation app E2E example
-            path: docs/tutorials/image-generation-application-e2e-example.mdx
-          - section: LLM Q&A applications using LangChain
-            contents:
-              - page: Overview
-                path: >-
-                  docs/tutorials/llm-q-and-a-applications-using-langchain/overview.mdx
-              - page: Python Wrapper for LangChain
-                path: >-
-                  docs/tutorials/llm-q-and-a-applications-using-langchain/python-wrapper-for-langchain.mdx
-              - page: Environment Setup
-                path: >-
-                  docs/tutorials/llm-q-and-a-applications-using-langchain/environment-setup.mdx
-              - page: Generic Chat App
-                path: >-
-                  docs/tutorials/llm-q-and-a-applications-using-langchain/create-a-generic-chat-app.mdx
-              - page: "Code walkthrough: Q&A on a custom PDF"
-                path: >-
-                  docs/tutorials/llm-q-and-a-applications-using-langchain/create-q-and-a-app-on-custom-pdf.mdx
-          - section: Build a Movie Chatbot App
-            contents:
-              - page: Prerequisites & steps
-                path: >-
-                  docs/tutorials/building-a-movie-chatbot-app/prerequisites-and-steps-to-build-movie-chatbot-app.mdx
-              - page: "Code walkthrough: Movie Chatbot"
-                path: >-
-                  docs/tutorials/building-a-movie-chatbot-app/building-a-movie-chatbot-app/movie-chatbot-csv-file.mdx
+          - page: All
+            path: docs/integrations/overview.mdx
+          - page: LangChain
+            path: docs/integrations/langchain.mdx
+          - page: Pinecone
+            path: docs/integrations/pinecone.mdx
+          - page: Unstructured.io
+            path: docs/integrations/unstructured.mdx
+          - page: OpenRouter
+            path: docs/integrations/openrouter.mdx
+          - page: LlamaIndex
+            path: docs/integrations/llamaindex.mdx
   - tab: releaseNotes
     layout:
       - section: "2024"

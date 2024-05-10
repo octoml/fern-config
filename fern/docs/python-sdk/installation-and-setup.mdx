@@ -8,19 +8,19 @@ slug: python-sdk/installation-and-setup
 
 The SDK currently supports Python versions 3.8.1 and upwards. It is strongly recommended that you use a virtual environment such as [Conda](https://conda.io/projects/conda/en/latest/index.html) or [venv](https://docs.python.org/3/library/venv.html) to manage Python packages for your development environment. This helps prevent incompatible dependencies with packages installed irrelevant to your current project or that conflict with system dependencies.
 
-You can view our full release history on [PyPi](https://pypi.org/project/octoai-sdk/#history) for the latest version of the Python SDK.
+You can view our full release history on [PyPi](https://pypi.org/project/octoai/#history) for the latest version of the Python SDK.
 
-For Mac and Linux, use pip to install the octoai-sdk. Python package. We strongly recommend that you install OctoAI in a virtualenv, to avoid conflicting with your system packages.
+For Mac and Linux, use pip to install the `octoai` sdk Python package. We strongly recommend that you install OctoAI in a virtualenv, to avoid conflicting with your system packages.
 
 ```shell shell
-python3 -m pip install octoai-sdk
+python3 -m pip install octoai
 ```
 
 Please refer to [CLI & SDK Installation](/bring-your-own-model/cli-and-sdk-installation) for how to install the SDK in conjunction with the CLI for the authoring tool.
 
 ### Setting API token as an environment variable
 
-In order to access endpoints, [create an OctoAI API token](../getting-started/how-to-create-an-octoai-access-token.mdx). Set `OCTOAI_TOKEN` to the token value wherever you set your environment variables, such as your `.bashrc` or `.env` file.  
+In order to access endpoints, [create an OctoAI API token](../getting-started/how-to-create-an-octoai-access-token.mdx). Set `OCTOAI_TOKEN` to the token value wherever you set your environment variables, such as your `.bashrc` or `.env` file.
 
 ```bash bash
 export OCTOAI_TOKEN=YOUR_TOKEN_HERE
@@ -29,15 +29,15 @@ export OCTOAI_TOKEN=YOUR_TOKEN_HERE
 Then when you instantiate the client, it will detect the `OCTOAI_TOKEN` as an envvar and set it for you.
 
 ```Python Python
-from octoai.client import Client
+from octoai.client import OctoAI
 
-client = Client()
+client = OctoAI()
 ```
 
-Alternatively, on creation of the [Client](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client) class, you can set your token, or the Client also accepts a path to where you've stored your API token from the `config_path` variable. Please see the [Client](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client) docs for more information.
+Alternatively, on creation of the `OctoAI` class, you can set your token, or the Client also accepts a path to where you've stored your API token from the `config_path` variable. Please see the `OctoAI` docs for more information.
 
 ```Python Python
-from octoai.client import Client
+from octoai.client import OctoAI
 
-client = Client(token=YOUR_OCTOAI_API_TOKEN_HERE)
+client = OctoAI(api_key="YOUR_OCTOAI_API_TOKEN_HERE")
 ```

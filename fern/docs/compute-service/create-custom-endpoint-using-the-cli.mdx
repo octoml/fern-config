@@ -8,7 +8,7 @@ slug: compute-service/create-custom-endpoint-using-the-cli
 
 ## Overview
 
-The `octoai` command-line interface (CLI) makes it easy for you create a custom endpoint for OctoAI Compute Service. The `octoai` CLI guides you through the process of creating an initial valid Python application with an example model, building it, and deploying it. 
+The `octoai` command-line interface (CLI) makes it easy for you create a custom endpoint for OctoAI Compute Service. The `octoai` CLI guides you through the process of creating an initial valid Python application with an example model, building it, and deploying it.
 
 The `octoai` CLI includes some endpoint scaffolds with example models that you can deploy and try out right away. After you complete that initial workflow, you can follow the instructions in this document to modify the initial application to use the model or code of your choice on OctoAI Compute Service.
 
@@ -292,14 +292,14 @@ Congratulations! You have now created your first endpoint on OctoAI Compute Serv
 The client code in `test_request.py` looks like this:
 
 ```Python Python
-from octoai.client import Client
+from octoai.client import OctoAI
 
 inputs = {"prompt": "Hello world!"}
 
 def main(endpoint):
     """Run inference against the endpoint."""
     # create an OctoAI client
-    client = Client()
+    client = OctoAI()
 
     # perform inference
     response = client.infer(endpoint_url=f"{endpoint}/infer", inputs=inputs)
@@ -321,7 +321,7 @@ For example, using the CLI the logs look similar to this:
 
 ```Text Text
 $ octoai logs --name hello-world
-19s   hello-world-<hash>   octoai server                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+19s   hello-world-<hash>   octoai server
 18s   hello-world-<hash>   Using service in service.HelloService.
 18s   hello-world-<hash>   run
 18s   hello-world-<hash>   Setting up.
@@ -348,7 +348,7 @@ This section shows you how to modify the `hello-world` endpoint implementation t
 
 #### Step 1: Add Python Requirements
 
-The `hello-world` endpoint implementation contains an empty `requirements.txt` file. 
+The `hello-world` endpoint implementation contains an empty `requirements.txt` file.
 
 Edit this file and add the corresponding requirements for Flan-T5:
 
@@ -393,12 +393,12 @@ In this case, our model of interest is of the same modality as the `hello-world`
 
 #### Step 3: Modify Sample Client Code
 
-The `hello-world` endpoint implementation has a sample `test_request.py` that makes a request to your endpoint. In this case, our model of interest is of the same modality as the `hello-world` example, so you can just change the prompt. 
+The `hello-world` endpoint implementation has a sample `test_request.py` that makes a request to your endpoint. In this case, our model of interest is of the same modality as the `hello-world` example, so you can just change the prompt.
 
 ```Python Python
 import argparse
 
-from octoai.client import Client
+from octoai.client import OctoAI
 
 inputs = {"prompt": "What country is California in?"}
 ...
@@ -478,14 +478,13 @@ The `octoai.types` package contains helpful classes if you are customizing your 
 
 ```Python Python
 from octoai.service import Service
-from octoai.types import Image
 
 class MyService(Service):
 
     def infer(self, image: Image) -> str:
         image_pil = image.to_pil()
         output = self.model(image_pil)
-        
+
         return output[0]
 ```
 
@@ -504,7 +503,7 @@ class MyService(Service):
     def infer(self, audio: Audio) -> str:
         audio_array, sampling_rate = audio.to_numpy()
         output = self.model(audio_array, sampling_rate)
-        
+
         return output[0]
 ```
 
@@ -523,7 +522,7 @@ class MyService(Service):
     def infer(self, video: Video) -> str:
         video_frames = video.to_numpy()
         output = self.model(video_frames)
-        
+
         return output[0]
 ```
 
@@ -600,19 +599,19 @@ The OctoAI SDK enables you to define additional routes in your endpoint. The fol
 from octoai.service import Service, path
 
 class MultipleRoutesService(Service):
-  
+
   def setup(self):
     print("Setting up MultipleRoutesService")
-  
+
   # the infer() endpoint is always required
   def infer(self, prompt: str) -> str:
     return prompt
-  
+
   # this method is exposed as /new-route
   @path("/new-route")
   def my_new_route(self, input_text: str):
     return input_text
-  
+
   # this method is exposed as /my-new-route2
   def my_new_route2(self, input_text: str):
     return input_text
@@ -644,7 +643,7 @@ endpoint_config:
   env_overrides:                # Environment variables to set in each replica (optional)
     key1: value1
     key2: value2
-  registry:                       
+  registry:
     host: docker.io             # Registry hostname (required)
     path: username/yolov8       # Registry path to image (required)
     tag: v1                     # Tag (optional; not recommended to be set. Defaults to a generated UUID.)

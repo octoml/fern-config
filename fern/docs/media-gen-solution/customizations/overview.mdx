@@ -8,7 +8,7 @@ slug: media-gen-solution/customizations/overview
 ---
 
 
-With OctoAI Media Gen solution, you can effortlessly integrate Stable Diffusion’s customizable image generation features into your application. While standard pre-trained image generation assets from repositories like HuggingFace may suffice for simple tasks, customization becomes crucial for commercial uses. Customization allows precise control over generating specific subjects and environments, which is essential for most commercial needs. Stable Diffusion, offered by OctoAI, provides both basic and advanced customization options. These include adjusting prompt weights, applying style presets, and employing advanced techniques like LoRAs, checkpoints, textual inversions, and ControlNets. Additionally, with OctoAI, you can create your own LoRA asset using custom image datasets and leverage it to meet your business requirements. To learn more, review [Fine-tuning on OctoAI](../fine-tuning-stable-diffusion/fine-tuning-stable-diffusion.mdx) 
+With OctoAI Media Gen solution, you can effortlessly integrate Stable Diffusion’s customizable image generation features into your application. While standard pre-trained image generation assets from repositories like HuggingFace may suffice for simple tasks, customization becomes crucial for commercial uses. Customization allows precise control over generating specific subjects and environments, which is essential for most commercial needs. Stable Diffusion, offered by OctoAI, provides both basic and advanced customization options. These include adjusting prompt weights, applying style presets, and employing advanced techniques like LoRAs, checkpoints, textual inversions, and ControlNets. Additionally, with OctoAI, you can create your own LoRA asset using custom image datasets and leverage it to meet your business requirements. To learn more, review [Fine-tuning on OctoAI](../fine-tuning-stable-diffusion/fine-tuning-stable-diffusion.mdx)
 
 <Note> Pro or Enterprise account is required to access fine-tuning. </Note>
 
@@ -44,12 +44,12 @@ curl -X POST "https://image.octoai.run/generate/sdxl" \
 
 ```Python Python
 import os
-from octoai.clients.image_gen import Engine, ImageGenerator
+from octoai.util import to_file
+from octoai.client import OctoAI
 
 if __name__ == "__main__":
-    image_gen = ImageGenerator(token=os.environ.get("OCTOAI_TOKEN"))
-    image_gen_response = image_gen.generate(
-        engine=Engine.SDXL,
+    client = OctoAI(api_key=os.environ.get("OCTOAI_TOKEN"))
+    image_gen_response = client.image_gen.generate_sdxl(
         prompt="Commercial photography,(snowy:0.8) ,luxury perfume bottle, angelic silver light, studio light, high resolution photography, fine details",
         negative_prompt="Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
         checkpoint="octoai:RealVisXL",
@@ -68,42 +68,45 @@ if __name__ == "__main__":
     images = image_gen_response.images
 
     for i, image in enumerate(images):
-        image.to_file(f"result{i}.jpg")
+        to_file(image, f"result{i}.jpg")
 ```
 ```typescript Typescript
 import fs from "fs";
-import { Client } from "@octoai/client";
+import { OctoAIClient } from "@octoai/sdk";
 
-const client = new Client(OCTOAI_TOKEN);
-const endpointUrl = "https://image.octoai.run/generate/sdxl";
+const client = new OctoAIClient({
+  apiKey: "<OCTOAI_TOKEN>",
+});
 
-const inputs = {
+const { images } = await client.imageGen.generateSdxl({
   "prompt": "Commercial photography,(snowy:0.8) ,luxury perfume bottle, angelic silver light, studio light, high resolution photography, fine details",
-  "negative_prompt": "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
+  "negativePrompt": "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
   "checkpoint": "octoai:RealVisXL",
   "loras": {
     "octoai:add-detail": 1
   },
-  "textual_inversions": {
+  "textualInversions": {
     "octoai:NegativeXL": "“negativeXL_D”"
   },
   "width": 1024,
   "height": 1024,
-  "num_images": 1,
+  "numImages": 1,
   "sampler": "DDIM",
   "steps": 30,
-  "cfg_scale": 12,
-  "use_refiner": true,
-  "high_noise_frac": 0.8,
-  "style_preset": "base"
-};
+  "cfgScale": 12,
+  "useRefiner": true,
+  "highNoiseFrac": 0.8,
+  "stylePreset": "base"
+})
 
-const outputs = await client.infer<any>(endpointUrl, inputs);
-
-outputs.images.forEach((output, i) => {
+images.forEach((output, i) => {
   const buffer = Buffer.from(output.image_b64, "base64");
   fs.writeFileSync(`result${i}.jpg`, buffer);
 });
+
+
+import fs from "fs";
+import { Client } from "@octoai/client";
 ```
 </CodeGroup>
 

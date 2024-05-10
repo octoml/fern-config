@@ -12,30 +12,36 @@ For a quick glance at features for the AssetLibrary Client, please see the [Asse
 #### Requirements
 
 * First, [create an OctoAI API token.](../getting-started/how-to-create-an-octoai-access-token.mdx)
-* Then, complete [TypeScript SDK Installation & Setup.](installation-and-setup.mdx). Must be version >= 0.3.1.  
-   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `client = Client(process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
+* Then, complete [TypeScript SDK Installation & Setup.](installation-and-setup.mdx).
+   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `const client = new OctoAIClient()` or pass the token as a parameter to the constructor.
 
 #### Overview of AssetLibrary API
 
 ```TypeScript TypeScript
-import { Client, LoraData } from "@octoai/client";
+import { OctoAIClient } from "@octoai/sdk";
 
-const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN;
-const client = new Client(OCTOAI_TOKEN);
+const client = new OctoAIClient();
 
 async function assetExample() {
     // You can get a list of all of your assets
-    const assetListResponse = await client.asset.list({});
+    const assetListResponse = await client.assetLibrary.list();
     console.log(JSON.stringify(assetListResponse.data));
+
     // Or specify only public assets from octoai for a specific engine, format, asset_type, etc.
-    const assetListStableDiffusion = await client.asset.list({is_public: true, owner: "octoai", engine: "image/stable-diffusion-v1-5"});
+    const assetListStableDiffusion = await client.assetLibrary.list({
+        isPublic: true,
+        owner: "octoai",
+        engine: "image/stable-diffusion-v1-5"
+    });
     console.log(JSON.stringify(assetListStableDiffusion.data));
+
     // And also create assets which will be covered further below
     // You can get a specific asset, in this case one named "origami-paper" created in the example.
-    const asset = await client.asset.get({name: "origami-paper"});
+    const asset = await client.assetLibrary.get({ name: "origami-paper" });
     console.log(JSON.stringify(asset));
+
     // And delete assets.
-    await client.asset.delete(asset.id);
+    await client.assetLibrary.delete(asset.id);
 }
 assetExample().then();
 ```
@@ -52,26 +58,25 @@ The `.id` field for the created asset can be used when [Getting started with our
 
 
 ```TypeScript TypeScript
-import { Client, LoraData } from "@octoai/client";
+import { OctoAIClient } from "@octoai/sdk";
+import { createReadStream } from "fs";
 
-const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN;
-const client = new Client(OCTOAI_TOKEN);
+const client = new OctoAIClient();
 
 async function assetCreateExample() {
-    const loraData = {
-        asset_type: "lora",
-        data_type: "fp16",
-        engine: "image/stable-diffusion-v1-5",
-        file_format: "safetensors",
-        trigger_words: ["origami", "paper"],
-    } as LoraData;
-    const createdAsset = await client.asset.create({
-        file: "origami-paper.safetensors",
-        asset_type: "lora",
-        description: null,
-        data: loraData,
+    const stream = createReadStream("origami-paper.safetensors");
+    const createdAsset = await client.assetLibrary.upload(stream, {
+        assetType: "lora",
+        description: "Origami",
+        data: {
+            assetType: "lora",
+            dataType: "fp16",
+            engine: "image/stable-diffusion-v1-5",
+            fileFormat: "safetensors",
+            triggerWords: ["origami", "paper"],
+        },
         name: "origami-paper",
-        is_public: false,
+        isPublic: false,
     });
 }
 assetCreateExample().then();

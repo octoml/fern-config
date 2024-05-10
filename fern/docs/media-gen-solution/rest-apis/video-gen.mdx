@@ -15,10 +15,10 @@ This encompasses image-to-video conversion. Additionally, we offer support for a
 **Parameters:**
 * `image` (base64 encoded image, required) - Starting point image encoded in base64 string
 * `height` (int; optional) - Integer representing the height of video/animation to generate- If not provided, the output height will be inferred from the input 'image', and the closest resolution supported will be chosen.
-* `width` (int; optional) - Integer representing the width of video/animation to generate- If not provided, the output width will be inferred from the input 'image', and the closest resolution supported will be chosen. 
+* `width` (int; optional) - Integer representing the width of video/animation to generate- If not provided, the output width will be inferred from the input 'image', and the closest resolution supported will be chosen.
 
   Supported resolutions are  `(w,h): (576, 1024), (1024, 576), (768, 768)`
-  
+
 * `cfg_scale` (float; optional) - Floating-point number representing how closely to adhere to 'image' description- Must be a positive number no greater than 10.0.
 * `fps` (int; optional) - How fast the generated frames should play back.
 * `steps` (int; optional) - Integer representing how many steps of diffusion to run- Must be greater than 0 and less than or equal to 50.
@@ -52,12 +52,12 @@ curl -X POST "https://image.octoai.run/generate/svd" \
 
 ```Python Python
 import os
-from octoai.clients.video_gen import Engine, VideoGenerator
+from octoai.util import to_file
+from octoai.client import OctoAI
 
 if __name__ == "__main__":
-    video_gen = VideoGenerator(token=os.environ.get("OCTOAI_TOKEN"))
-    video_gen_response = video_gen.generate(
-        engine=Engine.SVD,
+    client = OctoAI(api_key=os.environ.get("OCTOAI_TOKEN"))
+    video_gen_response = client.image_gen.generate_svd(
         image="<BASE_64_STRING>",
         steps=25,
         cfg_scale=3,
@@ -69,28 +69,27 @@ if __name__ == "__main__":
     videos = video_gen_response.videos
 
     for i, image in enumerate(videos):
-        image.to_file(f"result{i}.mp4")
+        to_file(image, f"result{i}.mp4")
 ```
 ```typescript Typescript
 import fs from "fs";
-import { Client } from "@octoai/client";
+import { OctoAIClient } from "@octoai/sdk";
 
-const client = new Client(OCTOAI_TOKEN);
-const endpointUrl = "https://image.octoai.run/generate/svd";
+const client = new OctoAIClient({
+  apiKey: "<OCTOAI_TOKEN>",
+});
 
-const inputs = {
+const { videos } = await client.imageGen.generateSvd({
   "image": "<BASE_64_STRING>",
   "steps": 25,
-  "cfg_scale": 3,
+  "cfgScale": 3,
   "fps": 7,
-  "motion_scale": 0.5,
-  "noise_aug_strength": 0.02,
-  "num_videos": 1
-};
+  "motionScale": 0.5,
+  "noiseAugStrength": 0.02,
+  "numVideos": 1
+});
 
-const outputs = await client.infer<any>(endpointUrl, inputs);
-
-outputs.videos.forEach((output, i) => {
+videos.forEach((output, i) => {
   const buffer = Buffer.from(output.video, 'base64');
   fs.writeFileSync(`result${i}.mp4`, buffer);
 });

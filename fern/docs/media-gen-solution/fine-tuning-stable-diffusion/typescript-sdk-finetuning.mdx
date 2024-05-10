@@ -13,7 +13,7 @@ Please see [Fine-tuning Stable Diffusion](../../api-reference/fine-tuning/create
 
 * Please [create an OctoAI API token](../../getting-started/how-to-create-an-octoai-access-token.mdx) if you don't have one already.
 * Please also verify you've completed [TypeScript SDK Installation & Setup](../../typescript-sdk/installation-and-setup.mdx). Must be version >= 0.4.0.
-* If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `const client = Client(process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
+* If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `const client = OctoAI()process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
 * An account and API token is required for all the following steps.
 
 #### High-level steps to creating a fine-tuned LoRA
@@ -39,22 +39,30 @@ This is a snippet, however for the full example, please check at the end of this
 In this example, we use multiple photos of a toy poodle named Mitchi.
 
 ```TypeScript TypeScript    
+import { OctoAIClient } from "@octoai/sdk";
+
 // These constants will be the same in the rest of this doc
 const NAME = "test-sks3-poodle-sd15"; // To be used for loras in infer method
 const FILE_PATH = "test_assets/mitchi";
 const FILE_SUFFIX = "jpg";
 
+const client = new OctoAIClient({
+  apiKey: "<OCTOAI_TOKEN>",
+});
+
 // First, we will upload and create a number of image assets to use for fine-tuning
 const assets = [];
 for (let i = 0; i < 5; i++) {
-  const asset = await client.asset.create({
+  const filename = `${FILE_PATH}${i}.${FILE_SUFFIX}`;
+  const stream = createReadStream(filename)
+
+  const asset = await client.assetLibrary.upload(stream, {
     name: `${NAME}-image-${i}`,
-    // test_assets/mitchi1.jpg for example.
-    file: `${FILE_PATH}${i}.${FILE_SUFFIX}`, // Buffers and ArrayBuffers can also be used
-    data: { asset_type: "file", file_format: FILE_SUFFIX },
-    asset_type: "file",
+    data: { assetType: "file", fileFormat: FILE_SUFFIX },
+    assetType: "file",
     description: `${NAME}`,
   });
+
   assets.push(asset);
 }
 ```
@@ -66,7 +74,7 @@ We can also use a call back for our snippet to verify that the assets are ready 
     let assetStatus = assets[pos].status;
     while (pos < assets.length) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        const retrieved = await client.asset.get({ id: assets[pos].id });
+        const retrieved = await client.assetLibrary.get(assets[pos].id);
         assets[pos] = retrieved;
         assetStatus = retrieved.status;
         if (assetStatus === "ready") {
@@ -85,9 +93,9 @@ Next, you'll need a checkpoint to use to tune your asset. In this example, we wi
 
 ```TypeScript TypeScript
     // Let's use an OctoAI public checkpoint for tuning our LoRA
-    const checkpoint = await client.asset
+    const checkpoint = await client.assetLibrary
         .list({
-            is_public: true,
+            isPublic: true,
             owner: "octoai",
             name: "default-sd15",
         })
@@ -99,41 +107,56 @@ Next, you'll need a checkpoint to use to tune your asset. In this example, we wi
 We can create a tune job most simply by passing in the checkpoint directly and the assets directly. This does come at a minor cost to quality because this will lead to the captions being set directly to the trigger word, where as for better results you'll want to set your own captions.
 
 ```TypeScript TypeScript
-const createTuneRequest = {
+    const tune = await client.fineTuning.create({
         name: NAME,
         description: "sks3 poodle",
         details: {
-            base_checkpoint: checkpoint,
+            baseCheckpoint: checkpoint,
             files: assets,
             steps: 500,
-            tune_type: "lora_tune",
-            trigger_words: ["sks3 poodle"],
+            tuneType: "lora_tune",
+            triggerWords: ["sks3 poodle"],
         },
-    };
-    let tune = await client.tune.create(createTuneRequest);
+    });
 ```
 
 For better results, you can set your own captions for your assets as follows, or use the asset\_id strings directly, then pass this to the `files` field in the above request.
 
 ```TypeScript TypeScript
-files: [
-  {
-    file_id: assets[0].id, caption: "your detailed caption with sks3 poodle the trigger word in it here"
-  },
-  {
-    file_id: assets[1].id, caption: "another detailed caption with sk3 poodle the trigger word in it here"
-  }  
-]
+    const tune = await client.fineTuning.create({
+        name: NAME,
+        description: "sks3 poodle",
+        details: {
+            baseCheckpoint: checkpoint,
+            files: assets.map((asset) => ({
+                fileId: asset.id,
+                caption: "your detailed caption with sks3 poodle the trigger word in it here",
+            })),
+            steps: 500,
+            tuneType: "lora_tune",
+            triggerWords: ["sks3 poodle"],
+        },
+    });
 ```
 
 You can also pass the details for your base\_checkpoint directly instead of looking up the asset as well if you know it.
 
 ```TypeScript TypeScript
-    base_checkpoint: {
-      checkpoint_id: "asset_01hev42y7ffc58b3aqc8wa04p4",
-      engine: "image/stable-diffusion-v1-5",
-      name: "default-sd15",
-    }
+    const tune = await client.fineTuning.create({
+        name: NAME,
+        description: "sks3 poodle",
+        details: {
+            baseCheckpoint: {
+              checkpointId: "asset_01hev42y7ffc58b3aqc8wa04p4",
+              engine: "image/stable-diffusion-v1-5",
+              name: "default-sd15",
+            },
+            files: assets
+            steps: 500,
+            tuneType: "lora_tune",
+            triggerWords: ["sks3 poodle"],
+        },
+    });
 ```
 
 Similar to creating assets, we can also wait for the tune job to succeed (or fail) before we move on to running an inference.
@@ -142,7 +165,7 @@ Similar to creating assets, we can also wait for the tune job to succeed (or fai
     let { status } = tune;
     while (status !== "failed" && status !== "succeeded") {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        tune = await client.tune.get(tune.id);
+        tune = await client.fineTuning.get(tune.id);
         status = tune.status;
     }
 ```
@@ -152,20 +175,16 @@ Similar to creating assets, we can also wait for the tune job to succeed (or fai
 Next, you can run an inference with the tuned LoRA
 
 ```TypeScript TypeScript
- const endpointUrl = "https://image.octoai.run/generate/sd";
-
-    const inputs = {
+    const { images } = await client.imageGen.generateSd({
         "prompt": "A photo of sks3 poodle as a puppy",
-        "negative_prompt": "Blurry photo, distortion, low-res, poor quality, extra limbs, extra tails",
+        "negativePrompt": "Blurry photo, distortion, low-res, poor quality, extra limbs, extra tails",
         "loras": {
             "test-sks3-poodle-sd15": 0.8 // Replace this whatever you named your NAME const
         },
-        "num_images": 1,
-    };
+        "numImages": 1,
+    })
 
-    const imageOutputs = await client.infer<any>(endpointUrl, inputs);
-
-    imageOutputs.images.forEach((imageOutputs: any, i: number) => {
+    images.forEach((imageOutputs: any, i: number) => {
         const buffer = Buffer.from(imageOutputs.image_b64, "base64");
         writeFileSync(`result${i}.jpg`, buffer);
     });
@@ -184,25 +203,26 @@ This example will delete everything associated with the `NAME` constant used ear
 If you wish to merely delete the file assets, you can filter by `asset_type: "file"`. Please refer to the [ListAssetsRequest](https://octoml.github.io/octoai-typescript-sdk/classes/ListAssetsRequest.html) reference docs for more information on parameters that might help you filter for how you'd like to use the service.
 
 ```TypeScript TypeScript
-// Warning: This will delete all associated assets, including the created example LoRA.
-// Please see above docs if you'd rather keep it, or you can also add additional file assets
-// to tune your LoRA differently.
-const tunes = await client.tune
+    // Warning: This will delete all associated assets, including the created example LoRA.
+    // Please see above docs if you'd rather keep it, or you can also add additional file assets
+    // to tune your LoRA differently.
+    const tunes = await client.fineTuning
       .list({ name: NAME })
       .then((r) => r.data);
+
     for (let i = 0; i < tunes.length; i++) {
-      await client.tune.delete(tunes[i].id);
+      await client.fineTuning.delete(tunes[i].id);
     }
+
     const assets = await client.asset
       .list({
         name: NAME,
       })
       .then((r) => r.data);
-    for (let i = 0; i < assets.length; i++) {
-      await client.asset.delete(assets[i].id);
-    }
-  });
 
+    for (let i = 0; i < assets.length; i++) {
+      await client.assetLibrary.delete(assets[i].id);
+    }
 ```
 
 #### Putting it all together: From Asset Creation to Running an Inference with Tuned LoRA
@@ -210,11 +230,10 @@ const tunes = await client.tune
 This does not include the above clean up script, but it's recommended you run that after if you'd like to clean up all related assets and tunes.
 
 ```TypeScript TypeScript
- import {Client } from "@octoai/client";
+import { OctoAIClient } from "@octoai/sdk";
 import { writeFileSync } from "fs";
 
-const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN;
-const client = new Client(OCTOAI_TOKEN);
+const client = new OctoAIClient();
 
 // Magic Strings for example
 const NAME = "test-sks3-poodle-sd15"; // To be used for loras in infer method
@@ -226,22 +245,24 @@ async function fineTuneExample() {
     // First, we will upload and create a number of image assets to use for fine-tuning
     const assets = [];
     for (let i = 0; i < 5; i++) {
-        const asset = await client.asset.create({
-            name: `${NAME}-image-${i}`,
-            // test_assets/mitchi1.jpg for example.
-            file: `${FILE_PATH}${i}.${FILE_SUFFIX}`, // Buffers and ArrayBuffers can also be used
-            data: { asset_type: "file", file_format: FILE_SUFFIX },
-            asset_type: "file",
-            description: `${NAME}`,
-        });
-        assets.push(asset);
+      const filename = `${FILE_PATH}${i}.${FILE_SUFFIX}`;
+      const stream = createReadStream(filename)
+
+      const asset = await client.assetLibrary.upload(stream, {
+        name: `${NAME}-image-${i}`,
+        data: { assetType: "file", fileFormat: FILE_SUFFIX },
+        assetType: "file",
+        description: `${NAME}`,
+      });
+
+      assets.push(asset);
     }
     // Verify Assets are ready to do be used for fine-tuning
     let pos = 0;
     let assetStatus = assets[pos].status;
     while (pos < assets.length) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        const retrieved = await client.asset.get({ id: assets[pos].id });
+        const retrieved = await client.assetLibrary.get(assets[pos].id);
         assets[pos] = retrieved;
         assetStatus = retrieved.status;
         if (assetStatus === "ready") {
@@ -251,9 +272,9 @@ async function fineTuneExample() {
 
     // Then let's use an OctoAI public checkpoint for tuning our LoRA
   	// You can also use your own checkpoints as well
-    const checkpoint = await client.asset
+    const checkpoint = await client.assetLibrary
         .list({
-            is_public: true,
+            isPublic: true,
             owner: "octoai",
             name: "default-sd15",
         })
@@ -262,46 +283,36 @@ async function fineTuneExample() {
     // And finally creating a finetuning job after verifying the assets are ready
     // This will set the captions to the trigger word, but setting descriptive captions will
   	// yield better results
-  	const createTuneRequest = {
+  	const tune = await client.fineTuning.create({
         name: NAME,
         description: "sks3 poodle",
         details: {
-            base_checkpoint: checkpoint,
+            baseCheckpoint: checkpoint,
             files: assets,
             steps: 500,
-            tune_type: "lora_tune",
-            trigger_words: ["sks3"],
+            tuneType: "lora_tune",
+            triggerWords: ["sks3 poodle"],
         },
-    };
-    let tune = await client.tune.create(createTuneRequest);
+    });
 
     let { status } = tune;
     while (status !== "failed" && status !== "succeeded") {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        tune = await client.tune.get(tune.id);
+        tune = await client.fineTuning.get(tune.id);
         status = tune.status;
     }
 
     // And once the job is finished, using that tuned lora for an image generation request
-    const endpointUrl = "https://image.octoai.run/generate/sd";
-
-    const inputs = {
-        "prompt": "A photo of sks3 poodle napping on a laptop",
-        "negative_prompt": "Blurry photo, distortion, low-res, poor quality",
+    const { images } = await client.imageGen.generateSd({
+        "prompt": "A photo of sks3 poodle as a puppy",
+        "negativePrompt": "Blurry photo, distortion, low-res, poor quality, extra limbs, extra tails",
         "loras": {
-            "test-sks3-poodle-sd15": 0.9 // Replace this whatever you named your NAME const
+            "test-sks3-poodle-sd15": 0.8 // Replace this whatever you named your NAME const
         },
-        "width": 512,
-        "height": 512,
-        "num_images": 1,
-        "sampler": "DDIM",
-        "steps": 50,
-        "cfg_scale": 12
-    };
+        "numImages": 1,
+    })
 
-    const imageOutputs = await client.infer<any>(endpointUrl, inputs);
-
-    imageOutputs.images.forEach((imageOutputs: any, i: number) => {
+    images.forEach((imageOutputs: any, i: number) => {
         const buffer = Buffer.from(imageOutputs.image_b64, "base64");
         writeFileSync(`result${i}.jpg`, buffer);
     });

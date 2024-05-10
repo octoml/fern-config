@@ -5,32 +5,33 @@ slug: python-sdk/asset-orchestrator-client
 ---
 
 
-The AssetOrchestrator client in the Python SDK allows create, list, get, and delete actions of assets. These assets allow integration with the [ImageGenerator Client](image-generator-client.mdx) to generate more customized images. 
+The AssetLibrary client in the Python SDK allows create, list, get, and delete actions of assets. These assets allow integration with the [ImageGenerator Client](image-generator-client.mdx) to generate more customized images.
 
-For a quick glance at features for the AssetOrchestrator Client, please see the [AssetOrchestrator reference docs](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#octoai.clients.asset%5Forch.AssetOrchestrator). This guide will walk you through using this API to see a list of our public assets, create your own asset, and use your asset to generate an image.
+This guide will walk you through using this API to see a list of our public assets, create your own asset, and use your asset to generate an image.
 
 #### Requirements
 
 * First, [create an OctoAI API token.](../getting-started/how-to-create-an-octoai-access-token.mdx)
-* Then, complete [Python SDK Installation & Setup.](installation-and-setup.mdx).  
-   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the asset\_orch client with `asset_orch = AssetOrchestrator()`
+* Then, complete [Python SDK Installation & Setup.](installation-and-setup.mdx).
+   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the asset\_orch client with `asset_library = AssetLibrary()`
 
-#### Overview of AssetOrchestrator API
+#### Overview of AssetLibrary API
 
 ```Python Python
-from octoai.clients.asset_orch import AssetOrchestrator
+from octoai.client import OctoAI
 
 if __name__ == "__main__":
   # If you have an OCTOAI_TOKEN set as an environment variable, you do not need to pass a token.
   # If one is not set, you can use:
-  # asset_orch = AssetOrchestrator(token="your OctoAI API Token goes here")
-  asset_orch = AssetOrchestrator()
+  # asset_library = AssetLibrary(token="your OctoAI API Token goes here")
+  client = OctoAI()
+  asset_library = client.asset_library
   # You can get a list of the public OctoAI assets
-  print(asset_orch.list(is_public=True, owner="octoai"))
+  print(asset_library.list(is_public=True, owner="octoai"))
   # You can get a specific asset, either one you created or in this example an OctoAI asset
-  asset = asset_orch.get(is_public=True, owner="octoai", name="product_photography_v1")
+  asset = asset_library.get("octoai:product_photography_v1")
   # And also create, delete, or use those assets to generate images as in the below example.
-  asset_orch.delete("asset_id_goes_here")
+  asset_library.delete("asset_id_goes_here")
 
 ```
 
@@ -38,48 +39,47 @@ if __name__ == "__main__":
 
 You will need a `safetensors` file in order to use this example, and in our case one is named `origami-paper.safetensors`. I'll be using a lora trained on origami that I can use with the words "origami" and "paper".
 
-In this example, we will be adding a LoRA then using it to generate an image. You can also add [checkpoints](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#octoai.clients.asset%5Forch.CheckpointData), [vae](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#octoai.clients.asset%5Forch.VAEData), and [textual inversions](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#octoai.clients.asset%5Forch.TextualInversionData).
-
-You can check the reference guide for more information about the returned [Asset](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#octoai.clients.asset%5Forch.Asset) object or options for the [create](https://octoml.github.io/octoai-python-sdk/octoai.clients.html#octoai.clients.asset%5Forch.AssetOrchestrator.create) method.
+In this example, we will be adding a LoRA then using it to generate an image. You can also add `checkpoints`, `vae`, and `textual inversions`.
 
 ```Python Python
-from octoai.clients.asset_orch import LoraData, AssetOrchestrator
-from octoai.clients.image_gen import ImageGenerator
+from octoai.client import OctoAI
+from octoai.asset_library import Data_Lora
+from octoai.util import to_file
 
 if __name__ == "__main__":
     # OCTOAI_TOKEN set as an environment variable so do not need to pass a token.
-    asset_orch = AssetOrchestrator()
-    image_gen = ImageGenerator()
-    
+    client = OctoAI()
+    asset_library = client.asset_library
+    image_gen = client.image_gen
+
     asset_name = "origami-paper-test"
     # There is also TextualInversionData, VAEData, and CheckpointData.
-    lora_data = LoraData(
+    lora_data = Data_Lora(
         data_type="fp16",
         engine="image/stable-diffusion-v1-5",
         file_format="safetensors",
     )
 
-    asset = asset_orch.create(
+    asset = asset_library.create_from_file(
         file="origami-paper.safetensors",
         data=lora_data,
         name=asset_name,
         description="origami-paper stable diffusion 1.5",
     )
 
-    image_gen_resp = image_gen.generate(
-        engine="sd",
+    image_gen_resp = image_gen.generate_sd(
         prompt="rainbow origami tailong dragon",
         num_images=4,
-        loras={asset: 0.8}
+        loras={"asset": 0.8}
     )
-    
+
     # Some images can be removed for safety.
     # Please see the ImageGenerator client docs for more information.
-    for image in image_gen_resp.images:
-      image.to_pil().show()
+    for i, image in enumerate(image_gen_resp.images):
+        to_file(image, f"result{i}.jpg")
 
     # You can clean up your asset with the following:
-    asset_orch.delete(asset.id)
+    asset_library.delete(asset.id)
 ```
 
 ![astropus.png](https://www.datocms-assets.com/45680/1703720706-ai-generated-rainbow-origami-tailong-dragon.png?max-w=2000&auto=compress)
@@ -104,11 +104,12 @@ In this example, there is a directory named `images` that contains files with a 
 
 ```Python Python
 import os
-from octoai.clients.asset_orch import AssetOrchestrator, FileData
+from octoai.client import OctoAI
+from octoai.asset_library import Data_File
 
 if __name__ == "__main__":
     # OCTOAI_TOKEN set as an environment variable so do not need to pass a token.
-    asset_orch = AssetOrchestrator()
+    client = OctoAI()
 
     dir_path = "./assets/images/"  # Set your dir_path here to your file assets.
     files = []
@@ -121,26 +122,26 @@ if __name__ == "__main__":
         split_file_name = file.split(".")
         asset_name = split_file_name[0]
         file_format = split_file_name[1]
-        file_data = FileData(
+        file_data = Data_File(
             file_format=file_format,
         )
-        asset = asset_orch.create(
+        asset = client.asset_library.create_from_file(
             file=dir_path + file,
             data=file_data,
             name=asset_name,
         )
 ```
 
-You can then use `asset_orch.list()` to see the assets have been created and uploaded and a result that looks something like:
+You can then use `octoai.asset_library.list()` to see the assets have been created and uploaded and a result that looks something like:
 
 ```
 [
-id: asset_01234567891011121314151617, name: save_the_paper_poodle, status: ready, 
-id: asset_01234567891011121314151618, name: save_the_other_paper_poodle, status: ready, 
-id: asset_01234567891011121314151619, name: result2, status: ready, 
-id: asset_01234567891011121314151620, name: result3, status: ready, 
-id: asset_01234567891011121314151621, name: result1, status: ready, 
-id: asset_01234567891011121314151622, name: result0, status: ready, 
+id: asset_01234567891011121314151617, name: save_the_paper_poodle, status: ready,
+id: asset_01234567891011121314151618, name: save_the_other_paper_poodle, status: ready,
+id: asset_01234567891011121314151619, name: result2, status: ready,
+id: asset_01234567891011121314151620, name: result3, status: ready,
+id: asset_01234567891011121314151621, name: result1, status: ready,
+id: asset_01234567891011121314151622, name: result0, status: ready,
 id: asset_01234567891011121314151600, name: origami-paper-test, status: uploaded]
 ```
 
