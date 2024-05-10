@@ -220,6 +220,7 @@ navigation:
   - tab: apiReference
     layout:
       - section: OctoAI API
+        slug: octoai-api
         contents:
           - page: Authentication
             path: docs/api-reference/octoai-api/authentication.mdx
@@ -228,14 +229,14 @@ navigation:
           - api: OctoAI API
             api-name: octoai
             flattened: true
-      - api: Text Generation API
-        api-name: text-gen
-      - api: Image Generation API
-        api-name: image-gen
-      - api: Fine Tuning API
-        api-name: fine-tuning
-      - api: Asset Library API
-        api-name: asset-library
+            skip-slug: true
+      - api: OctoAI API
+        api-name: api
+        flattened: true
+        skip-slug: true
+        snippets:
+          python: "octoai"
+          typescript: "@octoai/sdk"
   - tab: integrations
     layout:
       - section: Integrations
