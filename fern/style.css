@@ -3,10 +3,15 @@
 :root {
   --accent-aa: 0, 136, 255;
   --accent-aaa: 0, 150, 255;
+  --slate-a11y: #667085;
 }
 
 #fern-header .fern-background {
   background: #f7f8f8;
+}
+.fern-sidebar-link-container[data-state="active"] .fern-sidebar-link {
+  background-color: #e8f5ff;
+  color: #0c5dbb;
 }
 .fern-background {
   width: 100%;
