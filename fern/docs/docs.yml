@@ -14,9 +14,9 @@ colors:
   accent-primary:
     dark: "#0096FF"
     light: "#0096FF"
-  background:
-    dark: "#111213"
-    light: "#fafaf9"
+  # background:
+  #   dark: "#111213"
+  #   light: "#fafaf9"
 navbar-links:
   - type: secondary
     text: Login
