@@ -6,17 +6,17 @@ logo:
   dark: docs/assets/images/logo/octoai-logo-dark.svg
   href: https://octo.ai/
   height: 28
-background-image:
-  dark: docs/assets/images/bg-universal.webp
-  light: docs/assets/images/gradient-bg-light.svg
+# background-image:
+#   dark: docs/assets/images/bg-universal.webp
+#   light: docs/assets/images/gradient-bg-light.svg
 favicon: favicon.png
 colors:
   accent-primary:
     dark: "#0096FF"
     light: "#0096FF"
-  # background:
-  #   dark: "#111213"
-  #   light: "#fafaf9"
+  background:
+    dark: "#111213"
+    light: "#fafaf9"
 navbar-links:
   - type: secondary
     text: Login
