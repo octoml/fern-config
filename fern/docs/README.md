@@ -10,19 +10,19 @@ Clone the project using
 
 ```bash
 # via URL
-git clone https://github.com/octoml/docs.git
+git clone https://github.com/octoml/fern-config.git
 
 # via SSH
-git clone git@github.com:octoml/docs.git
+git clone git@github.com:octoml/fern-config.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd docs
+  cd fern-config/fern/docs
 ```
 
-Globally install the Mintlify CLI
+Globally install the Fern CLI
 
 ```bash
 npm i -g fern-api
