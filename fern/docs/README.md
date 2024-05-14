@@ -22,7 +22,7 @@ Go to the project directory
   cd docs
 ```
 
-Globally install the Mintlify CLI
+Globally install the Fern CLI
 
 ```bash
 npm i -g fern-api
