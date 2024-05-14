@@ -237,7 +237,7 @@
 
 .fern-background {
   width: 100%;
-  height: 50vh;
+  height: 67vh;
   display: block;
   top: 0;
   left: 0;
@@ -306,7 +306,7 @@
   left: 0;
   width: 100%;
   height: 67%;
-  background: linear-gradient(0deg, #fafaf9 0%, rgba(250, 250, 249, 0) 37.07%);
+  background: linear-gradient(0deg, #ffffff 0%, rgba(250, 250, 249, 0) 37.07%);
 }
 
 .changelog {
