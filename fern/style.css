@@ -235,6 +235,69 @@
   color: #3e4346;
 } */
 
+.fern-background {
+  width: 100%;
+  height: 50vh;
+  display: block;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.6)
+    ),
+    radial-gradient(
+      82.97% 110.59% at 54.03% 97.36%,
+      rgba(255, 255, 255, 0) 0%,
+      #fff 100%
+    ),
+    radial-gradient(
+      52.79% 78.26% at 38.74% 71.48%,
+      rgba(53, 165, 255, 0.3) 0%,
+      rgba(53, 165, 255, 0) 86.92%
+    ),
+    radial-gradient(
+      88.13% 69.33% at 67.53% 67.77%,
+      rgba(140, 86, 254, 0.3) 0%,
+      rgba(140, 86, 254, 0.1665) 100%,
+      rgba(140, 86, 254, 0) 100%
+    ),
+    #f7fcff;
+}
+
+.fern-background::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    #f7f8f8 0%,
+    rgba(244, 245, 245, 0) 46.59%
+  );
+  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fern-background::after {
+  content: "";
+  background: url("https://octo.ai/assets/images/noise.png");
+  background-size: 143px 50px;
+  opacity: 0.2;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 #docs-content::before {
   content: "";
   display: block;
@@ -242,30 +305,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(
-        0deg,
-        rgba(255, 255, 255, 0.6),
-        rgba(255, 255, 255, 0.6)
-      )
-      0% 0% / 100%,
-    radial-gradient(
-      82.97% 110.59% at 54.03% 97.36%,
-      rgba(255, 255, 255, 0) 0%,
-      rgb(255, 255, 255) 86.92%
-    ),
-    radial-gradient(
-      43.11% 51.39% at 33.21% 97.93%,
-      rgba(53, 165, 255, 0.3) 0%,
-      rgba(53, 165, 255, 0) 52%
-    ),
-    radial-gradient(
-      27.63% 39.3% at 62.5% 98.14%,
-      rgba(140, 86, 254, 0.3) 0%,
-      rgba(140, 86, 254, 0.165) 32.5%,
-      rgba(140, 86, 254, 0) 100%
-    ),
-    rgb(247, 252, 255);
+  height: 67%;
+  background: linear-gradient(0deg, #fafaf9 0%, rgba(250, 250, 249, 0) 37.07%);
 }
 
 .changelog {

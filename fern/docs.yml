@@ -16,7 +16,7 @@ colors:
     light: "#0096FF"
   background:
     dark: "#111213"
-    light: "#fafaf9"
+    light: "#ffffff"
 navbar-links:
   - type: secondary
     text: Login
