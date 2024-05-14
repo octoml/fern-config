@@ -235,7 +235,7 @@
   color: #3e4346;
 } */
 
-#docs-content::before {
+/* #docs-content::before {
   content: "";
   display: block;
   position: absolute;
@@ -266,7 +266,7 @@
       rgba(140, 86, 254, 0) 100%
     ),
     rgb(247, 252, 255);
-}
+} */
 
 .changelog {
   padding-bottom: 12px;
