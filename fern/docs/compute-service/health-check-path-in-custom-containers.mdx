@@ -1,0 +1,12 @@
+---
+title: Healthcheck path in custom containers
+slug: compute-service/health-check-path-in-custom-containers
+---
+
+
+> **Contact us at customer-success@octo.ai to request access to the Compute Service.**
+
+The healthcheck path is be the server route in the container that indicates when the server is ready to receive requests:
+* It is strongly recommended that you configure a health check path in your container. Otherwise, you may have inference failures whenever you try to make a request before your server is ready. 
+* If you define a healthcheck, your endpoint has 5 minutes from the time the the image is pulled to return a 200 OK response. This will mark the endpoint as available, and the same criteria applies for additional replicas. If there are 3 consecutive calls to the healthcheck endpoint that return a non-200 OK status, then the replica will be restarted.
+* You can see an example of a health check path in our Flan T5 container in [Advanced: Build a Container from Scratch in Python](advanced-build-a-container-from-scratch-in-python.mdx). The health check path exposed by that container is `/healthcheck`. After the endpoint is created, one should be able to hit `https://<endpoint-name>-<account-id>.octoai.run/healthcheck` for a 200 response whenever the server is healthy and ready.

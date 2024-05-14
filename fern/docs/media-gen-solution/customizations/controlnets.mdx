@@ -1,0 +1,219 @@
+---
+title: ControlNets
+subtitle: >-
+  OctoAI's asset library is pre-populated with the most popular available
+  ControlNets which allow added image input to influence and customize the image
+  generation.
+slug: media-gen-solution/customizations/controlnets
+---
+
+While traditional image generation models can produce stunning visuals, they often lack guidance, and therefore the ability to generate images subject to user-desired image composition. ControlNet changes the game by allowing an additional image input that can be used for conditioning (influencing) the final image generation. This could be anything from simple scribbles to detailed depth maps or edge maps. By conditioning on these input images, ControlNet directs the Stable Diffusion model to generate images that align closely with the user's intent.
+
+**OctoAI's Asset Library** comes pre-populated with the followinglist of public controlnets.
+
+  ```
+  octoai:canny_sdxl
+  octoai:depth_sdxl
+  octoai:openpose_sdxl
+  octoai:canny_sd15
+  octoai:depth_sd15
+  octoai:inpaint_sd15
+  octoai:ip2p_sd15
+  octoai:lineart_sd15
+  octoai:openpose_sd15
+  octoai:scribble_sd15
+  octoai:tile_sd15
+  ```
+  Other than using the default controlnet checkpoints, you can also upload private ControlNet checkpoints into the OctoAI Asset Library and then use those checkpoints at generation time via the parameter `controlnet` in the API. For custom controlnet checkpoints, make sure to provide your own ControlNet mask in the `controlnet_image` parameter.
+
+Below is an example of using a **Canny ControlNet** along with ControlNet image (left) and a simple prompt `A photo of woman wearing a (rose  pink dress:1)`. Canny ControlNet is designed to detect a wide range of edges in images. Given a raw image or sketch, Canny can extract the image's contours and edges, and use them for image generation. You can see the image (right) generated from SDXL with Canny ControlNet applied.
+
+<CardGroup cols={2}>
+  <Card title="ControlNet Image">
+ ![](https://www.datocms-assets.com/45680/1709366453-screenshot-2024-03-01-at-9-24-05-pm.png?max-w=2000&auto=compress)
+  </Card>
+  <Card title="SDXL with Canny ControlNet">
+ ![](https://www.datocms-assets.com/45680/1709366467-download-9.jpeg?max-w=2000&auto=compress)
+ </Card>
+</CardGroup>
+
+**Example Code for Canny ControlNet:**
+<CodeGroup>
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/controlnet-sdxl" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "A photo of woman wearing a (rose  pink dress:1)",
+        "negative_prompt": "Blurry photo, distortion, low-res, poor quality",
+        "controlnet": "octoai:canny_sdxl",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 1,
+        "sampler": "DDIM",
+        "steps": 30,
+        "cfg_scale": 12,
+        "use_refiner": true,
+        "high_noise_frac": 0.8,
+        "style_preset": "base",
+        "controlnet_conditioning_scale": 1,
+        "controlnet_image": "<BASE64 IMAGE>"
+    }' | jq -r ".images[0].image_b64" | base64 -d >result.jpg
+```
+
+```Python Python
+import os
+from octoai.util import to_file
+from octoai.client import OctoAI
+
+if __name__ == "__main__":
+    client = OctoAI(api_key=os.environ.get("OCTOAI_TOKEN"))
+    image_gen_response = client.image_gen.generate_controlnet_sdxl(
+        prompt="A photo of woman wearing a (rose  pink dress:1)",
+        negative_prompt="Blurry photo, distortion, low-res, poor quality",
+        controlnet="octoai:canny_sdxl",
+        width=1024,
+        height=1024,
+        num_images=1,
+        sampler="DDIM",
+        steps=30,
+        cfg_scale=12,
+        use_refiner=True,
+        high_noise_frac=0.8,
+        style_preset="base",
+        controlnet_conditioning_scale=1,
+        controlnet_image="<BASE64 IMAGE>",
+    )
+    images = image_gen_response.images
+
+    for i, image in enumerate(images):
+        to_file(image, f"result{i}.jpg")
+```
+```typescript Typescript
+import fs from "fs";
+import { OctoAIClient } from "@octoai/sdk";
+
+const client = new OctoAIClient({
+  apiKey: "<OCTOAI_TOKEN>",
+});
+
+const { images } = await client.imageGen.generateControlnetSdxl({
+  "prompt": "A photo of woman wearing a (rose  pink dress:1)",
+  "negative_prompt": "Blurry photo, distortion, low-res, poor quality",
+  "controlnet": "octoai:canny_sdxl",
+  "width": 1024,
+  "height": 1024,
+  "num_images": 1,
+  "sampler": "DDIM",
+  "steps": 30,
+  "cfg_scale": 12,
+  "use_refiner": true,
+  "high_noise_frac": 0.8,
+  "style_preset": "base",
+  "controlnet_conditioning_scale": 1,
+  "controlnet_image": "<BASE64 IMAGE>"
+})
+
+images.forEach((output, i) => {
+  const buffer = Buffer.from(output.image_b64, "base64");
+  fs.writeFileSync(`result${i}.jpg`, buffer);
+});
+```
+</CodeGroup>
+
+
+Below is an example of using a **OpenPose ControlNet** along with ControlNet image (left) and a prompt `An photo of a white man on a japanese tatami mat `. OpenPose ControlNet is a fast human keypoint detection model that can extract human poses like positions of hands, legs, and head. See the example below. You can see the image (right) generated from SDXL with OpenPose ControlNet applied.
+
+<CardGroup cols={2}>
+  <Card title="ControlNet Image">
+ ![](https://www.datocms-assets.com/45680/1709490527-screenshot-2024-03-02-at-10-33-06-am.png?max-w=2000&auto=compress)
+  </Card>
+  <Card title="SDXL with OpenPose ControlNet">
+ ![](https://www.datocms-assets.com/45680/1709490877-download-10.jpeg?max-w=2000&auto=compress)
+ </Card>
+</CardGroup>
+
+**Example Code for OpenPose ControlNet:**
+<CodeGroup>
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/controlnet-sdxl" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "An photo of a white man on a japanese tatami mat ",
+        "negative_prompt": "Blurry photo, distortion, low-res, poor quality, distorted legs, distorted feet, disproportionate  hands and ",
+        "controlnet": "octoai:openpose_sdxl",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 1,
+        "sampler": "DDIM",
+        "steps": 30,
+        "cfg_scale": 12,
+        "use_refiner": true,
+        "high_noise_frac": 0.8,
+        "style_preset": "base",
+        "controlnet_conditioning_scale": 1,
+        "controlnet_image": "<BASE64 IMAGE>"
+    }' | jq -r ".images[0].image_b64" | base64 -d >result.jpg
+```
+
+```Python Python
+import os
+from octoai.util import to_file
+from octoai.client import OctoAI
+
+if __name__ == "__main__":
+    client = OctoAI(api_key=os.environ.get("OCTOAI_TOKEN"))
+    image_gen_response = client.image_gen.generate_controlnet_sdxl(
+        prompt="An photo of a white man on a japanese tatami mat ",
+        negative_prompt="Blurry photo, distortion, low-res, poor quality, distorted legs, distorted feet, disproportionate  hands and ",
+        controlnet="octoai:openpose_sdxl",
+        width=1024,
+        height=1024,
+        num_images=1,
+        sampler="DDIM",
+        steps=30,
+        cfg_scale=12,
+        use_refiner=True,
+        high_noise_frac=0.8,
+        style_preset="base",
+        controlnet_conditioning_scale=1,
+        controlnet_image="<BASE64 IMAGE>",
+    )
+    images = image_gen_response.images
+
+    for i, image in enumerate(images):
+        to_file(image, f"result{i}.jpg")
+```
+```typescript Typescript
+import fs from "fs";
+import { OctoAIClient } from "@octoai/sdk";
+
+const client = new OctoAIClient({
+  apiKey: "<OCTOAI_TOKEN>",
+});
+
+const { images } = await client.imageGen.generateControlnetSdxl({
+  "prompt": "An photo of a white man on a japanese tatami mat ",
+  "negativePrompt": "Blurry photo, distortion, low-res, poor quality, distorted legs, distorted feet, disproportionate  hands and ",
+  "controlnet": "octoai:openpose_sdxl",
+  "width": 1024,
+  "height": 1024,
+  "numImages": 1,
+  "sampler": "DDIM",
+  "steps": 30,
+  "cfgScale": 12,
+  "useRefiner": true,
+  "highNoiseFrac": 0.8,
+  "stylePreset": "base",
+  "controlnetConditioningScale": 1,
+  "controlnetImage": "<BASE64 IMAGE>"
+})
+
+images.forEach((output, i) => {
+  const buffer = Buffer.from(output.image_b64, "base64");
+  fs.writeFileSync(`result${i}.jpg`, buffer);
+});
+```
+</CodeGroup>
+

@@ -1,0 +1,16 @@
+---
+title: Prompt Weighting
+subtitle: >-
+  OctoAI allows for prompt weighting, the emphasis or de-emphasis of certain
+  words or phrases, in prompts to create customized images.
+slug: media-gen-solution/customizations/prompt-weighting
+---
+
+
+You can emphasize, or de-emphasize, specific words or phrases of the image generation prompt using weighting. To use prompt weighting, format your prompt using parentheses: `prompt = "A cat with (long whiskers)"`
+
+    This emphasizes the phrase “long whiskers” with a weight of `1.1`. Adding additional parentheses such as `"\(\(\(long whiskers)))"` performs additional multiples of `1.1`, so for 3 sets of parentheses, the weight would be `1.33`. More specific weights can also be specified in the form: `prompt = "A cat with (long whiskers: 0.8)"`
+
+    This will weigh all words in the parentheses by a factor of `0.8`. Notably, weights do not have to be greater than one. Using a weight of less than 1 will de-emphasize the contained words.
+
+     Using weights in negative prompts can also be helpful. For example, you can avoid distorted hands: `negative_prompt = "(distorted hands: 1.5)"`

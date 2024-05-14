@@ -1,0 +1,38 @@
+---
+title: Upscaling REST API
+subtitle: >-
+  In addition to image generation, OctoAI can also upscale images to higher
+  resolutions.
+slug: media-gen-solution/rest-apis/upscaling
+---
+
+
+### API
+
+Upscaling takes an existing image you provide and upscales it to a higher resolution.
+
+Parameters:
+
+* `init_image_url` / `init_image` \- The URL to an image or a base64-encoded image (respectively) to upscale. Specify only one of these.
+* `scale` / `output_image_height` / `output_image_width` \- determined how much to upscale the provided image. Specify only one of these.  
+   * `scale` \- floating point value indicating how much to scale the input resolution by (e.g., `scale: 2.0` would double the input width and height)  
+   * `output_image_height` \- height of the desired upscaled image in pixels. The corresponding width will be computed off of this value to preserve the aspect ratio.  
+   * `output_image_width` \- width of the desired upscaled image in pixels. The corresponding height will be computed off of this value to preserve the aspect ratio.
+* `model` (optional): The model to use for upscaling faces. Default value is `real-esrgan-x4-plus`. Options:  
+   * `real-esrgan-x4-plus`  
+   * `real-esrgan-x4-v3`  
+   * `real-esrgan-x4-v3-wdn`  
+   * `real-esrgan-animevideo-v3`  
+   * `real-esrgan-x4-plus-anime`  
+   * `real-esrgan-x2-plus`
+
+### cURL example
+
+```Bash Bash
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN" -X POST "https://image.octoai.run/upscaling" \
+    -d '{
+        "init_image": "$BASE64_IMAGE_HERE",
+        "scale": 2.5,
+        "model": "real-esrgan-x4-v3"
+    }'
+```

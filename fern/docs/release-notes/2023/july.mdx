@@ -1,0 +1,101 @@
+---
+title: July 2023 Release Notes
+subtitle: OctoAI product updates and release notes for July 2023
+slug: release-notes/2023/july
+---
+
+
+<div className='changelog-status'>
+<img src="../../assets/icons/plus.svg" width='12' height='12' noZoom />
+<span>Added</span>
+</div>
+
+## July 26, 2023
+
+OctoAI added several new things including better graceful concurrency handling, updated Python SDK, and diarization to Whisper model template.
+
+<div className="changelog">
+    - Added more graceful concurrency handling: when users send more than N concurrent request to an endpoint with N replicas actively running, we will queue all extra requests instead of failing them. This queuing behavior has been activated for selected customers, and will be gradually rolled out over this week and next week. You will temporarily see a new replica spin up while the rollout is occurring on your endpoint.
+
+    - Updated our Python SDK from 0.1.2 to 0.2.0—it now support both streaming and async inference requests.
+
+    - Added diarization to our Whisper template endpoint and rectified the list of languages supported. Diarization enables use cases where you'd like to identify the speaker of each segment in a speech recording. You can view the full API specs in the Whisper demo template. Here's an example of how to use the template with diarization: 
+
+    ```python
+        import requests
+        import base64
+
+        def download_file(url, filename):
+            response = requests.get(url)
+            if response.status_code == 200:
+                with open(filename, "wb") as f:
+                    f.write(response.content)
+                print(f"File downloaded successfully as {filename}.")
+            else:
+                print(f"Failed to download the file. Status code: {response.status_code}")
+
+
+        def make_post_request(filename):
+            with open(filename, "rb") as f:
+                encoded_audio = base64.b64encode(f.read()).decode("utf-8")
+
+            headers = {
+                "Content-Type": "application/json"
+            }
+            data = {
+                "audio": encoded_audio,
+                "task": "transcribe",
+                "diarize": True
+            }
+
+            response = requests.post("https://whisper-demo-kk0powt97tmb.octoai.cloud/predict", json=data, headers=headers)
+
+            if response.status_code == 200:
+                # Handle the successful response here
+                json_response = response.json()
+
+                for seg in json_response["response"]["segments"]:
+                    print(seg)
+
+            else:
+                print(f"Request failed with status code: {response.status_code}")
+
+        if __name__ == "__main__":
+            url = "<YOUR_FILE_HERE>.wav"
+            filename = "sample.wav"
+
+            download_file(url, filename)
+
+            make_post_request(filename)
+    ```
+
+</div>
+
+
+<div className='changelog-status'>
+<img src="../../assets/icons/heart.svg" width='14' height='14' noZoom />
+<span>Improved</span>
+</div>
+
+## July 20, 2023
+
+Added an OctoAI template for Llama2-7B Chat.
+
+<div className="changelog">
+    - Added an OctoAI template for Llama2-7B Chat, which is an instruction-tuned model for chatbots.
+     Users can now work with this brand-new to the market LLM directly in the web UI with limited 
+     token response or programmatically with additional optionality. A similar template for Llama2-70B is coming soon!
+</div>
+
+<div className='changelog-status'>
+<img src="../../assets/icons/check.svg" width='12' height='12' noZoom />
+<span>Fixed</span>
+</div>
+
+## July 18, 2023
+
+Changed the HTTP status code to 201 for the REST API calls for create secret and create registry credentials.  Previously, we returned 200 for these calls.
+
+<div className="changelog">
+    - Changed the HTTP status code to 201 for the REST API calls for create secret and create registry credentials. Previously, we returned 200 for these calls. The behavior of the SDK and web frontend is not affected.
+</div>

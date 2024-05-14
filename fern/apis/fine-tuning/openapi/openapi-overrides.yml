@@ -7,31 +7,31 @@ paths:
     post:
       x-fern-sdk-method-name: create
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
   /v1/tune/{tune_id}:
     get:
       x-fern-sdk-method-name: get
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
     delete:
       x-fern-sdk-method-name: delete
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
   /v1/tune/{tune_id}/cancel:
     post:
       x-fern-sdk-method-name: cancel
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
   /v1/tunes:
     get:
       x-fern-sdk-method-name: list
       servers:
-      - url: https://api.octoai.cloud
-        x-name: Default
+        - url: https://api.octoai.cloud
+          x-name: Default
 components:
   schemas:
     LoraTune-Input:
@@ -43,3 +43,10 @@ components:
       properties:
         details:
           x-fern-type-name: TuneDetails
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      x-fern-bearer:
+        name: apiKey
+        env: OCTOAI_API_KEY

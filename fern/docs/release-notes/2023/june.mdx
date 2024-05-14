@@ -1,0 +1,74 @@
+---
+title: June 2023 Release Notes
+subtitle: OctoAI product updates and release notes for June 2023
+slug: release-notes/2023/june
+---
+
+
+<div className='changelog-status'>
+<img src="../../assets/icons/plus.svg" width='12' height='12' noZoom />
+<span>Added</span>
+</div>
+
+## June 27, 2023
+
+New tutorials showing how to use Automatic1111's Stable Diffusion web UI and an updated Falcon template.
+
+<div className="changelog">
+    - Released a Doc tutorial to show users how to use OctoAI's server class GPUs with Automatic1111 Stable Diffusion web user interface.
+
+    - Released a video tutorial to show users how to apply custom model checkpoints using Automatic1111's Stable Diffusion web user interface on OctoAI.
+
+    - Updated our Falcon template to use a different server implementation behind the scenes. The inference API is now available at /generate, but inferences at /predict will continue to work.
+</div>
+
+
+<div className='changelog-status'>
+<img src="../../assets/icons/plus.svg" width='12' height='12' noZoom />
+<span>Added</span>
+</div>
+
+## June 14, 2023
+
+We have launched OctoAI into general availability and made several updates to our models and endpoints.
+
+<div className="changelog">
+    - With the launch of our service, changes will be made to our billing. You can find pricing plans and hardware options here. Changes and new user incentives taken into immediate effect are noted below:
+
+        - Tomorrow, June 13th, any existing endpoints will be set to min replicas=0 so that you are not billed for an instance unintentionally left active and running. Be prepared for a cold start before your first inference and reset to min replicas=1 if you prefer to keep the instance warm.
+
+        - Every user who logs in during public beta will receive credits for 2 free compute hrs on A100 (or 10+ hrs on A10!) to use in their first two weeks.
+
+        - The first 500 users to create a new endpoint will receive credits for 12 free compute hrs on A100 (or 50+ hrs on A10!) to use within their first month.
+
+    - You now have two options to integrate OctoAI endpoints into your application:
+        - Our new Python client (supports synchronous inference).
+
+        - Our HTTP REST API now supports both synchronous and asynchronous calls allowing users to request inference without persisting a connection, poll for status, and retrieve the completed prediction data. This is most effective when managing longer running requests.
+
+    - We've updated our Whisper model to be much faster.
+
+    - We've also added MPT 7B and Vicuña 7B as new quick-start templates as better alternatives to Dolly, which will be removed soon.
+</div>
+
+<div className='changelog-status'>
+<img src="../../assets/icons/plus.svg" width='12' height='12' noZoom />
+<span>Added</span>
+</div>
+
+## June 6, 2023
+
+Some additions to OctoAI on June 6, 2023. Added private registry and the ability for users to mount secrets and other environment variables.
+
+<div className="changelog">
+    ### Private registry control
+    - Added the ability for users to pull containers from private registries by applying registry credentials to an endpoint. See Pulling containers from a private registry for a guide.
+
+    ### Secrets and environment variables
+    - Added the ability for users to mount secrets and other environment variables into their containers within an endpoint. See Setting up secrets or environment variables for your custom endpoints for a guide.
+
+    ### A100 GPUs
+    - NVIDIA A100s are back online as of 5pm PDT on June 6th. The A100s were temporarily taken down earlier this week as maintenance was being performed to update the version of CUDA. User requests and hardware options are now functioning business as usual.
+</div>
+
+

@@ -1,0 +1,75 @@
+---
+title: LlamaIndex Integration
+subtitle: >-
+  A developer building AI apps can now access highly optimized LLMs and
+  Embeddings models on OctoAI.
+slug: integrations/llamaindex
+---
+
+## Introduction
+LlamaIndex strives to help manage the interactions between your language modles and private DataTransfer. 
+If you are building your application and using LlamaIndex you benefit from the vast ecosystem of integrations, and top LLMs amd Embeddings models hosted by OctoAI.
+
+
+## Using OctoAI's LLMs and LlamaIndex
+Get started reviewing more about [LlamaIndex](https://docs.llamaindex.ai/en/stable/), and [signing up for a free OctoAI account](https://identity.octoml.ai/oauth/account/sign-up?redirectUrl=https%3A%2F%2Foctoai.cloud%2Foauth%2Fcallback). 
+
+LlamaIndex has both Python and TypScript libraries, and OctoAI is available in the Python SDK. 
+
+To use OctoAI LLM endpoints with LlamaIndex start with the code below using Llama 3 8B as the LLM.  
+
+```python 
+from os import environ
+from llama_index.llms.octoai import OctoAI
+
+OCTOAI_API_KEY = environ.get("OCTOAI_TOKEN")
+
+octoai = OctoAI(model="meta-llama-3-8b-instruct", token=OCTOAI_API_KEY)
+
+# Using complete
+response = octoai.complete("Octopi can not play chess because...")
+print(response)
+
+print("\n=====================\n")
+
+# Using the chat interface
+from llama_index.core.llms import ChatMessage
+
+messages = [
+    ChatMessage(
+        role="system",
+        content="Below is an instruction that describes a task. Write a response that appropriately completes the request.",
+    ),
+    ChatMessage(role="user", content="Write a short blog about Seattle"),
+]
+response = octoai.chat(messages)
+print(response)
+```
+To use OctoAI Embedding endpoints with llamaindex 
+you can use the code below to get started. We’re using GTE large in the example below (default model).
+
+```python 
+from os import environ
+from llama_index.embeddings.octoai import OctoAIEmbedding
+
+OCTOAI_API_KEY = environ.get("OCTOAI_TOKEN")
+embed_model = OctoAIEmbedding(api_key=OCTOAI_API_KEY)
+
+# Single embedding request
+embeddings = embed_model.get_text_embedding("Once upon a time in Seattle.")
+assert len(embeddings) == 1024
+print(embeddings[:10])
+
+
+# Batch embedding request
+texts = [
+    "Once upon a time in Seattle.", 
+    "This is a test.", 
+    "Hello, world!"
+]
+embeddings = embed_model.get_text_embedding_batch(texts)
+assert len(embeddings) == 3
+print(embeddings[0][:10])
+```
+
+If you are using LlamaIndex you can easily switch model provider, and enjoy using models hosted and optimized for scale on OctoAI.  

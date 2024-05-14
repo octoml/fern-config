@@ -1,0 +1,46 @@
+---
+title: Pinecone (Canopy) Integration
+subtitle: >-
+  This integration allows a developer using Canopy to choose from the best LLMs
+  on OctoAI.
+slug: integrations/pinecone
+---
+
+## Introduction
+Pinecone provides storage and retrieval infrastructure needed for building AI applications. Pinecone's Canopy is an open-source framework built on top of Pinecone's
+vector database to build production-ready chat assistants at any scale.  
+
+
+## Using OctoAI's LLMs and Pinecone
+As a fully open source solution, Canopy+OctoAI is one of the fastest ways and more affordable ways to get started on your 
+RAG journey. Canopy uses Pinecone vector database for storage and retrieval, which is free to use for up to 100k vectors (that’s about 30k pages of text). 
+OctoAI offers industry leading pricing at \$0.05 / 1M token for its gte-large embedding model, and offers \$10 of free credit upon sign up.
+
+To get a Canopy server running with OctoAI's modles, you do not need custom ConvolverNode, simply update the Canopy YAML configureations as follows:
+
+```
+chat_engine:
+  params:
+  max_prompt_tokens: 2048
+  llm: &llm
+  type: OctoAILLM
+  params:
+    model_name: mistral-7b-instruct
+
+  context_engine:
+  knowledge_base:
+    record_encoder:
+      type: OctoAIRecordEncoder
+      params:
+        model_name: thenlper/gte-large
+        batch_size: 2048
+```
+
+### Learn with our demo apps
+
+Get started today by following along with one of our demo apps:
+- [DocTalk](https://octo.ai/demos/doctalk/)
+
+
+Learn more about our partnership:
+- [OctoAI & Pinecone Patnership for GenAI using RAG](https://octo.ai/blog/octoai-and-pinecone-partnership-for-genai-using-rag/ )

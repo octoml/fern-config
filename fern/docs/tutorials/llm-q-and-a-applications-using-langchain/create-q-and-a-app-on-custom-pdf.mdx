@@ -1,0 +1,172 @@
+---
+title: 'Code walkthrough: Q&A on a custom PDF'
+subtitle: >-
+  Build an app that indexes a PDF document and answers user questions about the
+  document
+slug: >-
+  tutorials/llm-q-and-a-applications-using-langchain/create-q-and-a-app-on-custom-pdf
+---
+
+
+### Prerequisite
+
+Make sure you've followed the steps in [LLM application examples](environment-setup.mdx) to clone our example repo, create your own OctoAI LLM endpoint, and set up your local environment.
+
+### Code walkthrough for answering questions about your custom PDF file
+
+Below is an explanation of the code in the [pdf QA sample](https://github.com/octoml/hackathon-2023-rag/blob/main/pdf-qa/pdf%5Fqa%5Fmain.py)
+
+First, we import the necessary libraries:
+
+```Python Python
+from dotenv import load_dotenv
+from langchain.llms.octoai_endpoint import OctoAIEndpoint as OctoAiCloudLLM
+from langchain.embeddings.octoai_embeddings import OctoAIEmbeddings
+from langchain.vectorstores import Chroma, FAISS
+from langchain.chains.question_answering import load_qa_chain
+from langchain.text_splitter import CharacterTextSplitter
+from PyPDF2 import PdfReader
+```
+
+We import libraries for environment variables, the OctoAI LLM endpoint, Langchain, embeddings, and the LLama index.
+
+Next, we set the current directory and logging level:
+
+```Python Python
+# Get the current file's directory
+current_dir = os.path.dirname(os.path.abspath(**file**))   
+
+# Change the current working directory
+os.chdir(current_dir)   
+
+# Set logging level to CRITICAL
+logging.basicConfig(level=logging.CRITICAL)
+```
+
+We need to load environment variables from a .env file to get credentials for the OctoAI model. We set the logging level to CRITICAL to reduce noise.
+
+Then we define a function to initialize the files directory:
+
+```Python Python
+def init():  
+    """Initialize the files directory."""  
+    if not os.path.exists(FILES):  
+        os.mkdir(FILES)
+```
+
+Next, we define a function to handle exiting the program:
+
+```Python Python
+def handle_exit():  
+    """Handle exit gracefully."""  
+    print("\nGoodbye!\n")  
+    sys.exit(1)
+```
+
+Functions to load a PDF file, create a query engine, and prompt the user to ask questions:
+
+```Python Python
+def setup_langchain_environment():
+    """
+    Set up the language model and embeddings.
+    """
+    endpoint_url = os.getenv("ENDPOINT_URL")
+    if not endpoint_url:
+        raise ValueError("The ENDPOINT_URL environment variable is not set.")
+
+    # Initialize the LLM and Embeddings
+    llm = OctoAiCloudLLM(
+        endpoint_url=endpoint_url,
+        model_kwargs={
+            "model": "llama-2-70b-chat-fp16",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "Below is an instruction that describes a task. Write a response that appropriately completes the request.",
+                }
+            ],
+            "stream": False,
+            "max_tokens": 256,
+        },
+    )
+    embeddings = OctoAIEmbeddings(
+        endpoint_url="https://instructor-large-f1kzsig6xes9.octoai.run/predict"
+    )
+    return llm, embeddings
+  
+  
+def extract_text_from_pdf(pdf_path):
+    """
+    Extract text from the given PDF file.
+    """
+    pdf_reader = PdfReader(pdf_path)
+    return "".join(page.extract_text() or "" for page in pdf_reader.pages)
+
+def interactive_qa_session(file_path):
+    """
+    Interactively answer user questions about the document.
+    """
+    print("Loading...")
+    raw_text = extract_text_from_pdf(file_path)
+    text_splitter = CharacterTextSplitter(
+        separator="\n", chunk_size=400, chunk_overlap=100, length_function=len
+    )
+    texts = text_splitter.split_text(raw_text)
+
+    llm, embeddings = setup_langchain_environment()
+    print("Creating embeddings")
+    document_search = FAISS.from_texts(texts, embeddings)
+    chain = load_qa_chain(llm, chain_type="stuff")
+
+    clear_screen()
+    print("Ready! Ask anything about the document.")
+    print("\nPress Ctrl+C to exit.")
+
+    try:
+        from termios import tcflush, TCIFLUSH
+        tcflush(sys.stdin, TCIFLUSH)
+        while True:
+            prompt = input("\nPrompt: ").strip()
+            if not prompt:
+                continue
+            if prompt.lower() == "exit":
+                handle_exit()
+
+            start_time = time.time()
+            docs = document_search.similarity_search(prompt)
+            response = chain.run(input_documents=docs, question=prompt)
+            elapsed_time = time.time() - start_time
+            print(f"Response ({round(elapsed_time, 1)} sec): {response}\n")
+    except KeyboardInterrupt:
+        handle_exit()
+```
+
+We load the selected PDF, instantiate the OctoAI-hosted LLM and a predictor, create embeddings and a ServiceContext, build an index of the document, and construct a query engine to answer questions.
+
+The select\_file() function prompts the user to select a PDF file to process:
+
+```Python Python
+def select_file():  
+    """Select a file for processing."""  
+    ...  
+    file_path = os.path.abspath(os.path.join(FILES, files[selection - 1]))  
+    return file_path
+```
+
+Finally, we call the initialization function, prompt the user to select a file, and if a file is selected, start the interactive query session:
+
+
+```Python Python
+if __name__ == "__main__":
+    # Initialize the file directory
+    init()  
+
+    # Prompt user to select a file 
+    file = select_file()
+    if file:
+        # Start the interactive query session 
+        ask(file)  
+    else: 
+        print("No files found")
+        handle_exit()
+```

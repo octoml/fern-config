@@ -1,0 +1,313 @@
+instances:
+  - url: octoai.docs.buildwithfern.com
+title: OctoAI
+logo:
+  light: docs/assets/images/logo/octoai-logo-light.svg
+  dark: docs/assets/images/logo/octoai-logo-dark.svg
+  href: https://octo.ai/
+  height: 28
+background-image:
+  dark: docs/assets/images/bg-universal.webp
+  light: docs/assets/images/gradient-bg-light.svg
+favicon: favicon.png
+colors:
+  accent-primary:
+    dark: "#0096FF"
+    light: "#0096FF"
+  # background:
+  #   dark: "#111213"
+  #   light: "#fafaf9"
+navbar-links:
+  - type: secondary
+    text: Login
+    url: >-
+      https://identity.octoml.ai/oauth/account/login?redirectUrl=https://octoai.cloud
+  - type: filled
+    text: Sign up
+    url: >-
+      https://identity.octoml.ai/oauth/account/sign-up?redirectUrl=https://octoai.cloud
+tabs:
+  documentation:
+    display-name: Documentation
+  apiReference:
+    display-name: API Reference
+    slug: api-reference
+  integrations:
+    display-name: Integrations
+    slug: integrations
+  releaseNotes:
+    display-name: Release Notes
+    slug: release-notes
+  community:
+    display-name: Community
+    href: https://discord.com/invite/rXTPeRBcG7
+    icon: brands discord
+  support:
+    display-name: Support
+    href: https://discord.com/channels/1085222662504194098/1085613782006509600
+    icon: duotone headset
+layout:
+  tabs-placement: header
+  searchbar-placement: header
+  header-height: 69px
+  page-width: 1440px
+  sidebar-width: 292px
+navigation:
+  - tab: documentation
+    layout:
+      - section: Quickstart
+        contents:
+          - page: Quickstart
+            path: docs/getting-started/quickstart.mdx
+          - page: Pricing & billing
+            path: docs/getting-started/pricing-and-billing.mdx
+          - page: Text Gen REST API
+            path: docs/text-gen-solution/rest-api.mdx
+          - page: Migrate from OpenAI to OctoAI in 3 lines of code
+            path: docs/text-gen-solution/migration-from-openai.mdx
+          - section: Media Gen REST APIs
+            contents:
+              - page: Image Gen
+                path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
+              - page: Video Gen
+                path: docs/media-gen-solution/rest-apis/video-gen.mdx
+              - page: Background Removal
+                path: docs/media-gen-solution/rest-apis/background-removal.mdx
+              - page: Upscaling
+                path: docs/media-gen-solution/rest-apis/upscaling.mdx
+              - page: Adetailer
+                path: docs/media-gen-solution/rest-apis/adetailer.mdx
+          - page: Inference models
+            path: docs/getting-started/inference-models.mdx
+          - page: Create an API token
+            path: docs/getting-started/how-to-create-an-octoai-access-token.mdx
+      - section: Text Gen Solution
+        contents:
+          - page: Getting started
+            path: docs/text-gen-solution/getting-started.mdx
+          - page: Text Gen Python SDK
+            path: docs/text-gen-solution/python-sdk.mdx
+          - page: Text Gen TypeScript SDK
+            path: docs/text-gen-solution/typescript-sdk.mdx
+          - page: Using JSON mode with Text Gen endpoints
+            path: docs/text-gen-solution/json-mode.mdx
+          - page: Using Llama Guard to moderate text
+            path: docs/text-gen-solution/llama-guard.mdx
+          - page: Using Unstructured.io for embedding documents
+            path: >-
+              docs/text-gen-solution/using-unstructured-io-for-embedding-documents.mdx
+      - section: Media Gen Solution
+        contents:
+          - page: Getting started
+            path: docs/media-gen-solution/getting-started.mdx
+          - section: Customizations
+            contents:
+              - page: Overview
+                path: docs/media-gen-solution/customizations/overview.mdx
+              - page: Checkpoints
+                path: docs/media-gen-solution/customizations/checkpoints.mdx
+              - page: LoRAs
+                path: docs/media-gen-solution/customizations/loras.mdx
+              - page: Textual Inversions
+                path: docs/media-gen-solution/customizations/textual-inversions.mdx
+              - page: Prompt Weighting
+                path: docs/media-gen-solution/customizations/prompt-weighting.mdx
+              - page: ControlNets
+                path: docs/media-gen-solution/customizations/controlnets.mdx
+          - section: Optimizations
+            contents:
+              - page: SDXL Lighting
+                path: docs/media-gen-solution/optimizations/sdxl-lighting.mdx
+              - page: SSD
+                path: docs/media-gen-solution/optimizations/ssd.mdx
+              - page: Samplers
+                path: docs/media-gen-solution/optimizations/samplers.mdx
+          - page: Image Generator Python client
+            path: docs/python-sdk/image-generator-client.mdx
+          - section: Fine-tuning Stable Diffusion
+            contents:
+              - page: Overview
+                path: >-
+                  docs/media-gen-solution/fine-tuning-stable-diffusion/fine-tuning-stable-diffusion.mdx
+              - page: TypeScript SDK
+                path: >-
+                  docs/media-gen-solution/fine-tuning-stable-diffusion/typescript-sdk-finetuning.mdx
+          - section: Managing custom assets with Asset Library
+            contents:
+              - page: Uploading custom assets
+                path: >-
+                  docs/media-gen-solution/uploading-a-custom-asset-to-the-octoai-asset-library.mdx
+              - page: Asset Library Python client
+                path: docs/python-sdk/asset-orchestrator-client.mdx
+              - page: Asset Library TypeScript client
+                path: docs/typescript-sdk/asset-library.mdx
+          - section: Supported image utilities
+            contents:
+              - page: Inpainting
+                path: docs/media-gen-solution/image-utilities/inpainting.mdx
+              - page: Outpainting
+                path: docs/media-gen-solution/image-utilities/outpainting.mdx
+              - page: Adetailer
+                path: docs/media-gen-solution/image-utilities/adetailer.mdx
+              - page: Photo Merge
+                path: docs/media-gen-solution/image-utilities/photo-merge.mdx
+              - page: Upscaling
+                path: docs/media-gen-solution/image-utilities/upscaling.mdx
+              - page: Background Removal
+                path: docs/media-gen-solution/image-utilities/bg-removal.mdx
+      - section: Compute Service
+        contents:
+          - page: Getting started
+            path: docs/compute-service/compute-getting-started.mdx
+          - section: Create an endpoint from an existing container
+            contents:
+              - page: Overview
+                path: >-
+                  docs/compute-service/create-endpoint-from-existing-container/create-custom-endpoints-from-a-container.mdx
+              - page: Pulling containers from a private registry
+                path: >-
+                  docs/compute-service/create-endpoint-from-existing-container/pulling-containers-from-a-private-registry.mdx
+              - page: Setting up account-wide secrets for your custom endpoints
+                path: >-
+                  docs/compute-service/create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints.mdx
+          - page: Create a container and endpoint using the CLI
+            path: docs/compute-service/create-custom-endpoint-using-the-cli.mdx
+          - page: "Advanced: build a container from scratch in Python"
+            path: >-
+              docs/compute-service/advanced-build-a-container-from-scratch-in-python.mdx
+          - page: Healthcheck path in custom containers
+            path: docs/compute-service/health-check-path-in-custom-containers.mdx
+      - section: Private Deployment
+        contents:
+          - page: OctoStack
+            path: docs/private-deployment/octostack.mdx
+          - page: SecureLink guide
+            path: docs/private-deployment/secure-link.mdx
+      - section: CLI
+        contents:
+          - page: CLI installation
+            path: docs/cli/cli-and-sdk-installation.mdx
+          - page: CLI reference
+            path: docs/cli/cli-reference-guide.mdx
+      - section: Python SDK
+        contents:
+          - page: Python SDK installation
+            path: docs/python-sdk/installation-and-setup.mdx
+          - page: Python SDK inference
+            path: docs/python-sdk/python-sdk-inferences.mdx
+          - page: Upgrading from octoai-sdk
+            path: docs/python-sdk/upgrading-from-old-sdk.mdx
+      - section: TypeScript SDK
+        contents:
+          - page: TypeScript SDK installation
+            path: docs/typescript-sdk/installation-and-setup.mdx
+          - page: Upgrading from @octoai/client
+            path: docs/typescript-sdk/upgrading-from-old-sdk.mdx
+      - section: FAQs
+        contents:
+          - page: Rate limits
+            path: docs/faqs/rate-limits.mdx
+          - page: Privacy & security
+            path: docs/faqs/privacy-and-security.mdx
+          - page: RAG with OctoAI
+            path: docs/faqs/rag.mdx
+          - page: Service regions
+            path: docs/faqs/service-regions.mdx
+          - page: Multi-user accounts
+            path: docs/faqs/multi-user-accounts.mdx
+          - page: Open source licenses
+            path: docs/faqs/open-source-licenses.mdx
+  - tab: apiReference
+    layout:
+      - section: OctoAI API
+        slug: octoai-api
+        contents:
+          - page: Authentication
+            path: docs/api-reference/octoai-api/authentication.mdx
+          - page: Inference
+            path: docs/api-reference/octoai-api/inference.mdx
+          - api: OctoAI API
+            api-name: octoai
+            flattened: true
+            skip-slug: true
+      - api: OctoAI API
+        api-name: api
+        flattened: true
+        skip-slug: true
+        snippets:
+          python: "octoai"
+          typescript: "@octoai/sdk"
+  - tab: integrations
+    layout:
+      - section: Integrations
+        contents:
+          - page: All
+            path: docs/integrations/overview.mdx
+          - page: LangChain
+            path: docs/integrations/langchain.mdx
+          - page: Pinecone
+            path: docs/integrations/pinecone.mdx
+          - page: Unstructured.io
+            path: docs/integrations/unstructured.mdx
+          - page: OpenRouter
+            path: docs/integrations/openrouter.mdx
+          - page: LlamaIndex
+            path: docs/integrations/llamaindex.mdx
+  - tab: releaseNotes
+    layout:
+      - section: "2024"
+        contents:
+          - page: March
+            path: docs/release-notes/2024/march.mdx
+          - page: February
+            path: docs/release-notes/2024/february.mdx
+          - page: January
+            path: docs/release-notes/2024/january.mdx
+      - section: "2023"
+        contents:
+          - page: December
+            path: docs/release-notes/2023/december.mdx
+          - page: November
+            path: docs/release-notes/2023/november.mdx
+          - page: October
+            path: docs/release-notes/2023/october.mdx
+          - page: September
+            path: docs/release-notes/2023/september.mdx
+          - page: August
+            path: docs/release-notes/2023/august.mdx
+          - page: July
+            path: docs/release-notes/2023/july.mdx
+          - page: June
+            path: docs/release-notes/2023/june.mdx
+          - page: May
+            path: docs/release-notes/2023/may.mdx
+  - tab: community
+  - tab: support
+
+typography:
+  bodyFont:
+    name: Faktum
+    paths:
+      - path: ./docs/assets/fonts/Faktum-Regular.woff2
+        weight: "400"
+        style: normal
+      - path: ./docs/assets/fonts/Faktum-Medium.woff2
+        weight: "500"
+        style: normal
+      - path: ./docs/assets/fonts/Faktum-SemiBold.woff2
+        weight: "600"
+        style: normal
+  headingsFont:
+    name: Faktum
+    paths:
+      - path: ./docs/assets/fonts/Faktum-Regular.woff2
+        weight: "400"
+        style: normal
+      - path: ./docs/assets/fonts/Faktum-Medium.woff2
+        weight: "500"
+        style: normal
+      - path: ./docs/assets/fonts/Faktum-SemiBold.woff2
+        weight: "600"
+        style: normal
+
+css: ./style.css

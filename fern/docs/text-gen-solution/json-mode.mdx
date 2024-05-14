@@ -1,0 +1,295 @@
+---
+title: Using JSON mode with Text Gen endpoints
+subtitle: Ensure Text Gen outputs fit into your desired JSON schema.
+slug: text-gen-solution/json-mode
+---
+
+
+OctoAIs Large Language Models (LLMs) can generate generate outputs that not only adhere to JSON format but also align with your unique schema specifications.
+
+This is supported for all models, but works especially well with Mixtral & Mistral models, including the Hermes family of fine tunes.
+
+
+ ## Getting started
+
+Setup credentials:
+
+ ```bash
+ export OCTOAI_TOKEN=YOUR_TOKEN_HERE
+ ```
+
+ Curl example (Mistral-7B): Let's say taht you want to ensure that your LLM responses format user feedback about cars into a usable JSON format. To do so, you provide the LLM with a reponse schema ensuring that it knows it must provide "color" and "maker" in a structured format--see "response format below":
+
+```bash
+curl -X POST "https://text.octoai.run/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OCTOAI_TOKEN" \
+  --data-raw '{
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant."
+            },
+            {
+                "role": "user",
+                "content": "the car was black and it was a toyota camry."
+            }
+        ],
+        "model": "mistral-7b-instruct",
+        "max_tokens": 512,
+        "presence_penalty": 0,
+        "temperature": 0.1,
+        "top_p": 0.9,
+        "response_format": {
+            "type": "json_object",
+            "schema": {"properties": {"color": {"title": "Color", "type": "string"}, "maker": {"title": "Maker", "type": "string"}}, "required": ["color", "maker"], "title": "Car", "type": "object"}
+        }
+    }'
+```
+
+The LLM will respond in the exact schema specified:
+
+```bash
+{
+  "id": "chatcmpl-d5d81b7c80b249ea8177f95f68a51d8e",
+  "object": "chat.completion",
+  "created": 1709830931,
+  "model": "mistral-7b-instruct",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"color\": \"black\", \"maker\": \"Toyota”, \"}",
+        "function_call": null
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 98,
+    "completion_tokens": 16,
+    "total_tokens": 114
+  }
+}
+```
+
+## Pydantic and OctoAI's Python SDK
+
+Pydantic is a popular Python library for data validation and settings management using Python type annotations. By combining Pydantic with the OctoAI SDK, you can easily define the desired JSON schema for your LLM responses and ensure that the generated content adheres to that structure.
+
+First, make sure you have the required packages installed:
+
+```bash
+python3 -m pip install openai pydantic==2.5.3
+```
+
+### Basic example
+
+Let's start with a basic example to demonstrate how Pydantic and the OctoAI SDK work together. In this example, we'll define a simple Car model with color and maker attributes, and ask the LLM to generate a response that fits this schema.
+
+```python
+from octoai.client import OctoAI
+from octoai.text_gen import ChatCompletionResponseFormat, ChatMessage
+from pydantic import BaseModel, Field
+from typing import List
+
+client = OctoAI()
+
+class Car(BaseModel):
+    color: str
+    maker: str
+
+completion = client.text_gen.create_chat_completion(
+    model="mistral-7b-instruct",
+    messages=[
+        ChatMessage(role="system", content="You are a helpful assistant."),
+        ChatMessage(role="user", content="the car was black and it was a toyota camry."),
+    ],
+    max_tokens=512,
+    presence_penalty=0,
+    temperature=0.1,
+    top_p=0.9,
+    response_format=ChatCompletionResponseFormat(
+        type="json_object",
+        schema=Car.model_json_schema(),
+    ),
+)
+
+print(completion.choices[0].message.content)
+```
+The key points to note here are:
+
+1. We import the necessary classes from the OctoAI SDK: Client, TextModel, and ChatCompletionResponseFormat.
+
+2. We define a Car class inheriting from BaseModel, specifying the color and maker attributes with their expected types.
+
+3. When creating the chat completion, we set the response_format using ChatCompletionResponseFormat and include the JSON schema generated from our Car model using Car.model_json_schema().
+
+The output will be a JSON object adhering to the specified schema:
+
+```json
+{"color": "black", "maker": "Toyota"}
+```
+
+### Array example
+
+Next, let's look at an example involving arrays. Suppose we want the LLM to generate a list of names based on a given prompt. We can define a Meeting model with a names attribute of type List[str].
+
+```python
+from octoai.client import OctoAI
+from octoai.text_gen import ChatCompletionResponseFormat, ChatMessage
+from pydantic import BaseModel, Field
+from typing import List
+
+client = OctoAI()
+
+class Meeting(BaseModel):
+    names: List[str]
+
+
+chat_completion = client.text_gen.create_chat_completion(
+    model="<model>",
+    messages=[
+        ChatMessage(role="system", content="You are a helpful assistant."),
+        ChatMessage(role="user", content="John and Jane meet the day after"),
+    ],
+    temperature=0,
+    response_format=ChatCompletionResponseFormat(
+        type="json_object",
+        schema=Meeting.model_json_schema()
+    ),
+)
+
+print(chat_completion.choices[0].message.content)
+```
+The LLM will generate a response containing an array of names:
+
+```json
+{"names": ["John","Jane"]}
+```
+
+### Nested example
+
+Finally, let's explore a more complex example involving nested models. In this case, we'll define a Person model with name and age attributes, and a Result model containing a sorted list of Person objects.
+
+```python
+class Person(BaseModel):
+    """The object representing a person with name and age"""
+
+    name: str = Field(description="Name of the person")
+    age: int = Field(description="The age of the person")
+
+
+class Result(BaseModel):
+    """The format of the answer."""
+
+    sorted_list: List[Person] = Field(description="List of the sorted objects")
+
+
+completion = octoai.text_gen.create_chat_completion(
+    model="mistral-7b-instruct",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful assistant designed to output JSON.",
+        },
+        {
+            "role": "user",
+            "content": "Alice is 10 years old, Bob is 7 and carol is 2. Sort them by age in ascending order.",
+        },
+    ],
+    max_tokens=512,
+    presence_penalty=0,
+    temperature=0.1,
+    top_p=0.9,
+    response_format=ChatCompletionResponseFormat(
+        type="json_object",
+        schema=Result.model_json_schema(),
+    ),
+)
+
+print(completion.choices[0].message.content)
+```
+
+In this example:
+
+1. We define a Person model with name and age attributes, along with descriptions using the Field function from Pydantic.
+2. We define a Result model containing a sorted_list attribute of type List[Person].
+3. When creating the chat completion, we set the response_format using ChatCompletionResponseFormat and include the JSON schema generated from our Result model.
+
+The LLM will generate a response containing a sorted list of Person objects:
+
+```json
+{"sorted_list": [{"name": "Carol", "age": 2},{"name": "Bob", "age": 7},{"name": "Alice", "age": 10}]}
+```
+
+
+## Instructor
+
+Instructor makes it easy to reliably get structured data like JSON from Large Language Models (LLMs). Read more [here](https://jxnl.github.io/instructor/)
+
+### Install
+
+```bash
+python3 -m pip install instructor
+```
+
+### Example
+
+```python
+import os
+import openai
+from pydantic import BaseModel
+import instructor
+
+client = openai.OpenAI(
+    base_url="https://text.octoai.run/v1",
+    api_key=os.environ["OCTOAI_TOKEN"],
+)
+
+
+# By default, the patch function will patch the ChatCompletion.create and ChatCompletion.create methods to support the response_model parameter
+client = instructor.patch(client, mode=instructor.Mode.JSON_SCHEMA)
+
+
+# Now, we can use the response_model parameter using only a base model
+# rather than having to use the OpenAISchema class
+class UserExtract(BaseModel):
+    name: str
+    age: int
+
+
+user: UserExtract = octoai.text_gen.create_completion(
+    model="mistral-7b-instruct",
+    response_model=UserExtract,
+    messages=[
+        {"role": "user", "content": "Extract jason is 25 years old"},
+    ],
+)
+
+print(user.model_dump_json(indent=2))
+```
+
+Let's break down the code step by step:
+
+After importing the necessary modules and setting the clients, we:
+
+1. We use the instructor.patch function to patch the ChatCompletion.create method of the OctoAI client. This allows us to use the response_model parameter directly with a Pydantic model.
+
+2. We define a Pydantic model called UserExtract that represents the desired structure of the extracted user information. In this case, it has two fields: name (a string) and age (an integer).
+
+3. We call the chat.completions.create method of the patched OctoAI client, specifying the model (mistral-7b-instruct), the response_model (our UserExtract model), and the user message that contains the information we want to extract.
+
+4. Finally, we print the extracted user information using the model_dump_json method, which serializes the Pydantic model to a JSON string with indentation for better readability.
+
+The output will be a JSON object containing the extracted user information, adhering to the specified UserExtract schema:
+
+```json
+{
+  "name": "jason",
+  "age": 25
+}
+```
+
+By leveraging Instructor and the OctoAI SDK, you can easily define the desired output schema and ensure that the LLM generates structured data that fits your application's requirements. This simplifies the process of integrating LLM-generated content into your software systems.

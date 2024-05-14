@@ -1,0 +1,20 @@
+---
+title: Rate limits
+subtitle: >-
+  Rate limits are restrictions on the rate and individual account can submit
+  inference requests.
+slug: faqs/rate-limits
+---
+
+
+Rate limits are restrictions applied by OctoAI on the rate at which an individual account can submit inference requests against an API endpoint. It is a mechanism used to ensure predictable performance of the platform, and to allow all OctoAI customers to experience predictable inference latencies. Inference requests that are not completed because of a rate limit cap will return an HTTP 429 response code, and can be retried after an appropriate backoff period.
+
+## OctoAI API rate limits
+
+| API endpoint   | Free tier              | Pro tier              | Enterprise tier    |
+| -------------- | ---------------------- | --------------------- | ------------------ |
+| Text Gen       | 10 requests per minute | 240 requests per minute | [Contact us](https://octo.ai/contact-us)       
+  |
+| Media Gen      | 10 requests per minute | 60 requests per minute | [Contact us](https://octo.ai/contact-us)        |
+
+**Higher rate limits are available**, please [reach out](https://octo.ai/contact-us) if you need an increase.

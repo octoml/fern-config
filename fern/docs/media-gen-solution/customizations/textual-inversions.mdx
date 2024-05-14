@@ -1,0 +1,106 @@
+---
+title: Textual Inversions
+subtitle: >-
+  Customize your images on OctoAI using Textual inversions, which are embeddings
+  that represent custom subjects.
+slug: media-gen-solution/customizations/textual-inversions
+---
+
+
+Textual inversions are embeddings that represent custom subjects.They can also represent negative embeddings, which are trained on undesirable content like bad quality hands or lighting. You can use these in your _negative_ prompt to improve your images, such as avoiding bad quality hands. These are the smallest and cheapest assets we currently support.
+ The name of the textual inversion acts as a specific trigger word, which must be included in the prompt. Similar to prompt weighting, you can increase the weight of textual inversion using the format `(textual-inversion:weight)`.
+
+    Below is an example of using a NegativeXL textual inversion (trigger word: negativeXL_D).
+
+    Prompt:  `Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details`
+
+    Negative prompt: `Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)`
+
+    You can see the results from the SDXL base model (left) generating an image with snowflake or flower shaped designs on the bottle and subsequent results with textual inversion (right) which ensures that the negative prompt is followed and no flower, snowflake design appears on the bottle in the output image.
+
+<CardGroup cols={2}>
+  <Card title="Using SDXL base model">
+ ![](https://www.datocms-assets.com/45680/1709334742-download-4.jpeg?max-w=2000&auto=compress)
+  </Card>
+  <Card title="Using SDXL with textual inversion">
+ ![](https://www.datocms-assets.com/45680/1709334749-download-5.jpeg?max-w=2000&auto=compress)
+ </Card>
+</CardGroup>
+
+     **Example Code:**
+<CodeGroup>
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/sdxl" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details",
+        "negative_prompt": "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
+        "textual_inversions": {
+            "octoai:NegativeXL": "“negativeXL_D”"
+        },
+        "width": 1024,
+        "height": 1024,
+        "num_images": 1,
+        "sampler": "DDIM",
+        "steps": 30,
+        "cfg_scale": 12,
+        "use_refiner": true,
+        "high_noise_frac": 0.8,
+        "style_preset": "base"
+    }' | jq -r ".images[0].image_b64" | base64 -d >result.jpg
+```
+
+```Python Python
+import os
+from octoai.util import to_file
+from octoai.client import OctoAI
+
+client = OctoAI()
+
+image_gen_response = client.image_gen.generate_sdxl(
+    prompt="Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details",
+    negative_prompt="Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
+    textual_inversions={"octoai:NegativeXL":"“negativeXL_D”"},
+    width=1024,
+    height=1024,
+    num_images=1,
+    sampler="DDIM",
+    steps=30,
+    cfg_scale=12,
+    use_refiner=True,
+    high_noise_frac=0.8,
+    style_preset="base",
+)
+images = image_gen_response.images
+
+for i, image in enumerate(images):
+    to_file(image, f"result{i}.jpg")
+```
+
+```typescript Typescript
+import fs from "fs";
+import { OctoAIClient } from "@octoai/sdk";
+
+const client = new OctoAIClient({
+  apiKey: "<OCTOAI_TOKEN>",
+});
+
+const { images } = await client.imageGen.generateSdxl({
+  "prompt": "Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details",
+  "negativePrompt": "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
+  "textualInversions": {
+    "octoai:NegativeXL": "“negativeXL_D”"
+  },
+  "width": 1024,
+  "height": 1024,
+  "numImages": 1,
+  "sampler": "DDIM",
+  "steps": 30,
+  "cfgScale": 12,
+  "useRefiner": true,
+  "highNoiseFrac": 0.8,
+  "stylePreset": "base"
+})
+```
+</CodeGroup>

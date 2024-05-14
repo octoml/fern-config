@@ -1,0 +1,192 @@
+---
+title: Photo Merge
+subtitle: >-
+  Seamlessly integrate a photo's subject into AI-generated output and eliminate
+  the need to create time-consuming custom facial finetunes.
+slug: media-gen-solution/image-utilities/photo-merge
+---
+
+
+OctoAI Photo Merge feature allows you to seamlessly integrate a photo’s subject into high-quality AI-generated output. It eliminates the need to create time-consuming custom facial fine-tunes with numerous tuning images and 15-30 minutes typically associated with SDXL LoRAs. OctoAI's Photo Merge simplifies this process, requiring only 1-4 images and delivering precise results within a few seconds. Businesses can now easily apply GenAI powered imagery for needs ranging from realistic CGI characters, to personalized product recommendations, to digital avatars.
+
+Photo Merge can be accessed through the "transfer_images" parameter within OctoAI’s Image Generation API. This parameter accepts a key-value pair consisting of a trigger word and an array of up to 4 images. It operates exclusively with SDXL models and seamlessly harmonizes with style presets, controlnets, checkpoints, and LoRAs when utilized with SDXL models, thereby amplifying its adaptability and functionality.
+
+In the example below, we will upload 1-4 images of a human and use photo merge to transfer his face into our prompts. 
+
+**Example Code Snippet showing the close portriat images of a human**:  
+
+```Python Python
+ENDPOINT_URL = "https://image.octoai.run/generate/sdxl"
+IMAGES_PATH = "/content/images"
+os.makedirs(IMAGES_PATH, exist_ok=True)
+
+luis_path = f'{IMAGES_PATH}/luis'
+luis_urls = ['https://cs.illinois.edu/_sitemanager/viewphoto.aspx?id=12289&s=206',
+             'https://www.kisacoresearch.com/sites/default/files/styles/panopoly_image_square/public/speakers/luis_ceze_headshot.jpg?itok=NmVXlZb2&c=092995db2355e0f1f7ce15ff18aba155',
+             'https://news.cs.washington.edu/wp-content/uploads/2023/01/luis-ceze-2022-blog.jpg',
+             'https://cdn.geekwire.com/wp-content/uploads/2019/12/luisceze-1260x1047.jpeg',
+             ]
+
+luis_image_names = download_from_urls(luis_urls, luis_path)
+
+image_grid(luis_path, luis_image_names)
+
+luis_b64_images = [encode_b64(luis_path, image) for image in luis_image_names]
+```
+![](https://www.datocms-assets.com/45680/1709586273-luis1.png?max-w=2000&auto=compress) 
+
+Next, we utilize the `transfer_images="triggerword": list of images parameter` within the payload of OctoAI’s SDXL Image Gen API at `https://image.octoai.run/generate/sdxl`.
+
+**Example Code Snippet of using Photo Merge (transfer_images)**:
+
+```Python Python
+payload = {
+    "prompt": "A man luis sitting in a coffee shop",
+    "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+    "checkpoint": "RealVisXL",
+    "width": 1024,
+    "height": 1024,
+    "num_images": 4,
+    "sampler": "K_EULER_ANCESTRAL",
+    "steps": 20,
+    "cfg_scale": 7.5,
+    "seed": 888,
+    "transfer_images": {"luis": luis_b64_images}
+}
+
+response = query(ENDPOINT_URL, payload)
+
+generated_images = decode_response(response)
+image_grid_buffer(generated_images)
+```
+
+In the given example, we employ the trigger word ‘luis’ and link it with the dataset comprising the four images mentioned earlier. Subsequently, we structure the prompt to incorporate the trigger word.
+
+Prompt: `A man luis sitting in a coffee shop.`
+
+It's worth noting that in this instance, no LoRA is utilized. Additionally, we utilize a checkpoint named ‘RealVisXL’, an OctoAI asset checkpoint specifically optimized for the Photo Merge feature. However, it's important to mention that the Photo Merge feature is functional even if the base SDXL checkpoint is utilized. 
+
+Below are the AI-generated output images after using transfer_image parameter with the newly provided prompt: 
+
+![](https://www.datocms-assets.com/45680/1709586450-luis2.png?max-w=2000&auto=compress) 
+
+Pretty accurate, isn’t it? Let’s try it with few different prompts and combine it with other style presets, LoRAs and checkpoints to confirm whether we consistently get the accurate results.
+
+Let us use transfer_images parameter in conjunction with ‘Graffiti’ style preset. We are keeping all other parameter values similar to the payload above.
+
+**Example Code Snippet of Photo Merge (transfer_images parameter) with Style Preset**: 
+
+```Python Python
+payload = {
+    "prompt": "closeup colorfull portrait photo of a man luis",
+    "negative_prompt": "(asymmetry, worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), open mouth",
+    "checkpoint": "RealVisXL",
+    "width": 1024,
+    "height": 1024,
+    "num_images": 4,
+    "sampler": "K_EULER_ANCESTRAL",
+    "steps": 20,
+    "cfg_scale": 7.5,
+    "seed": 111,
+    "style_preset": "Graffiti",
+    "transfer_images": {"luis": luis_b64_images}
+}
+
+response = query(ENDPOINT_URL, payload)
+
+generated_images = decode_response(response)
+image_grid_buffer(generated_images)
+```
+
+![](https://www.datocms-assets.com/45680/1709586551-luis3.png?max-w=2000&auto=compress) 
+
+Let’s now use transfer_images parameter with a pre-trained Style LoRA. We have already imported a pre-trained style based LoRA into OctoAI’s Asset Library. In the payload below, we are using the corresponding asset’s asset id and assigning it a weight of 1.0.
+
+**Example Code Snippet of Photo Merge (transfer_images parameter) with pre-trained LoRAs (uploaded from external sources)**: 
+
+```Python Python
+payload = {
+    "prompt": "painting, martius_storm red ominous war [:style of vincent van gogh luis and leonardo da vinci:0.4] ral-dissolve",
+    "negative_prompt": "(asymmetry, worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), open mouth",
+    "checkpoint": "RealVisXL",
+    "loras": {"asset_01hnxyk06ee999h4cq1cz3r21f": 1.0},
+    "width": 1024,
+    "height": 1024,
+    "num_images": 4,
+    "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "steps": 20,
+    "cfg_scale": 7,
+    "seed": 111,
+    "transfer_images": {"luis": luis_b64_images}
+}
+
+response = query(ENDPOINT_URL, payload)
+
+generated_images = decode_response(response)
+image_grid_buffer(generated_images)
+```
+![](https://www.datocms-assets.com/45680/1709587246-luis4.png?max-w=2000&auto=compress) 
+
+Next, we'll create a custom fine-tune for a product and seamlessly integrate our AI-generated human model's image with it.
+To create custom fine tunes (SDXL LoRAs), we will upload 10-12 images of our product, which in our case are different colored Lacoste polo shirts for men.
+
+![](https://www.datocms-assets.com/45680/1709587288-1707936431-lacoste-shirt-fine-tune-images-being-created.avif?max-w=2000&auto=compress) 
+
+![](https://www.datocms-assets.com/45680/1709587279-1707936366-lacoste-fine-tune-created-on-octoai.avif?max-w=2000&auto=compress) 
+
+
+**Example Code Snippet of Photo Merge (transfer_images parameter) with custom fine-tuned LoRAs**: 
+```Python Python
+payload = {
+    "prompt": "A man luis wearing a pink T-shirt lacosteshirt1:1, sitting in a coffee shop",
+    "negative_prompt": "(asymmetry, worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), open mouth, shirt logo not visible, left position shirt logo",
+    "checkpoint": "RealVisXL",
+    "loras": {"asset_01hp5hsn6mfh6b0zf47q862a6b": 1.0},
+    "width": 1024,
+    "height": 1024,
+    "num_images": 4,
+    "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "steps": 20,
+    "cfg_scale": 7,
+    # "seed": 444,
+    "transfer_images": {"luis": luis_b64_images}
+}
+
+response = query(ENDPOINT_URL, payload)
+
+generated_images = decode_response(response)
+image_grid_buffer(generated_images)
+```
+
+![](https://www.datocms-assets.com/45680/1709587262-luis5.png?max-w=2000&auto=compress)
+
+Let's now consider a use-case where we want to mix the identities of 2 or more humans. For this let's consider a new set of close up portriats of another human as shown below: 
+
+![](https://www.datocms-assets.com/45680/1709587643-screenshot-2024-03-04-at-1-27-11-pm.png?max-w=2000&auto=compress)
+
+**Example Code Snippet of Photo Merge (transfer_images parameter) with multiple human portraits**: 
+
+```Python Python
+payload = {
+    "prompt": "closeup b&w portrait photo of a man luis einstein",
+    "negative_prompt": "(asymmetry, worst quality, low quality, illustration, 3d, 2d, painting, cartoons, sketch), open mouth",
+    "checkpoint": "RealVisXL",
+    "width": 1024,
+    "height": 1024,
+    "num_images": 4,
+    "sampler": "K_EULER_ANCESTRAL",
+    "steps": 20,
+    "cfg_scale": 7.5,
+    "seed": 888,
+    "transfer_images": {"luis": luis_b64_images, "einstein": einstein_b64_images}
+}
+
+response = query(ENDPOINT_URL, payload)
+
+generated_images = decode_response(response)
+image_grid_buffer(generated_images)
+```
+
+![](https://www.datocms-assets.com/45680/1709587798-luis6.png?max-w=2000&auto=compress)
+
+Photo Merge offers endless potential - whether in entertainment, gaming, marketing agencies, or fashion and retail sectors, it can help craft personalized avatars, advertisements, and brand ambassador representations. It can also enable virtual try-ons and lifelike digital product showcases. 

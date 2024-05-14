@@ -1,0 +1,97 @@
+---
+title: Inpainting
+subtitle: Edit and resort image to fix flaws or remove unwanted objects from an image.
+slug: media-gen-solution/image-utilities/inpainting
+---
+
+
+Inpainting refers to the process of restoring or repairing an image by filling in missing or damaged parts. It is a valuable technique widely used in image editing and restoration, enabling the removal of flaws and unwanted objects to achieve a seamless and natural-looking final image. Inpainting finds applications in film restoration, photo editing, and digital art, among others.
+
+<CardGroup cols={2}>
+  <Card title="Init Image">
+![](https://www.datocms-assets.com/45680/1706909031-b13ee16-dog.jpg?max-w=2000&auto=compress) 
+  </Card>
+    <Card title="Output Image">
+![](https://www.datocms-assets.com/45680/1709376963-result_image0.jpg?max-w=2000&auto=compress) 
+  </Card>
+</CardGroup>
+
+Here is a Python example for inpainting. The Image Gen API call will take mask_image (right) and init_image (middle) as shown below. 
+
+<CardGroup cols={2}>
+  <Card title="Init Image">
+![](https://www.datocms-assets.com/45680/1706909031-b13ee16-dog.jpg?max-w=2000&auto=compress) 
+  </Card>
+  <Card title="Inpainting Mask">
+![](https://www.datocms-assets.com/45680/1706909075-c984750-dogmask.jpg?max-w=2000&auto=compress)
+  </Card>
+</CardGroup>
+
+```Python Python
+import requests
+import json
+import os
+import base64
+import time
+import io
+import PIL.Image
+
+def _process_test(url):
+    image = PIL.Image.open("dog.jpg")
+    mask = PIL.Image.open("dogmask.jpg")
+
+    # Create a BytesIO buffer to hold the image data
+    image_buffer = io.BytesIO()
+    image.save(image_buffer, format='JPEG')
+    image_bytes = image_buffer.getvalue()
+    encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+    # Create a BytesIO buffer to hold the image data
+    mask_buffer = io.BytesIO()
+    mask.save(mask_buffer, format='JPEG')
+    mask_bytes = mask_buffer.getvalue()
+    encoded_mask = base64.b64encode(mask_bytes).decode('utf-8')
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "Face of a yellow cat, high resolution, sitting on a park bench",
+        "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+        "steps": 4,
+        "width": 1024,
+        "height": 1024,
+        "cfg_scale": 1.4,
+        "checkpoint": "octoai:lcm_sdxl",
+        "init_image": encoded_image,
+        "mask_image": encoded_mask
+    }
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+        "X-OctoAI-Queue-Dispatch": "true"
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+    print(response.json())
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sdxl")
+```   
+
+<CardGroup cols={2}>
+  <Card title="Output Image">
+![](https://www.datocms-assets.com/45680/1709376963-result_image0.jpg?max-w=2000&auto=compress) 
+  </Card>
+</CardGroup>
+

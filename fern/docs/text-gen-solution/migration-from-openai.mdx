@@ -1,0 +1,91 @@
+---
+title: Migrate from OpenAI to OctoAI in 3 lines of code
+subtitle: If you've been using GPT-3.5 or GPT-4, switching to Octo AI is easy!
+slug: text-gen-solution/migration-from-openai
+---
+
+
+OctoAI LLMs are available to use through our OpenAI compatible API. Additionally, if you have been building or prototyping using OpenAI's Python SDK you can keep your code as-is and use OctoAI's LLM models.
+
+In this example, we will show you how to change just three lines of code to make your Python application use OctoAI's Open Source models through OpenAI's Python SDK.
+
+
+## What you will build
+Migrate OpenAI's Python SDK example script to use OctoAI's LLM endpoints.
+
+These are the three modifications necessary to achieve our goal:
+1. Redefine `OPENAI_API_KEY` your API key environment variable to use your OctoAI key.
+2. Redefine `OPENAI_BASE_URL` to point to `https://text.octoai.run/v1`
+3. Change the model name to an Open Source model, for example: `llama-2-13b-chat`
+
+
+## Requirements
+We will be using Python and OpenAI's Python SDK.
+
+## Instructions
+
+- Set up a Python virtual environment. Read _Creating Virtual Environments_ [here](https://docs.python.org/3/library/venv.html).
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+- Install the pip requirements in your local python virtual environment
+
+```bash
+python3 -m pip install openai
+```
+
+### Environment setup
+
+To run this example, there are simple steps to take:
+
+- Get an OctoAI API token by following [these instructions](/getting-started/how-to-create-an-octoai-access-token/).
+- Expose the token in a new `OCTOAI_TOKEN` environment variable:
+
+```bash
+export OCTOAI_TOKEN=<your-token>
+```
+- Switch the OpenAI token and base URL environment variable
+
+```bash
+export OPENAI_API_KEY=$OCTOAI_TOKEN
+export OPENAI_BASE_URL="https://text.octoai.run/v1"
+```
+
+If you prefer, you can also directly paste your token into the client initialization.
+
+
+### Example code
+
+Once you've completed the steps above, the code below will call OctoAI LLMs:
+
+```python
+from openai import OpenAI
+
+client = OpenAI()
+
+completion = octoai.text_gen.create_chat_completion(
+    # model="gpt-3.5-turbo",
+    model="llama-2-13b-chat",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"},
+    ],
+)
+
+print(completion.choices[0].message)
+```
+
+Note that you need to supply one of OctoAI's supported LLMs as an argument, as in the example above. For a complete list of our supported LLMs, check out our [REST API page](/text-gen-solution/rest-api#input-parameters).
+
+### Example output
+
+The code above produces the following object:
+
+```python
+
+ChatCompletionMessage(content="  Hello! How can I assist you today? Do you have any questions or tasks you'd like help with? Please let me know and I'll do my best to assist you.", role='assistant' function_call=None, tool_calls=None)
+
+```

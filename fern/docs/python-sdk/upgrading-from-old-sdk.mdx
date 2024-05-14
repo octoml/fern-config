@@ -1,0 +1,60 @@
+---
+title: Upgrading from the octoai-sdk
+slug: python-sdk/upgrading-from-old-sdk
+---
+
+
+### Uninstall octoai-sdk
+
+```bash
+pip uninstall octoai-sdk
+pip install octoai
+```
+
+### Upgrading your code
+
+The various OctoAI APIs are now accessable from a single client:
+
+```python
+from octoai.client import OctoAI
+
+client = OctoAI()
+
+# The various APIs are now accessible from the client
+client.text_gen
+
+client.image_gen
+
+client.fine_tuning
+
+client.asset_library
+```
+
+### Image Generation API changes
+
+In the `octoai.image_gen` API instead of specifying which
+engine to use, use the corresponding `generate_*` method.
+
+### Text Generation API changes
+
+The text generation models with `octoai.text_gen` API are now specified with a `str` model name instead of an `enum`.
+
+Streaming requests are made with the corresponding `octoai.text_gen.*_stream` method.
+
+### Asset Library (Asset Orchestrator) API changes
+
+The Asset Orchestrator has been renamed to Asset Library and can be accessed via `octoai.asset_library`. Assets can be created with the `octoai.asset_lirbary.create_from_file`.
+
+### `octoai.service` API changes
+
+The `octoai.service` API has been removed. You can make inferences to compute service endpoints via `OctoAI` client:
+
+```python
+from octoai.client import OctoAI
+
+client = OctoAI()
+
+# octoai.infer()
+```
+
+However you will need to continue to use the older `octoai-sdk` for the full `octoai.service` API which includes service authoring.

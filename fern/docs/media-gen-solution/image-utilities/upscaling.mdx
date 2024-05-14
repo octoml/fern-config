@@ -1,0 +1,75 @@
+---
+title: Upscaling
+subtitle: Upscale images to higher resolutions.
+slug: media-gen-solution/image-utilities/upscaling
+---
+
+
+Upscaling takes an existing image you provide and upscales it to a higher resolution.
+
+
+<CardGroup cols={2}>
+  <Card title="Image resolution 1024X1024">
+![](https://www.datocms-assets.com/45680/1709595761-screenshot-2024-03-04-at-3-42-14-pm.png?max-w=2000&auto=compress) 
+  </Card>
+  <Card title="Upscaled image 2048X2048">
+![](https://www.datocms-assets.com/45680/1709595770-screenshot-2024-03-04-at-3-41-58-pm.png?max-w=2000&auto=compress)
+  </Card>
+</CardGroup>
+
+Example Code of upscaling an image from 1024X1024 to 2048X2048: 
+
+```Python Python
+import requests
+import json
+import os
+import base64
+import time
+import io
+import PIL.Image
+from typing import Optional, Tuple
+
+
+def _process_test(url):
+    
+    image = PIL.Image.open("headphones1.jpeg")
+
+    # Create a BytesIO buffer to hold the image data
+    image_buffer = io.BytesIO()
+    image.save(image_buffer, format='JPEG')
+    image_bytes = image_buffer.getvalue()
+    encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "model": "real-esrgan-x4-plus",
+        "scale": 2,
+        "init_image": encoded_image,
+        "output_image_encoding": "jpeg"
+    }
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+        "X-OctoAI-Queue-Dispatch": "true"
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+    print(response.json())
+
+    img_info = response.json()["image_b64"]
+
+    img_bytes = base64.b64decode(img_info)
+    img = PIL.Image.open(io.BytesIO(img_bytes))
+
+    if img.mode == 'RGBA':
+     img = img.convert('RGB')
+
+    img.save("result_image.jpeg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/upscaling")
+```

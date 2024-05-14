@@ -1,0 +1,41 @@
+---
+title: Python SDK inference
+slug: python-sdk/python-sdk-inferences
+---
+
+
+### OctoAI Python SDK at a glance
+
+The OctoAI Python SDK is intended to help you use OctoAI endpoints. At its simplest form, it allows you to run inferences against an endpoint by providing a dictionary with the necessary inputs.
+
+```Python Python
+import time
+from octoai.client import OctoAI
+
+client = OctoAI()
+
+# It allows you to run inferences
+output = client.infer(endpoint_url="your-endpoint-url", inputs={"keyword": "dictionary"})
+
+# It also allows for inference streams for LLMs
+for token in client.infer_stream("your-endpoint-url", inputs={"keyword": "dictionary"}):
+    if token.get("object") == "chat.completion.chunk":
+        # Do stuff with the token
+        pass
+
+# And for server-side asynchronous inferences
+future = client.infer_async("your-endpoint-url", {"keyword": "dictionary"})
+# Typically, you'd collect additional futures then poll for status, but for the sake of example...
+while not client.is_future_ready(future):
+    time.sleep(1)
+# Once the results are ready, you can use them in the same way as you
+# typically do for demo endpoints
+result = client.get_future_result(future)
+
+# And includes healthChecks
+if client.health_check("your-healthcheck-url") == 200:
+	# Run some inferences
+    pass
+
+```
+

@@ -1,0 +1,50 @@
+---
+title: OpenRouter Integration
+subtitle: The OpenRouter API users can leverage OctoAI's best in class LLM endpoints.
+slug: integrations/openrouter
+---
+
+## Introduction
+OpenRouter provides a unified interface for using various LLMs and allows users to find and compare models based on PromiseRejectionEvent, latency, throughput. 
+This let's users find the right LLM and mix of price and performance for their use case. 
+
+
+## Using OctoAI's LLMs and OpenRouter
+To access OctoAI's best in class LLMs via OpenRouter [sign into OpenRouter](https://openrouter.ai/) and create an account to obtain an `OPENROUTER_API_KEY`.
+
+Using the code snippet below you can route your calls to OpenRouter via OpenAI's client API. 
+Set the providers the OpenRouter will use for your request using the `order` field. The router will filter this list to only include fproviders that are available for the model you want to use, and then try one at a time. It will fail if none are available.
+
+If you do not set the field, the router will use the default ordering shown on the model page. 
+
+In the following code snippet, we assume the order of preference is as follows: OctoAI, Azure, then TogetherAI.
+
+```python 
+import OpenAI from "openai"
+
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: $OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": $YOUR_SITE_URL, // Optional, for including your app on openrouter.ai rankings.
+    "X-Title": $YOUR_SITE_NAME, // Optional. Shows in rankings on openrouter.ai.
+  },
+  // dangerouslyAllowBrowser: true,
+})
+async function main() {
+  const completion = await openai.chat.completions.create({
+    model: "mistralai/mixtral-8x7b-instruct",
+    messages: [
+      { role: "user", content: "Say this is a test" }
+    ],
+    provider: {
+	    order: ["OctoAI", "Azure", "Together"]
+	  }
+  })
+
+  console.log(completion.choices[0].message)
+}
+main()
+```
+
+Find all models from OctoAI you can use at [https://openrouter.ai](https://openrouter.ai/).

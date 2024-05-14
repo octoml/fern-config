@@ -1,0 +1,105 @@
+---
+title: SecureLink guide
+subtitle: Private networking with OctoAI's SecureLink.
+slug: private-deployment/secure-link
+---
+
+
+# Overview
+
+Keeping our users’ data private and secure is our priority. OctoAI requires token authentication for all API requests, along with TLS to enforce encryption in transit for all connections between the customer and OctoAI. We also use encryption at rest for any data written to  disk.
+
+SecureLink is an additional private connectivity security measure, ensuring that network traffic between an OctoAI endpoint and the customer environment is not exposed to the public internet. SecureLink is available for Enterprise customers.
+
+# Setup Steps
+
+1. Configure your AWS Account ID in OctoAI
+2. Create and configure a VPC Interface Endpoint
+3. Configure OctoAI’s SDKs & CLI to use the SecureLink subdomain
+4. If you intend to use Asset Library to upload your assets, configure a separate PrivateLink connection for Amazon S3 to ensure the uploads are also completed via a private connection to S3
+
+# Setup Instructions
+
+**Configure your AWS Account ID in OctoAI**
+
+First, run a simple curl command to configure your AWS account ID within OctoAI using the `https://api.octoai.cloud/v1/account/securelink` endpoint:
+```
+curl -X POST "https://api.octoai.cloud/v1/account/securelink" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data '{"aws_account_id": "account-ID-value"}'
+```
+
+This allows OctoAI to generate a VPC Service Name, which you’ll use in the next step.  If you don’t receive a successful response, contact us to ensure your OctoAI account is enabled as Enterprise tier.
+
+**Create and configure a VPC Interface Endpoint**
+
+Now you’ll create the VPC Interface Endpoint in your AWS account using the VPC Service Name. Navigate to the VPC Dashboard, and click `Create Endpoint` from your AWS console: `https://console.aws.amazon.com/vpc/home?#Endpoints`
+
+![](https://www.datocms-assets.com/45680/1709312020-securelink1.png?max-w=2000&auto=compress)
+
+Configure the Service Name value to `com.amazonaws.vpce.us-east-1.vpce-svc-0e914445c09bbe700`, then click `Verify` to ensure the service name is found and verified. Contact us for help if the service name is not found.
+
+![](https://www.datocms-assets.com/45680/1709312036-securelink2.png?max-w=2000&auto=compress)
+
+
+Next, choose the VPC and subnets that should be peered with the VPC service endpoint. Make sure that Enable DNS name is checked.
+
+![](https://www.datocms-assets.com/45680/1709312044-securelink3.png?max-w=2000&auto=compress)
+
+Then, choose the security group(s) who can send traffic to the VPC endpoint. The security group must accept inbound traffic on TCP port 443 - you can verify this within the Inbound Rules page. You can now click `Create endpoint` to create the VPC endpoint. The endpoint maybe take up to 10 minutes to move from Pending to Available. Once it shows Available, it’s ready for use.
+
+**Configure OctoAI’s SDKs & CLI to use SecureLink URL**
+
+Each OctoAI endpoint uses a SecureLink ingress URL, which will only work with a fully configured VPC Endpoint.
+
+
+*OctoAI CLI*
+
+Configure an environment variable by running:
+
+```
+export OCTO_API_ENDPOINT=https://api.securelink.octo.ai
+```
+
+*Typescript SDK*
+
+Configure the SecureLink URL’s in the client instantiation using `true`:
+
+```
+const client = new Client(token, true);
+```
+
+*Python SDK*
+
+- For text generation, fine-tuning, or asset library, configure the `environment` parameter to use `OctoAIEnvironment.SECURE_LINK` in the client instantiation:
+
+```python
+import os
+
+from octoai.client import OctoAI
+from octoai.environment import OctoAIEnvironment
+token=os.environ.get("OCTOAI_TOKEN")
+
+client = OctoAI(api_key=token, environment=OctoAIEnvironment.SECURE_LINK)
+```
+
+This table summarizes the SecureLink equivalent to each public API URL:
+
+| Service | Public | SecureLink |
+| --- | --- | --- |
+| Text generation | `https://text.octoai.run` | `https://text.securelink.octo.ai` |
+| Image generation | `https://image.octoai.run` | `https://image.securelink.octo.ai` |
+| Asset Library & Fine-tuning | `https://api.octoai.cloud` | `https://api.securelink.octo.ai` |
+| OctoAI API | `https://api.octoai.cloud` | `https://api.securelink.octo.ai` |
+| Async Inference | `https://async.octoai.run` | `https://async.securelink.octoai.run` |
+
+**Configure private connection for Amazon S3 to upload assets through a private connection**
+
+If you are a user of Asset Library, you’ll need to configure a private connection for Amazon S3 to ensure uploads are also secured behind a private connection. Depending on your setup and your needs, you can either create a gateway endpoint, where a route table entry is added to your VPC, or create an interface endpoint, which is similar to configuring an interface endpoint for OctoAI. This guide covers setting up a gateway endpoint for S3.
+
+To create a gateway endpoint, choose AWS services under Service category, and select `com.amazonaws.us-east-1.s3`. Ensure the type is Gateway.
+
+![](https://www.datocms-assets.com/45680/1709312060-securelink4.png?max-w=2000&auto=compress)
+
+Choose the route table where the routing entry is added, then click `Create Endpoint`. For more information, see the [S3 gateway endpoint documentation on AWS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html).

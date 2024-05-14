@@ -1,0 +1,178 @@
+---
+title: Text Gen REST API
+subtitle: >-
+  All OctoAI text generation models are accessible via REST API. Learn how to
+  implement with easy to follow code examples.
+slug: text-gen-solution/rest-api
+---
+
+
+All of our text generation models are accessible via REST API, and we follow the "Chat Completions" standard popularized by OpenAI. Below you can see a simple cURL example and JSON response for our endpoint, along with explnations of all parameters.
+
+### Input Sample
+
+```bash cURL
+curl -X POST "https://text.octoai.run/v1/chat/completions" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant. Keep your responses limited to one short paragraph if possible."
+            },
+            {
+                "role": "user",
+                "content": "Hello world"
+            }
+        ],
+        "model": "llama-2-13b-chat",
+        "max_tokens": 128,
+        "presence_penalty": 0,
+        "temperature": 0.1,
+        "top_p": 0.9
+    }'
+```
+
+### Input Parameters
+
+* **model** _(string)_: The model to be used for chat completion. Here is the complete list of presently supported model arguments. For more information regarding these models, see [this description.](/text-gen-solution/getting-started#self-service-models)
+
+```
+  "llama-2-13b-chat",
+  "llama-2-70b-chat",
+  "codellama-7b-instruct",
+  "codellama-13b-instruct",
+  "codellama-34b-instruct",
+  "mistral-7b-instruct"
+  "mixtral-8x7b-instruct"
+  "nous-hermes-2-mixtral-8x7b-dpo"
+  "hermes-2-pro-mistral-7b"
+```
+
+* **max\_tokens** _(integer, optional)_: The maximum number of tokens to generate for the chat completion.
+* **messages** _(list of objects)_: A list of chat messages, where each message is an object with properties: `role` and `content`. Supported roles are “system”, “assistant”, and “user”.
+* **temperature** _(float, optional)_: A value between 0.0 and 2.0 that controls the randomness of the model's output.
+* **top\_p** _(float, optional)_: A value between 0.0 and 1.0 that controls the probability of the model generating a particular token.
+* **stop** _(list of strings, optional)_: A list of strings that the model will stop generating text if it encounters any of them.
+* **frequency\_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating repetitive responses.
+* **presence\_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating responses that contain certain words or phrases.
+* **stream** _(boolean, optional)_: Indicates whether the response should be streamed.
+
+### Non-Streaming Response Sample:
+
+```JSON JSON
+{
+  "id": "cmpl-8ea213aece0747aca6d0608b02b57196",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Founded in 1921, Seattle is the mother city of Pacific Northwest. Seattle is the densely populated second-largest city in the state of Washington along with Portland. A small city at heart, Seattle has transformed itself from a small manufacturing town to the contemporary Pacific Northwest hub to its east. The city's charm and frequent unpredictability draw tourists and residents alike. Here are my favorite things about Seattle.\n* Seattle has a low crime rate and high quality of life.\n* Seattle has rich history which included the building of the first Pacific Northwest harbor and the development of the Puget Sound irrigation system. Seattle is also home to legendary firm Boeing.\n",
+        "function_call": null
+      },
+      "delta": null,
+      "finish_reason": "length"
+    }
+  ],
+  "created": 5399,
+  "model": "llama2-70b",
+  "object": "chat.completion",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 150,
+    "prompt_tokens": 571,
+    "total_tokens": 721
+  }
+}
+```
+
+### Streaming Response Sample:
+
+Once parsed to JSON, you will see the content of the streaming response similar to below:
+
+```JSON JSON
+// Starting chunk, note that content is null and finish_reason is also null.
+{
+  "id":"cmpl-994f6307a891454cb0f57b7027f5f113",
+  "created":1700527881,
+  "model":"llama-2-13b-chat",
+  "choices":
+  [
+    {
+      "index":0,
+      "delta":
+      {
+        "role":"assistant",
+        "content":null
+      },
+      "finish_reason":null
+    }
+  ]
+}
+// Ending chunk, note the finish_reason "length" instead of null.
+// This means we reached the max tokens allowed in this request.
+// The "object" field is "chat.completion.chunk" for the body of responses.
+{
+  "id":"cmpl-994f6307a891454cb0f57b7027f5f113",
+  "object":"chat.completion.chunk",
+  "created":1700527881,
+  "model":"llama-2-13b-chat",
+  "choices":
+  [
+    {
+      "index":0,
+      "delta":
+      {
+        "role":"assistant",
+        "content":"",
+        "function_call":null
+      },
+      "finish_reason":"length"
+    }
+  ]
+}
+```
+
+Without parsing, the text stream will start with `data:` for each chunk. Below is an example. Please note, the final chunk contains simply `data: [DONE]` as text which can break JSON parsing if not accounted for.
+
+```
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": null}, "finish_reason": null}]}
+
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
+
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "Hello", "function_call": null}, "finish_reason": null}]}
+
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "!", "function_call": null}, "finish_reason": null}]}
+
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
+
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": "stop"}]}
+
+data: [DONE]
+
+```
+
+### Response Parameters
+
+Parameters
+
+* **id** _(string)_: A unique identifier for the chat completion.
+* **choices** _(list of objects)_:  
+   * This is a list of chat completion choices, each represented as an object.  
+   * Each object within the `choices` list contains the following fields:  
+         * **index** _(integer)_: The position of the choice in the list of generated completions.  
+         * **message** _(object)_:  
+                  * An object representing the content of the chat completion, which includes:  
+                              * **role** _(string)_: The role associated with the message, typically "assistant" for the generated response.  
+                              * **content** _(string)_: The actual text content of the chat completion.  
+                              * **function\_call** _(object or null)_: An optional field that may contain information about a function call made within the message. It's usually `null` in standard responses.  
+         * **delta** _(object or null)_: An optional field that can contain additional metadata about the message, typically `null`.  
+         * **finish\_reason** _(string)_: The reason why the message generation was stopped, such as reaching the maximum length (`"length"`).
+* **created** _(integer)_: The Unix timestamp (in seconds) of when the chat completion was created.
+* **model** _(string)_: The model used for the chat completion.
+* **object** _(string)_: The object type, which is always `chat.completion`.
+* **system\_fingerprint** _(object or null)_: An optional field that may contain system-specific metadata.
+* **usage** _(object)_:  
+   * Usage statistics for the completion request, detailing token usage in the prompt and completion.

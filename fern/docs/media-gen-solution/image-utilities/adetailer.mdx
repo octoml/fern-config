@@ -1,0 +1,73 @@
+---
+title: Adetailer API
+subtitle: Automatically fix faces and hands using Adetailer
+slug: media-gen-solution/image-utilities/adetailer
+---
+
+OctoAI's Adetailer API supports various detection models. Whether you're interested in identifying faces, or hands, you can choose from options such as face_yolov8n, hand_yolov8n, face_full_mediapipe, face_short_mediapipe, face_mesh_mediapipe, and eyes_mesh_mediapipe. This allows you to tailor the detailing process to your specific needs and preferences.
+
+Adetailer effortlessly identifies faces and hands in images, automatically creating masks to fill in any missing parts. After this, it seamlessly integrates with the SDXL API, applying customized settings to achieve outstanding results. Additionally, OctoAI's  Adetailer API offers flexibility by allowing users to set the maximum number of detections. For example, if there are five people in an image but you only want to focus on two faces, you can easily do so using the max_num_detections parameter. The API prioritizes and corrects faces based on their confidence score and bounding box dimensions.
+
+
+
+![](https://www.datocms-assets.com/45680/1711650559-octoai-adetailer-before-and-after-email-550.png)
+
+
+
+```Python Python
+import requests
+import json
+import os
+import base64
+import time
+import io
+import PIL.Image
+
+def _process_test(url):
+    image = PIL.Image.open("woman.jpg")
+   
+    # Create a BytesIO buffer to hold the image data
+    image_buffer = io.BytesIO()
+    image.save(image_buffer, format='JPEG')
+    image_bytes = image_buffer.getvalue()
+    encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+         "prompt": "photorealistic, award winning, 8K HDR, best quality, breathtaking", 
+         "negative_prompt": "worst quality, bad face, drawing, unrealistic, ugly face, animated", 
+         "cfg_scale": 6, 
+         "sampler": "DPM_2_ANCESTRAL", 
+         "steps": 60, 
+         "checkpoint": "RealVisXL", 
+         "inpainting_base_model": "sdxl", 
+         "style_preset": "base", 
+         "detector": "face_yolov8n", 
+         "strength": 0.5, 
+         "init_image": encoded_image
+    }
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+        "X-OctoAI-Queue-Dispatch": "true"
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+    print(response.json())
+
+    img_info = response.json()
+    img_bytes = base64.b64decode(img_info["image_b64"])
+    img = PIL.Image.open(io.BytesIO(img_bytes))
+    img.load()
+    img.save(f"result_image.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/adetailer")
+
+```
+
