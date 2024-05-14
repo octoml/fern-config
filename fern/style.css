@@ -1,3 +1,10 @@
+/* variables */
+
+:root {
+  --accent-aa: 0, 136, 255;
+  --accent-aaa: 0, 150, 255;
+}
+
 #fern-header .fern-background {
   background: #f7f8f8;
 }
