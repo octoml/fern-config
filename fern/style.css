@@ -4,6 +4,9 @@
   --accent-aa: 0, 136, 255;
   --accent-aaa: 0, 150, 255;
   --slate-a11y: #667085;
+}
+
+.prose {
   --tw-prose-code: #d6422e;
 }
 
