@@ -11,9 +11,9 @@ colors:
   accent-primary:
     dark: "#0096FF"
     light: "#0096FF"
-  background:
-    dark: "#111213"
-    light: "#ffffff"
+  background-image:
+    dark: docs/assets/images/gradient-bg-dark.webp
+    light: docs/assets/images/gradient-bg-light.svg
 navbar-links:
   - type: secondary
     text: Login
