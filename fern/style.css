@@ -163,10 +163,23 @@ table td + td {
   color: #000000;
 }
 
+.dark .fern-card.interactive .t-muted .title {
+  color: #ffffff;
+}
+
 .fern-card.interactive .t-muted img {
   height: 60px;
   width: auto;
   max-width: 72px;
+}
+
+.dark .fern-card.interactive .t-muted img.langchain {
+  filter: brightness(0) saturate(100%) invert(67%) sepia(15%) saturate(1326%)
+    hue-rotate(133deg) brightness(84%) contrast(80%);
+}
+.dark .fern-card.interactive .t-muted img.pinecone {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(426%)
+    hue-rotate(225deg) brightness(118%) contrast(98%);
 }
 
 .data-\[border\=show\]\:dark\:shadow-header-dark[data-border="show"] {
