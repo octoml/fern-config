@@ -1,4 +1,6 @@
-/* variables */
+html {
+  scrollbar-gutter: stable;
+}
 
 :root {
   --accent-aa: 0, 136, 255;
