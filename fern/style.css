@@ -65,7 +65,7 @@ html {
 }
 
 .dark .fern-background {
-  background: url("../assets/images/bg-universal.webp");
+  background: url("../docs/assets/images/bg-universal.webp");
 }
 
 .fern-background::before {
