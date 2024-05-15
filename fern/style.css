@@ -168,3 +168,24 @@ table td + td {
   width: auto;
   max-width: 72px;
 }
+
+.data-\[border\=show\]\:dark\:shadow-header-dark[data-border="show"] {
+  box-shadow: 0px 4px 24px 0px rgba(102, 112, 133, 0.075);
+}
+
+.data-\[border\=show\]\:dark\:shadow-header-dark:is(
+    .dark *
+  )[data-border="show"] {
+  --tw-shadow: 0px 4px 24px 0px rgba(32, 11, 108, 0.1);
+}
+
+pre.code-block-root.not-prose button.fern-button:not(.disabled).\!minimal,
+pre.code-block-root.not-prose button.fern-button:not(.disabled).minimal {
+  background-color: #0c5dbb;
+  color: #ffffff;
+}
+
+pre.code-block-root.not-prose button.fern-button:not(.disabled).minimal:hover {
+  background-color: #0096ff;
+  color: #ffffff;
+}
