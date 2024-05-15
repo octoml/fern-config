@@ -19,6 +19,15 @@ html {
   background-color: #e8f5ff;
   color: #0c5dbb;
 }
+
+.fern-sidebar-container
+  > nav
+  > .fern-sidebar-group:first-of-type
+  .fern-sidebar-link
+  > .fern-sidebar-link-text {
+  font-weight: 600;
+  color: #000000;
+}
 .fern-background {
   width: 100%;
   height: 100%;
