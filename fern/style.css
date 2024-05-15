@@ -168,7 +168,3 @@ table td + td {
   width: auto;
   max-width: 72px;
 }
-
-#headlessui-portal-root > div > div {
-  height: 65vh !important;
-}
