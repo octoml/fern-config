@@ -8,8 +8,14 @@ html {
   --slate-a11y: #667085;
 }
 
+:is(.dark) {
+  --accent-aa: 134, 205, 255;
+  --accent-aaa: 53, 165, 255;
+}
+
 .prose {
   --tw-prose-code: #c93822;
+  --tw-prose-invert-code: #32d583;
 }
 
 #fern-header .fern-background {
@@ -61,6 +67,21 @@ html {
   > .fern-sidebar-link-text {
   font-weight: 600;
   color: #000000;
+}
+
+.dark
+  .fern-sidebar-container
+  > nav
+  > .fern-scroll-area
+  > .fern-scroll-area-viewport
+  > div
+  > ul.fern-sidebar-group
+  > .fern-sidebar-item
+  > .fern-sidebar-link-container
+  > button.fern-sidebar-link
+  > .fern-sidebar-link-content
+  > .fern-sidebar-link-text {
+  color: #ffffff;
 }
 
 table {
@@ -146,4 +167,8 @@ table td + td {
   height: 60px;
   width: auto;
   max-width: 72px;
+}
+
+#headlessui-portal-root > div > div {
+  height: 65vh !important;
 }
