@@ -179,13 +179,23 @@ table td + td {
   --tw-shadow: 0px 4px 24px 0px rgba(32, 11, 108, 0.1);
 }
 
-pre.code-block-root.not-prose button.fern-button:not(.disabled).\!minimal,
-pre.code-block-root.not-prose button.fern-button:not(.disabled).minimal {
+.not-prose.bg-card > button.fern-button:not(.disabled).\!minimal,
+.not-prose.bg-card > button.fern-button:not(.disabled).minimal {
+  background-color: #b2deff;
+  color: #000000;
+}
+
+.not-prose.bg-card > button.fern-button:not(.disabled).minimal:hover {
+  background-color: #86cdff;
+}
+
+.dark .not-prose.bg-card > button.fern-button:not(.disabled).\!minimal,
+.dark .not-prose.bg-card > button.fern-button:not(.disabled).minimal {
   background-color: #0c5dbb;
   color: #ffffff;
 }
 
-pre.code-block-root.not-prose button.fern-button:not(.disabled).minimal:hover {
+.dark .not-prose.bg-card > button.fern-button:not(.disabled).minimal:hover {
   background-color: #0096ff;
   color: #ffffff;
 }
