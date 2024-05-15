@@ -4,21 +4,19 @@ subtitle: Ensure Text Gen outputs fit into your desired JSON schema.
 slug: text-gen-solution/json-mode
 ---
 
-
 OctoAIs Large Language Models (LLMs) can generate generate outputs that not only adhere to JSON format but also align with your unique schema specifications.
 
 This is supported for all models, but works especially well with Mixtral & Mistral models, including the Hermes family of fine tunes.
 
-
- ## Getting started
+## Getting started
 
 Setup credentials:
 
- ```bash
- export OCTOAI_TOKEN=YOUR_TOKEN_HERE
- ```
+```bash
+export OCTOAI_TOKEN=YOUR_TOKEN_HERE
+```
 
- Curl example (Mistral-7B): Let's say taht you want to ensure that your LLM responses format user feedback about cars into a usable JSON format. To do so, you provide the LLM with a reponse schema ensuring that it knows it must provide "color" and "maker" in a structured format--see "response format below":
+Curl example (Mistral-7B): Let's say that you want to ensure that your LLM responses format user feedback about cars into a usable JSON format. To do so, you provide the LLM with a reponse schema ensuring that it knows it must provide "color" and "maker" in a structured format--see "response format below":
 
 ```bash
 curl -X POST "https://text.octoai.run/v1/chat/completions" \
@@ -118,6 +116,7 @@ completion = client.text_gen.create_chat_completion(
 
 print(completion.choices[0].message.content)
 ```
+
 The key points to note here are:
 
 1. We import the necessary classes from the OctoAI SDK: Client, TextModel, and ChatCompletionResponseFormat.
@@ -129,7 +128,7 @@ The key points to note here are:
 The output will be a JSON object adhering to the specified schema:
 
 ```json
-{"color": "black", "maker": "Toyota"}
+{ "color": "black", "maker": "Toyota" }
 ```
 
 ### Array example
@@ -163,10 +162,11 @@ chat_completion = client.text_gen.create_chat_completion(
 
 print(chat_completion.choices[0].message.content)
 ```
+
 The LLM will generate a response containing an array of names:
 
 ```json
-{"names": ["John","Jane"]}
+{ "names": ["John", "Jane"] }
 ```
 
 ### Nested example
@@ -221,9 +221,14 @@ In this example:
 The LLM will generate a response containing a sorted list of Person objects:
 
 ```json
-{"sorted_list": [{"name": "Carol", "age": 2},{"name": "Bob", "age": 7},{"name": "Alice", "age": 10}]}
+{
+  "sorted_list": [
+    { "name": "Carol", "age": 2 },
+    { "name": "Bob", "age": 7 },
+    { "name": "Alice", "age": 10 }
+  ]
+}
 ```
-
 
 ## Instructor
 

@@ -7,25 +7,22 @@ logo:
   href: https://octo.ai/
   height: 28
 background-image:
-  dark: docs/assets/images/bg-universal.webp
+  dark: docs/assets/images/gradient-bg-dark.webp
   light: docs/assets/images/gradient-bg-light.svg
 favicon: favicon.png
 colors:
   accent-primary:
     dark: "#0096FF"
     light: "#0096FF"
-  # background:
-  #   dark: "#111213"
-  #   light: "#fafaf9"
 navbar-links:
   - type: secondary
     text: Login
     url: >-
-      https://identity.octoml.ai/oauth/account/login?redirectUrl=https://octoai.cloud
+      https://identity.octo.ai/oauth/account/login?redirectUrl=https://octoai.cloud
   - type: filled
     text: Sign up
     url: >-
-      https://identity.octoml.ai/oauth/account/sign-up?redirectUrl=https://octoai.cloud
+      https://identity.octo.ai/oauth/account/sign-up?redirectUrl=https://octoai.cloud
 tabs:
   documentation:
     display-name: Documentation
@@ -155,7 +152,14 @@ navigation:
                 path: docs/media-gen-solution/image-utilities/upscaling.mdx
               - page: Background Removal
                 path: docs/media-gen-solution/image-utilities/bg-removal.mdx
+      - section: Private Deployment
+        contents:
+          - page: OctoStack
+            path: docs/private-deployment/octostack.mdx
+          - page: SecureLink guide
+            path: docs/private-deployment/secure-link.mdx
       - section: Compute Service
+        collapsed: true
         contents:
           - page: Getting started
             path: docs/compute-service/compute-getting-started.mdx
@@ -177,19 +181,15 @@ navigation:
               docs/compute-service/advanced-build-a-container-from-scratch-in-python.mdx
           - page: Healthcheck path in custom containers
             path: docs/compute-service/health-check-path-in-custom-containers.mdx
-      - section: Private Deployment
-        contents:
-          - page: OctoStack
-            path: docs/private-deployment/octostack.mdx
-          - page: SecureLink guide
-            path: docs/private-deployment/secure-link.mdx
       - section: CLI
+        collapsed: true
         contents:
           - page: CLI installation
             path: docs/cli/cli-and-sdk-installation.mdx
           - page: CLI reference
             path: docs/cli/cli-reference-guide.mdx
       - section: Python SDK
+        collapsed: true
         contents:
           - page: Python SDK installation
             path: docs/python-sdk/installation-and-setup.mdx
@@ -198,12 +198,14 @@ navigation:
           - page: Upgrading from octoai-sdk
             path: docs/python-sdk/upgrading-from-old-sdk.mdx
       - section: TypeScript SDK
+        collapsed: true
         contents:
           - page: TypeScript SDK installation
             path: docs/typescript-sdk/installation-and-setup.mdx
           - page: Upgrading from @octoai/client
             path: docs/typescript-sdk/upgrading-from-old-sdk.mdx
       - section: FAQs
+        collapsed: true
         contents:
           - page: Rate limits
             path: docs/faqs/rate-limits.mdx
