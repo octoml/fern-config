@@ -175,3 +175,20 @@ table td + td {
   :is(:where(p):not(:where([class~="not-prose"], [class~="not-prose"] *))) {
   color: #475467;
 }
+
+.fern-card.interactive .space-y-1 > .t-default.text-base.font-semibold {
+  display: none;
+}
+
+.fern-card.interactive .t-muted .title {
+  display: block;
+  margin: 12px 0;
+  font-weight: 600;
+  color: #000000;
+}
+
+.fern-card.interactive .t-muted img {
+  height: 60px;
+  width: auto;
+  max-width: 72px;
+}
