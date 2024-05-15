@@ -173,11 +173,11 @@ table td + td {
   max-width: 72px;
 }
 
-.dark .fern-card.interactive .t-muted img.langchain {
+.dark .fern-card.interactive .t-muted .langchain img {
   filter: brightness(0) saturate(100%) invert(67%) sepia(15%) saturate(1326%)
     hue-rotate(133deg) brightness(84%) contrast(80%);
 }
-.dark .fern-card.interactive .t-muted img.pinecone {
+.dark .fern-card.interactive .t-muted .pinecone img {
   filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(426%)
     hue-rotate(225deg) brightness(118%) contrast(98%);
 }
