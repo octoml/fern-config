@@ -22,8 +22,14 @@ html {
 
 .fern-sidebar-container
   > nav
-  > .fern-sidebar-group:first-of-type
-  .fern-sidebar-link
+  > .fern-scroll-area
+  > .fern-scroll-area-viewport
+  > div
+  > ul.fern-sidebar-group
+  > .fern-sidebar-item
+  > .fern-sidebar-link-container
+  > button.fern-sidebar-link
+  > .fern-sidebar-link-content
   > .fern-sidebar-link-text {
   font-weight: 600;
   color: #000000;
