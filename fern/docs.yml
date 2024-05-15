@@ -152,6 +152,12 @@ navigation:
                 path: docs/media-gen-solution/image-utilities/upscaling.mdx
               - page: Background Removal
                 path: docs/media-gen-solution/image-utilities/bg-removal.mdx
+      - section: Private Deployment
+        contents:
+          - page: OctoStack
+            path: docs/private-deployment/octostack.mdx
+          - page: SecureLink guide
+            path: docs/private-deployment/secure-link.mdx
       - section: Compute Service
         contents:
           - page: Getting started
@@ -174,12 +180,6 @@ navigation:
               docs/compute-service/advanced-build-a-container-from-scratch-in-python.mdx
           - page: Healthcheck path in custom containers
             path: docs/compute-service/health-check-path-in-custom-containers.mdx
-      - section: Private Deployment
-        contents:
-          - page: OctoStack
-            path: docs/private-deployment/octostack.mdx
-          - page: SecureLink guide
-            path: docs/private-deployment/secure-link.mdx
       - section: CLI
         contents:
           - page: CLI installation
