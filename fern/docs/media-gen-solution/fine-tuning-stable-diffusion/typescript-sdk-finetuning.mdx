@@ -4,17 +4,16 @@ subtitle: How to create a fine-tuned LoRA using OctoAI's TypeScript SDK
 slug: media-gen-solution/fine-tuning-stable-diffusion/typescript-sdk-finetuning
 ---
 
-
 This guide will walk you through creating a fine-tuned LoRA using our TypeScript SDK to upload image file assets, creating a tune, and then using that LoRA to run an inference using our Image Generation service once it's ready.
 
 Please see [Fine-tuning Stable Diffusion](../../api-reference/fine-tuning/create-tune.mdx) for more specifics about each parameter in the fine-tuning API, using curl, or the Python SDK. Our [Asset Library in the TypeScript SDK](../../api-reference/assets/list-assets.mdx) documentation goes more into the specifics of using different asset methods as well, and our [TypeScript SDK Reference](https://octoml.github.io/octoai-typescript-sdk/) covers each parameter and method in more detail.
 
 #### Requirements
 
-* Please [create an OctoAI API token](../../getting-started/how-to-create-an-octoai-access-token.mdx) if you don't have one already.
-* Please also verify you've completed [TypeScript SDK Installation & Setup](../../typescript-sdk/installation-and-setup.mdx). Must be version >= 0.4.0.
-* If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `const client = OctoAI()process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
-* An account and API token is required for all the following steps.
+- Please [create an OctoAI API token](../../getting-started/how-to-create-an-octoai-access-token.mdx) if you don't have one already.
+- Please also verify you've completed [TypeScript SDK Installation & Setup](../../typescript-sdk/installation-and-setup.mdx). Must be version >= 0.4.0.
+- If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `const client = OctoAI()process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
+- An account and API token is required for all the following steps.
 
 #### High-level steps to creating a fine-tuned LoRA
 
@@ -38,7 +37,7 @@ This is a snippet, however for the full example, please check at the end of this
 
 In this example, we use multiple photos of a toy poodle named Mitchi.
 
-```TypeScript TypeScript    
+```TypeScript TypeScript
 import { OctoAIClient } from "@octoai/sdk";
 
 // These constants will be the same in the rest of this doc
@@ -53,10 +52,7 @@ const client = new OctoAIClient({
 // First, we will upload and create a number of image assets to use for fine-tuning
 const assets = [];
 for (let i = 0; i < 5; i++) {
-  const filename = `${FILE_PATH}${i}.${FILE_SUFFIX}`;
-  const stream = createReadStream(filename)
-
-  const asset = await client.assetLibrary.upload(stream, {
+  const asset = await client.assetLibrary.upload(`${FILE_PATH}${i}.${FILE_SUFFIX}`, {
     name: `${NAME}-image-${i}`,
     data: { assetType: "file", fileFormat: FILE_SUFFIX },
     assetType: "file",
@@ -120,7 +116,7 @@ We can create a tune job most simply by passing in the checkpoint directly and t
     });
 ```
 
-For better results, you can set your own captions for your assets as follows, or use the asset\_id strings directly, then pass this to the `files` field in the above request.
+For better results, you can set your own captions for your assets as follows, or use the asset_id strings directly, then pass this to the `files` field in the above request.
 
 ```TypeScript TypeScript
     const tune = await client.fineTuning.create({
@@ -139,7 +135,7 @@ For better results, you can set your own captions for your assets as follows, or
     });
 ```
 
-You can also pass the details for your base\_checkpoint directly instead of looking up the asset as well if you know it.
+You can also pass the details for your base_checkpoint directly instead of looking up the asset as well if you know it.
 
 ```TypeScript TypeScript
     const tune = await client.fineTuning.create({
@@ -198,7 +194,7 @@ result0.jpg
 
 #### 5) Clean up
 
-This example will delete everything associated with the `NAME` constant used earlier, including the LoRA. 
+This example will delete everything associated with the `NAME` constant used earlier, including the LoRA.
 
 If you wish to merely delete the file assets, you can filter by `asset_type: "file"`. Please refer to the [ListAssetsRequest](https://octoml.github.io/octoai-typescript-sdk/classes/ListAssetsRequest.html) reference docs for more information on parameters that might help you filter for how you'd like to use the service.
 
@@ -245,10 +241,7 @@ async function fineTuneExample() {
     // First, we will upload and create a number of image assets to use for fine-tuning
     const assets = [];
     for (let i = 0; i < 5; i++) {
-      const filename = `${FILE_PATH}${i}.${FILE_SUFFIX}`;
-      const stream = createReadStream(filename)
-
-      const asset = await client.assetLibrary.upload(stream, {
+      const asset = await client.assetLibrary.upload(`${FILE_PATH}${i}.${FILE_SUFFIX}`, {
         name: `${NAME}-image-${i}`,
         data: { assetType: "file", fileFormat: FILE_SUFFIX },
         assetType: "file",
