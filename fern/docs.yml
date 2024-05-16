@@ -1,5 +1,8 @@
 instances:
-  - url: octoai.docs.buildwithfern.com
+  - url: octoai.docs.buildwithfern.com/fern-docs
+    custom-domain:
+      - fern.octo.ai/fern-docs
+      - octo.ai/fern-docs
 title: OctoAI
 logo:
   light: docs/assets/images/logo/octoai-logo-light.svg
