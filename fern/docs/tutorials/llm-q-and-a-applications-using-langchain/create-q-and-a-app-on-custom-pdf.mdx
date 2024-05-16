@@ -1,5 +1,5 @@
 ---
-title: 'Code walkthrough: Q&A on a custom PDF'
+title: "Code walkthrough: Q&A on a custom PDF"
 subtitle: >-
   Build an app that indexes a PDF document and answers user questions about the
   document
@@ -7,10 +7,9 @@ slug: >-
   tutorials/llm-q-and-a-applications-using-langchain/create-q-and-a-app-on-custom-pdf
 ---
 
-
 ### Prerequisite
 
-Make sure you've followed the steps in [LLM application examples](environment-setup.mdx) to clone our example repo, create your own OctoAI LLM endpoint, and set up your local environment.
+Make sure you've followed the steps in [LLM application examples](environment-setup) to clone our example repo, create your own OctoAI LLM endpoint, and set up your local environment.
 
 ### Code walkthrough for answering questions about your custom PDF file
 
@@ -34,10 +33,10 @@ Next, we set the current directory and logging level:
 
 ```Python Python
 # Get the current file's directory
-current_dir = os.path.dirname(os.path.abspath(**file**))   
+current_dir = os.path.dirname(os.path.abspath(**file**))
 
 # Change the current working directory
-os.chdir(current_dir)   
+os.chdir(current_dir)
 
 # Set logging level to CRITICAL
 logging.basicConfig(level=logging.CRITICAL)
@@ -48,18 +47,18 @@ We need to load environment variables from a .env file to get credentials for th
 Then we define a function to initialize the files directory:
 
 ```Python Python
-def init():  
-    """Initialize the files directory."""  
-    if not os.path.exists(FILES):  
+def init():
+    """Initialize the files directory."""
+    if not os.path.exists(FILES):
         os.mkdir(FILES)
 ```
 
 Next, we define a function to handle exiting the program:
 
 ```Python Python
-def handle_exit():  
-    """Handle exit gracefully."""  
-    print("\nGoodbye!\n")  
+def handle_exit():
+    """Handle exit gracefully."""
+    print("\nGoodbye!\n")
     sys.exit(1)
 ```
 
@@ -93,8 +92,8 @@ def setup_langchain_environment():
         endpoint_url="https://instructor-large-f1kzsig6xes9.octoai.run/predict"
     )
     return llm, embeddings
-  
-  
+
+
 def extract_text_from_pdf(pdf_path):
     """
     Extract text from the given PDF file.
@@ -143,30 +142,29 @@ def interactive_qa_session(file_path):
 
 We load the selected PDF, instantiate the OctoAI-hosted LLM and a predictor, create embeddings and a ServiceContext, build an index of the document, and construct a query engine to answer questions.
 
-The select\_file() function prompts the user to select a PDF file to process:
+The select_file() function prompts the user to select a PDF file to process:
 
 ```Python Python
-def select_file():  
-    """Select a file for processing."""  
-    ...  
-    file_path = os.path.abspath(os.path.join(FILES, files[selection - 1]))  
+def select_file():
+    """Select a file for processing."""
+    ...
+    file_path = os.path.abspath(os.path.join(FILES, files[selection - 1]))
     return file_path
 ```
 
 Finally, we call the initialization function, prompt the user to select a file, and if a file is selected, start the interactive query session:
 
-
 ```Python Python
 if __name__ == "__main__":
     # Initialize the file directory
-    init()  
+    init()
 
-    # Prompt user to select a file 
+    # Prompt user to select a file
     file = select_file()
     if file:
-        # Start the interactive query session 
-        ask(file)  
-    else: 
+        # Start the interactive query session
+        ask(file)
+    else:
         print("No files found")
         handle_exit()
 ```

@@ -1,13 +1,12 @@
 ---
-title: 'Code walkthrough: generic chat app'
+title: "Code walkthrough: generic chat app"
 subtitle: Build a chatbot that responds to a user interactively
 slug: tutorials/llm-q-and-a-applications-using-langchain/create-a-generic-chat-app
 ---
 
-
 ### Prerequisite
 
-Make sure you've followed the steps in [LLM application examples](environment-setup.mdx) to clone our example repo, create your own OctoAI LLM endpoint, and set up your local environment.
+Make sure you've followed the steps in [LLM application examples](environment-setup) to clone our example repo, create your own OctoAI LLM endpoint, and set up your local environment.
 
 ### Code walkthrough for creating a simple chat app
 
@@ -28,10 +27,10 @@ Next, we set the current directory and load environment variables from a .env fi
 
 ```Python Python
 # Get the current file's directory
-current_dir = os.path.dirname(os.path.abspath(**file**))  
+current_dir = os.path.dirname(os.path.abspath(**file**))
 
 # Change the current working directory
-os.chdir(current_dir)  
+os.chdir(current_dir)
 
 # Load environment variables
 load_dotenv()
@@ -40,19 +39,19 @@ load_dotenv()
 Then we define a function to handle exiting the program:
 
 ```Python Python
-def handle_exit():  
-    """Print a goodbye message and exit the program."""  
-    print("\nGoodbye!\n")  
+def handle_exit():
+    """Print a goodbye message and exit the program."""
+    print("\nGoodbye!\n")
     sys.exit(1)
 ```
 
 Next, we define the main ask() function which will interactively ask questions to the model:
 
 ```Python Python
-def ask():  
-    """Interactively ask questions to the language model."""  
+def ask():
+    """Interactively ask questions to the language model."""
     print("Loading...")
-    
+
     # Load necessary values from environment
     endpoint_url = os.getenv("ENDPOINT_URL")
 
@@ -103,8 +102,8 @@ We define a prompt template with a \{question} placeholder, create a PromptTempl
             end_time = time.time()
             elapsed_time = end_time - start_time
             response = str(response).lstrip("\n").split("\n")[-1]
-            print(f"Response({round(elapsed_time, 1)} sec): {response}") 
-   
+            print(f"Response({round(elapsed_time, 1)} sec): {response}")
+
 ```
 
 We provide an example prompt/response, then enter a loop to collect user prompts and generate responses until the user exits.
@@ -112,6 +111,6 @@ We provide an example prompt/response, then enter a loop to collect user prompts
 Finally, we call the ask() function:
 
 ```Python Python
-if __name__ == "__main__":  
+if __name__ == "__main__":
     ask()
 ```

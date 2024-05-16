@@ -4,7 +4,6 @@ subtitle: Create custom assets with OctoAI's fine-tuning of Stable Diffusion mod
 slug: media-gen-solution/fine-tuning-stable-diffusion/fine-tuning-stable-diffusion
 ---
 
-
 OctoAI lets you fine-tune Stable Diffusion to customize generated images. Fine-tuning is a process of training a model with additional data for your task. There's a few simple steps:
 
 1. Configure fine-tuning settings & upload your images
@@ -43,11 +42,11 @@ When complete, the fine-tuned asset is stored in your Asset Library and availabl
 
 ### API Guide
 
-Complete fine-tuning API parameters are organized in our [API Reference documentation](../../api-reference/fine-tuning/create-tune.mdx).
+Complete fine-tuning API parameters are organized in our [API Reference documentation](/api-reference/fine-tuning/create-tune).
 
 #### Upload images
 
-First, upload your training images using the [AssetLibrary Python Client](/python-sdk/asset-orchestrator-client#creating-file-assets-from-a-folder-of-images) or [CLI](../uploading-a-custom-asset-to-the-octoai-asset-library.mdx).
+First, upload your training images using the [AssetLibrary Python Client](/python-sdk/asset-orchestrator-client#creating-file-assets-from-a-folder-of-images) or [CLI](../uploading-a-custom-asset-to-the-octoai-asset-library).
 
 **Python client**
 
@@ -78,7 +77,7 @@ You'll receive a response with the asset ID, name, and status:
 id: asset_01hf3a2qw7ek6vshbhd9c9yywd, name: image1, status: Status.UPLOADED
 ```
 
-Here's an example uploading a folder of images. This code snippet gets the files in the folder named `finetuning_images`, then splits on the `.` to get the files\_format extension (jpg, jpeg, or png). Then the file names are used to set the asset names:
+Here's an example uploading a folder of images. This code snippet gets the files in the folder named `finetuning_images`, then splits on the `.` to get the files_format extension (jpg, jpeg, or png). Then the file names are used to set the asset names:
 
 ```Python Python
 import os
@@ -217,7 +216,7 @@ curl -X POST "https://api.octoai.cloud/v1/tune" \
 }
 ```
 
-Full API details and parameters [are available here](../../api-reference/fine-tuning/create-tune.mdx). Using the `continue_on_rejection` boolean parameter, you can optionally continue with the fine-tune job if any of the training images are identified as NSFW.
+Full API details and parameters [are available here](/api-reference/fine-tuning/create-tune). Using the `continue_on_rejection` boolean parameter, you can optionally continue with the fine-tune job if any of the training images are identified as NSFW.
 
 You'll receive a response that includes the tune ID, which you can use to monitor the status of the job.
 

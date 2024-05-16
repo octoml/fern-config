@@ -3,16 +3,15 @@ title: Image Generator Python client
 slug: python-sdk/image-generator-client
 ---
 
-
 The `ImageGenClient` class specializes in supporting image generation in your application, and guiding what options are available to modify your outputs. It will return a list of all images using the `ImageGeneration` type. It allows you to use both Stable Diffusion 1.5 and Stable Diffusion XL for text to image and image to image use cases, and set parameters and prompts either with weighted prompts with the `prompt` field as was common with Stable Diffusion 1.5 or human-readable descriptions using `prompt_2` with Stable Diffusion XL 1.0.
 
 This guide will walk you through a text to image example, and then we will use the resulting image to demonstrate the image to image use case.
 
 #### Requirements
 
-* First, [create an OctoAI API token.](../getting-started/how-to-create-an-octoai-access-token.mdx)
-* Then, complete [Python SDK Installation & Setup.](installation-and-setup.mdx).
-   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the image\_gen client with `client = OctoAI().image_gen`
+- First, [create an OctoAI API token.](/getting-started/how-to-create-an-octoai-access-token)
+- Then, complete [Python SDK Installation & Setup.](installation-and-setup).
+  - If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the image_gen client with `client = OctoAI().image_gen`
 
 #### Simple Text to Image Generation Example
 
@@ -44,7 +43,7 @@ A good start and in our next example, we'll use more features to help guide our 
 
 #### Text to Image Generation Example
 
-One of the simplest ways to customize your outputs is a style preset, negative\_prompt, loras, and model selection.
+One of the simplest ways to customize your outputs is a style preset, negative_prompt, loras, and model selection.
 
 ```Python Python
 from octoai.util import to_file

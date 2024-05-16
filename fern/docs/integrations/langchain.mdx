@@ -7,12 +7,13 @@ slug: integrations/langchain
 ---
 
 ## Introduction
-LangChain provides a framework to easily build LLM-powered apps. Developers using LangChain can now utilize OctoAI LLMs and Embedding endpoints
-to access efficient, fast, and  reliable compute. 
 
+LangChain provides a framework to easily build LLM-powered apps. Developers using LangChain can now utilize OctoAI LLMs and Embedding endpoints
+to access efficient, fast, and reliable compute.
 
 ## Using OctoAI's LLMs and LangChain
-To use OctoAI LLMs with LangChain, first [obtain an OcotoAI API Token](../getting-started/how-to-create-an-octoai-access-token.mdx). 
+
+To use OctoAI LLMs with LangChain, first [obtain an OcotoAI API Token](/getting-started/how-to-create-an-octoai-access-token).
 Then paste your API token in the code example below:
 
 ```python
@@ -21,7 +22,9 @@ import os
 os.environ["OCTOAI_API_TOKEN"] = "OCTOAI_API_TOKEN"
 os.environ["ENDPOINT_URL"] = "https://text.octoai.run/v1/chat/completions"
 ```
+
 Next, run the following Python script:
+
 ```python
 from langchain.chains import LLMChain
 from langchain_community.llms.octoai_endpoint import OctoAIEndpoint
@@ -54,18 +57,20 @@ print(llm_chain.run(question))
 ```
 
 It should produce the following output:
+
 ```
   Sure thing! Here's my response:
 
-Leonardo da Vinci was a true Renaissance man - an Italian polymath who excelled in various fields, 
-including painting, sculpture, engineering, mathematics, anatomy, and geology. He is widely considered 
-one of the greatest painters of all time, and his inventive and innovative works continue to inspire and 
-influence artists and thinkers to this day. Some of his most famous works include the Mona Lisa, 
-The Last Supper, and Vitruvian Man. 
+Leonardo da Vinci was a true Renaissance man - an Italian polymath who excelled in various fields,
+including painting, sculpture, engineering, mathematics, anatomy, and geology. He is widely considered
+one of the greatest painters of all time, and his inventive and innovative works continue to inspire and
+influence artists and thinkers to this day. Some of his most famous works include the Mona Lisa,
+The Last Supper, and Vitruvian Man.
 ```
 
 ### Learn with our demo apps
+
 Get started today by following along with one of our demo apps:
+
 - [DocTalk](https://octo.ai/demos/doctalk/)
 - [Q&A app on a custom PDF](https://octo.ai/demos/q-a-on-custom-pdf/)
-

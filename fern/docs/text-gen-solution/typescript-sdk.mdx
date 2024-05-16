@@ -6,7 +6,6 @@ subtitle: >-
 slug: text-gen-solution/typescript-sdk
 ---
 
-
 ## At a Glance
 
 For a quick glance at the text generation features supported by the TypeScript SDK, please see the [client.chat](https://octoml.github.io/octoai-typescript-sdk/classes/Chat.html) and [client.completions](https://octoml.github.io/octoai-typescript-sdk/classes/CompletionsAPI.html) SDK docs.
@@ -19,8 +18,8 @@ This guide will walk you through the simplest version of using this API and usin
 
 ## Requirements
 
-- Please [create an OctoAI API token](../getting-started/how-to-create-an-octoai-access-token.mdx) if you don't have one already.
-- Please also verify you've completed [TypeScript SDK Installation & Setup](../typescript-sdk/installation-and-setup.mdx).
+- Please [create an OctoAI API token](/getting-started/how-to-create-an-octoai-access-token) if you don't have one already.
+- Please also verify you've completed [TypeScript SDK Installation & Setup](/typescript-sdk/installation-and-setup).
   - If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `client = new Client()`, otherwise you will need to pass an API token using: `client = new Client(OCTOAI_TOKEN)`
 
 ## Supported Models
@@ -32,6 +31,7 @@ import { OctoAIClient } from "@octoai/sdk";
 
 const client = new OctoAIClient();
 ```
+
 ## Chat Completions API
 
 ### Non-Streaming Example

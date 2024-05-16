@@ -1,8 +1,7 @@
 ---
-title: 'Advanced: build a container from scratch in Python'
+title: "Advanced: build a container from scratch in Python"
 slug: compute-service/advanced-build-a-container-from-scratch-in-python
 ---
-
 
 > **Contact us at customer-success@octo.ai to request access to the Compute Service.**
 
@@ -10,14 +9,14 @@ You can use our CLI to easily create containers for any model written in Python.
 
 If you prefer to create your own container from scratch, this tutorial will walk you through one example of how to do so.
 
-* In this example, we will build a container for a [Flan-T5 small model](https://huggingface.co/google/flan-t5-small) from the Hugging Face `transformers` library. This model is commonly used for text generation and question answering, but note that because it's small it does not yield outputs that are as high-quality as other OctoAI LLM endpoints.
-* An equivalent example for Hugging Face `diffusers` models can be found in the same GitHub [repo](https://github.com/octoml/octocloud-templates/tree/main).
+- In this example, we will build a container for a [Flan-T5 small model](https://huggingface.co/google/flan-t5-small) from the Hugging Face `transformers` library. This model is commonly used for text generation and question answering, but note that because it's small it does not yield outputs that are as high-quality as other OctoAI LLM endpoints.
+- An equivalent example for Hugging Face `diffusers` models can be found in the same GitHub [repo](https://github.com/octoml/octocloud-templates/tree/main).
 
 ## Prerequisites
 
-* Sign up for a Docker Hub [account](https://hub.docker.com/)
-* Download [Docker desktop](https://www.docker.com/products/docker-desktop/) on your local machine
-* [Authenticate](https://docs.docker.com/engine/reference/commandline/login/) the Docker CLI on your machine
+- Sign up for a Docker Hub [account](https://hub.docker.com/)
+- Download [Docker desktop](https://www.docker.com/products/docker-desktop/) on your local machine
+- [Authenticate](https://docs.docker.com/engine/reference/commandline/login/) the Docker CLI on your machine
 
 ## Example code
 
@@ -92,11 +91,11 @@ if __name__ == "__main__":
 
 Next, we wrap this model in a [Sanic](https://sanic.dev/en/) server in `server.py`. Sanic is a Python 3.7+ web server and web framework that’s written to go fast. In our server file, we define the following:
 
-* A default port on which to serve inferences. The port can be any positive number, as long as it's not in use by another application. 80 is commonly used for HTTP, and 443 is often for HTTPS. In this case we choose 8000.
-* Two server routes that OctoAI containers should have:  
-   * a route for inference requests (e.g. "`/predict`"). This route for inference requests must receive JSON inputs and JSON outputs.  
-   * a route for health checks (e.g. "`/healthcheck`"). See [Healthcheck path in custom containers](health-check-path-in-custom-containers.mdx) for a detailed explanation.
-* Number of workers (not required). Typical best practice is to make this number some function of the # of CPU cores that the server has access to and should use.
+- A default port on which to serve inferences. The port can be any positive number, as long as it's not in use by another application. 80 is commonly used for HTTP, and 443 is often for HTTPS. In this case we choose 8000.
+- Two server routes that OctoAI containers should have:
+  - a route for inference requests (e.g. "`/predict`"). This route for inference requests must receive JSON inputs and JSON outputs.
+  - a route for health checks (e.g. "`/healthcheck`"). See [Healthcheck path in custom containers](health-check-path-in-custom-containers) for a detailed explanation.
+- Number of workers (not required). Typical best practice is to make this number some function of the # of CPU cores that the server has access to and should use.
 
 ```py server.py
 """HTTP Inference serving interface using sanic."""
@@ -152,9 +151,9 @@ Now we can package the server by defining a requirements.txt file and a Dockerfi
 
 ```bash requirements.txt
 sanic==23.3.0
-torch==2.0.0+cu118 
+torch==2.0.0+cu118
 --extra-index-url https://download.pytorch.org/whl/cu118
-sentencepiece==0.1.97 
+sentencepiece==0.1.97
 transformers==4.27.4
 ```
 
@@ -193,8 +192,8 @@ Along with installing the dependencies, the Dockerfile also downloads the model 
 #### Build a Docker image using the Dockerfile
 
 ```bash bash
-$ DOCKER_REGISTRY="XXX" # Put your Docker Hub username here  
-$ cd ./flan-t5-small  
+$ DOCKER_REGISTRY="XXX" # Put your Docker Hub username here
+$ cd ./flan-t5-small
 $ docker build -t "$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic" -f Dockerfile .
 ```
 
@@ -203,9 +202,9 @@ $ docker build -t "$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic" -f Dockerfile .
 Run this Docker image locally on a GPU to test that it can run inferences as expected:
 
 ```bash bash
-$ docker run --gpus=all -d --rm  
-    -p 8000:8000 --env SERVER_PORT=8000  
-    --name "flan-t5-small-pytorch-sanic"  
+$ docker run --gpus=all -d --rm
+    -p 8000:8000 --env SERVER_PORT=8000
+    --name "flan-t5-small-pytorch-sanic"
   	"$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic"
 ```
 
@@ -231,4 +230,5 @@ Push your Docker image to Docker Hub with:
 $ docker push "$DOCKER_REGISTRY/flan-t5-small-pytorch-sanic"
 ```
 
-Now that you have your container, [create an endpoint](create-endpoint-from-existing-container/create-custom-endpoints-from-a-container.mdx) to establish your endpoint on OctoAI.
+Now that you have your container, [create an endpoint](create-endpoint-from-existing-container/create-custom-endpoints-from-a-container) to establish your endpoint on OctoAI.
+)
