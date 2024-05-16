@@ -27,7 +27,7 @@ In the web UI, navigate to the Custom Endpoints page. Click on â€œNew Endpoint,â
 - **Active**: Whether to spin down all replicas and disable inferences to it.
 - **Specify Secrets:** Provide secrets to mount onto the container, such as database secrets that you want to reuse across endpoints. Follow the guide in [Setting up account-wide secrets for your custom endpoints](setting-account-wide-secrets-for-custom-endpoints) to set these up.
 - **Environment Variables**: Just like secrets, these variables will be mounted onto the container at runtime. If you have a variable with key foo whose value is bar, you will get a variable foo whose value is bar mounted to the container.
-- **Select hardware:** We offer three tiers of hardware-- see [Hardware, Pricing, and Billing](../../getting-started/pricing-and-billing) for more information. Your choice of hardware determines the pricing that you will pay for your endpoint.
+- **Select hardware:** We offer three tiers of hardware-- see [Hardware, Pricing, and Billing](/getting-started/pricing-and-billing) for more information. Your choice of hardware determines the pricing that you will pay for your endpoint.
 - **Minimum Replicas:** The default minimum number of replicas is 0, which means we autoscale down to 0 whenever your endpoint is not receiving requests from your users and the timeout period has passed (this is a way to keep your costs down). Minimum replicas should be set to a higher number if you want to ensure highest uptime for your users and avoid cold starts. Cold start means there is currently no active container instance running inferences on our servers for your application, so we need to incur extra latency to spin up a new one.
 - **Maximum Replicas:** This is an important measure for capping your maximum cost. The maximum number of replicas should be set based on how much simultaneous capacity you're willing to support at your heaviest traffic periods. For example, if you set your maximum replicas at 5, and each inference takes 1 second for your model on a GPU, then your application will be able to support a total of 250 inferences per minute without queueing. If your traffic goes above that level (well done you!), requests will be queued until they can be handled, which will increase your average request response time.
 - **Timeout**: How many seconds to wait before we scale down your last replica since the time you have no more inferences running.
@@ -40,7 +40,7 @@ To run an inference, use the endpoint URL shown in the UI, with the appropriate 
 curl -X POST '<your-endpoint-url>/predict' --data '{"prompt": "What state is Los Angeles in?", "max_length": 100}' -H 'content-type: application/json' -H "Authorization: Bearer $YOUR_TOKEN"
 ```
 
-- You need to edit the curl to use your own API token. If you don't have an existing token, refer to [how to create an OctoAI API Token](../../getting-started/how-to-create-an-octoai-access-token)
+- You need to edit the curl to use your own API token. If you don't have an existing token, refer to [how to create an OctoAI API Token](/getting-started/how-to-create-an-octoai-access-token)
 - This model expects the inputs `prompt` and `max_length`. We can fill in values `"What state is Los Angeles in?"` and `100` for those fields respectively, and get a response back.
 - To query the healthcheck for our endpoint (this is optional), we can hit `<your-endpoint-url>/healthcheck`
 

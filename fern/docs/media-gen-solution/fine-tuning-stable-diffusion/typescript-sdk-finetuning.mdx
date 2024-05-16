@@ -6,12 +6,12 @@ slug: media-gen-solution/fine-tuning-stable-diffusion/typescript-sdk-finetuning
 
 This guide will walk you through creating a fine-tuned LoRA using our TypeScript SDK to upload image file assets, creating a tune, and then using that LoRA to run an inference using our Image Generation service once it's ready.
 
-Please see [Fine-tuning Stable Diffusion](../../api-reference/fine-tuning/create-tune) for more specifics about each parameter in the fine-tuning API, using curl, or the Python SDK. Our [Asset Library in the TypeScript SDK](../../api-reference/assets/list-assets) documentation goes more into the specifics of using different asset methods as well, and our [TypeScript SDK Reference](https://octoml.github.io/octoai-typescript-sdk/) covers each parameter and method in more detail.
+Please see [Fine-tuning Stable Diffusion](/api-reference/fine-tuning/create-tune) for more specifics about each parameter in the fine-tuning API, using curl, or the Python SDK. Our [Asset Library in the TypeScript SDK](/api-reference/assets/list-assets) documentation goes more into the specifics of using different asset methods as well, and our [TypeScript SDK Reference](https://octoml.github.io/octoai-typescript-sdk/) covers each parameter and method in more detail.
 
 #### Requirements
 
-- Please [create an OctoAI API token](../../getting-started/how-to-create-an-octoai-access-token) if you don't have one already.
-- Please also verify you've completed [TypeScript SDK Installation & Setup](../../typescript-sdk/installation-and-setup). Must be version >= 0.4.0.
+- Please [create an OctoAI API token](/getting-started/how-to-create-an-octoai-access-token) if you don't have one already.
+- Please also verify you've completed [TypeScript SDK Installation & Setup](/typescript-sdk/installation-and-setup). Must be version >= 0.4.0.
 - If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `const client = OctoAI()process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
 - An account and API token is required for all the following steps.
 
@@ -31,7 +31,7 @@ Directions with all the code put together are included at the bottom of the docu
 
 #### 1) Creating an image file asset
 
-[Asset Library in the TypeScript SDK](../../api-reference/assets/list-assets) covers more specifics about the methods, so this example will be focused on a code snippet for uploading multiple files in a folder at once. There are different approaches, such as making the asset name match the name of the file, however for our purpose we are going to keep everything named with our `NAME` constant in order to make it easier to search and delete the assets created later.
+[Asset Library in the TypeScript SDK](/api-reference/assets/list-assets) covers more specifics about the methods, so this example will be focused on a code snippet for uploading multiple files in a folder at once. There are different approaches, such as making the asset name match the name of the file, however for our purpose we are going to keep everything named with our `NAME` constant in order to make it easier to search and delete the assets created later.
 
 This is a snippet, however for the full example, please check at the end of this guide.
 
