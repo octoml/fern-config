@@ -259,8 +259,6 @@ navigation:
     layout:
       - section: "2024"
         contents:
-          - page: March
-            path: docs/release-notes/2024/march.mdx
           - page: February
             path: docs/release-notes/2024/february.mdx
           - page: January
