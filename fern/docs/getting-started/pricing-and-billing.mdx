@@ -5,6 +5,7 @@ slug: getting-started/pricing-and-billing
 ---
 
 At OctoAI you only pay for what you use. Upon sign up you will receive **$10 of free credit** in your account, and these credits don't expire. That is equivalent of:
+
 - Over 500,000 words with the largest Llama 2 70B model, and over a million words with the new Mixtral 8x7B model
 - 1,000 SDXL default images
 - 2+ hours of compute on our large tier hardware
@@ -12,104 +13,106 @@ At OctoAI you only pay for what you use. Upon sign up you will receive **$10 of 
 - 27+ hours of compute on our small tier hardware
 
 ## How does billing work?
+
 OctoAI uses post-paid billing - add a credit card and pay for your use at the end of each month. All existing credits will remain available within your account and will be used before any post-paid billing is applied.
 
-On the 1st day of each month, we’ll send an invoice so you can see the upcoming charge. On the 7th day of each month, we’ll charge the card on file for the prior billing period. If there’s an issue charging your credit card, you can manually pay via the invoice. 
-
+On the 1st day of each month, we’ll send an invoice so you can see the upcoming charge. On the 7th day of each month, we’ll charge the card on file for the prior billing period. If there’s an issue charging your credit card, you can manually pay via the invoice.
 
 ### Where can I find my billing data?
+
 You can view your plan tier, invoices, and itemized usage for all OctoAI services in [Billing & Usage](https://octoai.cloud/usage/billing) in your account at anytime.
 
 ### What are the rate limits for each solution?
-See [rate limits](../faqs/rate-limits.mdx) for details, and feel free to [contact us](https://octo.ai/contact-us/) to discuss higher limits to meet your needs. You will recieve an HTTP 429 response code if you reach the limit cap.
 
+See [rate limits](../faqs/rate-limits) for details, and feel free to [contact us](https://octo.ai/contact-us/) to discuss higher limits to meet your needs. You will recieve an HTTP 429 response code if you reach the limit cap.
 
 ## Media Gen Solution
+
 Below is a full feature breakdown of the Media Gen Solution tiers.
 
-|          | Trial                 | Pro              | Enterprise |
-| ------------------------------- | -------------------- | ----------------------- | ---------------------------------------------- |
-| SDXL and SD 1.5 text2img, SVD image animation, img2img, Inpainting, ControlNet | Cost-optimized       | Cost-optimized          | Option for Cost-optimized or Latency-optimized |
-| Custom Assets (checkpoints, loras, inversions, VAEs)      | ❌                    | ✅                       | ✅                                              |
-| Upscaler                | ✅                    | ✅                       | ✅                         |
-| Option for SLA guarantees                                 | ❌                    | ❌                       | ✅                                              |
-| Option for Private Deployment (at higher price)           | ❌                    | ❌                       | ✅                                              |
-| Dedicated Customer Success Manager                        | ❌                    | ❌                       | ✅                                              |
+|                                                                                | Trial          | Pro            | Enterprise                                     |
+| ------------------------------------------------------------------------------ | -------------- | -------------- | ---------------------------------------------- |
+| SDXL and SD 1.5 text2img, SVD image animation, img2img, Inpainting, ControlNet | Cost-optimized | Cost-optimized | Option for Cost-optimized or Latency-optimized |
+| Custom Assets (checkpoints, loras, inversions, VAEs)                           | ❌             | ✅             | ✅                                             |
+| Upscaler                                                                       | ✅             | ✅             | ✅                                             |
+| Option for SLA guarantees                                                      | ❌             | ❌             | ✅                                             |
+| Option for Private Deployment (at higher price)                                | ❌             | ❌             | ✅                                             |
+| Dedicated Customer Success Manager                                             | ❌             | ❌             | ✅                                             |
 
 #### Pro pricing for Media Gen Solution
 
 Pricing for default image features and configurations are below:
 
-| Feature Type                                  | Steps | Resolution | Sampler                                    | Price                                          |
-| --------------------------------------------- | ----- | ---------- | ------------------------------------------ | ---------------------------------------------- |
-| SVD 1.1                                       | 25    | all supported| N/A                                      | $0.15/animation                                |
-| SDXL                                          | 30    | 1024x1024  | DDIM (and any not listed below as premium) | $0.004/image                                   |
-| SDXL with Custom Asset (Fine-tuned)           | 30    | 1024x1024  | DDIM (and any not listed below as premium) | $0.008/image                                   |
-| SDXL Lightning base                           | 4     | 1024x1024  | DDIM (and any not listed below as premium) | $0.001/image                                   |
-| SDXL Lightning Custom Asset (Fine-tuned)      | 4     | 1024x1024  | DDIM (and any not listed below as premium) | $0.005/image                                   |
-| SDXL Fine-tuning                              | 500   | N/A        | N/A                                        | $0.25/tune                                     |
-| SD 1.5 with Base or Custom Asset (Fine-tuned) | 30    | 512x512    | DDIM (and any not listed below as premium) | $0.0015/image                                  |
-| SD1.5 Fine-tuning                             | 500   | N/A        | N/A                                        | $0.1/tune                                      |
-| Asset library (storage)                       | N/A   | N/A        | N/A                                        | $0.05/GB stored per month, after the first 50GB|
-| Upscaling                                     | N/A   | N/A        | N/A                                        | $0.004/request                                 |
-| Background Removal                            | N/A   | N/A        | N/A                                        | $0.002/request                                 |
-| Photo Merge                                   | 30    | 1024x1024  | N/A                                        | $0.015/image                                   |
-| Adetailer                                     | N/A   | N/A        | N/A                                        | $0.0004/object                                 |
+| Feature Type                                  | Steps | Resolution    | Sampler                                    | Price                                           |
+| --------------------------------------------- | ----- | ------------- | ------------------------------------------ | ----------------------------------------------- |
+| SVD 1.1                                       | 25    | all supported | N/A                                        | $0.15/animation                                 |
+| SDXL                                          | 30    | 1024x1024     | DDIM (and any not listed below as premium) | $0.004/image                                    |
+| SDXL with Custom Asset (Fine-tuned)           | 30    | 1024x1024     | DDIM (and any not listed below as premium) | $0.008/image                                    |
+| SDXL Lightning base                           | 4     | 1024x1024     | DDIM (and any not listed below as premium) | $0.001/image                                    |
+| SDXL Lightning Custom Asset (Fine-tuned)      | 4     | 1024x1024     | DDIM (and any not listed below as premium) | $0.005/image                                    |
+| SDXL Fine-tuning                              | 500   | N/A           | N/A                                        | $0.25/tune                                      |
+| SD 1.5 with Base or Custom Asset (Fine-tuned) | 30    | 512x512       | DDIM (and any not listed below as premium) | $0.0015/image                                   |
+| SD1.5 Fine-tuning                             | 500   | N/A           | N/A                                        | $0.1/tune                                       |
+| Asset library (storage)                       | N/A   | N/A           | N/A                                        | $0.05/GB stored per month, after the first 50GB |
+| Upscaling                                     | N/A   | N/A           | N/A                                        | $0.004/request                                  |
+| Background Removal                            | N/A   | N/A           | N/A                                        | $0.002/request                                  |
+| Photo Merge                                   | 30    | 1024x1024     | N/A                                        | $0.015/image                                    |
+| Adetailer                                     | N/A   | N/A           | N/A                                        | $0.0004/object                                  |
 
 The price for each feature type changes as listed below for non-default configurations:
 
-| Configuration Type                                                           | Price Formula                               |
-| ---------------------------------------------------------------------------- | ------------------------------------------- |
-| Image Animation Steps                                                        | Default price * (step_count/25)             |
-| Image Generation Steps                                                       | Default price \* (step\_count/30)           |
-| SDXL Resolutions                                                             | Default price \*(pixel\_count/(1024\*1024)) |
-| SD1.5 Resolutions                                                            | Default price \* (pixel\_count/(512\*512))  |
-| Premium Samplers: DPM\_2, DPM\_2\_ANCESTRAL, DPM\_PLUS\_PLUS\_SDE\_KARRAS, HEUN, KLMS | Default price \*2                  |
-| Fine-tuning Steps                                                            | Default price \* (step\_count/500)          |
+| Configuration Type                                                             | Price Formula                              |
+| ------------------------------------------------------------------------------ | ------------------------------------------ |
+| Image Animation Steps                                                          | Default price \* (step_count/25)           |
+| Image Generation Steps                                                         | Default price \* (step_count/30)           |
+| SDXL Resolutions                                                               | Default price \*(pixel_count/(1024\*1024)) |
+| SD1.5 Resolutions                                                              | Default price \* (pixel_count/(512\*512))  |
+| Premium Samplers: DPM_2, DPM_2_ANCESTRAL, DPM_PLUS_PLUS_SDE_KARRAS, HEUN, KLMS | Default price \*2                          |
+| Fine-tuning Steps                                                              | Default price \* (step_count/500)          |
 
 Here are a few examples to illustrate how this works to assist you in applying to your own use case:
 
-| Feature Type                        | Steps | Resolution | Sampler                     | Price  |
-| ----------------------------------- | ----- | ---------- | --------------------------- | ------ |
-| SDXL                                | 40    | 1024x1024  | DDIM (default)              | $.0053 |
-| SDXL                                | 40    | 1024x1024  | DPM\_2\_ANCESTRAL (premium) | $.0107 |
-| SDXL Lightning base                 | 4     | 1024x1024  | DDIM (default)              | $.001  |
-| SDXL Lightning with Custom Asset    | 4     | 1024x1024  | DDIM (default)              | $.005  |
-| SDXL with Custom Asset (Fine-tuned) | 60    | 1024x1024  | DDIM (default)              | $.016  |
-| SDXL with Custom Asset (Fine-tuned) | 60    | 1024x1024  | DPM\_2 (premium)            | $.032  |
-| SDXL Fine-tuning                    | 1000  | N/A        | N/A                         | $.5    |
-| SD 1.5                              | 40    | 512x512    | DDIM (default)              | $.002  |
-| SD1.5                               | 60    | 1024x1024  | DDIM (default)              | $.003  |
-| SD1.5                               | 40    | 1024x1024  | DPM\_2 (premium)            | $.009  |
+| Feature Type                        | Steps | Resolution | Sampler                   | Price  |
+| ----------------------------------- | ----- | ---------- | ------------------------- | ------ |
+| SDXL                                | 40    | 1024x1024  | DDIM (default)            | $.0053 |
+| SDXL                                | 40    | 1024x1024  | DPM_2_ANCESTRAL (premium) | $.0107 |
+| SDXL Lightning base                 | 4     | 1024x1024  | DDIM (default)            | $.001  |
+| SDXL Lightning with Custom Asset    | 4     | 1024x1024  | DDIM (default)            | $.005  |
+| SDXL with Custom Asset (Fine-tuned) | 60    | 1024x1024  | DDIM (default)            | $.016  |
+| SDXL with Custom Asset (Fine-tuned) | 60    | 1024x1024  | DPM_2 (premium)           | $.032  |
+| SDXL Fine-tuning                    | 1000  | N/A        | N/A                       | $.5    |
+| SD 1.5                              | 40    | 512x512    | DDIM (default)            | $.002  |
+| SD1.5                               | 60    | 1024x1024  | DDIM (default)            | $.003  |
+| SD1.5                               | 40    | 1024x1024  | DPM_2 (premium)           | $.009  |
 
-## Text Gen Solution 
+## Text Gen Solution
 
 We offer simple, competitive token-based pricing for text gen endpoints, with prices varying depending on parameter size and quantization level:
 
-| Model Sizes               | Per M Tokens                 |
-| ------------------------- | ---------------------------- | 
-| Mixtral-8x7B models       | $0.45                        | 
-| Mixtral-8x22B models      | $1.20                        | 
-| 7B and 8B models          | $0.15                        |
-| 13B models                | $0.20                        |
-| 32B models                | $0.75                        | 
-| 34B models                | $0.75                        |
-| 70B models                | $0.90                        |
-| GTE-large                 | $0.05                        |
+| Model Sizes          | Per M Tokens |
+| -------------------- | ------------ |
+| Mixtral-8x7B models  | $0.45        |
+| Mixtral-8x22B models | $1.20        |
+| 7B and 8B models     | $0.15        |
+| 13B models           | $0.20        |
+| 32B models           | $0.75        |
+| 34B models           | $0.75        |
+| 70B models           | $0.90        |
+| GTE-large            | $0.05        |
 
 If you would like to explore pricing for other models, quantization levels, or specific fine tunes, [contact us](https://octo.ai/contact-us/).
 
 ## Compute Service
 
-|                                                             | Trial | Pro | Enterprise |
-| --------------------------------------------------------------- | --- | ---------- | ------------ |
-| Deploy endpoint from any container (private or public registry) | ✅   | ✅          | ✅            |
-| Example models from community                                   | ✅   | ✅          | ✅            |
-| CLI and SDK for containerizing + deploying Python models        | ✅   | ✅          | ✅            |
-| Max endpoints per account                                       | 2   | 10         | No limit     |
-| Max replicas per endpoint                                       | 3   | 10         | No limit     |
-| Auto-acceleration of PyTorch models                             | ❌   | ❌          | Early access |
-| Dedicated Customer Success Manager                              | ❌   | ❌          | ✅            |
+|                                                                 | Trial | Pro | Enterprise   |
+| --------------------------------------------------------------- | ----- | --- | ------------ |
+| Deploy endpoint from any container (private or public registry) | ✅    | ✅  | ✅           |
+| Example models from community                                   | ✅    | ✅  | ✅           |
+| CLI and SDK for containerizing + deploying Python models        | ✅    | ✅  | ✅           |
+| Max endpoints per account                                       | 2     | 10  | No limit     |
+| Max replicas per endpoint                                       | 3     | 10  | No limit     |
+| Auto-acceleration of PyTorch models                             | ❌    | ❌  | Early access |
+| Dedicated Customer Success Manager                              | ❌    | ❌  | ✅           |
 
 #### Pro pricing for Compute Service
 
@@ -120,7 +123,7 @@ If you would like to explore pricing for other models, quantization levels, or s
 
 Billing is by the second of compute usage, starting at the time when the endpoint is ready for inferences. The time when the endpoint is ready for inferences is when either the healtcheck on your end point begins returning 200, or if there is no healthcheck, the time you see the “Replica is running” log line in your events tab.
 
-* You **will be** billed for the total inference duration and timeout duration
-* You will **not** be billed for the duration of cold start
+- You **will be** billed for the total inference duration and timeout duration
+- You will **not** be billed for the duration of cold start
 
 Example models in the platform have a pre-set hardware / pricing tier. If you create an endpoint from a custom model, you can choose the tier best suited to your needs.

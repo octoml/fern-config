@@ -7,12 +7,14 @@ slug: integrations/unstructured
 ---
 
 ## Introduction
+
 Unstructured is both an open-source library and an API service. The library provides components for ingesting and pre-processing images and text documents, such as PDFs, HTML, Word docs, and many more.
 
 It also provides components to very easily embed these documents. In Unstructured’s jargon this component is called an EmbeddingEncoder. The OctoAIEmbedingEncoder is available, so documents parsed with Unstructured can easily be embedded with the OctoAI embeddings endpoint.
 
 ## Using the OctoAIEmbeddingEncoder
-Before you get started let's review some concepts. You will need an [OctoAI API Token](../getting-started/how-to-create-an-octoai-access-token.mdx) for this integration.
+
+Before you get started let's review some concepts. You will need an [OctoAI API Token](../getting-started/how-to-create-an-octoai-access-token) for this integration.
 
 - The `OctoAIEmbeddingEncoder` class connects to the OctoAI Text&Embedding API to obtain embeddings for pieces of text.
 - `embed_documents` will receive a list of Elements, and return an updated list which includes the embeddings attribute for each Element.
@@ -22,10 +24,10 @@ Before you get started let's review some concepts. You will need an [OctoAI API 
 
 Now, let's get started with the following code example for how to use `OctoAIEmbeddingEncoder`.
 You will see the updated elements list (with the `embeddings` attribute included for each element),
- the embedding vector for the query string, and some metadata properties about the embedding model.
-  You will need to set an environment variable named `OCTOAI_API_KEY` to be able to run this example.
+the embedding vector for the query string, and some metadata properties about the embedding model.
+You will need to set an environment variable named `OCTOAI_API_KEY` to be able to run this example.
 
-```python 
+```python
 import os
 
 from unstructured.documents.elements import Text
@@ -47,4 +49,5 @@ print(embedding_encoder.is_unit_vector(), embedding_encoder.num_of_dimensions())
 ```
 
 Learn more about our partnership:
+
 - [OctoAI & Unstructured.io Create New Integration](https://octo.ai/blog/octoai-and-unstructured-create-new-integration/)
