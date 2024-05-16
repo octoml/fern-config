@@ -10,7 +10,6 @@ subtitle: >-
 slug: text-gen-solution/getting-started
 ---
 
-
 In the coming months, we will launch additional features including efficient fine-tuning, longer-context models, JSON mode support, and other features.
 
 If you have an LLM use case that our existing endpoints do not support, [contact us](https://octo.ai/contact-us/). We offer low-latency and throughput-optimized solutions for all LLama2, CodeLlama, and Mistral checkpoints.
@@ -21,7 +20,7 @@ We are always expanding our offering of models and other features. Presently, Oc
 
 **Mistral-7b-Instruct-v0.2:** Updated by Mistral AI in December 2023, this model has impressed the LLM community with its high-quality performance at a very low parameter count. This model is available for commercial use. [Read more.](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1) We offer a single endpoint here: the 7B parameter model, which supports up to 32,768 tokens. **Note that Mistral's model does not have any moderation mechanisms.** For more sensitive use cases, we recommend using Llama2 and Codellama endpoints.
 
-**Mistral-8x7b-Instruct:**  Mistral AI's December 2023 release, Mistral-8x7b-Instruct, is a "mixture of experts" model utilizing conditional computing for efficient token generation, reducing computational demands while improving response quality (GPT-4 is widely believed to be an MoE model). Mistral-8x7b-Instruct brings these efficiencies to the open-source LLM realm, and it is licensed for commercial use. It supports up to 32,768 tokens. [Read more](https://huggingface.co/mistralai/Mixtral-8x7B-v0.1). **Note: As with Mistral-7B-Instruct, Mixtral lacks moderation mechanisms**. For sensitive applications, consider Llama2 or Codellama endpoints.
+**Mistral-8x7b-Instruct:** Mistral AI's December 2023 release, Mistral-8x7b-Instruct, is a "mixture of experts" model utilizing conditional computing for efficient token generation, reducing computational demands while improving response quality (GPT-4 is widely believed to be an MoE model). Mistral-8x7b-Instruct brings these efficiencies to the open-source LLM realm, and it is licensed for commercial use. It supports up to 32,768 tokens. [Read more](https://huggingface.co/mistralai/Mixtral-8x7B-v0.1). **Note: As with Mistral-7B-Instruct, Mixtral lacks moderation mechanisms**. For sensitive applications, consider Llama2 or Codellama endpoints.
 
 **Nous-Hermes-2-Mixtral-8x7b-DPO** The flagship Nous Research model trained over the Mixtral 8x7B MoE LLM. The model was trained on over 1,000,000 entries of data, as well as other high quality data from open datasets across the AI landscape, achieving state of the art performance on a variety of tasks. It supports up to 32,768 tokens.
 
@@ -29,31 +28,32 @@ We are always expanding our offering of models and other features. Presently, Oc
 
 **Mixtral-8x22B-Instruct** coming soon!
 
-**Mixtral 8x22B (fine-tune)** With the recent release of Mixtral 8x22B base model, new fine tunes are emerging from the community at a rapid rate. We will be using this particular endpoint to trying ou the best community fine tunes as they become available, meaning this model will change and serve as a testing grounds for our users. Check back frequently to see which new fine tune is available. After thorough testing we will select the top performing fine tune to persistantly host on OctoAI. 
+**Mixtral 8x22B (fine-tune)** With the recent release of Mixtral 8x22B base model, new fine tunes are emerging from the community at a rapid rate. We will be using this particular endpoint to trying ou the best community fine tunes as they become available, meaning this model will change and serve as a testing grounds for our users. Check back frequently to see which new fine tune is available. After thorough testing we will select the top performing fine tune to persistantly host on OctoAI.
 
 **Llama2-Chat**: Released by Meta in July 2023, this auto-regressive language model uses an optimized transformer architecture. This model is available for commercial use. The "Chat" versions that OctoAI hosts by default utilize supervised fine-tuning (SFT) and reinforcement learning with human feedback (RLHF) to align with human preferences for helpfulness and safety. [Read more.](https://github.com/facebookresearch/llama/blob/main/MODEL%5FCARD.md) OctoAI offers this model in 13- and 70-billion parameter sizes. Our quality testing has indicated that the 7 billion parameter variant does not meet competitive quality standards. All checkpoints of this model hosted by OctoAI are limited to a max token length of 4,096.
 
 **Codellama-Instruct:** Released by Meta in August 2023, this model builds upon the Llama2 architecture but offers specialized support for coding and other structured tasks. This model is available for commercial use. We host the "Instruct" variant, optimized for instruction following and safer deployment. [Read more.](https://github.com/facebookresearch/codellama/blob/main/MODEL%5FCARD.md) We support 7-, 13-,and -34 billion parameter variants. Other variants, including the Python checkpoints and 70B variants, are available upon request. All endpoints support up to 16,384 tokens.
 
-**Llama Guard:** A 7B content moderation model released by Meta,  which can classify text as safe or unsafe according to an editable set of policies. As a 7B parameter model, it is optimized for latency and can be used to moderate other LLM interactions in real time. [Read more.](https://huggingface.co/meta-llama/LlamaGuard-7b) Note: This model requires a specific prompt template to be applied, and is not compatible with the ChatCompletion API.
+**Llama Guard:** A 7B content moderation model released by Meta, which can classify text as safe or unsafe according to an editable set of policies. As a 7B parameter model, it is optimized for latency and can be used to moderate other LLM interactions in real time. [Read more.](https://huggingface.co/meta-llama/LlamaGuard-7b) Note: This model requires a specific prompt template to be applied, and is not compatible with the ChatCompletion API.
 
-**GTE Large** An embeddings model released by Alibaba DAMO Academy. Trained on a large-scale corpus of relevance text pairs, covering a wide range of domains and scenarios. Consistently ranked highly on Huggingface's [MTEB leaderboard.](https://huggingface.co/spaces/mteb/leaderboard) In combination with a vector database, this  embeddings model is especially useful for powering semantic search and Retrieval Augmented Generation (RAG) applications. [Read more.](https://huggingface.co/thenlper/gte-large)
+**GTE Large** An embeddings model released by Alibaba DAMO Academy. Trained on a large-scale corpus of relevance text pairs, covering a wide range of domains and scenarios. Consistently ranked highly on Huggingface's [MTEB leaderboard.](https://huggingface.co/spaces/mteb/leaderboard) In combination with a vector database, this embeddings model is especially useful for powering semantic search and Retrieval Augmented Generation (RAG) applications. [Read more.](https://huggingface.co/thenlper/gte-large)
 
 For pricing of all of these endpoints, please refer to our [pricing page](../getting-started/pricing-and-billing.mdx).
 
 ## Web UI playground
 
-You can start familiarizing yourself with our Text Gen features using the web UI, but note that we have even more features available via the API. 
+You can start familiarizing yourself with our Text Gen features using the web UI, but note that we have even more features available via the API.
 
 First, click on the top navigation bar and click Text Tools. Here you will see the different model families that we offer for self-service users:
 ![](https://www.datocms-assets.com/45680/1711724092-textgen-models.png?max-w=2000&auto=compress)
 
 Click the **Demo** or **API** selections to enter our playground, where you can:
+
 - Easily switch between all of our models, parameter counts, and quantization settings
 - Test each model using our chat interface
 - Adjust common settings such as `temperature`
 - See the pricing and context limits for any selected model.
-![](https://www.datocms-assets.com/45680/1711724083-textgen-demo.png?max-w=2000&auto=compress)
+  ![](https://www.datocms-assets.com/45680/1711724083-textgen-demo.png?max-w=2000&auto=compress)
 
 Selecting the "API" toggle will show you code samples in Python, Typescript, and CURL format for calling the endpoint that you've selected, as well as key input & output parameters:
 ![](https://www.datocms-assets.com/45680/1711724065-textgen-api.png?max-w=2000&auto=compress)
