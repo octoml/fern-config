@@ -19,4 +19,6 @@ jobs:
       - name: Publish Docs
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
-        run: fern generate --docs --log-level debug
+        run: | 
+          fern generate --docs --instance octoai.docs.buildwithfern.com/fern-docs 
+          fern generate --docs --instance octoai-prod.docs.buildwithfern.com/fern-docs
