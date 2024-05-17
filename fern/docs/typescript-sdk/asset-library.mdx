@@ -4,13 +4,13 @@ subtitle: Manage assets using the TypeScript SDK.
 slug: typescript-sdk/asset-library
 ---
 
-The AssetLibrary client in the TypeScript SDK allows `create`, `list`, `get`, and `delete` actions of assets. These assets allow integration with [Fine-tuning Stable Diffusion](/api-reference/fine-tuning/create-tune).
+The AssetLibrary client in the TypeScript SDK allows `create`, `list`, `get`, and `delete` actions of assets. These assets allow integration with [Fine-tuning Stable Diffusion](/docs/api-reference/fine-tuning/create-tune).
 
 For a quick glance at features for the AssetLibrary Client, please see the [AssetLibrary SDK Reference](https://octoml.github.io/octoai-typescript-sdk/classes/AssetLibrary.html). This guide will walk you through using this API to see a list of our public assets, create your own asset, and use your asset to generate an image.
 
 #### Requirements
 
-- First, [create an OctoAI API token.](/getting-started/how-to-create-an-octoai-access-token)
+- First, [create an OctoAI API token.](/docs/getting-started/how-to-create-an-octoai-access-token)
 - Then, complete [TypeScript SDK Installation & Setup.](installation-and-setup).
   - If you use the `OCTOAI_TOKEN` environment variable for your token, you can instantiate the client with `const client = new OctoAIClient()` or pass the token as a parameter to the constructor.
 
@@ -53,7 +53,7 @@ In this example, we will be adding a LoRA then using it to generate an image. Yo
 
 You can check the reference guide for more information about the returned [Asset](https://octoml.github.io/octoai-typescript-sdk/types/Asset.html) object or options for the [create](https://octoml.github.io/octoai-typescript-sdk/classes/CreateAssetRequest.html) method.
 
-The `.id` field for the created asset can be used when [Getting started with our Media Gen Solution](/media-gen-solution/getting-started) and running inferences.
+The `.id` field for the created asset can be used when [Getting started with our Media Gen Solution](/docs/media-gen-solution/getting-started) and running inferences.
 
 ```TypeScript TypeScript
 import { OctoAIClient } from "@octoai/sdk";

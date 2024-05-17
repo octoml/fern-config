@@ -4,24 +4,24 @@ subtitle: Hassle-free stable diffusion for text2img or img2img on OctoAI
 slug: tutorials/automatic1111-stable-diffusion-web-ui
 ---
 
-
-This tutorial explains how to run the Automatic1111 Stable Diffusion web UI on OctoAI within a few button clicks. 
+This tutorial explains how to run the Automatic1111 Stable Diffusion web UI on OctoAI within a few button clicks.
 
 First, go to the [Example Models page](https://octoai.cloud/templates) and locate the Image Generation (Automatic1111) model. If you hover over that row like I do, you will see a button pop up next to it. Click that button.
 
 That will bring up this page where you can customize your endpoint settings:
 
-![](https://www.datocms-assets.com/45680/1706910631-f1616db-screenshot_2023-10-24_at_2-40-48_pm.png?max-w=2000&auto=compress) 
-* For example, I can customize the Endpoint name to `mystablediffusion2023` and change minimum replicas to 1 so that my endpoint always stays warm. We don't need to scale up to more replicas since we're the only user interacting with the web UI, so let's set max replicas also to 1\.
-* Be sure to enable public access using the toggle button, so you can access Automatic1111 through your browser.
-* If you want to learn more about any of these fields, you can hover over the tooltips in the UI.
+![](https://www.datocms-assets.com/45680/1706910631-f1616db-screenshot_2023-10-24_at_2-40-48_pm.png?max-w=2000&auto=compress)
+
+- For example, I can customize the Endpoint name to `mystablediffusion2023` and change minimum replicas to 1 so that my endpoint always stays warm. We don't need to scale up to more replicas since we're the only user interacting with the web UI, so let's set max replicas also to 1\.
+- Be sure to enable public access using the toggle button, so you can access Automatic1111 through your browser.
+- If you want to learn more about any of these fields, you can hover over the tooltips in the UI.
 
 Then, we'll be directed to a homepage for our new endpoint:
 
 ![](https://www.datocms-assets.com/45680/1690571873-045c283-screenshot_2023-07-02_at_12-17-37_am.png?max-w=2000&auto=compress)
 
-* One of the bubbles under the "Replicas" heading will start pulsing until it becomes solid blue, which will denote when the replica is ready for inference.
-* While the bubble is pulsing, what's happening behind the scenes is that we spin up a hardware replica and download the container onto the replica. You can always check on our intermediate progress by clicking on the pulsing bubble.
+- One of the bubbles under the "Replicas" heading will start pulsing until it becomes solid blue, which will denote when the replica is ready for inference.
+- While the bubble is pulsing, what's happening behind the scenes is that we spin up a hardware replica and download the container onto the replica. You can always check on our intermediate progress by clicking on the pulsing bubble.
 
 ![](https://www.datocms-assets.com/45680/1690571910-70e0ef9-screenshot_2023-06-25_at_3-11-51_pm.png)
 
@@ -29,7 +29,7 @@ When we see an event line "Replica is running," we can close the Replica bubble 
 
 ![](https://www.datocms-assets.com/45680/1690571942-cb08b5a-screenshot_2023-06-29_at_2-13-47_pm.png?max-w=2000&auto=compress)
 
-Now we're ready to close the Logs button and check out the web UI! Notice the Endpoint URL field that I have highlighted below. 
+Now we're ready to close the Logs button and check out the web UI! Notice the Endpoint URL field that I have highlighted below.
 
 ![](https://www.datocms-assets.com/45680/1690571961-fb8def5-screenshot_2023-07-02_at_12-18-17_am.png?max-w=2000&auto=compress)
 
@@ -43,7 +43,7 @@ N.B. If you want to use a different checkpoint/safetensors weight file other tha
 
 FAQ:
 
-* I can't load my checkpoint file, and in the Logs tab in the UI I see this error message: `safetensors_rust.SafetensorError: Error while deserializing header: MetadataIncompleteBuffer`. What should I do?  
-   * This error occurs if your checkpoint happens to be extra large, in which case instead of using the example model which has been pre-optimized for Medium tier hardware (A10s), you need to run the UI on a Large Tier hardware (A100) instead. Follow [Create your own Endpoint from an existing container](/bring-your-own-model/create-custom-endpoints-from-a-container/create-custom-endpoints-from-a-container) to make your own Automatic1111 endpoint on a Large Tier hardware, using this container image `258175030240.dkr.ecr.us-east-1.amazonaws.com/template-images:automatic1111-v0.01` with port 3000 and no healthcheck.
-* Why do my checkpoints and data get cleared after a while?  
-   * We currently don't persist your data in any way, so whenever a new node is cycled for your service, the previous data is cleared. We are currently adding a way for users to persist their data if they opt in.
+- I can't load my checkpoint file, and in the Logs tab in the UI I see this error message: `safetensors_rust.SafetensorError: Error while deserializing header: MetadataIncompleteBuffer`. What should I do?
+  - This error occurs if your checkpoint happens to be extra large, in which case instead of using the example model which has been pre-optimized for Medium tier hardware (A10s), you need to run the UI on a Large Tier hardware (A100) instead. Follow [Create your own Endpoint from an existing container](/docs/bring-your-own-model/create-custom-endpoints-from-a-container/create-custom-endpoints-from-a-container) to make your own Automatic1111 endpoint on a Large Tier hardware, using this container image `258175030240.dkr.ecr.us-east-1.amazonaws.com/template-images:automatic1111-v0.01` with port 3000 and no healthcheck.
+- Why do my checkpoints and data get cleared after a while?
+  - We currently don't persist your data in any way, so whenever a new node is cycled for your service, the previous data is cleared. We are currently adding a way for users to persist their data if they opt in.
