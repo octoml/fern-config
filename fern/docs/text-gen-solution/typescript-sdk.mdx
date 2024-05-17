@@ -88,7 +88,7 @@ This will return a response similar to the following:
 }
 ```
 
-The TypeScript SDK returns the JSON mapped to a [CreateChatCompletionResponse](https://octoml.github.io/octoai-typescript-sdk/classes/CreateChatCompletionResponse.html) object, and this type can be used as an interface in your code if desired.
+The TypeScript SDK returns the JSON mapped to a [CreateChatCompletionResponse](https://octoml.github.io/octoai-typescript-sdk/classes/ChatCompletionCreateRequest.html) object, and this type can be used as an interface in your code if desired.
 
 ### Streaming Example
 
@@ -123,7 +123,7 @@ for await (const chunk of stream) {
 }
 ```
 
-This will return a `Stream<ChatCompletionStreamResponse>`. Sparing all the chunks that can be received, there is generally a unique starting and ending chunk. In interest of brevity, let's review the starting chunk and the ending chunk. In examples that are not the starting or finishing tokens, you'll typically find a string or token in `chunk.choices[0].delta.content`. The [ChatCompletionStreamResponse](https://octoml.github.io/octoai-typescript-sdk/classes/CreateChatCompletionStreamResponse.html) can be used as an interface in your code for handling responses as well.
+This will return a `Stream<ChatCompletionStreamResponse>`. Sparing all the chunks that can be received, there is generally a unique starting and ending chunk. In interest of brevity, let's review the starting chunk and the ending chunk. In examples that are not the starting or finishing tokens, you'll typically find a string or token in `chunk.choices[0].delta.content`. The [ChatCompletionStreamResponse](https://octoml.github.io/octoai-typescript-sdk/types/CreateChatCompletionStreamResponse.html) can be used as an interface in your code for handling responses as well.
 
 ```json JSON
 // Starting chunk, note that content is null and finish_reason is also null.
