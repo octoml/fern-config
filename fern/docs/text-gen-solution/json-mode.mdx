@@ -265,7 +265,7 @@ class UserExtract(BaseModel):
     age: int
 
 
-user: UserExtract = octoai.text_gen.create_completion(
+user: UserExtract = client.chat.completions.create(
     model="mistral-7b-instruct",
     response_model=UserExtract,
     messages=[
