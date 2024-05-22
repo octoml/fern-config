@@ -1,16 +1,16 @@
 paths:
   /upscaling:
     post:
-      x-fern-sdk-method-name: upscaling_upscaling_post
+      x-fern-sdk-method-name: upscale
   /background-removal:
     post:
-      x-fern-sdk-method-name: remove_background_background_removal_post
+      x-fern-sdk-method-name: remove_background
   /adetailer:
     post:
-      x-fern-sdk-method-name: generate_images_adetailer_post
+      x-fern-sdk-method-name: generate_images
   /healthcheck:
     get:
-      x-fern-sdk-method-name: healthcheck_healthcheck_get
+      x-fern-ignore: true
 components:
   schemas:
     ADetailerDetector:
