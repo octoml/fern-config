@@ -7,6 +7,7 @@ paths:
       x-fern-sdk-method-name: remove_background
   /adetailer:
     post:
+      summary: "Adetailer"
       x-fern-sdk-method-name: generate_images
   /healthcheck:
     get:
@@ -37,3 +38,10 @@ components:
       x-fern-type-name: UpscalingRequest
     ValidationError:
       x-fern-type-name: ValidationError
+    securitySchemes:
+      BearerAuth:
+        type: http
+        scheme: bearer
+        x-fern-bearer:
+          name: apiKey
+          env: OCTOAI_API_KEY
