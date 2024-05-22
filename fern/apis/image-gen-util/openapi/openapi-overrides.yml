@@ -13,6 +13,13 @@ paths:
     get:
       x-fern-ignore: true
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      x-fern-bearer:
+        name: apiKey
+        env: OCTOAI_API_KEY
   schemas:
     ADetailerDetector:
       x-fern-type-name: ADetailerDetector
@@ -38,10 +45,3 @@ components:
       x-fern-type-name: UpscalingRequest
     ValidationError:
       x-fern-type-name: ValidationError
-    securitySchemes:
-      BearerAuth:
-        type: http
-        scheme: bearer
-        x-fern-bearer:
-          name: apiKey
-          env: OCTOAI_API_KEY
