@@ -1,0 +1,39 @@
+paths:
+  /upscaling:
+    post:
+      x-fern-sdk-method-name: upscaling_upscaling_post
+  /background-removal:
+    post:
+      x-fern-sdk-method-name: remove_background_background_removal_post
+  /adetailer:
+    post:
+      x-fern-sdk-method-name: generate_images_adetailer_post
+  /healthcheck:
+    get:
+      x-fern-sdk-method-name: healthcheck_healthcheck_get
+components:
+  schemas:
+    ADetailerDetector:
+      x-fern-type-name: ADetailerDetector
+    ADetailerInpaintingBaseModel:
+      x-fern-type-name: ADetailerInpaintingBaseModel
+    ADetailerRequest:
+      x-fern-type-name: ADetailerRequest
+    ADetailerResponse:
+      x-fern-type-name: ADetailerResponse
+    BackgroundRemovalRequest:
+      x-fern-type-name: BackgroundRemovalRequest
+    HTTPValidationError:
+      x-fern-type-name: HTTPValidationError
+    ImageEncoding:
+      x-fern-type-name: ImageEncoding
+    ImageResponse:
+      x-fern-type-name: ImageResponse
+    Scheduler:
+      x-fern-type-name: Scheduler
+    UpscalingModel:
+      x-fern-type-name: UpscalingModel
+    UpscalingRequest:
+      x-fern-type-name: UpscalingRequest
+    ValidationError:
+      x-fern-type-name: ValidationError

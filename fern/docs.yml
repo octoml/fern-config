@@ -233,6 +233,10 @@ navigation:
             api-name: octoai
             flattened: true
             skip-slug: true
+      - api: Media Utilities API
+        api-name: image-gen-util
+        # flattened: true
+        # skip-slug: true
       - api: OctoAI API
         api-name: api
         flattened: true
