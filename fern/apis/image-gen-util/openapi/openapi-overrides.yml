@@ -1,0 +1,47 @@
+paths:
+  /upscaling:
+    post:
+      x-fern-sdk-method-name: upscale
+  /background-removal:
+    post:
+      x-fern-sdk-method-name: remove_background
+  /adetailer:
+    post:
+      summary: "Adetailer"
+      x-fern-sdk-method-name: generate_images
+  /healthcheck:
+    get:
+      x-fern-ignore: true
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      x-fern-bearer:
+        name: apiKey
+        env: OCTOAI_API_KEY
+  schemas:
+    ADetailerDetector:
+      x-fern-type-name: ADetailerDetector
+    ADetailerInpaintingBaseModel:
+      x-fern-type-name: ADetailerInpaintingBaseModel
+    ADetailerRequest:
+      x-fern-type-name: ADetailerRequest
+    ADetailerResponse:
+      x-fern-type-name: ADetailerResponse
+    BackgroundRemovalRequest:
+      x-fern-type-name: BackgroundRemovalRequest
+    HTTPValidationError:
+      x-fern-type-name: HTTPValidationError
+    ImageEncoding:
+      x-fern-type-name: ImageEncoding
+    ImageResponse:
+      x-fern-type-name: ImageResponse
+    Scheduler:
+      x-fern-type-name: Scheduler
+    UpscalingModel:
+      x-fern-type-name: UpscalingModel
+    UpscalingRequest:
+      x-fern-type-name: UpscalingRequest
+    ValidationError:
+      x-fern-type-name: ValidationError
