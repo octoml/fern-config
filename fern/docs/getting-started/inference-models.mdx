@@ -3,56 +3,53 @@ title: Inference models
 slug: getting-started/inference-models
 ---
 
-
 ## Serverless Endpoints
-OctoAI currently supports the self-service models & checkpoints organized on this page, and we’ll continue to expand our models and services. Ready to run your first inference? [Navigate to our Quickstart guide to get started.](quickstart.mdx)
 
+OctoAI currently supports the self-service models & checkpoints organized on this page, and we’ll continue to expand our models and services. Ready to run your first inference? [Navigate to our Quickstart guide to get started.](quickstart)
 
 ### Text Gen Models
 
-| Organization  | Use Cases          | Model Name           			| API Model String     		     | Context Length | 
-| --------------| ------------------ | ---------------------------------| -------------------------------| ---------------|
-| Meta 			| Chat				 | Llama2-Chat (13B)    			| llama-2-13b-chat				 | 4,096		  |
-| Meta    		| Chat				 | Llama2-Chat (70B)    			| llama-2-70b-chat				 | 4,096		  |
-| Meta 			| Chat				 | Llama3-Instruct (8B)    			| meta-llama-3-8b-instruct		 | 8,192		  |
-| Meta    		| Chat				 | Llama3-Instruct (70B)   			| meta-llama-3-70b-instruct		 | 8,192		  |
-| Meta     		| Coding       		 | Codellama-Instruct (7B) 		  	| codellama-7b-instruct			 | 16,384		  |
-| Meta    		| Coding       		 | Codellama-Instruct (13B)		  	| codellama-13b-instruct 		 | 16,384		  |
-| Meta   		| Coding      		 | Codellama-Instruct (34B) 		| codellama-34b-instruct		 | 16,384		  |
-| Mistral   	| Chat, Coding		 | Mistral Instruct v0.2 (7B) 	  	| mistral-7b-instruct			 | 32,768		  |
-| Nous Research | Chat, Coding 	     | Nous Hermes 2 Pro Mistral (7B)   | hermes-2-pro-mistral-7b		 | 32,768		  |
-| Mistral 		| Chat, Coding		 | Mixtral Instruct (8x7B)    	  	| mixtral-8x7b-instruct			 | 32,768		  |
-| Nous Research | Content Moderation | Nous Hermes 2 Mixtral DPO (8x7B) | nous-hermes-2-mixtral-8x7b-dpo | 32,768		  |
-| Mistral 		| Chat, Coding		 | Mixtral Instruct (8x22B)    	  	| mixtral-8x22b-instruct		 | 65,536		  |
-| Meta	        | Content Moderation | Llama Guard                      | llamaguard-7b                  | 4,096          |
-| Alibaba DAMO  | Embedding			 | GTE Large						| thenlper/gte-large 			 | n/a 			  |
+| Organization  | Use Cases          | Model Name                       | API Model String               | Context Length |
+| ------------- | ------------------ | -------------------------------- | ------------------------------ | -------------- |
+| Meta          | Chat               | Llama2-Chat (13B)                | llama-2-13b-chat               | 4,096          |
+| Meta          | Chat               | Llama2-Chat (70B)                | llama-2-70b-chat               | 4,096          |
+| Meta          | Chat               | Llama3-Instruct (8B)             | meta-llama-3-8b-instruct       | 8,192          |
+| Meta          | Chat               | Llama3-Instruct (70B)            | meta-llama-3-70b-instruct      | 8,192          |
+| Meta          | Coding             | Codellama-Instruct (7B)          | codellama-7b-instruct          | 16,384         |
+| Meta          | Coding             | Codellama-Instruct (13B)         | codellama-13b-instruct         | 16,384         |
+| Meta          | Coding             | Codellama-Instruct (34B)         | codellama-34b-instruct         | 16,384         |
+| Mistral       | Chat, Coding       | Mistral Instruct v0.2 (7B)       | mistral-7b-instruct            | 32,768         |
+| Nous Research | Chat, Coding       | Nous Hermes 2 Pro Mistral (7B)   | hermes-2-pro-mistral-7b        | 32,768         |
+| Mistral       | Chat, Coding       | Mixtral Instruct (8x7B)          | mixtral-8x7b-instruct          | 32,768         |
+| Nous Research | Content Moderation | Nous Hermes 2 Mixtral DPO (8x7B) | nous-hermes-2-mixtral-8x7b-dpo | 32,768         |
+| Mistral       | Chat, Coding       | Mixtral Instruct (8x22B)         | mixtral-8x22b-instruct         | 65,536         |
+| Meta          | Content Moderation | Llama Guard                      | llamaguard-7b                  | 4,096          |
+| Alibaba DAMO  | Embedding          | GTE Large                        | thenlper/gte-large             | n/a            |
 
-Check out our [REST API](../text-gen-solution/rest-api.mdx), [Python SDK](../text-gen-solution/python-sdk.mdx), or [TypeScript SDK](../text-gen-solution/typescript-sdk.mdx) docs when you’re ready to use text gen models programmatically. 
+Check out our [REST API](/docs/text-gen-solution/rest-api), [Python SDK](/docs/text-gen-solution/python-sdk), or [TypeScript SDK](/docs/text-gen-solution/typescript-sdk) docs when you’re ready to use text gen models programmatically.
 
 ### Media Gen Models
 
-| Service  			 | Model          		 	  | API Model String     		     
-| -------------------| ---------------------------| --------------------------|
-| Image Gen 		 | Stable Diffusion v1.5 	  | sd			   			  |
-| Image Gen    		 | Stable Diffusion XL v1.0   | sdxl		   			  |
-| Image Gen     	 | Segmind Stable Diffusion	  | ssd			   			  |
-| Image Gen    		 | ControlNet SD v1.5	 	  | controlnet-sd15			  |
-| Image Gen    		 | ControlNet SDXL			  | controlnet-sdxl			  | 
-| Image Animation  	 | Stable Video Diffusion v1.1| svd			   			  | 
-| Background Removal | IS-Net					  | background-removal		  |
-| Upscaling    		 | REAL-ESRGAN x4 Plus	 	  | real-esrgan-x4-plus		  | 
-| Upscaling    		 | REAL-ESRGAN x4 v3		  | real-esrgan-x4-v3		  | 
-| Upscaling    		 | REAL-ESRGAN x4 v3 WDN	  | real-esrgan-x4-v3-wdn	  | 
-| Upscaling    		 | REAL-ESRGAN Anime Video v3 | real-esrgan-animevideo-v3 | 
-| Upscaling    		 | REAL-ESRGAN x4 Plus Anime  | real-esrgan-x4-plus-anime | 
-| Upscaling    		 | REAL-ESRGAN x2 Plus	 	  | real-esrgan-x2-plus		  |
-| Adetailer    		 | Face YOLOv8n			 	  | face_yolov8n			  | 
-| Adetailer    		 | Hand YOLOv8n				  | hand_yolov8n			  | 
-| Adetailer    		 | Face Full MediaPipe	 	  | face_full_mediapipe		  | 
-| Adetailer    		 | Face Short MediaPipe		  | face_short_mediapipe	  | 
-| Adetailer    		 | Face Mesh MediaPipe	 	  | face_mesh_mediapipe		  | 
-| Adetailer    		 | Eyes Mesh MediaPipe	 	  | eyes_mesh_mediapipe		  | 
+| Service            | Model                       | API Model String          |
+| ------------------ | --------------------------- | ------------------------- |
+| Image Gen          | Stable Diffusion v1.5       | sd                        |
+| Image Gen          | Stable Diffusion XL v1.0    | sdxl                      |
+| Image Gen          | Segmind Stable Diffusion    | ssd                       |
+| Image Gen          | ControlNet SD v1.5          | controlnet-sd15           |
+| Image Gen          | ControlNet SDXL             | controlnet-sdxl           |
+| Image Animation    | Stable Video Diffusion v1.1 | svd                       |
+| Background Removal | IS-Net                      | background-removal        |
+| Upscaling          | REAL-ESRGAN x4 Plus         | real-esrgan-x4-plus       |
+| Upscaling          | REAL-ESRGAN x4 v3           | real-esrgan-x4-v3         |
+| Upscaling          | REAL-ESRGAN x4 v3 WDN       | real-esrgan-x4-v3-wdn     |
+| Upscaling          | REAL-ESRGAN Anime Video v3  | real-esrgan-animevideo-v3 |
+| Upscaling          | REAL-ESRGAN x4 Plus Anime   | real-esrgan-x4-plus-anime |
+| Upscaling          | REAL-ESRGAN x2 Plus         | real-esrgan-x2-plus       |
+| Adetailer          | Face YOLOv8n                | face_yolov8n              |
+| Adetailer          | Hand YOLOv8n                | hand_yolov8n              |
+| Adetailer          | Face Full MediaPipe         | face_full_mediapipe       |
+| Adetailer          | Face Short MediaPipe        | face_short_mediapipe      |
+| Adetailer          | Face Mesh MediaPipe         | face_mesh_mediapipe       |
+| Adetailer          | Eyes Mesh MediaPipe         | eyes_mesh_mediapipe       |
 
-Check out our [Image Gen API](../media-gen-solution/rest-apis/image-gen-api.mdx) and [Video Gen API](../media-gen-solution/rest-apis/video-gen.mdx) docs when you’re ready to use media gen models programmatically. You can also easily upload and run custom checkpoints and assets using OctoAI’s [Asset Library.](../media-gen-solution/uploading-a-custom-asset-to-the-octoai-asset-library.mdx) 
-
-
+Check out our [Image Gen API](/docs/media-gen-solution/rest-apis/image-gen-api) and [Video Gen API](/docs/media-gen-solution/rest-apis/video-gen) docs when you’re ready to use media gen models programmatically. You can also easily upload and run custom checkpoints and assets using OctoAI’s [Asset Library.](/docs/media-gen-solution/uploading-a-custom-asset-to-the-octoai-asset-library)

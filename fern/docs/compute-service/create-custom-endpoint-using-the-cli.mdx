@@ -3,7 +3,6 @@ title: Create a container and endpoint using the CLI
 slug: compute-service/create-custom-endpoint-using-the-cli
 ---
 
-
 > **Contact us at customer-success@octo.ai to request access to the Compute Service.**
 
 ## Overview
@@ -16,7 +15,7 @@ The `octoai` CLI includes some endpoint scaffolds with example models that you c
 
 ### Install the CLI and SDK
 
-Follow [CLI & SDK Installation](/compute-service/cli-and-sdk-installation) to make sure you have the CLI and SDK installed. This guide assumes you are running the latest version of the `octoai` CLI.
+Follow [CLI & SDK Installation](/docs/cli/cli-and-sdk-installation) to make sure you have the CLI and SDK installed. This guide assumes you are running the latest version of the `octoai` CLI.
 
 ### Install Docker
 
@@ -57,10 +56,10 @@ octoai init
 
 The CLI offers you to choose one of the existing _scaffolds_, which are endpoint examples ready to deploy that showcase how to use the service with different models. The following scaffolds are available:
 
-* **hello-world** (a simple example)
-* **flan-t5** (text-in, text-out, adaptable to generative text use cases)
-* **wav2vec** (audio-in, text-out, adaptable for speech to text use cases)
-* **yolov8** (image-in, image-out, adaptable for computer vision use cases)
+- **hello-world** (a simple example)
+- **flan-t5** (text-in, text-out, adaptable to generative text use cases)
+- **wav2vec** (audio-in, text-out, adaptable for speech to text use cases)
+- **yolov8** (image-in, image-out, adaptable for computer vision use cases)
 
 Use the Up/Down arrow keys to navigate and choose a scaffold, then press Enter.
 
@@ -68,13 +67,13 @@ The rest of this section shows the deployment process using the `hello-world` sc
 
 The CLI then prompts you for more details:
 
-* **Directory**: the directory name to create. Type `hello-world` and press Enter.
-* **Endpoint name:** the name of the endpoint. Type `hello-world` and press Enter.
-* **Hardware**: which hardware to run on. Use the Up/Down arrow keys to select `gpu.t4.medium` and press Enter
-* **Secrets**: the set of secrets to make available to your container. Use the Up/Down arrow keys to select `None/No more` and press Enter.
-* **Environment variables**: the set of environment variables and their values to make available to your container. Use the Up/Down arrow keys to select `None/No more` and press Enter.
+- **Directory**: the directory name to create. Type `hello-world` and press Enter.
+- **Endpoint name:** the name of the endpoint. Type `hello-world` and press Enter.
+- **Hardware**: which hardware to run on. Use the Up/Down arrow keys to select `gpu.t4.medium` and press Enter
+- **Secrets**: the set of secrets to make available to your container. Use the Up/Down arrow keys to select `None/No more` and press Enter.
+- **Environment variables**: the set of environment variables and their values to make available to your container. Use the Up/Down arrow keys to select `None/No more` and press Enter.
 
-For more information about secrets and environment variables, see [Setting up secrets or environment variables for your custom endpoints](create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints.mdx).
+For more information about secrets and environment variables, see [Setting up secrets or environment variables for your custom endpoints](create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints).
 
 The CLI shows the following guidance:
 
@@ -93,10 +92,10 @@ For the OctoAI CLI developer documentation, please visit https://docs.octoai.clo
 
 The `hello-world` directory contains the following files:
 
-* `octoai.yaml` \- Stores the configuration of your endpoint to be used at deployment time.
-* `requirements.txt` \- Lists any additional Python requirement packages for your application.
-* `service.py` \- Contains the logic of your endpoint.
-* `test_request.py` \- Contains example code to send requests to your endpoint.
+- `octoai.yaml` \- Stores the configuration of your endpoint to be used at deployment time.
+- `requirements.txt` \- Lists any additional Python requirement packages for your application.
+- `service.py` \- Contains the logic of your endpoint.
+- `test_request.py` \- Contains example code to send requests to your endpoint.
 
 ### Service Code Structure
 
@@ -282,8 +281,8 @@ When you first send this request, your endpoint is performing a cold start, whic
 
 Once you have an active replica, you can run the test command repeatedly and the endpoint responds quickly. OctoAI Compute Service lets you control the minimum and maximum number of replicas for your endpoint either from the web user interface or from the `octoai` CLI:
 
-* To see your endpoint in the web user interface, go to [https://octoai.cloud/endpoints](https://octoai.cloud/endpoints). Then click **hello-world**. To edit the endpoint, click **Edit**. On the next screen you can set the minimum and maximum number of replicas.
-* To use the CLI to update the minimum and maximum number of replicas, you can edit the `octoai.yaml` configuration file and redeploy your endpoint with `octoai deploy`.
+- To see your endpoint in the web user interface, go to [https://octoai.cloud/endpoints](https://octoai.cloud/endpoints). Then click **hello-world**. To edit the endpoint, click **Edit**. On the next screen you can set the minimum and maximum number of replicas.
+- To use the CLI to update the minimum and maximum number of replicas, you can edit the `octoai.yaml` configuration file and redeploy your endpoint with `octoai deploy`.
 
 Congratulations! You have now created your first endpoint on OctoAI Compute Service and ran remote inference.
 
@@ -314,8 +313,8 @@ The `octoai.client.Client` class enables you to query your endpoint as shown her
 
 Now that your endpoint has served one inference, there are some logs available for you to view. OctoAI Compute Service lets you view the server logs for your endpoint using the web user interface or the `octoai` CLI:
 
-* To view the server logs using the web interface, go to [https://octoai.cloud/endpoints](https://octoai.cloud/endpoints). Then click **hello-world**. Then click the **Logs** button on the top right of the page.
-* To view the server logs using the CLI, use the `octoai logs --name hello-world` command.
+- To view the server logs using the web interface, go to [https://octoai.cloud/endpoints](https://octoai.cloud/endpoints). Then click **hello-world**. Then click the **Logs** button on the top right of the page.
+- To view the server logs using the CLI, use the `octoai logs --name hello-world` command.
 
 For example, using the CLI the logs look similar to this:
 
@@ -336,9 +335,9 @@ $ octoai logs --name hello-world
 
 Once you have built and deployed a `hello-world` endpoint to OctoAI Compute Service, it is time to customize the endpoint for your use case. To customize your endpoint, you will need:
 
-* A list Python dependencies for your model of interest
-* Example Python code to load your model of interest
-* Example Python code to perform inference with your model of interest
+- A list Python dependencies for your model of interest
+- Example Python code to load your model of interest
+- Example Python code to perform inference with your model of interest
 
 Then you can modify the Hello World endpoint implementation to call your model of interest instead. Depending on the modality of your model of interest, it may be easier to start with a different scaffold than `hello-world` (such as `flan-t5`, `wav2vec`, or `yolov8`).
 
@@ -456,6 +455,7 @@ To view and modify the Dockerfile:
 **Older versions and the `-d` flag**
 
 Versions of `octoai` prior to 0.4.5 require that you build with the `-d` flag to use your custom Dockerfile. Versions 0.4.5 and above always use a custom `Dockerfile` if it is available in the project directory.
+
 </Note>
 
 After you have built the container for your endpoint using a customized Dockerfile, you can continue with deployment in the same manner as before by running `octoai deploy`.
@@ -577,6 +577,7 @@ You can customize the API route where your implementation of `infer_form_data` w
 **Argument Types for Form Data**
 
 The `Service.infer_form_data()` signature can only contain arguments of types `octoai.types.File` or `str`. If you need to provide additional metadata with your files, such as a JSON object, you can serialize it as a string so you can receive it inside the service implementation.
+
 </Note>
 
 To send a file with some metadata to the endpoint implementation in the previous example, you can use the `httpx` library as follows.
@@ -724,7 +725,7 @@ Endpoints that you create with the `octoai` CLI use the OctoAI Compute Registry,
 
 1. **Obtain your credentials for your custom registry.** For example, for DockerHub, you can generate an access token from the _Account Settings_ page.
 2. **Log into Docker on your terminal.** Use the `docker login` command with your registry username and access token as your password.
-3. **Provide your registry credentials to the OctoAI Compute Service**. To provide registry credentials using the web UI, see [Pulling containers from a private registry](create-endpoint-from-existing-container/pulling-containers-from-a-private-registry.mdx). To provide registry credentials using the `octoai` CLI, use the `octoai regcred create` command. To verify your registry credentials were created correctly, use the `octoai regcred list` command.
+3. **Provide your registry credentials to the OctoAI Compute Service**. To provide registry credentials using the web UI, see [Pulling containers from a private registry](create-endpoint-from-existing-container/pulling-containers-from-a-private-registry). To provide registry credentials using the `octoai` CLI, use the `octoai regcred create` command. To verify your registry credentials were created correctly, use the `octoai regcred list` command.
 
 To create a new endpoint that uses a custom Docker registry, issue the `--registry` option to the `octoai init` command with the registry URL. For example, for DockerHub:
 

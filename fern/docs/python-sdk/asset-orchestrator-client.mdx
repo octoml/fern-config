@@ -4,16 +4,15 @@ subtitle: Manage assets using the Python SDK.
 slug: python-sdk/asset-orchestrator-client
 ---
 
-
-The AssetLibrary client in the Python SDK allows create, list, get, and delete actions of assets. These assets allow integration with the [ImageGenerator Client](image-generator-client.mdx) to generate more customized images.
+The AssetLibrary client in the Python SDK allows create, list, get, and delete actions of assets. These assets allow integration with the [ImageGenerator Client](image-generator-client) to generate more customized images.
 
 This guide will walk you through using this API to see a list of our public assets, create your own asset, and use your asset to generate an image.
 
 #### Requirements
 
-* First, [create an OctoAI API token.](../getting-started/how-to-create-an-octoai-access-token.mdx)
-* Then, complete [Python SDK Installation & Setup.](installation-and-setup.mdx).
-   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the asset\_orch client with `asset_library = AssetLibrary()`
+- First, [create an OctoAI API token.](/docs/getting-started/how-to-create-an-octoai-access-token)
+- Then, complete [Python SDK Installation & Setup.](installation-and-setup).
+  - If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the asset_orch client with `asset_library = AssetLibrary()`
 
 #### Overview of AssetLibrary API
 
@@ -88,7 +87,7 @@ rainbow-origami-tailong-dragon.png
 
 #### Creating File Assets from a Folder of Images
 
-Let's say you have a folder of images assets you would like to upload for using the FineTuning service. You can do so using the below code snippet to get all the files in your folder named `images`, and then splitting on the `.` to get your file\_format extension (`jpg`, `jpeg`, or `png`), and use the file name as the asset name.
+Let's say you have a folder of images assets you would like to upload for using the FineTuning service. You can do so using the below code snippet to get all the files in your folder named `images`, and then splitting on the `.` to get your file_format extension (`jpg`, `jpeg`, or `png`), and use the file name as the asset name.
 
 In this example, there is a directory named `images` that contains files with a \_, -, and alphanumeric file names, jpg, jpeg, or png suffixes. In this example, the folder contains the following:
 

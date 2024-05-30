@@ -6,7 +6,6 @@ subtitle: >-
 slug: text-gen-solution/rest-api
 ---
 
-
 All of our text generation models are accessible via REST API, and we follow the "Chat Completions" standard popularized by OpenAI. Below you can see a simple cURL example and JSON response for our endpoint, along with explnations of all parameters.
 
 ### Input Sample
@@ -36,7 +35,7 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
 
 ### Input Parameters
 
-* **model** _(string)_: The model to be used for chat completion. Here is the complete list of presently supported model arguments. For more information regarding these models, see [this description.](/text-gen-solution/getting-started#self-service-models)
+- **model** _(string)_: The model to be used for chat completion. Here is the complete list of presently supported model arguments. For more information regarding these models, see [this description.](/docs/text-gen-solution/getting-started#self-service-models)
 
 ```
   "llama-2-13b-chat",
@@ -50,14 +49,14 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
   "hermes-2-pro-mistral-7b"
 ```
 
-* **max\_tokens** _(integer, optional)_: The maximum number of tokens to generate for the chat completion.
-* **messages** _(list of objects)_: A list of chat messages, where each message is an object with properties: `role` and `content`. Supported roles are “system”, “assistant”, and “user”.
-* **temperature** _(float, optional)_: A value between 0.0 and 2.0 that controls the randomness of the model's output.
-* **top\_p** _(float, optional)_: A value between 0.0 and 1.0 that controls the probability of the model generating a particular token.
-* **stop** _(list of strings, optional)_: A list of strings that the model will stop generating text if it encounters any of them.
-* **frequency\_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating repetitive responses.
-* **presence\_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating responses that contain certain words or phrases.
-* **stream** _(boolean, optional)_: Indicates whether the response should be streamed.
+- **max_tokens** _(integer, optional)_: The maximum number of tokens to generate for the chat completion.
+- **messages** _(list of objects)_: A list of chat messages, where each message is an object with properties: `role` and `content`. Supported roles are “system”, “assistant”, and “user”.
+- **temperature** _(float, optional)_: A value between 0.0 and 2.0 that controls the randomness of the model's output.
+- **top_p** _(float, optional)_: A value between 0.0 and 1.0 that controls the probability of the model generating a particular token.
+- **stop** _(list of strings, optional)_: A list of strings that the model will stop generating text if it encounters any of them.
+- **frequency_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating repetitive responses.
+- **presence_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating responses that contain certain words or phrases.
+- **stream** _(boolean, optional)_: Indicates whether the response should be streamed.
 
 ### Non-Streaming Response Sample:
 
@@ -158,21 +157,21 @@ data: [DONE]
 
 Parameters
 
-* **id** _(string)_: A unique identifier for the chat completion.
-* **choices** _(list of objects)_:  
-   * This is a list of chat completion choices, each represented as an object.  
-   * Each object within the `choices` list contains the following fields:  
-         * **index** _(integer)_: The position of the choice in the list of generated completions.  
-         * **message** _(object)_:  
-                  * An object representing the content of the chat completion, which includes:  
-                              * **role** _(string)_: The role associated with the message, typically "assistant" for the generated response.  
-                              * **content** _(string)_: The actual text content of the chat completion.  
-                              * **function\_call** _(object or null)_: An optional field that may contain information about a function call made within the message. It's usually `null` in standard responses.  
-         * **delta** _(object or null)_: An optional field that can contain additional metadata about the message, typically `null`.  
-         * **finish\_reason** _(string)_: The reason why the message generation was stopped, such as reaching the maximum length (`"length"`).
-* **created** _(integer)_: The Unix timestamp (in seconds) of when the chat completion was created.
-* **model** _(string)_: The model used for the chat completion.
-* **object** _(string)_: The object type, which is always `chat.completion`.
-* **system\_fingerprint** _(object or null)_: An optional field that may contain system-specific metadata.
-* **usage** _(object)_:  
-   * Usage statistics for the completion request, detailing token usage in the prompt and completion.
+- **id** _(string)_: A unique identifier for the chat completion.
+- **choices** _(list of objects)_:
+  - This is a list of chat completion choices, each represented as an object.
+  - Each object within the `choices` list contains the following fields:  
+     _ **index** *(integer)*: The position of the choice in the list of generated completions.  
+     _ **message** _(object)_:  
+     _ An object representing the content of the chat completion, which includes:  
+     _ **role** _(string)_: The role associated with the message, typically "assistant" for the generated response.  
+     _ **content** *(string)*: The actual text content of the chat completion.  
+     _ **function_call** _(object or null)_: An optional field that may contain information about a function call made within the message. It's usually `null` in standard responses.  
+     _ **delta** *(object or null)*: An optional field that can contain additional metadata about the message, typically `null`.  
+     _ **finish_reason** _(string)_: The reason why the message generation was stopped, such as reaching the maximum length (`"length"`).
+- **created** _(integer)_: The Unix timestamp (in seconds) of when the chat completion was created.
+- **model** _(string)_: The model used for the chat completion.
+- **object** _(string)_: The object type, which is always `chat.completion`.
+- **system_fingerprint** _(object or null)_: An optional field that may contain system-specific metadata.
+- **usage** _(object)_:
+  - Usage statistics for the completion request, detailing token usage in the prompt and completion.

@@ -19,6 +19,16 @@
             "title": "Index",
             "type": "integer"
           },
+          "logprobs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Logprobs"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "message": {
             "allOf": [
               {
@@ -68,6 +78,16 @@
             "const": "chat.completion.chunk",
             "default": "chat.completion.chunk",
             "title": "Object"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UsageStats"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -98,6 +118,16 @@
           "index": {
             "title": "Index",
             "type": "integer"
+          },
+          "logprobs": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Logprobs"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "required": [
@@ -120,16 +150,6 @@
               }
             ],
             "title": "Content"
-          },
-          "function_call": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ChatFnCall"
-              },
-              {
-                "type": "null"
-              }
-            ]
           },
           "role": {
             "anyOf": [
@@ -154,22 +174,7 @@
         "description": "OctoAI specific extensions for a chat completion request.",
         "properties": {
           "vllm": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ChatCompletionRequestExtVLLM"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": {
-              "best_of": 1,
-              "ignore_eos": false,
-              "skip_special_tokens": true,
-              "stop_token_ids": [],
-              "top_k": -1,
-              "use_beam_search": false
-            }
+            "$ref": "#/components/schemas/ChatCompletionRequestExtVLLM"
           }
         },
         "title": "ChatCompletionRequestExt",
@@ -178,78 +183,36 @@
       "ChatCompletionRequestExtVLLM": {
         "properties": {
           "best_of": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1,
-            "title": "Best Of"
+            "title": "Best Of",
+            "type": "integer"
           },
           "ignore_eos": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": false,
-            "title": "Ignore Eos"
+            "title": "Ignore Eos",
+            "type": "boolean"
           },
           "skip_special_tokens": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": true,
-            "title": "Skip Special Tokens"
+            "title": "Skip Special Tokens",
+            "type": "boolean"
           },
           "stop_token_ids": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "integer"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Stop Token Ids"
+            "items": {
+              "type": "integer"
+            },
+            "title": "Stop Token Ids",
+            "type": "array"
           },
           "top_k": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": -1,
-            "title": "Top K"
+            "title": "Top K",
+            "type": "integer"
           },
           "use_beam_search": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": false,
-            "title": "Use Beam Search"
+            "title": "Use Beam Search",
+            "type": "boolean"
           }
         },
         "title": "ChatCompletionRequestExtVLLM",
@@ -332,25 +295,6 @@
         "title": "ChatCompletionResponseFormat",
         "type": "object"
       },
-      "ChatFnCall": {
-        "description": "An OpenAI API compatible schema for a chat function call.",
-        "properties": {
-          "arguments": {
-            "title": "Arguments",
-            "type": "string"
-          },
-          "name": {
-            "title": "Name",
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "arguments"
-        ],
-        "title": "ChatFnCall",
-        "type": "object"
-      },
       "ChatMessage": {
         "description": "An OpenAI API compatible schema for a single ChatMessage.",
         "properties": {
@@ -363,19 +307,11 @@
                 "type": "null"
               }
             ],
+            "description": "The contents of the message.",
             "title": "Content"
           },
-          "function_call": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ChatFnCall"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "role": {
+            "description": "The role of the author of this message.",
             "title": "Role",
             "type": "string"
           }
@@ -406,7 +342,7 @@
           "logprobs": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/LogProbs"
+                "$ref": "#/components/schemas/Logprobs"
               },
               {
                 "type": "null"
@@ -512,63 +448,17 @@
         ],
         "properties": {
           "frequency_penalty": {
-            "anyOf": [
-              {
-                "maximum": 2.0,
-                "minimum": -2.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 0.0,
             "description": "Penalizes new tokens based on their frequency in the generated text so far.",
-            "title": "Frequency Penalty"
-          },
-          "function_call": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Function Call"
-          },
-          "functions": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Function"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "default": [],
-            "title": "Functions"
+            "maximum": 2.0,
+            "minimum": -2.0,
+            "title": "Frequency Penalty",
+            "type": "number"
           },
           "ignore_eos": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": false,
-            "title": "Ignore Eos"
+            "title": "Ignore Eos",
+            "type": "boolean"
           },
           "logit_bias": {
             "anyOf": [
@@ -584,19 +474,22 @@
             ],
             "title": "Logit Bias"
           },
+          "loglikelihood": {
+            "default": false,
+            "title": "Loglikelihood",
+            "type": "boolean"
+          },
+          "logprobs": {
+            "default": false,
+            "title": "Logprobs",
+            "type": "boolean"
+          },
           "max_tokens": {
-            "anyOf": [
-              {
-                "minimum": 1.0,
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 512,
             "description": "Maximum number of tokens to generate per output sequence.",
-            "title": "Max Tokens"
+            "minimum": 1.0,
+            "title": "Max Tokens",
+            "type": "integer"
           },
           "messages": {
             "description": "A list of messages comprising the conversation so far.",
@@ -612,17 +505,10 @@
             "type": "string"
           },
           "n": {
-            "anyOf": [
-              {
-                "minimum": 1.0,
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1,
-            "title": "N"
+            "minimum": 1.0,
+            "title": "N",
+            "type": "integer"
           },
           "octoai": {
             "anyOf": [
@@ -635,32 +521,19 @@
             ]
           },
           "presence_penalty": {
-            "anyOf": [
-              {
-                "maximum": 2.0,
-                "minimum": -2.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 0.0,
             "description": "Penalizes new tokens based on whether they appear in the generated text so far",
-            "title": "Presence Penalty"
+            "maximum": 2.0,
+            "minimum": -2.0,
+            "title": "Presence Penalty",
+            "type": "number"
           },
           "repetition_penalty": {
-            "anyOf": [
-              {
-                "minimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1.0,
-            "title": "Repetition Penalty"
+            "description": "Controls the likelihood of the model generating repeated texts",
+            "exclusiveMinimum": 0.0,
+            "title": "Repetition Penalty",
+            "type": "number"
           },
           "response_format": {
             "anyOf": [
@@ -691,47 +564,42 @@
             "title": "Stop"
           },
           "stream": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": false,
             "description": "If set, tokens will be streamed incrementally to users.",
-            "title": "Stream"
+            "title": "Stream",
+            "type": "boolean"
+          },
+          "stream_options": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StreamOptions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If set, usageStats will be streamed on the last content-containing chunk"
           },
           "temperature": {
-            "anyOf": [
-              {
-                "maximum": 2.0,
-                "minimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1.0,
             "description": "Controls the randomness of the sampling.",
-            "title": "Temperature"
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Temperature",
+            "type": "number"
+          },
+          "top_logprobs": {
+            "default": 0,
+            "title": "Top Logprobs",
+            "type": "integer"
           },
           "top_p": {
-            "anyOf": [
-              {
-                "exclusiveMinimum": 0.0,
-                "maximum": 1.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1.0,
             "description": "Controls the cumulative probability of the top tokens to consider.",
-            "title": "Top P"
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Top P",
+            "type": "number"
           },
           "user": {
             "anyOf": [
@@ -756,45 +624,24 @@
         "description": "`POST https://text.octoai.run/v1/completions`\n\nCompletes the provided prefix prompt given the parameters.\n\nYou can view this as the \"raw\" API to the model which provides\nmore complete user control than the chat completions API.\n\nThis API is compatible with OpenAI's API.",
         "properties": {
           "best_of": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1,
             "description": "Number of sequences that are generated from the prompt.`best_of` must be greater than or equal to `n`.",
-            "title": "Best Of"
+            "title": "Best Of",
+            "type": "integer"
           },
           "echo": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": false,
             "description": "Echo back the prompt in addition to the completion.",
-            "title": "Echo"
+            "title": "Echo",
+            "type": "boolean"
           },
           "frequency_penalty": {
-            "anyOf": [
-              {
-                "maximum": 2.0,
-                "minimum": -2.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 0.0,
             "description": "Penalizes new tokens based on their frequency in the generated text so far.",
-            "title": "Frequency Penalty"
+            "maximum": 2.0,
+            "minimum": -2.0,
+            "title": "Frequency Penalty",
+            "type": "number"
           },
           "logit_bias": {
             "anyOf": [
@@ -811,9 +658,17 @@
             "description": "Modify the likelihood of specified tokens appearing in the completion.",
             "title": "Logit Bias"
           },
+          "loglikelihood": {
+            "default": false,
+            "description": "Switch on loglikelihood regime and return log probabilities from all prompt tokens from prefill.",
+            "title": "Loglikelihood",
+            "type": "boolean"
+          },
           "logprobs": {
             "anyOf": [
               {
+                "maximum": 5.0,
+                "minimum": 0.0,
                 "type": "integer"
               },
               {
@@ -824,18 +679,11 @@
             "title": "Logprobs"
           },
           "max_tokens": {
-            "anyOf": [
-              {
-                "minimum": 1.0,
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 16,
             "description": "Maximum number of tokens to generate per output sequence.",
-            "title": "Max Tokens"
+            "minimum": 1.0,
+            "title": "Max Tokens",
+            "type": "integer"
           },
           "model": {
             "description": "Model name to use for completion.",
@@ -843,33 +691,19 @@
             "type": "string"
           },
           "n": {
-            "anyOf": [
-              {
-                "minimum": 1.0,
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1,
             "description": "Number of output sequences to return.",
-            "title": "N"
+            "minimum": 1.0,
+            "title": "N",
+            "type": "integer"
           },
           "presence_penalty": {
-            "anyOf": [
-              {
-                "maximum": 2.0,
-                "minimum": -2.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 0.0,
             "description": "Penalizes new tokens based on whether they appear in the generated text so far",
-            "title": "Presence Penalty"
+            "maximum": 2.0,
+            "minimum": -2.0,
+            "title": "Presence Penalty",
+            "type": "number"
           },
           "prompt": {
             "anyOf": [
@@ -896,36 +730,25 @@
                   "type": "array"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ],
             "description": "The prompt to generate completions from.",
             "title": "Prompt"
           },
           "repetition_penalty": {
-            "anyOf": [
-              {
-                "minimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1.0,
             "description": "Controls the likelihood of the model generating repeated texts",
-            "title": "Repetition Penalty"
+            "exclusiveMinimum": 0.0,
+            "title": "Repetition Penalty",
+            "type": "number"
           },
           "seed": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 0,
-            "title": "Seed"
+            "title": "Seed",
+            "type": "integer"
           },
           "stop": {
             "anyOf": [
@@ -946,17 +769,21 @@
             "title": "Stop"
           },
           "stream": {
+            "default": false,
+            "description": "If set, tokens will be streamed incrementally to users.",
+            "title": "Stream",
+            "type": "boolean"
+          },
+          "stream_options": {
             "anyOf": [
               {
-                "type": "boolean"
+                "$ref": "#/components/schemas/StreamOptions"
               },
               {
                 "type": "null"
               }
             ],
-            "default": false,
-            "description": "If set, tokens will be streamed incrementally to users.",
-            "title": "Stream"
+            "description": "If set, usageStats will be streamed on the last content-containing chunk"
           },
           "suffix": {
             "anyOf": [
@@ -971,34 +798,20 @@
             "title": "Suffix"
           },
           "temperature": {
-            "anyOf": [
-              {
-                "maximum": 2.0,
-                "minimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1.0,
             "description": "Controls the randomness of the sampling.",
-            "title": "Temperature"
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Temperature",
+            "type": "number"
           },
           "top_p": {
-            "anyOf": [
-              {
-                "exclusiveMinimum": 0.0,
-                "maximum": 1.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
             "default": 1.0,
             "description": "Controls the cumulative probability of the top tokens to consider.",
-            "title": "Top P"
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Top P",
+            "type": "number"
           },
           "user": {
             "anyOf": [
@@ -1090,37 +903,37 @@
         "type": "object"
       },
       "FinishReason": {
-        "description": "The reason why the model stopped generating tokens.\nThis will be `stop` if the model naturally completed generation or encountered a\nprovided stop sequence, `length` if the maximum number of tokens specified in the\nrequest was reached, content_filter if content was omitted due to a flag from our\ncontent filters, tool_calls if the model called a tool, or function_call\n(deprecated) if the model called a function.",
+        "description": "The reason why the model stopped generating tokens.\n\nThis will be `stop` if the model naturally completed generation or encountered a\nprovided stop sequence, `length` if the maximum number of tokens specified in the\nrequest was reached, content_filter if content was omitted due to a flag from our\ncontent filters, tool_calls if the model called a tool, or function_call\n(deprecated) if the model called a function.",
         "enum": [
           "stop",
           "length",
+          "tool_calls",
           "content_filter",
-          "function_call"
+          "function_call",
+          "cancelled"
         ],
         "title": "FinishReason",
         "type": "string"
       },
-      "Function": {
-        "description": "An OpenAI API compatible schema for function which can be called.",
+      "FunctionCall": {
+        "description": "The representation of a function called during tool use.",
         "properties": {
-          "description": {
-            "title": "Description",
+          "arguments": {
+            "description": "The arguments to the function call.",
+            "title": "Arguments",
             "type": "string"
           },
           "name": {
+            "description": "The name of the function to call.",
             "title": "Name",
             "type": "string"
-          },
-          "parameters": {
-            "title": "Parameters"
           }
         },
         "required": [
           "name",
-          "description",
-          "parameters"
+          "arguments"
         ],
-        "title": "Function",
+        "title": "FunctionCall",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -1136,56 +949,144 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
-      "LogProbs": {
-        "description": "The tokens and their [log probabilities](https://en.wikipedia.org/wiki/Log_probability).",
+      "Logprobs": {
+        "description": "An OpenAI API compatible schema for logprobs output.\nSee details in https://platform.openai.com/docs/api-reference/chat/object#chat-create-logprobs",
         "properties": {
-          "text_offset": {
-            "items": {
-              "type": "integer"
-            },
-            "title": "Text Offset",
-            "type": "array"
-          },
-          "token_logprobs": {
+          "content": {
+            "description": "List of logprobs info",
             "items": {
               "anyOf": [
                 {
-                  "type": "number"
+                  "$ref": "#/components/schemas/LogprobsContent"
                 },
                 {
                   "type": "null"
                 }
               ]
             },
-            "title": "Token Logprobs",
+            "title": "Content",
             "type": "array"
+          }
+        },
+        "title": "Logprobs",
+        "type": "object"
+      },
+      "LogprobsContent": {
+        "description": "An OpenAI API compatible schema for logprobs output.",
+        "properties": {
+          "bytes": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.",
+            "title": "Bytes"
           },
-          "tokens": {
-            "items": {
-              "type": "string"
-            },
-            "title": "Tokens",
-            "type": "array"
+          "logprob": {
+            "description": "Logprob corresponding to the token",
+            "title": "Logprob",
+            "type": "number"
+          },
+          "token": {
+            "description": "New generated token or token from prompt for loglikelihood case",
+            "title": "Token",
+            "type": "string"
           },
           "top_logprobs": {
+            "description": "List of top tokens info",
             "items": {
-              "anyOf": [
-                {
-                  "additionalProperties": {
-                    "type": "number"
-                  },
-                  "type": "object"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/components/schemas/TopLogprobs"
             },
             "title": "Top Logprobs",
             "type": "array"
           }
         },
-        "title": "LogProbs",
+        "required": [
+          "token",
+          "logprob"
+        ],
+        "title": "LogprobsContent",
+        "type": "object"
+      },
+      "StreamOptions": {
+        "properties": {
+          "include_usage": {
+            "default": false,
+            "description": "Whether or not to include token usage stats on the final chunk before the [Done] message.",
+            "title": "Include Usage",
+            "type": "boolean"
+          }
+        },
+        "title": "StreamOptions",
+        "type": "object"
+      },
+      "ToolCall": {
+        "description": "An OpenAI API compatible schema for a tool invocation.",
+        "properties": {
+          "function": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FunctionCall"
+              }
+            ],
+            "description": "The function called by the model."
+          },
+          "id": {
+            "description": "A unique ID for the tool call used to reference it in the response.",
+            "title": "Id",
+            "type": "string"
+          },
+          "type": {
+            "const": "function",
+            "default": "function",
+            "description": "The type of tool. Today only `function` is supported.",
+            "title": "Type"
+          }
+        },
+        "required": [
+          "id",
+          "function"
+        ],
+        "title": "ToolCall",
+        "type": "object"
+      },
+      "TopLogprobs": {
+        "description": "An OpenAI API compatible schema for logprobs output.",
+        "properties": {
+          "bytes": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.",
+            "title": "Bytes"
+          },
+          "logprob": {
+            "description": "Logprob corresponding to the top token",
+            "title": "Logprob",
+            "type": "number"
+          },
+          "token": {
+            "description": "Token from the top list",
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "logprob"
+        ],
+        "title": "TopLogprobs",
         "type": "object"
       },
       "UsageStats": {
@@ -1283,12 +1184,6 @@
                     },
                     {
                       "$ref": "#/components/schemas/ChatCompletionChunk"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ChatCompletionResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ChatCompletionChunk"
                     }
                   ],
                   "title": "Response 200 Create Chat Completion V1 Chat Completions Post"
@@ -1346,7 +1241,6 @@
     },
     "/v1/completions": {
       "post": {
-        "description": "Create a Completion.",
         "operationId": "create_completion_v1_completions_post",
         "requestBody": {
           "content": {

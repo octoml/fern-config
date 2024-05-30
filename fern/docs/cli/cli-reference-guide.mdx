@@ -4,12 +4,11 @@ subtitle: A reference guide for all CLI commands and their behaviors.
 slug: cli/cli-reference-guide
 ---
 
-
-This document provides a detailed description of every command of the OctoAI CLI. Remember that you can install the CLI by following [CLI & SDK Installation](/bring-your-own-model/cli-and-sdk-installation).
+This document provides a detailed description of every command of the OctoAI CLI. Remember that you can install the CLI by following [CLI & SDK Installation](/docs/cli/cli-and-sdk-installation#latest-cli-release).
 
 ## account
 
-Commands related to your OctoAI account. 
+Commands related to your OctoAI account.
 
 ### account info
 
@@ -24,15 +23,15 @@ EMAIL               KEY            NAME           PROVIDER
 
 ## build
 
-Build a Docker image from your OctoAI project. 
+Build a Docker image from your OctoAI project.
 
 ### Flags
 
-* `-d`, `--dockerfile <string>` Dockerfile overload to use for building; if not provided, one will be generated.
-* `-g`, `--generate` Only generate a Dockerfile rather than building the image, which is the default behavior.
-* `-i`, `--image <IMAGE>` Image URI to use for final tagging.
-* `-s`, `--service-module <MODULE>` The Python module containing the `octoai.Service` implementation.
-* `--setup` Run `Service.setup()` at image build time.
+- `-d`, `--dockerfile <string>` Dockerfile overload to use for building; if not provided, one will be generated.
+- `-g`, `--generate` Only generate a Dockerfile rather than building the image, which is the default behavior.
+- `-i`, `--image <IMAGE>` Image URI to use for final tagging.
+- `-s`, `--service-module <MODULE>` The Python module containing the `octoai.Service` implementation.
+- `--setup` Run `Service.setup()` at image build time.
 
 ## check-config
 
@@ -48,52 +47,52 @@ Generate the autocompletion script for the specified shell. Supports one of: `ba
 
 ## deploy
 
-Deploy your endpoint to OctoAI. By default, we use your settings from `.octoai.yaml`, but flags can be passed to on this command to override the file settings. 
+Deploy your endpoint to OctoAI. By default, we use your settings from `.octoai.yaml`, but flags can be passed to on this command to override the file settings.
 
 ### Flags:
 
-* `--concurrency-per-replica <INT>` Maximum concurrency per replica (default is `-1`).
-* `--description <DESC>` Give this endpoint a human readable description.
-* `-d`, `--display-name` Give this endpoint a human readable display name in the web UI.
-* `-e`, `--env [<KEY>=<VALUE>]` Environment variables to pass to the endpoint; issue once per var: --env FOO=bar --env BAZ=qux.
-* `--hardware <HW_TYPE>` The hardware instance to deploy to.
-* `-i`, `--image <IMAGE>` A URI to the Image to deploy.
-* `--max-replicas <INT>` Maximum number of replicas to scale up to (default -1)
-* `--min-replicas <INT>` Minimum number of replicas to scale down to (default -1)
-* `-n`, `--name <STRING>` Name of the endpoint
-* `--regcred <REGCRED_KEY>` Registry credentials key for private image pulls.
-* `--scaledown-secs <INT>` Number of seconds of inactivity before scaling down the endpoint (default -1).
-* `--secrets <SECRET_KEY>` Secrets to load into the endpoint; issue once per secret: --secrets secretKey1 --secrets secretKey2.
-* `-t`, `--tag <TAG>` Tag to use for the image.
-* `--visibility <public|private>` Controls whether the endpoint is public or needs authentication.
+- `--concurrency-per-replica <INT>` Maximum concurrency per replica (default is `-1`).
+- `--description <DESC>` Give this endpoint a human readable description.
+- `-d`, `--display-name` Give this endpoint a human readable display name in the web UI.
+- `-e`, `--env [<KEY>=<VALUE>]` Environment variables to pass to the endpoint; issue once per var: --env FOO=bar --env BAZ=qux.
+- `--hardware <HW_TYPE>` The hardware instance to deploy to.
+- `-i`, `--image <IMAGE>` A URI to the Image to deploy.
+- `--max-replicas <INT>` Maximum number of replicas to scale up to (default -1)
+- `--min-replicas <INT>` Minimum number of replicas to scale down to (default -1)
+- `-n`, `--name <STRING>` Name of the endpoint
+- `--regcred <REGCRED_KEY>` Registry credentials key for private image pulls.
+- `--scaledown-secs <INT>` Number of seconds of inactivity before scaling down the endpoint (default -1).
+- `--secrets <SECRET_KEY>` Secrets to load into the endpoint; issue once per secret: --secrets secretKey1 --secrets secretKey2.
+- `-t`, `--tag <TAG>` Tag to use for the image.
+- `--visibility <public|private>` Controls whether the endpoint is public or needs authentication.
 
 ## endpoint
 
- Commands for creating, editing, or updating your endpoints. 
+Commands for creating, editing, or updating your endpoints.
 
 ### endpoint create
 
-Create an endpoint with the provided flags. 
+Create an endpoint with the provided flags.
 
 ### Flags:
 
-* `--concurrency-per-replica <INT>` Maximum concurrency per replica (default is `-1`).
-* `--description <DESC>` Give this endpoint a human readable description.
-* `--pause` Pause this endpoint on creation.
-* `-d`, `--display-name` Give this endpoint a human readable display name in the web UI.
-* `-e`, `--env [<KEY>=<VALUE>]` Environment variables to pass to the endpoint; issue once per var: --env FOO=bar --env BAZ=qux.
-* `--hardware <HW_TYPE>` The hardware instance to deploy to. Options include `"gpu.t4.medium" "gpu.a10g.medium" "gpu.a100-80.medium"`
-* `--health-check-path <STRING>` Server path for health checks
-* `-i`, `--image <IMAGE>` A URI to the Image to deploy.
-* `--max-replicas <INT>` Maximum number of replicas to scale up to (default -1)
-* `--min-replicas <INT>` Minimum number of replicas to scale down to (default -1)
-* `-n`, `--name <STRING>` Name of the endpoint
-* `-p`, `--port <INT>` Port to route requests to on the container (default 8080)
-* `--regcred <REGCRED_KEY>` Registry credentials key for private image pulls.
-* `--scaledown-secs <INT>` Number of seconds of inactivity before scaling down the endpoint (default -1).
-* `--secrets <SECRET_KEY>` Secrets to load into the endpoint; issue once per secret: --secrets secretKey1 --secrets secretKey2.
-* `-t`, `--tag <TAG>` Tag to use for the image.
-* `--visibility <public|private>` Controls whether the endpoint is public or needs authentication.
+- `--concurrency-per-replica <INT>` Maximum concurrency per replica (default is `-1`).
+- `--description <DESC>` Give this endpoint a human readable description.
+- `--pause` Pause this endpoint on creation.
+- `-d`, `--display-name` Give this endpoint a human readable display name in the web UI.
+- `-e`, `--env [<KEY>=<VALUE>]` Environment variables to pass to the endpoint; issue once per var: --env FOO=bar --env BAZ=qux.
+- `--hardware <HW_TYPE>` The hardware instance to deploy to. Options include `"gpu.t4.medium" "gpu.a10g.medium" "gpu.a100-80.medium"`
+- `--health-check-path <STRING>` Server path for health checks
+- `-i`, `--image <IMAGE>` A URI to the Image to deploy.
+- `--max-replicas <INT>` Maximum number of replicas to scale up to (default -1)
+- `--min-replicas <INT>` Minimum number of replicas to scale down to (default -1)
+- `-n`, `--name <STRING>` Name of the endpoint
+- `-p`, `--port <INT>` Port to route requests to on the container (default 8080)
+- `--regcred <REGCRED_KEY>` Registry credentials key for private image pulls.
+- `--scaledown-secs <INT>` Number of seconds of inactivity before scaling down the endpoint (default -1).
+- `--secrets <SECRET_KEY>` Secrets to load into the endpoint; issue once per secret: --secrets secretKey1 --secrets secretKey2.
+- `-t`, `--tag <TAG>` Tag to use for the image.
+- `--visibility <public|private>` Controls whether the endpoint is public or needs authentication.
 
 ### endpoint get
 
@@ -125,8 +124,6 @@ octoai endpoint delete --name <NAME> [--force]
 
 Start the endpoint, scale to minimum replicas and start routing traffic to it.
 
-
-
 ```Shell Shell
 octoai endpoint start --name <ENDPOINT_NAME>
 ```
@@ -135,51 +132,47 @@ octoai endpoint start --name <ENDPOINT_NAME>
 
 Pause the endpoint, scale down the replicas to 0 and stop routing traffic to it.
 
-
-
 ```Shell Shell
 octoai endpoint pause --name <ENDPOINT_NAME>
 ```
 
 ## events
 
-Show the events associated with a given endpoint. 
+Show the events associated with a given endpoint.
 
 ### Flags
 
-* `-f`, `--follow` Tail event stream using our streaming events API. You will only events which occur after you start this command.
-* `-n`, `--name <string>` Name of the endpoint to monitor.
-* `-o`, `--output-format OutputFormat` Output format (default table).
+- `-f`, `--follow` Tail event stream using our streaming events API. You will only events which occur after you start this command.
+- `-n`, `--name <string>` Name of the endpoint to monitor.
+- `-o`, `--output-format OutputFormat` Output format (default table).
 
 ## help
 
-Help about any command, provides a short summary of this page in the CLI. 
+Help about any command, provides a short summary of this page in the CLI.
 
 ## init
-
-
 
 ```Shell Shell
 octoai init
 ```
 
-Initialize a brand new project from a scaffold, it will prompt the user for new repository configuration. The command will walk you through configuring your endpoint. See below for an example of creating a new project. 
+Initialize a brand new project from a scaffold, it will prompt the user for new repository configuration. The command will walk you through configuring your endpoint. See below for an example of creating a new project.
 
 ![An example of running `octoai init` with the YoloV8 scaffold  ](https://www.datocms-assets.com/45680/1703714484-screen-shot-cli-octoai.gif)
 
 ## login
 
-Cache auth credentials for the `OCTOAI_TOKEN` generated from [How to create an OctoAI API token](../getting-started/how-to-create-an-octoai-access-token.mdx).
+Cache auth credentials for the `OCTOAI_TOKEN` generated from [How to create an OctoAI API token](/docs/getting-started/how-to-create-an-octoai-access-token).
 
 ## logs
 
-Show the logs for a given endpoint. 
+Show the logs for a given endpoint.
 
 ### Flags
 
-* `-f`, `--follow` Tail endpoint logs using our streaming logs API. You will only events which occur after you start this command.
-* `-n`, `--name <NAME>` Name of the endpoint to monitor.
-* `-o`, `--output-format OutputFormat` Output format (default table).
+- `-f`, `--follow` Tail endpoint logs using our streaming logs API. You will only events which occur after you start this command.
+- `-n`, `--name <NAME>` Name of the endpoint to monitor.
+- `-o`, `--output-format OutputFormat` Output format (default table).
 
 ## regcred
 
@@ -187,9 +180,7 @@ Manage registry credentials for deploying images from private registries.
 
 ### regcred create
 
-Creates a registry credential in your account. 
-
-
+Creates a registry credential in your account.
 
 ```Shell Shell
 octoai regcred create --name <NAME> --token <TOKEN> --username <USERNAME>
@@ -197,9 +188,7 @@ octoai regcred create --name <NAME> --token <TOKEN> --username <USERNAME>
 
 ### regcred get
 
-Get a registry credential from your account. 
-
-
+Get a registry credential from your account.
 
 ```Shell Shell
 octoai regcred get --name <NAME> [-o <OUTPUT_FORMAT>]
@@ -209,17 +198,13 @@ octoai regcred get --name <NAME> [-o <OUTPUT_FORMAT>]
 
 List your account's registry credentials.
 
-
-
 ```Shell Shell
 octoai regcred list [-o <OUTPUT_FORMAT>]
 ```
 
 ### regcred update
 
-Update a registry credential in your account. 
-
-
+Update a registry credential in your account.
 
 ```Shell Shell
 octoai regcred update --name <NAME> --token <TOKEN> --username <USERNAME>
@@ -227,9 +212,7 @@ octoai regcred update --name <NAME> --token <TOKEN> --username <USERNAME>
 
 ### regcred delete
 
-Delete a registry credential from your account. 
-
-
+Delete a registry credential from your account.
 
 ```Shell Shell
 octoai regcred delete --name <KEY>
@@ -237,28 +220,26 @@ octoai regcred delete --name <KEY>
 
 ## run
 
-Run the most recently built container locally for testing before deployment. 
+Run the most recently built container locally for testing before deployment.
 
 #### Flags
 
-* `-b`, `--background` Whether to run container in the background.
-* `--command <CMD>` Inference command to run. Surround in quotes to pass arguments to the command.
-* `-s, --env <stringArray>` Environment variables to pass to the container; issue once per var: --env FOO=bar --env BAZ=qux
-* `--gpus <string>` Identifier of GPU device, or 'all' to use all GPUs.
-* `-i`, `--image <string>` Image to run.
-* `-p`, `--port <int>` Host port to bind the container port to. (default 8080)
-* `--timeout int` How long to wait for container to start and healthcheck to be ready before timing out. (default 300)
-* `--container-name <string>` Assign a name to the container.
+- `-b`, `--background` Whether to run container in the background.
+- `--command <CMD>` Inference command to run. Surround in quotes to pass arguments to the command.
+- `-s, --env <stringArray>` Environment variables to pass to the container; issue once per var: --env FOO=bar --env BAZ=qux
+- `--gpus <string>` Identifier of GPU device, or 'all' to use all GPUs.
+- `-i`, `--image <string>` Image to run.
+- `-p`, `--port <int>` Host port to bind the container port to. (default 8080)
+- `--timeout int` How long to wait for container to start and healthcheck to be ready before timing out. (default 300)
+- `--container-name <string>` Assign a name to the container.
 
 ## secret
 
-Manage your secrets for your endpoints. These allow you to pass extra API keys, or any secret configuration to your containers. See [Setting up account-wide secrets for your custom endpoints](/bring-your-own-model/create-custom-endpoints-from-a-container/setting-account-wide-secrets-for-custom-endpoints) for more information about this.
+Manage your secrets for your endpoints. These allow you to pass extra API keys, or any secret configuration to your containers. See [Setting up account-wide secrets for your custom endpoints](/docs/compute-service/create-endpoint-from-existing-container/setting-account-wide-secrets-for-custom-endpoints) for more information about this.
 
 ### secret create
 
 Create a secret in your account with a given key and a value.
-
-
 
 ```Shell Shell
 octoai secret create --key <SECRET_KEY> --value <SECRET_VALUE>
@@ -266,9 +247,7 @@ octoai secret create --key <SECRET_KEY> --value <SECRET_VALUE>
 
 ### secret delete
 
-Delete a secret from your account. 
-
-
+Delete a secret from your account.
 
 ```Shell Shell
 octoai secret delete --key <SECRET_KEY>
@@ -276,9 +255,7 @@ octoai secret delete --key <SECRET_KEY>
 
 ### secret get
 
-Fetch a secret from your account. 
-
-
+Fetch a secret from your account.
 
 ```Shell Shell
 octoai secret get -key <SECRET_KEY> [--show] [--output-format OutputFormat]
@@ -286,9 +263,7 @@ octoai secret get -key <SECRET_KEY> [--show] [--output-format OutputFormat]
 
 ### secret list
 
-List the secrets of your account. 
-
-
+List the secrets of your account.
 
 ```Shell Shell
 octoai secret list [--output-format OutputFormat]
@@ -296,9 +271,7 @@ octoai secret list [--output-format OutputFormat]
 
 ### secret update
 
-Update a secret in your account. 
-
-
+Update a secret in your account.
 
 ```Shell Shell
 octoai secret update --key <SECRET_KEY> --value <SECRET_VALUE>

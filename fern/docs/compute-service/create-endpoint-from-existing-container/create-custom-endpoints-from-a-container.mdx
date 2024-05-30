@@ -4,36 +4,35 @@ slug: >-
   compute-service/create-endpoint-from-existing-container/create-custom-endpoints-from-a-container
 ---
 
-
 > **Contact us at customer-success@octo.ai to request access to the Compute Service.**
 
-OctoAI allows you to create endpoints from custom containers. We support all containers with an HTTP server written in any language, as long as your container comes with a declarative configuration of which port is exposed for inferences and is built for a GPU. 
+OctoAI allows you to create endpoints from custom containers. We support all containers with an HTTP server written in any language, as long as your container comes with a declarative configuration of which port is exposed for inferences and is built for a GPU.
 
-* Our coverage includes and is not limited to containers built using Fast API, cog, s2i, Nvidia Triton Inference Server, and Sagemaker/AzureML/Vertex AI based ML containers.
-* We allow you to pull containers from any private registry, except registries running in a fully private network (e.g. AWS ECR, Gitlab registries in private environments). This means you can pull containers from Docker Hub, Quay, Gitlab, GitHub, etc. that are not in private networks.
+- Our coverage includes and is not limited to containers built using Fast API, cog, s2i, Nvidia Triton Inference Server, and Sagemaker/AzureML/Vertex AI based ML containers.
+- We allow you to pull containers from any private registry, except registries running in a fully private network (e.g. AWS ECR, Gitlab registries in private environments). This means you can pull containers from Docker Hub, Quay, Gitlab, GitHub, etc. that are not in private networks.
 
-If you don't already have a container in hand, [see our guide to building a custom endpoint with our CLI.](../create-custom-endpoint-using-the-cli.mdx)
+If you don't already have a container in hand, [see our guide to building a custom endpoint with our CLI.](../create-custom-endpoint-using-the-cli)
 
 In this example, we will create a production-grade endpoint for a Flan T5 container pre-built [here](https://hub.docker.com/r/vanessahlyan/flan-t5-small-pytorch-sanic) for a Question Answering application.
 
-In the web UI, navigate to the Custom Endpoints page. Click on “New Endpoint,” then specify the following fields: 
+In the web UI, navigate to the Custom Endpoints page. Click on “New Endpoint,” then specify the following fields:
 ![](https://www.datocms-assets.com/45680/1711726378-new-endpoint.png?max-w=2000&auto=compress)
 
-* **Endpoint Name:** This name for your endpoint will be part of the endpoint URL you end up integrating into your application-- that URL will be `https://<endpoint-name>-<account-id>.octoai.run/<inference-route>`
-* **Container Image:** The reference to your container needs to be in "\[registry/\]organization/repository\[:tag\]" format. In our example, the container image is `vanessahlyan/flan-t5-small-pytorch-sanic:latest`, hosted [here](https://hub.docker.com/r/vanessahlyan/flan-t5-small-pytorch-sanic) on Docker Hub.
-* **Container Port:** The port of the container at which inferences are run is 8000 in our Flan T5 example, as defined [here](https://github.com/octoml/octocloud-templates/blob/main/flan-t5-small/Dockerfile#L3). **Make sure to change the default value from 8080 to 8000 in the case of this example!**
-* **Registry Credential:** Registry Credential defaults to Public, which indicates that your container is available for anyone on the internet to pull. If your container is instead stored in a private registry, follow the guide in [Pulling containers from a private registry](/bring-your-own-model/create-custom-endpoints-from-a-container/pulling-containers-from-a-private-registry) to store your registry credentials so that we can pull the private container.
-* **Health Check Path:** See [Health Check Path in custom containers](../health-check-path-in-custom-containers.mdx)
-* **Enable Public Access**: By default, your endpoints are private and require an access token, but you can change this setting such that anyone who knows your endpoint URL can use it.
-* **Active**: Whether to spin down all replicas and disable inferences to it.
-* **Specify Secrets:** Provide secrets to mount onto the container, such as database secrets that you want to reuse across endpoints. Follow the guide in [Setting up account-wide secrets for your custom endpoints](setting-account-wide-secrets-for-custom-endpoints.mdx) to set these up.
-* **Environment Variables**: Just like secrets, these variables will be mounted onto the container at runtime. If you have a variable with key foo whose value is bar, you will get a variable foo whose value is bar mounted to the container.
-* **Select hardware:** We offer three tiers of hardware-- see [Hardware, Pricing, and Billing](../../getting-started/pricing-and-billing.mdx) for more information. Your choice of hardware determines the pricing that you will pay for your endpoint.
-* **Minimum Replicas:** The default minimum number of replicas is 0, which means we autoscale down to 0 whenever your endpoint is not receiving requests from your users and the timeout period has passed (this is a way to keep your costs down). Minimum replicas should be set to a higher number if you want to ensure highest uptime for your users and avoid cold starts. Cold start means there is currently no active container instance running inferences on our servers for your application, so we need to incur extra latency to spin up a new one.
-* **Maximum Replicas:** This is an important measure for capping your maximum cost. The maximum number of replicas should be set based on how much simultaneous capacity you're willing to support at your heaviest traffic periods. For example, if you set your maximum replicas at 5, and each inference takes 1 second for your model on a GPU, then your application will be able to support a total of 250 inferences per minute without queueing. If your traffic goes above that level (well done you!), requests will be queued until they can be handled, which will increase your average request response time.
-* **Timeout**: How many seconds to wait before we scale down your last replica since the time you have no more inferences running.
+- **Endpoint Name:** This name for your endpoint will be part of the endpoint URL you end up integrating into your application-- that URL will be `https://<endpoint-name>-<account-id>.octoai.run/<inference-route>`
+- **Container Image:** The reference to your container needs to be in "\[registry/\]organization/repository\[:tag\]" format. In our example, the container image is `vanessahlyan/flan-t5-small-pytorch-sanic:latest`, hosted [here](https://hub.docker.com/r/vanessahlyan/flan-t5-small-pytorch-sanic) on Docker Hub.
+- **Container Port:** The port of the container at which inferences are run is 8000 in our Flan T5 example, as defined [here](https://github.com/octoml/octocloud-templates/blob/main/flan-t5-small/Dockerfile#L3). **Make sure to change the default value from 8080 to 8000 in the case of this example!**
+- **Registry Credential:** Registry Credential defaults to Public, which indicates that your container is available for anyone on the internet to pull. If your container is instead stored in a private registry, follow the guide in [Pulling containers from a private registry](/docs/compute-service/create-endpoint-from-existing-container/pulling-containers-from-a-private-registry) to store your registry credentials so that we can pull the private container.
+- **Health Check Path:** See [Health Check Path in custom containers](../health-check-path-in-custom-containers)
+- **Enable Public Access**: By default, your endpoints are private and require an access token, but you can change this setting such that anyone who knows your endpoint URL can use it.
+- **Active**: Whether to spin down all replicas and disable inferences to it.
+- **Specify Secrets:** Provide secrets to mount onto the container, such as database secrets that you want to reuse across endpoints. Follow the guide in [Setting up account-wide secrets for your custom endpoints](setting-account-wide-secrets-for-custom-endpoints) to set these up.
+- **Environment Variables**: Just like secrets, these variables will be mounted onto the container at runtime. If you have a variable with key foo whose value is bar, you will get a variable foo whose value is bar mounted to the container.
+- **Select hardware:** We offer three tiers of hardware-- see [Hardware, Pricing, and Billing](/docs/getting-started/pricing-and-billing) for more information. Your choice of hardware determines the pricing that you will pay for your endpoint.
+- **Minimum Replicas:** The default minimum number of replicas is 0, which means we autoscale down to 0 whenever your endpoint is not receiving requests from your users and the timeout period has passed (this is a way to keep your costs down). Minimum replicas should be set to a higher number if you want to ensure highest uptime for your users and avoid cold starts. Cold start means there is currently no active container instance running inferences on our servers for your application, so we need to incur extra latency to spin up a new one.
+- **Maximum Replicas:** This is an important measure for capping your maximum cost. The maximum number of replicas should be set based on how much simultaneous capacity you're willing to support at your heaviest traffic periods. For example, if you set your maximum replicas at 5, and each inference takes 1 second for your model on a GPU, then your application will be able to support a total of 250 inferences per minute without queueing. If your traffic goes above that level (well done you!), requests will be queued until they can be handled, which will increase your average request response time.
+- **Timeout**: How many seconds to wait before we scale down your last replica since the time you have no more inferences running.
 
-Now click **Create** and you’ll be directed to a page for your new endpoint. 
+Now click **Create** and you’ll be directed to a page for your new endpoint.
 
 To run an inference, use the endpoint URL shown in the UI, with the appropriate inference route appended to it. In our example, we serve inferences at the /predict route as defined in this [file](https://github.com/octoml/octocloud-templates/blob/main/flan-t5-small/server.py#L28), so we should send a CURL to `<your-endpont-url>/predict`. In my specific case, that is`https://flan-t5-small-01at11ru3fwy.octoai.run/predict`.
 
@@ -41,13 +40,13 @@ To run an inference, use the endpoint URL shown in the UI, with the appropriate 
 curl -X POST '<your-endpoint-url>/predict' --data '{"prompt": "What state is Los Angeles in?", "max_length": 100}' -H 'content-type: application/json' -H "Authorization: Bearer $YOUR_TOKEN"
 ```
 
-* You need to edit the curl to use your own API token. If you don't have an existing token, refer to [how to create an OctoAI API Token](../../getting-started/how-to-create-an-octoai-access-token.mdx)
-* This model expects the inputs `prompt` and `max_length`. We can fill in values `"What state is Los Angeles in?"` and `100` for those fields respectively, and get a response back.
-* To query the healthcheck for our endpoint (this is optional), we can hit `<your-endpoint-url>/healthcheck`
+- You need to edit the curl to use your own API token. If you don't have an existing token, refer to [how to create an OctoAI API Token](/docs/getting-started/how-to-create-an-octoai-access-token)
+- This model expects the inputs `prompt` and `max_length`. We can fill in values `"What state is Los Angeles in?"` and `100` for those fields respectively, and get a response back.
+- To query the healthcheck for our endpoint (this is optional), we can hit `<your-endpoint-url>/healthcheck`
 
 Once you use the curl to make an inference, look at the Events tab on the UI and you’ll see live events coming in informing you of the status of your deployment. Once you see here that the container is running, you inferences should complete successfully.
 
 ## Next steps
 
-* Clone our example container implementation [here](https://github.com/octoml/octocloud-templates) and customize them for your own use cases!
-* Contact us if you have any questions.
+- Clone our example container implementation [here](https://github.com/octoml/octocloud-templates) and customize them for your own use cases!
+- Contact us if you have any questions.

@@ -6,7 +6,7 @@ slug: private-deployment/octostack
 
 # Overview
 
-[OctoStack](https://octo.ai/product/octostack/) is a turnkey generative AI solution allowing you to run your choice of models in your environment. It delivers OctoAI’s industry-leading AI inference service and performance optimizations with the privacy benefits of self-managing within your environment. OctoStack provides a full stack solution for running generative AI at scale - including inference, model customization, load balancing, auto-scaling, and telemetry. OctoStack is compatible with all cloud service providers and container orchestration services.
+[OctoStack](https://octo.ai/product/octostack/) is a turnkey generative AI solution allowing you to run your choice of models in your environment. It delivers OctoAI’s industry-leading AI inference service and performance optimizations with the privacy benefits of self-managing within your environment. OctoStack provides a full stack solution for running generative AI at scale - including inference, model customization, load balancing, auto-scaling, and telemetry. OctoStack is compatible with all cloud service providers and container orchestration services. [Contact us](https://octo.ai/octostack-demo/) to get started!
 
 ![](https://www.datocms-assets.com/45680/1712085519-octostack-overview-diagram-light-mode-updated.png?max-w=300&max-h=300&auto=compress)
 
@@ -23,6 +23,31 @@ OctoStack includes OctoAI’s performance optimizations delivered through Apache
 ### Easy to use APIs & customization
 
 Application developers can use OctoStack’s industry-standard API’s, including Python and TypeScript SDK’s. Our ergonomic API’s allow rapid development and integration. You can easily load and run open source models, and fine-tuned checkpoints.
+
+# Configuration & Deployment
+
+### GPU Configuration
+
+OctoStack can run a multi-GPU configuration to improve throughput and latency, which is easily enabled with a single configuration setting. We recommend using multiple GPU’s per replica when running models with higher precision and a greater number of parameters. The OctoAI team can help you identify the multi-GPU configuration that best matches your throughput & latency goals.
+
+### Prerequisites
+
+OctoStack is comptable with all cloud environments - these are key system requirements:
+
+- Kubernetes, or Docker & Docker Compose
+- Redis in cluster mode
+- NVIDIA drivers
+- GPUs
+  - OctoStack supports a range of hardware including A10G, A100, and H100 GPUs
+  - A100s such as AWS p4d.24xlarge instances can support a broad set of models
+
+### Deployment
+
+OctoStack supports Kubernetes deployment via manifest files, and a Docker Compose deployment compatible with any container orchestration service. There’s a few simple steps to deploy:
+
+1. OctoAI allow lists your AWS account, so you can access OctoStack containers in OctoAI’s AWS ECR.
+2. Pull the OctoStack containers from OctoAI’s AWS ECR.
+3. Configure and deploy using Kubernetes or Docker Compose, using OctoAI-provided guides.
 
 # Get Started
 

@@ -3,16 +3,15 @@ title: Uploading custom assets to OctoAI's Asset Library
 slug: media-gen-solution/uploading-a-custom-asset-to-the-octoai-asset-library
 ---
 
-
 OctoAI empowers you to customize images by leveraging assets like checkpoints, LoRAs, and textual inversions. You can either use:
 
-* Public assets in the OctoAI Asset Library
-* Upload your custom asset to the OctoAI Asset Library (private by default, and optionally public)
-* Or use OctoAI fine-tuning to create new assets - see [Fine-tuning Stable Diffusion](../api-reference/fine-tuning/create-tune.mdx)
+- Public assets in the OctoAI Asset Library
+- Upload your custom asset to the OctoAI Asset Library (private by default, and optionally public)
+- Or use OctoAI fine-tuning to create new assets - see [Fine-tuning Stable Diffusion](/docs/api-reference/fine-tuning/create)
 
 This tutorial explains how to upload your own private assets to the Asset Library.
 
-1. First download the OctoAI CLI by following the instructions in [CLI Installation.](../cli/cli-and-sdk-installation.mdx) Check that it is properly installed by running the following in your terminal:
+1. First download the OctoAI CLI by following the instructions in [CLI Installation.](/docs/cli/cli-and-sdk-installation) Check that it is properly installed by running the following in your terminal:
 
 ```bash bash
 $ octoai asset --help
@@ -37,15 +36,15 @@ Use "octoai asset [command] --help" for more information about a command.
 ```
 
 1. Run `octoai login` to cache your token and authenticate to your account.
-2. We can now use the `octoai asset create` subcommand to upload assets (you can run `octoai asset create --help` to learn more on the options).  
-   1. `--engine` denotes whether this is an asset for SDXL or SD1.5  
-   2. `--upload-from-file` flag denotes the path of the file on your local machine that you’re trying to upload.  
-   3. `--upload-from-url` flag is an alternative to `upload-from-file` allowing you to upload an asset from a public URL; OctoAI will fetch and upload the file.  
-   4. `—type` can be lora, checkpoint, or textual\_inversion (VAEs coming soon)  
-   5. `--format` denotes the format of your asset, which can be safetensors or pt.  
-   6. `--datatype` can be fp16, fp32, int4, or int8\. For image gen, it should almost always be fp16, but for LLMs and other modalities your asset may have other datatypes.  
-   7. `--name` is a name for your asset. You can only use each asset name once.  
-   8. `--transfer-api` defaults to sts which is the fastest way to upload a large asset.  
+2. We can now use the `octoai asset create` subcommand to upload assets (you can run `octoai asset create --help` to learn more on the options).
+   1. `--engine` denotes whether this is an asset for SDXL or SD1.5
+   2. `--upload-from-file` flag denotes the path of the file on your local machine that you’re trying to upload.
+   3. `--upload-from-url` flag is an alternative to `upload-from-file` allowing you to upload an asset from a public URL; OctoAI will fetch and upload the file.
+   4. `—type` can be lora, checkpoint, or textual_inversion (VAEs coming soon)
+   5. `--format` denotes the format of your asset, which can be safetensors or pt.
+   6. `--datatype` can be fp16, fp32, int4, or int8\. For image gen, it should almost always be fp16, but for LLMs and other modalities your asset may have other datatypes.
+   7. `--name` is a name for your asset. You can only use each asset name once.
+   8. `--transfer-api` defaults to sts which is the fastest way to upload a large asset.
    9. If you are uploading a textual inversion, make sure to use the `-w` flag to denote the default trigger word for the asset. That trigger word can later be used at generation time to activate the inversion. For LoRAs, trigger words are optional.
 
 As an example, you could use this command to upload a checkpoint from your local machine:
