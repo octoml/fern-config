@@ -3,23 +3,39 @@ title: TypeScript SDK installation & setup
 slug: typescript-sdk/installation-and-setup
 ---
 
-#### Requirements:
+#### Requirements
 
-- Node.js >= 18
+- The following runtimes are supported:
+  - Node.js 15+
+  - Vercel
+  - Cloudflare Workers
+  - Deno v1.25+
+  - Bun 1.0+
 - In order to access endpoints, [create an OctoAI API token](/docs/getting-started/how-to-create-an-octoai-access-token).
-- Set the token to an environment variable named `OCTOAI_TOKEN` or pass it to the Client class on construction.
+- Set the token to an environment variable named `OCTOAI_TOKEN` or pass it to the `OctoAIClient` class on construction.
 
-#### Installation:
+#### Installation
 
-The TypeScript SDK can be installed using NPM.
+The TypeScript SDK can be installed using your preferred package manager.
 
-```bash bash
-npm i @octoai/sdk
+<CodeGroup>
+```bash npm
+npm install @octoai/sdk
 ```
 
-#### Setting API token as an environment variable:
+```bash yarn
+yarn add @octoai/sdk
+```
 
-In order to access endpoints from OctoAI, first [create an API token.](/docs/getting-started/how-to-create-an-octoai-access-token) Set `OCTOAI_TOKEN` to the token value wherever you set your environment variables, such as your `.bashrc` or `.env` file.
+```bash pnpm
+pnpm add @octoai/sdk
+```
+
+</CodeGroup>
+
+#### Setting API token as an environment variable
+
+In order to access endpoints from OctoAI, first [create an API token](/docs/getting-started/how-to-create-an-octoai-access-token). Set `OCTOAI_TOKEN` to the token value wherever you set your environment variables, such as your `.bashrc` or `.env` file.
 
 ```bash bash
 export OCTOAI_TOKEN=YOUR_TOKEN_HERE

@@ -6,7 +6,7 @@ subtitle: >-
 slug: media-gen-solution/customizations/loras
 ---
 
- LoRAs are additional custom weights applied to a base checkpoint. Similar to checkpoints, LoRAs can represent a specific style or custom subject, but they are much smaller in size and more economical to use. You can include multiple LoRAs in a single image generation, and provide a weight for each LoRA. A greater weight value will have more influence on the generated image. Similar to checkpoints, users have the flexibility to import LoRAs from external sources, and integrate them seamlessly into OctoAI's Asset Library as personalized assets.
+LoRAs are additional custom weights applied to a base checkpoint. Similar to checkpoints, LoRAs can represent a specific style or custom subject, but they are much smaller in size and more economical to use. You can include multiple LoRAs in a single image generation, and provide a weight for each LoRA. A greater weight value will have more influence on the generated image. Similar to checkpoints, users have the flexibility to import LoRAs from external sources, and integrate them seamlessly into OctoAI's Asset Library as personalized assets.
 
     Below is an example of using a LoRA along with a simple prompt `Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details`. You can see the results from the SDXL base model (top left) and subsequent results with add-detail LoRA - varying weights (top right and bottom left). Add-details LoRA adds intricate details to the output image. The image generated on the botton right is a result of two LoRAs, add-details (weight:0.3) and more-art (weight:1.0). More-art LoRA adds artistic details to the output image. You can clearly see the impact of more-art LoRA over add-detail LoRA in the resulting image.
 
@@ -27,6 +27,7 @@ slug: media-gen-solution/customizations/loras
 </CardGroup>
 
     **Example Code:**
+
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://image.octoai.run/generate/sdxl" \
@@ -76,37 +77,42 @@ images = image_gen_response.images
 for i, image in enumerate(images):
     to_file(image, f"result{i}.jpg")
 ```
-```typescript Typescript
-import fs from "fs";
+
+```typescript TypeScript
+import fs from "node:fs";
 import { OctoAIClient } from "@octoai/sdk";
 
-const client = new OctoAIClient({
-  apiKey: "<OCTOAI_TOKEN>",
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
 });
 
-const { images } = await client.imageGen.generateSdxl({
-  "prompt": "Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details",
-  "negativePrompt": "Blurry photo, distortion, low-res, poor quality",
-  "loras": {
+const { images } = await octoai.imageGen.generateSdxl({
+  prompt:
+    "Commercial photography, snowy, luxury perfume bottle, angelic silver light, studio light, high resolution photography, fine details",
+  negativePrompt: "Blurry photo, distortion, low-res, poor quality",
+  loras: {
     "octoai:add-detail": 0.3,
-    "octoai:more_art": 1
+    "octoai:more_art": 1,
   },
-  "width": 1024,
-  "height": 1024,
-  "numImages": 1,
-  "sampler": "DDIM",
-  "steps": 30,
-  "cfgScale": 12,
-  "useRefiner": true,
-  "highNoiseFrac": 0.8,
-  "stylePreset": "base"
-})
+  width: 1024,
+  height: 1024,
+  numImages: 1,
+  sampler: "DDIM",
+  steps: 30,
+  cfgScale: 12,
+  useRefiner: true,
+  highNoiseFrac: 0.8,
+  stylePreset: "base",
+});
 
 images.forEach((output, i) => {
-  const buffer = Buffer.from(output.image_b64, "base64");
-  fs.writeFileSync(`result${i}.jpg`, buffer);
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
 });
 ```
+
 </CodeGroup>
 
-  LoRAs can further customize your images, by including custom objects or styles.
+LoRAs can further customize your images, by including custom objects or styles.

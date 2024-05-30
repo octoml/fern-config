@@ -69,17 +69,17 @@ if __name__ == "__main__":
         to_file(image, f"result{i}.jpg")
 ```
 
-```typescript Typescript
-import fs from "fs";
+```typescript TypeScript
+import fs from "node:fs";
 import { OctoAIClient } from "@octoai/sdk";
 
-const client = new OctoAIClient({
-  apiKey: "<OCTOAI_TOKEN>",
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
 });
 
-const { images } = await client.imageGen.generateSdxl({
-  prompt: "((glass orb)) with snowy christmas scene in it ",
-  negativePrompt: "ornament, Blurry, low-res, poor quality",
+const { images } = await octoai.imageGen.generateSdxl({
+  prompt: "((glass orb)) with snowy Christmas scene in it",
+  negativePrompt: "ornament, blurry, low-res, poor quality",
   checkpoint: "octoai:lightning_sdxl",
   width: 1024,
   height: 1024,
@@ -93,8 +93,10 @@ const { images } = await client.imageGen.generateSdxl({
 });
 
 images.forEach((output, i) => {
-  const buffer = Buffer.from(output.image_b64, "base64");
-  fs.writeFileSync(`result${i}.jpg`, buffer);
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
 });
 ```
 

@@ -3,8 +3,7 @@ title: Image Gen REST API
 slug: media-gen-solution/rest-apis/image-gen-api
 ---
 
-
-All of our image generation models are accessible via REST API. Below you can see a simple cURL/Python SDK and Typescript SDK example for our image gen endpoints, along with explanations of all parameters.
+All of our image generation models are accessible via REST API. Below you can see a simple cURL/Python SDK and TypeScript SDK example for our image gen endpoints, along with explanations of all parameters.
 
 Our URL for image generations is at `https://image.octoai.run/generate/{engine_id}`, where engine_id is one of the following:
 
@@ -78,27 +77,34 @@ if __name__ == "__main__":
     _process_test("https://image.octoai.run/generate/sdxl")
 ```
 
-```typescript Typescript
-import fs from "fs";
+```typescript TypeScript
+import fs from "node:fs";
 import { OctoAIClient } from "@octoai/sdk";
 
-const client = new OctoAIClient({
-  apiKey: "<OCTOAI_TOKEN>",
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
 });
 
-const { images } = await client.imageGen.generateSdxl({
-  prompt: 'A photo of a cute cat astronaut in space',
-  negativePrompt: 'Blurry photo, distortion, low-res, poor quality',
+const { images } = await octoai.imageGen.generateSdxl({
+  prompt: "A photo of a cute cat astronaut in space",
+  negativePrompt: "Blurry photo, distortion, low-res, poor quality",
   width: 1024,
   height: 1024,
   numImages: 1,
-  sampler: 'DDIM',
+  sampler: "DDIM",
   steps: 30,
   cfgScale: 12,
   useRefiner: true,
   highNoiseFrac: 0.8,
-  stylePreset: 'base',
-})
+  stylePreset: "base",
+});
+
+images.forEach((output, i) => {
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
+});
 ```
 
 </CodeGroup>

@@ -3,48 +3,58 @@ title: Upgrading from @octoai/client
 slug: typescript-sdk/upgrading-from-old-sdk
 ---
 
+### Migrating to the new SDK package
 
-### Uninstall octoai-sdk
-
-```bash
+<CodeGroup>
+```bash npm
 npm uninstall @octoai/client
 npm install @octoai/sdk
 ```
 
+```bash yarn
+yarn remove @octoai/client
+yarn add @octoai/sdk
+```
+
+```bash pnpm
+pnpm remove @octoai/client
+pnpm add @octoai/sdk
+```
+
+</CodeGroup>
+
 ### Upgrading your code
 
-The various OctoAI APIs are now accessable from a single client:
+The various OctoAI APIs are now accessible from a single client:
 
-```typescript
-import { OctoAIClient } from '@octoai/sdk';
+```typescript TypeScript
+import { OctoAIClient } from "@octoai/sdk";
 
-const client = new OctoAIClient();
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
+});
 
 // The various APIs are now accessible from the client
-client.textGen
-
-client.imageGen
-
-client.fineTuning
-
-client.assetLibrary
+octoai.textGen;
+octoai.imageGen;
+octoai.fineTuning;
+octoai.assetLibrary;
 ```
 
 ### Image Generation API changes
 
-In the `client.imageGen` API instead of specifying which
-engine to use, use the corresponding `generate_*` method.
+In the `octoai.imageGen` API, instead of specifying which engine to use, use the corresponding `generate*` method such as `generateSdxl()` or `generateSd()`.
 
 ### Text Generation API changes
 
-The text generation models with `client.textGen` API are now specified with a `string` model name instead of an `enum`.
+The text generation models with `octoai.textGen` API are now specified with a `string` model name instead of an `enum`.
 
-Streaming requests are made with the corresponding `client.textGen.*_stream` method.
+Streaming requests are made with the corresponding `octoai.textGen.*Stream` method such as `createCompletionStream()` or `createChatCompletionStream()`.
 
 ### Asset Library (Asset Orchestrator) API changes
 
-The Asset Orchestrator has been renamed to Asset Library and can be accessed via `client.assetLibrary`. Assets can be created with the `client.assetLibrary.upload()` method.
+The Asset Orchestrator has been renamed to Asset Library and can be accessed via `octoai.assetLibrary`. Assets can be created with the `octoai.assetLibrary.upload()` method.
 
 ### Compute Inferencing API changes
 
-The `infer()` method is not yet available in this sdk.  You will need to continue to use the older `@octoai/client` for full inferencing support.
+The `infer()` method is not available in this SDK. You will need to continue to use the older `@octoai/client` for full inferencing support.

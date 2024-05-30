@@ -4,10 +4,9 @@ subtitle: Private networking with OctoAI's SecureLink.
 slug: private-deployment/secure-link
 ---
 
-
 # Overview
 
-Keeping our users’ data private and secure is our priority. OctoAI requires token authentication for all API requests, along with TLS to enforce encryption in transit for all connections between the customer and OctoAI. We also use encryption at rest for any data written to  disk.
+Keeping our users’ data private and secure is our priority. OctoAI requires token authentication for all API requests, along with TLS to enforce encryption in transit for all connections between the customer and OctoAI. We also use encryption at rest for any data written to disk.
 
 SecureLink is an additional private connectivity security measure, ensuring that network traffic between an OctoAI endpoint and the customer environment is not exposed to the public internet. SecureLink is available for Enterprise customers.
 
@@ -23,6 +22,7 @@ SecureLink is an additional private connectivity security measure, ensuring that
 **Configure your AWS Account ID in OctoAI**
 
 First, run a simple curl command to configure your AWS account ID within OctoAI using the `https://api.octoai.cloud/v1/account/securelink` endpoint:
+
 ```
 curl -X POST "https://api.octoai.cloud/v1/account/securelink" \
     -H "Content-Type: application/json" \
@@ -30,7 +30,7 @@ curl -X POST "https://api.octoai.cloud/v1/account/securelink" \
     --data '{"aws_account_id": "account-ID-value"}'
 ```
 
-This allows OctoAI to generate a VPC Service Name, which you’ll use in the next step.  If you don’t receive a successful response, contact us to ensure your OctoAI account is enabled as Enterprise tier.
+This allows OctoAI to generate a VPC Service Name, which you’ll use in the next step. If you don’t receive a successful response, contact us to ensure your OctoAI account is enabled as Enterprise tier.
 
 **Create and configure a VPC Interface Endpoint**
 
@@ -42,7 +42,6 @@ Configure the Service Name value to `com.amazonaws.vpce.us-east-1.vpce-svc-0e914
 
 ![](https://www.datocms-assets.com/45680/1709312036-securelink2.png?max-w=2000&auto=compress)
 
-
 Next, choose the VPC and subnets that should be peered with the VPC service endpoint. Make sure that Enable DNS name is checked.
 
 ![](https://www.datocms-assets.com/45680/1709312044-securelink3.png?max-w=2000&auto=compress)
@@ -53,8 +52,7 @@ Then, choose the security group(s) who can send traffic to the VPC endpoint. The
 
 Each OctoAI endpoint uses a SecureLink ingress URL, which will only work with a fully configured VPC Endpoint.
 
-
-*OctoAI CLI*
+_OctoAI CLI_
 
 Configure an environment variable by running:
 
@@ -62,15 +60,20 @@ Configure an environment variable by running:
 export OCTO_API_ENDPOINT=https://api.securelink.octo.ai
 ```
 
-*Typescript SDK*
+_TypeScript SDK_
 
-Configure the SecureLink URL’s in the client instantiation using `true`:
+Configure the SecureLink URLs by passing in the `SecureLink` environment during client instantiation.
 
+```typescript
+import { OctoAIClient, OctoAIEnvironment } from "@octoai/sdk";
+
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
+  environment: OctoAIEnvironment.SecureLink,
+});
 ```
-const client = new Client(token, true);
-```
 
-*Python SDK*
+_Python SDK_
 
 - For text generation, fine-tuning, or asset library, configure the `environment` parameter to use `OctoAIEnvironment.SECURE_LINK` in the client instantiation:
 
@@ -86,13 +89,13 @@ client = OctoAI(api_key=token, environment=OctoAIEnvironment.SECURE_LINK)
 
 This table summarizes the SecureLink equivalent to each public API URL:
 
-| Service | Public | SecureLink |
-| --- | --- | --- |
-| Text generation | `https://text.octoai.run` | `https://text.securelink.octo.ai` |
-| Image generation | `https://image.octoai.run` | `https://image.securelink.octo.ai` |
-| Asset Library & Fine-tuning | `https://api.octoai.cloud` | `https://api.securelink.octo.ai` |
-| OctoAI API | `https://api.octoai.cloud` | `https://api.securelink.octo.ai` |
-| Async Inference | `https://async.octoai.run` | `https://async.securelink.octoai.run` |
+| Service                     | Public                     | SecureLink                            |
+| --------------------------- | -------------------------- | ------------------------------------- |
+| Text generation             | `https://text.octoai.run`  | `https://text.securelink.octo.ai`     |
+| Image generation            | `https://image.octoai.run` | `https://image.securelink.octo.ai`    |
+| Asset Library & Fine-tuning | `https://api.octoai.cloud` | `https://api.securelink.octo.ai`      |
+| OctoAI API                  | `https://api.octoai.cloud` | `https://api.securelink.octo.ai`      |
+| Async Inference             | `https://async.octoai.run` | `https://async.securelink.octoai.run` |
 
 **Configure private connection for Amazon S3 to upload assets through a private connection**
 
