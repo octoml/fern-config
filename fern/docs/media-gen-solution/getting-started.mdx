@@ -5,10 +5,9 @@ subtitle: >-
   customizable Stable Diffusion models including Stable Video Diffusion 1.1,
   Stable Diffusion XL and 1.5 for image-to-video, text-to-image, image-to-image
   use cases and more. We offer a WebUI playground, API endpoints, and
-  Python/Typescript SDKs for interacting with these models.
+  Python/TypeScript SDKs for interacting with these models.
 slug: media-gen-solution/getting-started
 ---
-
 
 The OctoAI Media Gen Solution empowers users with unparalleled access to cutting-edge Stable Diffusion models, delivering lightning-fast performance and unmatched customization options. With our platform, users can effortlessly create high-quality media content for a wide range of applications, from image-to-video to text-to-image, and beyond.
 
@@ -17,31 +16,31 @@ The OctoAI Media Gen Solution empowers users with unparalleled access to cutting
 1. **Fastest Inference Speed:** OctoAI boasts the fastest inference speed in the market, ensuring swift generation of media content. Our latency-optimized Stable Video Diffusion (SVD) endpoint achieves an impressive average latency of ~30 seconds for default parameters to generate 3-4 second-long videos, and the Stable Diffusion XL (SDXL) endpoint achieves an average latency of ~3.1 seconds for default parameters. The cost-optimized SDXL maintains an average latency of under 7 seconds.
 2. **Extensive Range of Features:** The OctoAI Media Gen solution offers a comprehensive suite of capabilities, supporting a diverse array of models including SVD, SDXL, and SD 1.5. These models cater to a wide range of use cases, spanning from text-to-image, image-to-image, and image-to-video functionalities, to advanced features like upscaling, image editing with controlnets, inpainting, outpainting, background removal, and photo merge. Additionally, advanced functionalities such as Adetailer and Background replacement are accessible through private preview, allowing users to finely customize their media generation processes according to their unique requirements.
 3. **Advanced Customization Options:** Users can customize their media generation process by adjusting various parameters such as image dimensions, samplers, number of diffusion steps, and prompt weighting. Additionally, the OctoAI Media Gen Solution allows you to mix and match different Stable Diffusion assets, including checkpoints, Low Rank Adaptations (LoRAs), and textual inversions. It offers the flexibility to fine-tune Stable Diffusion with your own custom tuning image datasets to tailor AI-generated images for your business needs. Fine-tuning is supported for Stable Diffusion 1.5 (SD 1.5) and SDXL. Our proprietary Asset Orchestrator technology enables efficient caching and loading of assets, ensuring optimized performance even with highly customized configurations.
-4. **Comprehensive Toolkit:** The OctoAI Media Gen Solution provides a comprehensive toolkit for interacting with our models, including Stable Diffusion API endpoints, a user-friendly web UI, and Python/Typescript SDKs. This allows seamless integration into existing workflows and facilitates easy experimentation with model parameters.
+4. **Comprehensive Toolkit:** The OctoAI Media Gen Solution provides a comprehensive toolkit for interacting with our models, including Stable Diffusion API endpoints, a user-friendly web UI, and Python/TypeScript SDKs. This allows seamless integration into existing workflows and facilitates easy experimentation with model parameters.
 
 By combining state-of-the-art technology with unparalleled flexibility, the OctoAI Media Gen Solution empowers users to unlock new possibilities in media generation, revolutionizing content creation across industries.
 
 ## Web UI playground
 
-You can start familiarizing yourself with our Media Gen features using the web UI, but note that we have even more features available via the API. 
+You can start familiarizing yourself with our Media Gen features using the web UI, but note that we have even more features available via the API.
 
-First, click on the top navigation bar and click Media Tools. Here you will see that Image Generation, Image Animation are available to use via Demo and API. Curently, for other image utilities such as background removal, photo merge, inpainting, outpainting and upscaling, only APIs are available. 
+First, click on the top navigation bar and click Media Tools. Here you will see that Image Generation, Image Animation are available to use via Demo and API. Curently, for other image utilities such as background removal, photo merge, inpainting, outpainting and upscaling, only APIs are available.
 
-![](https://www.datocms-assets.com/45680/1709740160-screenshot-2024-03-06-at-7-47-33-am.png?max-w=2000&auto=compress) 
+![](https://www.datocms-assets.com/45680/1709740160-screenshot-2024-03-06-at-7-47-33-am.png?max-w=2000&auto=compress)
 
 When you navigate to the Image Gen Demo, you will see this page where you can play with the different settings and click the Generate button to start generating images!
 
-* Default settings for SDXL run at about 3.1 seconds of latency.
-* You can customize images by selecting different checkpoints, LoRAs, and Textual Inversions. This increases E2E latency slightly, but is still blazing fast thanks to OctoAI's proprietary Asset Orchestrator technology, which enables fast loading and smart caching of assets.
-![](https://www.datocms-assets.com/45680/1709743530-screenshot-2024-03-06-at-8-45-02-am.png?max-w=2000&auto=compress) 
-* If you want to see a list of all public assets in the OctoAI library as well as your own private assets, you can navigate to the Asset Library page via the top nav bar.
-![](https://www.datocms-assets.com/45680/1709743641-screenshot-2024-03-06-at-8-47-02-am.png?max-w=2000&auto=compress) 
+- Default settings for SDXL run at about 3.1 seconds of latency.
+- You can customize images by selecting different checkpoints, LoRAs, and Textual Inversions. This increases E2E latency slightly, but is still blazing fast thanks to OctoAI's proprietary Asset Orchestrator technology, which enables fast loading and smart caching of assets.
+  ![](https://www.datocms-assets.com/45680/1709743530-screenshot-2024-03-06-at-8-45-02-am.png?max-w=2000&auto=compress)
+- If you want to see a list of all public assets in the OctoAI library as well as your own private assets, you can navigate to the Asset Library page via the top nav bar.
+  ![](https://www.datocms-assets.com/45680/1709743641-screenshot-2024-03-06-at-8-47-02-am.png?max-w=2000&auto=compress)
 
 Additionally, when you navigate to the Image Animation Demo, you will see this page where you can play with the different settings and click the Generate button to start generating videos!
 
-* Default settings for SVD1.1 run at about 30  seconds of latency.
-* You can leverage advanced video settings such as motion scale, cfg scale, frames per secs, steps and tailor the output of your 3 secs image animation. 
-![](https://www.datocms-assets.com/45680/1709743877-screenshot-2024-03-06-at-8-51-01-am.png?max-w=2000&auto=compress) 
+- Default settings for SVD1.1 run at about 30 seconds of latency.
+- You can leverage advanced video settings such as motion scale, cfg scale, frames per secs, steps and tailor the output of your 3 secs image animation.
+  ![](https://www.datocms-assets.com/45680/1709743877-screenshot-2024-03-06-at-8-51-01-am.png?max-w=2000&auto=compress)
 
 ## API Docs
 

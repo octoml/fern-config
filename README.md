@@ -13,7 +13,7 @@ This repository contains Fern configurations.
   - Python
     - [Repository](https://github.com/octoml/octoai-python-sdk-fern)
     - [NPM Package](https://pypi.org/project/octoai/)
-  - Typescript
+  - TypeScript
     - [Repository](https://github.com/octoml/octoai-typescript-sdk-fern)
     - [NPM Package](https://www.npmjs.com/package/@octoai/sdk)
 
@@ -34,7 +34,7 @@ fern check
 ## Updating your SDKs
 
 To update your SDKs, simply tag a release with `<language>@<version>`
-e.g. `python@<version>` or `node@<version>` on the repository.  *Note, we intend to keep all language versions in-sync.*
+e.g. `python@<version>` or `node@<version>` on the repository.
 
 Under the hood this leverages the Fern CLI:
 
@@ -45,19 +45,19 @@ fern generate --group python-sdk --api api
 You can also trigger a release by running git actions manually.
 
 - [Python release action](https://github.com/octoml/fern-config/actions/workflows/python-sdk.yml)
-- [Typescript release action](https://github.com/octoml/fern-config/actions/workflows/ts-sdk.yml)
+- [TypeScript release action](https://github.com/octoml/fern-config/actions/workflows/ts-sdk.yml)
 
 ## Custom Code
 
-Sometimes we need to augment fern generated code.  We currently do this for two reasons:
+Sometimes we need to augment fern generated code. We currently do this for two reasons:
 
-- Orchestration of complex operations.  An example of this is asset upload, where we wish to call a series of endpoints from a single SDK operation.
-- Adding functionality not supported by Open API.  For example, compute uses wildcard routes for inferencing, which is not support by Open API.
+- Orchestration of complex operations. An example of this is asset upload, where we wish to call a series of endpoints from a single SDK operation.
+- Adding functionality not supported by Open API. For example, compute uses wildcard routes for inferencing, which is not support by Open API.
 
-In order to author custom code, you'll need to add files to `.fernignore` in the corresponding language repository.  In cases where you need to mix generated
-and custom code in a single release, you'll need to configure fern to make a pull request instead of immediately releasing code.  
+In order to author custom code, you'll need to add files to `.fernignore` in the corresponding language repository. In cases where you need to mix generated
+and custom code in a single release, you'll need to configure fern to make a pull request instead of immediately releasing code.
 
-Update the `generators.yml` configuration file.  Each generator contains a `github` section, which you can add a `mode: pull-request` to.
+Update the `generators.yml` configuration file. Each generator contains a `github` section, which you can add a `mode: pull-request` to.
 
 ```yaml
 groups:

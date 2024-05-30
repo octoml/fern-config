@@ -6,9 +6,8 @@ subtitle: >-
 slug: media-gen-solution/customizations/textual-inversions
 ---
 
-
 Textual inversions are embeddings that represent custom subjects.They can also represent negative embeddings, which are trained on undesirable content like bad quality hands or lighting. You can use these in your _negative_ prompt to improve your images, such as avoiding bad quality hands. These are the smallest and cheapest assets we currently support.
- The name of the textual inversion acts as a specific trigger word, which must be included in the prompt. Similar to prompt weighting, you can increase the weight of textual inversion using the format `(textual-inversion:weight)`.
+The name of the textual inversion acts as a specific trigger word, which must be included in the prompt. Similar to prompt weighting, you can increase the weight of textual inversion using the format `(textual-inversion:weight)`.
 
     Below is an example of using a NegativeXL textual inversion (trigger word: negativeXL_D).
 
@@ -20,14 +19,15 @@ Textual inversions are embeddings that represent custom subjects.They can also r
 
 <CardGroup cols={2}>
   <Card title="Using SDXL base model">
- ![](https://www.datocms-assets.com/45680/1709334742-download-4.jpeg?max-w=2000&auto=compress)
+    ![](https://www.datocms-assets.com/45680/1709334742-download-4.jpeg?max-w=2000&auto=compress)
   </Card>
   <Card title="Using SDXL with textual inversion">
- ![](https://www.datocms-assets.com/45680/1709334749-download-5.jpeg?max-w=2000&auto=compress)
- </Card>
+    ![](https://www.datocms-assets.com/45680/1709334749-download-5.jpeg?max-w=2000&auto=compress)
+  </Card>
 </CardGroup>
 
      **Example Code:**
+
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://image.octoai.run/generate/sdxl" \
@@ -78,29 +78,39 @@ for i, image in enumerate(images):
     to_file(image, f"result{i}.jpg")
 ```
 
-```typescript Typescript
-import fs from "fs";
+```typescript TypeScript
+import fs from "node:fs";
 import { OctoAIClient } from "@octoai/sdk";
 
-const client = new OctoAIClient({
-  apiKey: "<OCTOAI_TOKEN>",
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
 });
 
-const { images } = await client.imageGen.generateSdxl({
-  "prompt": "Commercial photography,snowy,luxury perfume bottle,angelic silver light, studio light, high resolution photography, fine details",
-  "negativePrompt": "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
-  "textualInversions": {
-    "octoai:NegativeXL": "“negativeXL_D”"
+const { images } = await octoai.imageGen.generateSdxl({
+  prompt:
+    "Commercial photography, snowy, luxury perfume bottle, angelic silver light, studio light, high resolution photography, fine details",
+  negativePrompt:
+    "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
+  textualInversions: {
+    "octoai:NegativeXL": "negativeXL_D",
   },
-  "width": 1024,
-  "height": 1024,
-  "numImages": 1,
-  "sampler": "DDIM",
-  "steps": 30,
-  "cfgScale": 12,
-  "useRefiner": true,
-  "highNoiseFrac": 0.8,
-  "stylePreset": "base"
-})
+  width: 1024,
+  height: 1024,
+  numImages: 1,
+  sampler: "DDIM",
+  steps: 30,
+  cfgScale: 12,
+  useRefiner: true,
+  highNoiseFrac: 0.8,
+  stylePreset: "base",
+});
+
+images.forEach((output, i) => {
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
+});
 ```
+
 </CodeGroup>

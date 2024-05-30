@@ -7,7 +7,6 @@ subtitle: >-
 slug: media-gen-solution/customizations/overview
 ---
 
-
 With OctoAI Media Gen solution, you can effortlessly integrate Stable Diffusion’s customizable image generation features into your application. While standard pre-trained image generation assets from repositories like HuggingFace may suffice for simple tasks, customization becomes crucial for commercial uses. Customization allows precise control over generating specific subjects and environments, which is essential for most commercial needs. Stable Diffusion, offered by OctoAI, provides both basic and advanced customization options. These include adjusting prompt weights, applying style presets, and employing advanced techniques like LoRAs, checkpoints, textual inversions, and ControlNets. Additionally, with OctoAI, you can create your own LoRA asset using custom image datasets and leverage it to meet your business requirements. To learn more, review [Fine-tuning on OctoAI](../fine-tuning-stable-diffusion/fine-tuning-stable-diffusion.mdx)
 
 <Note> Pro or Enterprise account is required to access fine-tuning. </Note>
@@ -15,6 +14,7 @@ With OctoAI Media Gen solution, you can effortlessly integrate Stable Diffusion�
 OctoAI web UI provides an easy way to experiment by combining assets. An equivalent API call is displayed in the example below.
 
     **Example Code:**
+
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://image.octoai.run/generate/sdxl" \
@@ -70,47 +70,48 @@ if __name__ == "__main__":
     for i, image in enumerate(images):
         to_file(image, f"result{i}.jpg")
 ```
-```typescript Typescript
-import fs from "fs";
+
+```typescript TypeScript
+import fs from "node:fs";
 import { OctoAIClient } from "@octoai/sdk";
 
-const client = new OctoAIClient({
-  apiKey: "<OCTOAI_TOKEN>",
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
 });
 
-const { images } = await client.imageGen.generateSdxl({
-  "prompt": "Commercial photography,(snowy:0.8) ,luxury perfume bottle, angelic silver light, studio light, high resolution photography, fine details",
-  "negativePrompt": "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
-  "checkpoint": "octoai:RealVisXL",
-  "loras": {
-    "octoai:add-detail": 1
+const { images } = await octoai.imageGen.generateSdxl({
+  prompt:
+    "Commercial photography, (snowy:0.8), luxury perfume bottle, angelic silver light, studio light, high resolution photography, fine details",
+  negativePrompt:
+    "Blurry photo, distortion, low-res, poor quality, (flowers on bottle negativeXL_D:0.9), (snowflake on bottle negativeXL_D:0.9), (colored liquid in bottle negativeXL_D:1.0)",
+  checkpoint: "octoai:RealVisXL",
+  loras: {
+    "octoai:add-detail": 1,
   },
-  "textualInversions": {
-    "octoai:NegativeXL": "“negativeXL_D”"
+  textualInversions: {
+    "octoai:NegativeXL": "negativeXL_D",
   },
-  "width": 1024,
-  "height": 1024,
-  "numImages": 1,
-  "sampler": "DDIM",
-  "steps": 30,
-  "cfgScale": 12,
-  "useRefiner": true,
-  "highNoiseFrac": 0.8,
-  "stylePreset": "base"
-})
+  width: 1024,
+  height: 1024,
+  numImages: 1,
+  sampler: "DDIM",
+  steps: 30,
+  cfgScale: 12,
+  useRefiner: true,
+  highNoiseFrac: 0.8,
+  stylePreset: "base",
+});
 
 images.forEach((output, i) => {
-  const buffer = Buffer.from(output.image_b64, "base64");
-  fs.writeFileSync(`result${i}.jpg`, buffer);
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
 });
-
-
-import fs from "fs";
-import { Client } from "@octoai/client";
 ```
+
 </CodeGroup>
 
 ### Start creating images
 
 Ready to start creating images? Get started with our [Image Gen API](../rest-apis/image-gen-api.mdx).
-
