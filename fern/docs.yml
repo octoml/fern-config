@@ -78,7 +78,7 @@ navigation:
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
-            path: docs/getting-started/how-to-create-an-octoai-access-token.mdx
+            path: docs/getting-started/how-to-create-octoai-access-token.mdx
       - section: Text Gen Solution
         contents:
           - page: Getting started

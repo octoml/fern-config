@@ -40,7 +40,7 @@ To run an inference, use the endpoint URL shown in the UI, with the appropriate 
 curl -X POST '<your-endpoint-url>/predict' --data '{"prompt": "What state is Los Angeles in?", "max_length": 100}' -H 'content-type: application/json' -H "Authorization: Bearer $YOUR_TOKEN"
 ```
 
-- You need to edit the curl to use your own API token. If you don't have an existing token, refer to [how to create an OctoAI API Token](/docs/getting-started/how-to-create-an-octoai-access-token)
+- You need to edit the curl to use your own API token. If you don't have an existing token, refer to [how to create an OctoAI API Token](/docs/getting-started/how-to-create-octoai-access-token)
 - This model expects the inputs `prompt` and `max_length`. We can fill in values `"What state is Los Angeles in?"` and `100` for those fields respectively, and get a response back.
 - To query the healthcheck for our endpoint (this is optional), we can hit `<your-endpoint-url>/healthcheck`
 

@@ -1,8 +1,7 @@
 ---
 title: How to create an OctoAI API token
-slug: getting-started/how-to-create-an-octoai-access-token
+slug: getting-started/how-to-create-octoai-access-token
 ---
-
 
 All endpoints require authentication by default. That means you will need an access token in order to run inferences against those endpoints. To generate a token, head to your [Account Settings](https://octoai.cloud/settings) and click **Generate token**:
 ![](https://www.datocms-assets.com/45680/1711722965-generatetoken.png?max-w=2000&auto=compress)
@@ -14,6 +13,7 @@ export OCTOAI_TOKEN=<INSERT_HERE>
 ```
 
 Now you'll be able to run inferences! For example:
+
 ```bash cURL
 curl -X POST "https://text.octoai.run/v1/chat/completions" \
     -H "Content-Type: application/json" \
