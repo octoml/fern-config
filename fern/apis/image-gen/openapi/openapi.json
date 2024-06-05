@@ -1,29 +1,287 @@
 {
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/generate/ssd": {
+      "post": {
+        "summary": "Generate Images",
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_ssd_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate/controlnet-sdxl": {
+      "post": {
+        "summary": "Generate Images",
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_controlnet_sdxl_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate/controlnet-sd15": {
+      "post": {
+        "summary": "Generate Images",
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_controlnet_sd15_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate/sdxl": {
+      "post": {
+        "summary": "Generate Images",
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_sdxl_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate/sd": {
+      "post": {
+        "summary": "Generate Images",
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_sd_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate/svd": {
+      "post": {
+        "summary": "Generate Videos",
+        "description": "Generate videos in response to the given request.",
+        "operationId": "generate_videos_generate_svd_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthcheck": {
+      "get": {
+        "summary": "Healthcheck",
+        "description": "Respond that the server is healthy.\n\nAll our setup is done in the lifespan manager prior to yielding,\nso by the time FastAPI starts taking any requests at all, we are\nby construction ready to handle them.",
+        "operationId": "healthcheck_healthcheck_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "HTTPValidationError": {
-        "description": "HTTP validation error in API.",
         "properties": {
           "detail": {
-            "description": "Detail of the http validation error.",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
-            "title": "Detail",
-            "type": "array"
+            "type": "array",
+            "title": "Detail"
           }
         },
-        "title": "HTTPValidationError",
-        "type": "object"
+        "type": "object",
+        "title": "HTTPValidationError"
       },
       "ImageEncoding": {
-        "description": "The image encoding types available for image generation response.",
-        "enum": ["jpeg", "png"],
+        "type": "string",
+        "enum": [
+          "jpeg",
+          "png"
+        ],
         "title": "ImageEncoding",
-        "type": "string"
+        "description": "The image encoding types available for image generation response."
       },
       "ImageGeneration": {
-        "description": "Represent a generated image.",
         "properties": {
           "image_b64": {
             "anyOf": [
@@ -34,13 +292,18 @@
                 "type": "null"
               }
             ],
-            "description": "The generated image or None if it was removed for safety.",
-            "title": "Image in Base64"
+            "title": "Image in Base64",
+            "description": "The generated image or None if it was removed for safety."
           },
           "removed_for_safety": {
-            "description": "True if the image was removed for safety, False otherwise.",
+            "type": "boolean",
             "title": "Removed For Safety",
-            "type": "boolean"
+            "description": "True if the image was removed for safety, False otherwise."
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "description": "Seed used to generate the image. It can be used to recreate the generation."
           },
           "safety_score": {
             "anyOf": [
@@ -51,31 +314,70 @@
                 "type": "null"
               }
             ],
-            "description": "Safety score of the image generated.",
-            "title": "Safety Score"
-          },
-          "seed": {
-            "description": "Seed used to generate the image. It can be used to recreate the generation.",
-            "title": "Seed",
-            "type": "integer"
+            "title": "Safety Score",
+            "description": "Safety score of the image generated."
           }
         },
-        "required": ["image_b64", "removed_for_safety", "seed", "safety_score"],
+        "type": "object",
+        "required": [
+          "image_b64",
+          "removed_for_safety",
+          "seed",
+          "safety_score"
+        ],
         "title": "ImageGeneration",
-        "type": "object"
+        "description": "Represent a generated image."
       },
       "ImageGenerationRequest": {
-        "additionalProperties": false,
-        "description": "Generate one or more images based on the given parameters.",
         "properties": {
-          "cfg_scale": {
-            "default": 12.0,
-            "description": "Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.",
-            "examples": [12.0],
-            "exclusiveMinimum": 0.0,
-            "maximum": 50.0,
-            "title": "Classifier-free Guidance Scale",
-            "type": "number"
+          "prompt": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Input Prompt",
+            "description": "Text describing the image content to generate.",
+            "example": "An octopus playing chess, masterpiece, photorealistic"
+          },
+          "prompt_2": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Second Input Prompt",
+            "description": "Text with a high-level description of the image to generate. Used only by SD XL.",
+            "example": "A painting of a cute cat wearing a hat"
+          },
+          "negative_prompt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Negative Prompt",
+            "description": "Text describing image traits to avoid during generation.",
+            "example": "Fingers, distortions"
+          },
+          "negative_prompt_2": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 10000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Second Negative Prompt",
+            "description": "Text with a high level description of things to avoid during generation. Used only by SD XL.",
+            "example": "Unusual proportions and distorted faces"
           },
           "checkpoint": {
             "anyOf": [
@@ -86,24 +388,9 @@
                 "type": "null"
               }
             ],
+            "title": "Checkpoint",
             "description": "Custom checkpoint to be used during image generation.",
-            "examples": ["dreamshaper"],
-            "title": "Checkpoint"
-          },
-          "clip_skip": {
-            "anyOf": [
-              {
-                "maximum": 12.0,
-                "minimum": 1.0,
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Optionally skip later layers of the text encoder. Higher values lead to more abstract interpretations of the prompt.",
-            "examples": [2],
-            "title": "Clip Skip"
+            "example": "dreamshaper"
           },
           "controlnet": {
             "anyOf": [
@@ -114,34 +401,11 @@
                 "type": "null"
               }
             ],
-            "description": "ControlNet to be used during image generation.",
-            "examples": ["canny"],
-            "title": "ControlNet"
+            "title": "ControlNet",
+            "description": "ControlNet to be used during image generation",
+            "example": "canny"
           },
-          "controlnet_conditioning_scale": {
-            "default": 1.0,
-            "description": "How strong the effect of the controlnet should be.",
-            "examples": [1.0],
-            "minimum": 0.0,
-            "title": "ControlNet Scale",
-            "type": "number"
-          },
-          "controlnet_early_stop": {
-            "anyOf": [
-              {
-                "maximum": 1.0,
-                "minimum": 0.0,
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.",
-            "examples": [0.5],
-            "title": "ControlNet Early Stop"
-          },
-          "controlnet_image": {
+          "vae": {
             "anyOf": [
               {
                 "type": "string"
@@ -150,60 +414,25 @@
                 "type": "null"
               }
             ],
-            "description": "Controlnet image encoded in b64 string for guiding image generation. Required for controlnet engines.",
-            "title": "ControlNet Image"
+            "title": "VAE",
+            "description": "Custom VAE to be used during image generation.",
+            "example": "my_vae"
           },
-          "controlnet_preprocess": {
-            "default": true,
-            "description": "Whether to apply automatic ControlNet preprocessing.",
-            "examples": [true],
-            "title": "ControlNet Preprocessing",
-            "type": "boolean"
-          },
-          "height": {
+          "textual_inversions": {
             "anyOf": [
               {
-                "type": "integer"
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "Integer representing the height of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
-            "examples": [1024],
-            "title": "Output Image Height"
-          },
-          "high_noise_frac": {
-            "default": 0.8,
-            "description": "Floating-point number that defines the fraction of steps to perform with the base model. Used only by SD XL. Must be greater than or equal to 0.0 and less than or equal to 1.0.",
-            "examples": [0.8],
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "High Noise Fraction",
-            "type": "number"
-          },
-          "image_encoding": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ImageEncoding"
-              }
-            ],
-            "default": "jpeg",
-            "description": "Define which encoding process should be applied before returning the generated image(s).",
-            "examples": ["jpeg"],
-            "title": "Output Image Encoding"
-          },
-          "init_image": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Starting point image encoded in b64 string for Image to Image generation mode.",
-            "title": "Initial Image"
+            "title": "Dictionary of Textual Inversions",
+            "description": "A dictionary of textual inversions to be used during image generation. Textual inversions as keys and trigger words as values.",
+            "example": "{\"name\": \"trigger_word\"}"
           },
           "loras": {
             "anyOf": [
@@ -217,88 +446,9 @@
                 "type": "null"
               }
             ],
+            "title": "Dictionary of LoRAs",
             "description": "A dictionary of LoRAs to apply. LoRAs as keys and their weights (float) as values.",
-            "examples": ["{\"crayon-style\": 1.0}"],
-            "title": "Dictionary of LoRAs"
-          },
-          "mask_image": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "b64 encoded mask image for inpainting. White area should indicate where to paint.",
-            "title": "Mask Image"
-          },
-          "negative_prompt": {
-            "anyOf": [
-              {
-                "maxLength": 10000,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Text describing image traits to avoid during generation.",
-            "examples": ["Fingers, distortions"],
-            "title": "Negative Prompt"
-          },
-          "negative_prompt_2": {
-            "anyOf": [
-              {
-                "maxLength": 10000,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Text with a high level description of things to avoid during generation. Used only by SD XL.",
-            "examples": ["Unusual proportions and distorted faces"],
-            "title": "Second Negative Prompt"
-          },
-          "num_images": {
-            "default": 1,
-            "description": "Integer representing how many output images to generate with a single prompt/configuration.",
-            "examples": [1],
-            "exclusiveMinimum": 0.0,
-            "maximum": 16.0,
-            "title": "Number of Output Images",
-            "type": "integer"
-          },
-          "outpainting": {
-            "default": false,
-            "description": "Whether the request requires outpainting or not. If so, special preprocessing is applied for better results.",
-            "examples": [true],
-            "title": "Outpainting",
-            "type": "boolean"
-          },
-          "prompt": {
-            "description": "Text describing the image content to generate.",
-            "examples": [
-              "An octopus playing chess, masterpiece, photorealistic"
-            ],
-            "maxLength": 10000,
-            "title": "Input Prompt",
-            "type": "string"
-          },
-          "prompt_2": {
-            "anyOf": [
-              {
-                "maxLength": 10000,
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Text with a high-level description of the image to generate. Used only by SD XL.",
-            "examples": ["A painting of a cute cat wearing a hat"],
-            "title": "Second Input Prompt"
+            "example": "{\"crayon-style\": 1.0}"
           },
           "sampler": {
             "allOf": [
@@ -306,10 +456,63 @@
                 "$ref": "#/components/schemas/Scheduler"
               }
             ],
-            "default": "DDIM",
+            "title": "Sampler Name",
             "description": "Sampler name (also known as 'scheduler') to use during image generation.",
-            "examples": ["DDIM"],
-            "title": "Sampler Name"
+            "default": "DDIM",
+            "example": "DDIM"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Image Height",
+            "description": "Integer representing the height of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}",
+            "example": 1024
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Image Width",
+            "description": "Integer representing the width of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}",
+            "example": 1024
+          },
+          "cfg_scale": {
+            "type": "number",
+            "maximum": 50.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Classifier-free Guidance Scale",
+            "description": "Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.",
+            "default": 12.0,
+            "example": 12.0
+          },
+          "steps": {
+            "type": "integer",
+            "maximum": 200.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Number of Steps",
+            "description": "Integer repreenting how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.",
+            "default": 30,
+            "example": 30
+          },
+          "num_images": {
+            "type": "integer",
+            "maximum": 16.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Number of Output Images",
+            "description": "Integer representing how many output images to generate with a single prompt/configuration.",
+            "default": 1,
+            "example": 1
           },
           "seed": {
             "anyOf": [
@@ -333,27 +536,54 @@
                 "type": "null"
               }
             ],
+            "title": "Fixed Random Seed",
             "description": "Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.",
-            "examples": [33445],
-            "title": "Fixed Random Seed"
+            "example": 33445
           },
-          "steps": {
-            "default": 30,
-            "description": "Integer repreenting how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.",
-            "examples": [30],
-            "exclusiveMinimum": 0.0,
-            "maximum": 200.0,
-            "title": "Number of Steps",
-            "type": "integer"
+          "controlnet_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "ControlNet Image",
+            "description": "Controlnet image encoded in b64 string for guiding image generation. Required for controlnet engines."
+          },
+          "init_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Initial Image",
+            "description": "Starting point image encoded in b64 string for Image to Image generation mode."
+          },
+          "mask_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mask Image",
+            "description": "b64 encoded mask image for inpainting. White area should indicate where to paint."
           },
           "strength": {
-            "default": 0.8,
-            "description": "Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
-            "examples": [0.8],
-            "exclusiveMinimum": 0.0,
+            "type": "number",
             "maximum": 1.0,
+            "minimum": 0.0,
             "title": "Strength",
-            "type": "number"
+            "description": "Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
+            "default": 0.8,
+            "example": 0.8
           },
           "style_preset": {
             "anyOf": [
@@ -364,25 +594,95 @@
                 "type": "null"
               }
             ],
+            "title": "Pre-defined Styles",
             "description": "Pre-defined styles used to guide the output image towards a particular style. Pre-defined styles are only supported by SDXL.",
-            "examples": ["low-poly"],
-            "title": "Pre-defined Styles"
+            "example": "low-poly"
           },
-          "textual_inversions": {
+          "use_refiner": {
+            "type": "boolean",
+            "title": "Use Refiner",
+            "description": "Whether to enable and apply the SDXL refiner model to the image generation.",
+            "default": true,
+            "example": true
+          },
+          "high_noise_frac": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "High Noise Fraction",
+            "description": "Floating-point number that defines the fraction of steps to perform with the base model. Used only by SD XL. Must be greater than or equal to 0.0 and less than or equal to 1.0.",
+            "default": 0.8,
+            "example": 0.8
+          },
+          "controlnet_conditioning_scale": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "ControlNet Scale",
+            "description": "How strong the effect of the controlnet should be.",
+            "default": 1.0,
+            "example": 1.0
+          },
+          "controlnet_early_stop": {
             "anyOf": [
               {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
               },
               {
                 "type": "null"
               }
             ],
-            "description": "A dictionary of textual inversions to be used during image generation. Textual inversions as keys and trigger words as values.",
-            "examples": ["{\"name\": \"trigger_word\"}"],
-            "title": "Dictionary of Textual Inversions"
+            "title": "ControlNet Early Stop",
+            "description": "If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.",
+            "example": 0.5
+          },
+          "controlnet_preprocess": {
+            "type": "boolean",
+            "title": "ControlNet Preprocessing",
+            "description": "Whether to apply automatic ControlNet preprocessing.",
+            "default": true,
+            "example": true
+          },
+          "clip_skip": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 12.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clip Skip",
+            "description": "Optionally skip later layers of the text encoder. Higher values lead to more abstract interpretations of the prompt.",
+            "example": 2
+          },
+          "outpainting": {
+            "type": "boolean",
+            "title": "Outpainting",
+            "description": "Whether the request requires outpainting or not. If so, special preprocessing is applied for better results.",
+            "default": false,
+            "example": true
+          },
+          "enable_safety": {
+            "type": "boolean",
+            "title": "Enable Safety Checker",
+            "description": "Boolean defining whether to use safety checker system on generated outputs or not.",
+            "default": false,
+            "example": true
+          },
+          "image_encoding": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageEncoding"
+              }
+            ],
+            "title": "Output Image Encoding",
+            "description": "Define which encoding process should be applied before returning the generated image(s).",
+            "default": "jpeg",
+            "example": "jpeg"
           },
           "transfer_images": {
             "anyOf": [
@@ -399,70 +699,57 @@
                 "type": "null"
               }
             ],
-            "description": "A dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object or style to transfer.",
-            "title": "Image Content Style Transfer Triggers and Samples."
+            "title": "Image Content Style Transfer Triggers and Samples.",
+            "description": "A dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object or style to transfer."
           },
-          "use_refiner": {
-            "default": true,
-            "description": "Whether to enable and apply the SDXL refiner model to the image generation.",
-            "examples": [true],
-            "title": "Use Refiner",
-            "type": "boolean"
+          "force_asset_download": {
+            "type": "boolean",
+            "title": "Force Asset Download",
+            "description": "[Internal] Boolean defining if assets must be re-downloaded into the cache even if present.",
+            "default": false,
+            "example": false
           },
-          "vae": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Custom VAE to be used during image generation.",
-            "examples": ["my_vae"],
-            "title": "VAE"
-          },
-          "width": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Integer representing the width of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
-            "examples": [1024],
-            "title": "Output Image Width"
+          "force_asset_gpu_copy": {
+            "type": "boolean",
+            "title": "Force Asset GPU Copy",
+            "description": "[Internal] Boolean defining if assets must to be copied into the GPU even if present.",
+            "default": false
           }
         },
-        "required": ["prompt"],
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
         "title": "ImageGenerationRequest",
-        "type": "object"
+        "description": "Generate one or more images based on the given parameters."
       },
       "ImageGenerationResponse": {
-        "description": "Response to an ImageGenerationRequest.",
         "properties": {
           "images": {
-            "description": "List of ImageGeneration(s) generated by the request.",
             "items": {
               "$ref": "#/components/schemas/ImageGeneration"
             },
+            "type": "array",
             "title": "Images",
-            "type": "array"
+            "description": "List of ImageGeneration(s) generated by the request."
           },
           "prediction_time_ms": {
-            "description": "Total runtime of the image generation(s).",
+            "type": "number",
             "title": "Prediction Time (ms)",
-            "type": "number"
+            "description": "Total runtime of the image generation(s)."
           }
         },
-        "required": ["images", "prediction_time_ms"],
+        "type": "object",
+        "required": [
+          "images",
+          "prediction_time_ms"
+        ],
         "title": "ImageGenerationResponse",
-        "type": "object"
+        "description": "Response to an ImageGenerationRequest."
       },
       "SDXLStyles": {
-        "description": "The supported SDXL styles.",
+        "type": "string",
         "enum": [
           "base",
           "3d-model",
@@ -544,10 +831,10 @@
           "Tilt-Shift"
         ],
         "title": "SDXLStyles",
-        "type": "string"
+        "description": "The supported SDXL styles."
       },
       "Scheduler": {
-        "description": "The schedulers available for image generation.",
+        "type": "string",
         "enum": [
           "PNDM",
           "LMS",
@@ -560,25 +847,19 @@
           "K_EULER_ANCESTRAL",
           "DPM_SOLVER_MULTISTEP",
           "DPM_PLUS_PLUS_2M_KARRAS",
-          "DPM_PLUS_PLUS_2M_SDE",
-          "DPM_PLUS_PLUS_2M_SDE_KARRAS",
           "DPM_SINGLE",
           "DPM_2",
-          "DPM_2_KARRAS",
           "DPM_2_ANCESTRAL",
-          "DPM_2_ANCESTRAL_KARRAS",
           "DPM_PLUS_PLUS_SDE_KARRAS",
           "UNI_PC",
           "LCM"
         ],
         "title": "Scheduler",
-        "type": "string"
+        "description": "The schedulers available for image generation."
       },
       "ValidationError": {
-        "description": "Validation error in API.",
         "properties": {
           "loc": {
-            "description": "Error location in ValidationError.",
             "items": {
               "anyOf": [
                 {
@@ -589,31 +870,49 @@
                 }
               ]
             },
-            "title": "Location",
-            "type": "array"
+            "type": "array",
+            "title": "Location"
           },
           "msg": {
-            "description": "Error message in ValidationError.",
-            "title": "Message",
-            "type": "string"
+            "type": "string",
+            "title": "Message"
           },
           "type": {
-            "description": "Error type in ValidationError.",
-            "title": "Error Type",
-            "type": "string"
+            "type": "string",
+            "title": "Error Type"
           }
         },
-        "required": ["loc", "msg", "type"],
-        "title": "ValidationError",
-        "type": "object"
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       },
       "VideoGeneration": {
-        "description": "Represent a generated video/animation.",
         "properties": {
+          "video": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serialized Video/Animation",
+            "description": "The generated video/animation or None if it was removed for safety."
+          },
           "removed_for_safety": {
-            "description": "True if the video/animation was removed for safety, False otherwise.",
+            "type": "boolean",
             "title": "Removed For Safety",
-            "type": "boolean"
+            "description": "True if the video/animation was removed for safety, False otherwise."
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed",
+            "description": "Seed used to generate the video/animation. It can be used to recreate the generation."
           },
           "safety_score": {
             "anyOf": [
@@ -624,61 +923,26 @@
                 "type": "null"
               }
             ],
-            "description": "Safety score of the video/animation generated.",
-            "title": "Safety Score"
-          },
-          "seed": {
-            "description": "Seed used to generate the video/animation. It can be used to recreate the generation.",
-            "title": "Seed",
-            "type": "integer"
-          },
-          "video": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "The generated video/animation or None if it was removed for safety.",
-            "title": "Serialized Video/Animation"
+            "title": "Safety Score",
+            "description": "Safety score of the video/animation generated."
           }
         },
-        "required": ["video", "removed_for_safety", "seed", "safety_score"],
+        "type": "object",
+        "required": [
+          "video",
+          "removed_for_safety",
+          "seed",
+          "safety_score"
+        ],
         "title": "VideoGeneration",
-        "type": "object"
+        "description": "Represent a generated video/animation."
       },
       "VideoGenerationRequest": {
-        "additionalProperties": false,
-        "description": "Generate one video/animation based on the given parameters.",
         "properties": {
-          "cfg_scale": {
-            "default": 3.0,
-            "description": "Floating-point number represeting how closely to adhere to 'image'. Must be a positive number no greater than 10.0.",
-            "examples": [3.0],
-            "exclusiveMinimum": 0.0,
-            "maximum": 10.0,
-            "title": "Classifier-free Guidance Scale",
-            "type": "number"
-          },
-          "constant_rate_factor": {
-            "default": 23,
-            "description": "Integer representing the quality of the video encoding. Higher quality means the file will be larger.The range of the CRF scale is [0,51], where 0 is lossless, 23 is the default, and 51 is worst quality possible.",
-            "examples": [23],
-            "maximum": 51.0,
-            "minimum": 0.0,
-            "title": "Constant Rate Factor",
-            "type": "integer"
-          },
-          "fps": {
-            "default": 7,
-            "description": "Integer representing how fast the generated frames should play back.",
-            "examples": [7],
-            "maximum": 25.0,
-            "minimum": 1.0,
-            "title": "Frames per Second",
-            "type": "integer"
+          "image": {
+            "type": "string",
+            "title": "Initial Image",
+            "description": "Starting point image encoded in base64 string."
           },
           "height": {
             "anyOf": [
@@ -689,41 +953,76 @@
                 "type": "null"
               }
             ],
-            "description": "Integer representing the height of video/animation to generate.If not provided, the output height will be inferred from the input 'image', and the closest resolution supported will be chosen. Supported resolutions (w,h): {(576, 1024), (1024, 576), (768, 768)}.",
-            "examples": [576],
-            "title": "Output Video/Animation Height"
+            "title": "Output Video/Animation Height",
+            "description": "Integer representing the height of video/animation to generate.If not provided, the output height will be inferred from the input 'image', and the closest resolution supported will be chosen. Supported resolutions (w,h): {(576, 1024), (1024, 576), (768, 768)}",
+            "example": 576
           },
-          "image": {
-            "description": "Starting point image encoded in base64 string.",
-            "title": "Initial Image",
-            "type": "string"
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Video/Animation Width",
+            "description": "Integer representing the width of video/animation to generate.If not provided, the output width will be inferred from the input 'image', and the closest resolution supported will be chosen. Supported resolutions (w,h): {(576, 1024), (1024, 576), (768, 768)}",
+            "example": 1024
+          },
+          "cfg_scale": {
+            "type": "number",
+            "maximum": 10.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Classifier-free Guidance Scale",
+            "description": "Floating-point number represeting how closely to adhere to 'image'. Must be a positive number no greater than 10.0.",
+            "default": 3.0,
+            "example": 3.0
+          },
+          "steps": {
+            "type": "integer",
+            "maximum": 50.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Number of Steps",
+            "description": "Integer repreenting how many steps of diffusion to run. Must be greater than 0 and less than or equal to 50.",
+            "default": 25,
+            "example": 25
           },
           "motion_scale": {
-            "default": 0.5,
-            "description": "A floating point number between 0.0 and 1.0 indicating how much motion should be in the generated video/animation.",
-            "examples": [0.5],
-            "maximum": 1.0,
+            "type": "number",
+            "maximum": 5.0,
             "minimum": 0.0,
             "title": "Motion Scale",
-            "type": "number"
+            "description": "A floating point number between 0.0 and 5.0 indicating how much motion should be in the generated video/animation.",
+            "default": 0.5,
+            "example": 0.5
           },
           "noise_aug_strength": {
-            "default": 0.02,
-            "description": "A floating point number between 0.0 and 1.0 indicatiing how much noise to add to the initial image. Higher values encourage creativity.",
-            "examples": [0.02],
+            "type": "number",
             "maximum": 1.0,
             "minimum": 0.0,
             "title": "Noise Augmentation",
-            "type": "number"
+            "description": "A floating point number between 0.0 and 1.0 indicatiing how much noise to add to the initial image. Higher values encourage creativity.",
+            "default": 0.02,
+            "example": 0.02
           },
           "num_videos": {
-            "default": 1,
-            "description": "Integer representing how many output videos/animations to generate with a single 'image' and configuration.",
-            "examples": [1],
-            "exclusiveMinimum": 0.0,
+            "type": "integer",
             "maximum": 16.0,
+            "exclusiveMinimum": 0.0,
             "title": "Number of Output Images",
-            "type": "integer"
+            "description": "Integer representing how many output videos/animations to generate with a single 'image' and configuration.",
+            "default": 1,
+            "example": 1
+          },
+          "fps": {
+            "type": "integer",
+            "maximum": 25.0,
+            "minimum": 1.0,
+            "title": "Frames per Second",
+            "description": "Integer representing how fast the generated frames should play back.",
+            "default": 7,
+            "example": 7
           },
           "seed": {
             "anyOf": [
@@ -747,306 +1046,63 @@
                 "type": "null"
               }
             ],
+            "title": "Fixed Random Seed",
             "description": "Integer number or list of integers representing the seeds of random generators.Fixing random seed is useful when attempting to generate a specific video/animation (or set of videos/animations). Must be greater than 0 and less than 2^32.",
-            "examples": [33445],
-            "title": "Fixed Random Seed"
+            "example": 33445
           },
-          "steps": {
-            "default": 25,
-            "description": "Integer repreenting how many steps of diffusion to run. Must be greater than 0 and less than or equal to 50.",
-            "examples": [25],
-            "exclusiveMinimum": 0.0,
-            "maximum": 50.0,
-            "title": "Number of Steps",
-            "type": "integer"
+          "enable_safety": {
+            "type": "boolean",
+            "title": "Enable Safety Checker",
+            "description": "Boolean defining whether to use safety checker system on generated outputs or not.",
+            "default": false,
+            "example": true
           },
-          "width": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Integer representing the width of video/animation to generate.If not provided, the output width will be inferred from the input 'image', and the closest resolution supported will be chosen. Supported resolutions (w,h): {(576, 1024), (1024, 576), (768, 768)}.",
-            "examples": [1024],
-            "title": "Output Video/Animation Width"
+          "force_asset_download": {
+            "type": "boolean",
+            "title": "Force Asset Download",
+            "description": "[Internal] Boolean defining if assets must be re-downloaded into the cache even if present.",
+            "default": false,
+            "example": false
+          },
+          "force_asset_gpu_copy": {
+            "type": "boolean",
+            "title": "Force Asset GPU Copy",
+            "description": "[Internal] Boolean defining if assets must to be copied into the GPU even if present.",
+            "default": false
           }
         },
-        "required": ["image"],
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "image"
+        ],
         "title": "VideoGenerationRequest",
-        "type": "object"
+        "description": "Generate one video/animation based on the given parameters."
       },
       "VideoGenerationResponse": {
-        "description": "Response to an VideoGenerationRequest.",
         "properties": {
-          "prediction_time_ms": {
-            "description": "Total runtime of the video(s) generation(s).",
-            "title": "Prediction Time (ms)",
-            "type": "number"
-          },
           "videos": {
-            "description": "List of VideoGeneration(s) generated by the request.",
             "items": {
               "$ref": "#/components/schemas/VideoGeneration"
             },
+            "type": "array",
             "title": "Videos",
-            "type": "array"
+            "description": "List of VideoGeneration(s) generated by the request."
+          },
+          "prediction_time_ms": {
+            "type": "number",
+            "title": "Prediction Time (ms)",
+            "description": "Total runtime of the video(s) generation(s)."
           }
         },
-        "required": ["videos", "prediction_time_ms"],
+        "type": "object",
+        "required": [
+          "videos",
+          "prediction_time_ms"
+        ],
         "title": "VideoGenerationResponse",
-        "type": "object"
+        "description": "Response to an VideoGenerationRequest."
       }
     }
-  },
-  "info": {
-    "description": "Image Generation API.",
-    "title": "image-gen-api",
-    "version": "0.1"
-  },
-  "openapi": "3.1.0",
-  "paths": {
-    "/generate/controlnet-sd15": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_controlnet_sd15_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
-    "/generate/controlnet-sdxl": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_controlnet_sdxl_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
-    "/generate/sd": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_sd_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
-    "/generate/sdxl": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_sdxl_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
-    "/generate/ssd": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_ssd_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
-    "/generate/svd": {
-      "post": {
-        "description": "Generate videos in response to the given request.",
-        "operationId": "generate_videos_generate_svd_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VideoGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VideoGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Videos"
-      }
-    }
-  },
-  "servers": [
-    {
-      "url": "https://image.octoai.run"
-    }
-  ]
+  }
 }
-

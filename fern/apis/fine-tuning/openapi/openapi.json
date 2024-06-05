@@ -2,13 +2,11 @@
   "components": {
     "schemas": {
       "BaseEngine": {
-        "description": "Base Engine names supported by asset library.",
+        "description": "BaseEngine",
         "enum": [
           "text/llama-2-7b",
           "text/llama-2-13b",
           "text/llama-2-70b",
-          "text/llama-3-8b",
-          "text/llama-3-70b",
           "text/codellama-7b",
           "text/codellama-13b",
           "text/codellama-34b",
@@ -59,8 +57,7 @@
             "discriminator": {
               "mapping": {
                 "lora_tune": "#/components/schemas/LoraTune-Input",
-                "text_to_speech_latent_tune": "#/components/schemas/TextToSpeechLatentTune",
-                "text_tune": "#/components/schemas/TextTune"
+                "text_to_speech_latent_tune": "#/components/schemas/TextToSpeechLatentTune"
               },
               "propertyName": "tune_type"
             },
@@ -70,9 +67,6 @@
               },
               {
                 "$ref": "#/components/schemas/TextToSpeechLatentTune"
-              },
-              {
-                "$ref": "#/components/schemas/TextTune"
               }
             ],
             "title": "Details"
@@ -83,15 +77,16 @@
             "type": "string"
           }
         },
-        "required": ["name", "details"],
+        "required": [
+          "name",
+          "details"
+        ],
         "title": "CreateTuneRequest",
         "type": "object"
       },
       "HTTPValidationError": {
-        "description": "HTTP validation error in API.",
         "properties": {
           "detail": {
-            "description": "Detail of the http validation error.",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
@@ -106,7 +101,7 @@
         "description": "The list tunes response.",
         "properties": {
           "data": {
-            "description": "List of tunes on the account.",
+            "description": "List of tunes.",
             "items": {
               "$ref": "#/components/schemas/Tune"
             },
@@ -124,12 +119,16 @@
             "type": "integer"
           }
         },
-        "required": ["has_more", "total", "data"],
+        "required": [
+          "has_more",
+          "total",
+          "data"
+        ],
         "title": "ListTunesResponse",
         "type": "object"
       },
       "LoraTune-Input": {
-        "description": "A LoRA tune model that includes tune configurations.",
+        "description": "A LoRA Tune.",
         "properties": {
           "base_checkpoint": {
             "allOf": [
@@ -188,18 +187,21 @@
           "tune_type": {
             "const": "lora_tune",
             "default": "lora_tune",
-            "description": "Determines the tune type for a tune request.",
-            "enum": ["lora_tune"],
-            "title": "Tune Type",
-            "type": "string"
+            "description": "Tune type.",
+            "title": "Tune Type"
           }
         },
-        "required": ["base_checkpoint", "steps", "files", "trigger_words"],
+        "required": [
+          "base_checkpoint",
+          "steps",
+          "files",
+          "trigger_words"
+        ],
         "title": "LoraTune",
         "type": "object"
       },
       "LoraTune-Output": {
-        "description": "A LoRA tune model that includes tune configurations.",
+        "description": "A LoRA Tune.",
         "properties": {
           "base_checkpoint": {
             "allOf": [
@@ -258,13 +260,16 @@
           "tune_type": {
             "const": "lora_tune",
             "default": "lora_tune",
-            "description": "Determines the tune type for a tune request.",
-            "enum": ["lora_tune"],
-            "title": "Tune Type",
-            "type": "string"
+            "description": "Tune type.",
+            "title": "Tune Type"
           }
         },
-        "required": ["base_checkpoint", "steps", "files", "trigger_words"],
+        "required": [
+          "base_checkpoint",
+          "steps",
+          "files",
+          "trigger_words"
+        ],
         "title": "LoraTune",
         "type": "object"
       },
@@ -300,7 +305,9 @@
             "title": "Name"
           }
         },
-        "required": ["checkpoint_id"],
+        "required": [
+          "checkpoint_id"
+        ],
         "title": "LoraTuneCheckpoint",
         "type": "object"
       },
@@ -325,7 +332,9 @@
             "type": "string"
           }
         },
-        "required": ["file_id"],
+        "required": [
+          "file_id"
+        ],
         "title": "LoraTuneFile",
         "type": "object"
       },
@@ -356,57 +365,18 @@
           "tune_type": {
             "const": "text_to_speech_latent_tune",
             "default": "text_to_speech_latent_tune",
-            "description": "Determines the tune type for a tune request.",
-            "enum": ["text_to_speech_latent_tune"],
-            "title": "Tune Type",
-            "type": "string"
+            "description": "Tune type.",
+            "title": "Tune Type"
           }
         },
-        "required": ["asset_ids"],
+        "required": [
+          "asset_ids"
+        ],
         "title": "TextToSpeechLatentTune",
         "type": "object"
       },
-      "TextTune": {
-        "description": "A text generation tune.",
-        "properties": {
-          "checkpoint": {
-            "description": "The checkpoint name or ID used as base model for tuning.",
-            "title": "Checkpoint",
-            "type": "string"
-          },
-          "epochs": {
-            "default": 4,
-            "description": "The number of epochs used for this Text tune.",
-            "title": "Epochs",
-            "type": "integer"
-          },
-          "learning_rate": {
-            "default": 0.0001,
-            "description": "The learning rate used for this Text tune.",
-            "title": "Learning Rate",
-            "type": "number"
-          },
-          "lora_rank": {
-            "default": 16,
-            "description": "The LoRA rank used for this Text tune.",
-            "title": "Lora Rank",
-            "type": "integer"
-          },
-          "tune_type": {
-            "const": "text_tune",
-            "default": "text_tune",
-            "description": "Determines the tune type for a tune request.",
-            "enum": ["text_tune"],
-            "title": "Tune Type",
-            "type": "string"
-          }
-        },
-        "required": ["checkpoint"],
-        "title": "TextTune",
-        "type": "object"
-      },
       "Tune": {
-        "description": "Tune base class. This class is used to store tune information.",
+        "description": "A tune base class.",
         "properties": {
           "created_at": {
             "description": "The time this tune task was created.",
@@ -433,12 +403,11 @@
             "type": "string"
           },
           "details": {
-            "description": "Tune details. This field is used to store a specific tune type configurations.",
+            "description": "Tune details.",
             "discriminator": {
               "mapping": {
                 "lora_tune": "#/components/schemas/LoraTune-Output",
-                "text_to_speech_latent_tune": "#/components/schemas/TextToSpeechLatentTune",
-                "text_tune": "#/components/schemas/TextTune"
+                "text_to_speech_latent_tune": "#/components/schemas/TextToSpeechLatentTune"
               },
               "propertyName": "tune_type"
             },
@@ -448,9 +417,6 @@
               },
               {
                 "$ref": "#/components/schemas/TextToSpeechLatentTune"
-              },
-              {
-                "$ref": "#/components/schemas/TextTune"
               }
             ],
             "title": "Details"
@@ -613,7 +579,13 @@
       },
       "TuneStatus": {
         "description": "The status of the tune job.",
-        "enum": ["pending", "running", "succeeded", "cancelled", "failed"],
+        "enum": [
+          "pending",
+          "running",
+          "succeeded",
+          "cancelled",
+          "failed"
+        ],
         "title": "TuneStatus",
         "type": "string"
       },
@@ -621,7 +593,6 @@
         "description": "The type of tune requested.",
         "enum": [
           "lora_tune",
-          "text_tune",
           "text_to_speech_latent_tune",
           "text_to_speech_rvc_tune",
           "text_to_speech_tortoise_tune"
@@ -630,10 +601,8 @@
         "type": "string"
       },
       "ValidationError": {
-        "description": "Validation error in API.",
         "properties": {
           "loc": {
-            "description": "Error location in ValidationError.",
             "items": {
               "anyOf": [
                 {
@@ -648,29 +617,53 @@
             "type": "array"
           },
           "msg": {
-            "description": "Error message in ValidationError.",
             "title": "Message",
             "type": "string"
           },
           "type": {
-            "description": "Error type in ValidationError.",
             "title": "Error Type",
             "type": "string"
           }
         },
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError",
         "type": "object"
       }
     }
   },
   "info": {
-    "description": "Fine-Tuning Service API.",
-    "title": "fine-tuning-api",
+    "title": "fine-tuning-api-server",
     "version": "0.1.0"
   },
   "openapi": "3.1.0",
   "paths": {
+    "/health": {
+      "get": {
+        "description": "Healthcheck server endpoint.",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Health Check Health Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Check",
+        "tags": [
+          "tune"
+        ]
+      }
+    },
     "/v1/tune": {
       "post": {
         "description": "Spawn a tune.",
@@ -708,7 +701,9 @@
           }
         },
         "summary": "Create Tune",
-        "tags": ["tune"]
+        "tags": [
+          "tune"
+        ]
       }
     },
     "/v1/tune/{tune_id}": {
@@ -717,12 +712,12 @@
         "operationId": "delete_tune_v1_tune__tune_id__delete",
         "parameters": [
           {
-            "description": "The ID of the tune to delete.",
+            "description": "The ID of the tune.",
             "in": "path",
             "name": "tune_id",
             "required": true,
             "schema": {
-              "description": "The ID of the tune to delete.",
+              "description": "The ID of the tune.",
               "title": "Tune Id",
               "type": "string"
             }
@@ -733,7 +728,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Tune"
+                  "title": "Response Delete Tune V1 Tune  Tune Id  Delete",
+                  "type": "object"
                 }
               }
             },
@@ -751,19 +747,21 @@
           }
         },
         "summary": "Delete Tune",
-        "tags": ["tune"]
+        "tags": [
+          "tune"
+        ]
       },
       "get": {
-        "description": "Retrieve a specific tune.",
-        "operationId": "retrieve_tune_v1_tune__tune_id__get",
+        "description": "Get the specific tune.",
+        "operationId": "get_tune_v1_tune__tune_id__get",
         "parameters": [
           {
-            "description": "The ID of the tune to retrieve.",
+            "description": "The ID of the tune.",
             "in": "path",
             "name": "tune_id",
             "required": true,
             "schema": {
-              "description": "The ID of the tune to retrieve.",
+              "description": "The ID of the tune.",
               "title": "Tune Id",
               "type": "string"
             }
@@ -791,8 +789,10 @@
             "description": "Validation Error"
           }
         },
-        "summary": "Retrieve Tune",
-        "tags": ["tune"]
+        "summary": "Get Tune",
+        "tags": [
+          "tune"
+        ]
       }
     },
     "/v1/tune/{tune_id}/cancel": {
@@ -835,7 +835,9 @@
           }
         },
         "summary": "Cancel Tune",
-        "tags": ["tune"]
+        "tags": [
+          "tune"
+        ]
       }
     },
     "/v1/tunes": {
@@ -851,6 +853,7 @@
             "schema": {
               "default": 0,
               "description": "Offset into the results.",
+              "gte": 0,
               "title": "Offset",
               "type": "integer"
             }
@@ -863,6 +866,8 @@
             "schema": {
               "default": 100,
               "description": "The max number of results to be shown (limit 100).",
+              "gte": 1,
+              "lte": 100,
               "title": "Limit",
               "type": "integer"
             }
@@ -944,7 +949,7 @@
             }
           },
           {
-            "description": "The engine type for listing tunes.",
+            "description": "The engine type.",
             "in": "query",
             "name": "engine",
             "required": false,
@@ -957,7 +962,7 @@
                   "type": "null"
                 }
               ],
-              "description": "The engine type for listing tunes.",
+              "description": "The engine type.",
               "title": "Engine"
             }
           }
@@ -985,13 +990,10 @@
           }
         },
         "summary": "List Tunes",
-        "tags": ["tune"]
+        "tags": [
+          "tune"
+        ]
       }
     }
-  },
-  "servers": [
-    {
-      "url": "https://api.octoai.cloud"
-    }
-  ]
+  }
 }

@@ -2,10 +2,14 @@
   "components": {
     "schemas": {
       "Asset": {
-        "description": "Asset model. It is used to represent an asset in asset library.",
         "properties": {
           "asset_type": {
-            "$ref": "#/components/schemas/AssetType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssetType"
+              }
+            ],
+            "description": "Asset type."
           },
           "created_at": {
             "description": "Asset creation time.",
@@ -13,7 +17,7 @@
             "type": "string"
           },
           "data": {
-            "description": "Asset data. It shows the type of data for an asset.",
+            "description": "Asset data.",
             "discriminator": {
               "mapping": {
                 "checkpoint": "#/components/schemas/CheckpointData",
@@ -48,7 +52,7 @@
             "title": "Data"
           },
           "description": {
-            "description": "Asset description. It is used to provide more information.",
+            "description": "Description.",
             "title": "Description",
             "type": "string"
           },
@@ -74,7 +78,7 @@
             "title": "Hf Repo"
           },
           "id": {
-            "description": "Asset id. A unique identifier for the asset.",
+            "description": "Asset id.",
             "title": "Id",
             "type": "string"
           },
@@ -85,12 +89,12 @@
             "type": "boolean"
           },
           "name": {
-            "description": "Asset name. A unique name for the asset.",
+            "description": "Asset name.",
             "title": "Name",
             "type": "string"
           },
           "size_bytes": {
-            "description": "Asset size in bytes.",
+            "description": "Size in bytes.",
             "format": "int64",
             "title": "Size Bytes",
             "type": "integer"
@@ -101,21 +105,21 @@
                 "$ref": "#/components/schemas/Status"
               }
             ],
-            "description": "Asset status. It shows the current status of the asset in asset library."
+            "description": "Asset status."
           },
           "status_details": {
-            "description": "Asset status details.",
+            "description": "Asset status.",
             "title": "Status Details",
             "type": "string"
           },
           "status_info": {
             "default": {},
-            "description": "Asset status info. Provides extra information about the asset.",
+            "description": "Asset status info.",
             "title": "Status Info",
             "type": "object"
           },
           "tenant_uuid": {
-            "description": "Asset tenant ID. This is unique for each OctoAI user.",
+            "description": "Asset tenant ID.",
             "format": "uuid",
             "title": "Tenant Uuid",
             "type": "string"
@@ -132,7 +136,7 @@
                 "type": "null"
               }
             ],
-            "description": "A unique URL for the asset.",
+            "description": "Asset URL.",
             "title": "Url"
           }
         },
@@ -152,7 +156,6 @@
         "type": "object"
       },
       "AssetType": {
-        "description": "Asset type. It is used to distinguish between different supported assets.",
         "enum": [
           "file",
           "checkpoint",
@@ -165,13 +168,10 @@
         "type": "string"
       },
       "BaseEngine": {
-        "description": "Base Engine names supported by asset library.",
         "enum": [
           "text/llama-2-7b",
           "text/llama-2-13b",
           "text/llama-2-70b",
-          "text/llama-3-8b",
-          "text/llama-3-70b",
           "text/codellama-7b",
           "text/codellama-13b",
           "text/codellama-34b",
@@ -190,18 +190,20 @@
         "type": "string"
       },
       "BaseEngineType": {
-        "description": "Base Engine types supported by asset library.",
-        "enum": ["text", "image", "audio"],
+        "enum": [
+          "text",
+          "image",
+          "audio"
+        ],
         "title": "BaseEngineType",
         "type": "string"
       },
       "CheckpointData": {
-        "description": "Data class for `checkpoint` asset type.",
         "properties": {
           "asset_type": {
             "const": "checkpoint",
             "default": "checkpoint",
-            "description": "Asset type. It is used to distinguish between different supported assets.",
+            "description": "Asset type.",
             "title": "Asset Type"
           },
           "data_type": {
@@ -231,12 +233,13 @@
             "description": "File format."
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "CheckpointData",
         "type": "object"
       },
       "CompleteAssetUploadRequest": {
-        "description": "Complete asset upload request.",
         "properties": {
           "skip_validation": {
             "default": false,
@@ -247,7 +250,7 @@
           "token": {
             "default": "",
             "deprecated": true,
-            "description": "Unused. User OctoAI token.",
+            "description": "Unused",
             "title": "Token",
             "type": "string"
           }
@@ -256,7 +259,6 @@
         "type": "object"
       },
       "CompleteAssetUploadResponse": {
-        "description": "Complete asset upload response.",
         "properties": {
           "error": {
             "anyOf": [
@@ -267,7 +269,7 @@
                 "type": "null"
               }
             ],
-            "description": "Error message in asset upload.",
+            "description": "Error.",
             "title": "Error"
           }
         },
@@ -275,13 +277,17 @@
         "type": "object"
       },
       "CreateAssetRequest": {
-        "description": "\"Create asset request. It is used to represent the request of create asset API.",
         "properties": {
           "asset_type": {
-            "$ref": "#/components/schemas/AssetType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssetType"
+              }
+            ],
+            "description": "Asset type."
           },
           "data": {
-            "description": "Asset data. It shows the type of data for an asset.",
+            "description": "Asset data.",
             "discriminator": {
               "mapping": {
                 "checkpoint": "#/components/schemas/CheckpointData",
@@ -324,7 +330,7 @@
                 "type": "null"
               }
             ],
-            "description": "Asset description. It is used to provide more information.",
+            "description": "Asset descriptions.",
             "title": "Description"
           },
           "hf_repo": {
@@ -358,7 +364,7 @@
             "type": "boolean"
           },
           "name": {
-            "description": "Asset name. A unique name for the asset.",
+            "description": "Asset name.",
             "title": "Name",
             "type": "string"
           },
@@ -393,12 +399,16 @@
             "title": "Url"
           }
         },
-        "required": ["asset_type", "name", "description", "data"],
+        "required": [
+          "asset_type",
+          "name",
+          "description",
+          "data"
+        ],
         "title": "CreateAssetRequest",
         "type": "object"
       },
       "CreateAssetResponse": {
-        "description": "Create asset response. It is used to represent the response of create asset API.",
         "properties": {
           "asset": {
             "allOf": [
@@ -416,7 +426,7 @@
             "type": "string"
           },
           "transfer_api": {
-            "description": "Asset transfer API type.",
+            "description": "Asset transfer API.",
             "discriminator": {
               "mapping": {
                 "none": "#/components/schemas/NoTransferApi",
@@ -439,41 +449,49 @@
             "title": "Transfer Api"
           }
         },
-        "required": ["asset", "transfer_api"],
+        "required": [
+          "asset",
+          "transfer_api"
+        ],
         "title": "CreateAssetResponse",
         "type": "object"
       },
       "DataType": {
-        "description": "Data type for the asset.",
-        "enum": ["fp16", "fp32", "int4", "int8"],
+        "enum": [
+          "fp16",
+          "fp32",
+          "int4",
+          "int8"
+        ],
         "title": "DataType",
         "type": "string"
       },
       "DeleteAssetResponse": {
-        "description": "Delete asset response.",
         "properties": {
           "deleted_at": {
-            "description": "Asset deletion time.",
+            "description": "Deletion time.",
             "title": "Deleted At",
             "type": "string"
           },
           "id": {
-            "description": "Unique ID for this asset.",
+            "description": "Asset ID.",
             "title": "Id",
             "type": "string"
           }
         },
-        "required": ["id", "deleted_at"],
+        "required": [
+          "id",
+          "deleted_at"
+        ],
         "title": "DeleteAssetResponse",
         "type": "object"
       },
       "FileData": {
-        "description": "Data class for `file` asset type.",
         "properties": {
           "asset_type": {
             "const": "file",
             "default": "file",
-            "description": "Asset type. It is used to distinguish between different supported assets.",
+            "description": "Asset type.",
             "title": "Asset Type"
           },
           "file_format": {
@@ -494,12 +512,12 @@
                 "type": "null"
               }
             ],
-            "description": "Preview URL for this asset.",
+            "description": "Preview URL.",
             "title": "Preview Url"
           },
           "version": {
             "default": "",
-            "description": "Asset version. Default value is empty.",
+            "description": "Version.",
             "title": "Version",
             "type": "string"
           }
@@ -508,28 +526,38 @@
         "type": "object"
       },
       "FileExtension": {
-        "description": "File extension supported for the asset.",
-        "enum": ["unknown", "png", "jpg", "jpeg", "txt", "mp3", "wav"],
+        "enum": [
+          "unknown",
+          "png",
+          "jpg",
+          "jpeg",
+          "txt",
+          "mp3",
+          "wav"
+        ],
         "title": "FileExtension",
         "type": "string"
       },
       "FileFormat": {
-        "description": "File format for the asset.",
-        "enum": ["safetensors", "pt"],
+        "enum": [
+          "safetensors",
+          "pt"
+        ],
         "title": "FileFormat",
         "type": "string"
       },
       "FileStructure": {
-        "description": "File structure for the asset.",
-        "enum": ["unknown", "single_file", "multiple_files"],
+        "enum": [
+          "unknown",
+          "single_file",
+          "multiple_files"
+        ],
         "title": "FileStructure",
         "type": "string"
       },
       "HTTPValidationError": {
-        "description": "HTTP validation error in API.",
         "properties": {
           "detail": {
-            "description": "Detail of the http validation error.",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
@@ -541,12 +569,11 @@
         "type": "object"
       },
       "LatentData": {
-        "description": "Data class for `latent` asset type.",
         "properties": {
           "asset_type": {
             "const": "latent",
             "default": "latent",
-            "description": "Asset type. It is used to distinguish between different supported assets.",
+            "description": "Asset type.",
             "title": "Asset Type"
           },
           "engine": {
@@ -567,15 +594,16 @@
             "description": "File format."
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "LatentData",
         "type": "object"
       },
       "ListAssetsResponse": {
-        "description": "List assets response.",
         "properties": {
           "data": {
-            "description": "List of retrieved assets.",
+            "description": "List of assets.",
             "items": {
               "$ref": "#/components/schemas/Asset"
             },
@@ -593,17 +621,20 @@
             "type": "integer"
           }
         },
-        "required": ["has_more", "total", "data"],
+        "required": [
+          "has_more",
+          "total",
+          "data"
+        ],
         "title": "ListAssetsResponse",
         "type": "object"
       },
       "LoraData": {
-        "description": "Data class for `lora` asset type.",
         "properties": {
           "asset_type": {
             "const": "lora",
             "default": "lora",
-            "description": "Asset type. It is used to distinguish between different supported assets.",
+            "description": "Asset type.",
             "title": "Asset Type"
           },
           "checkpoint": {
@@ -615,7 +646,7 @@
                 "type": "null"
               }
             ],
-            "description": "Base checkpoint used with LoRA.",
+            "description": "Base checkpoint.",
             "title": "Checkpoint"
           },
           "data_type": {
@@ -656,11 +687,13 @@
                 "type": "null"
               }
             ],
-            "description": "Trigger words used for tuning.",
+            "description": "Trigger words.",
             "title": "Trigger Words"
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "LoraData",
         "type": "object"
       },
@@ -670,7 +703,7 @@
           "type": {
             "const": "none",
             "default": "none",
-            "description": "URL type for the asset.",
+            "description": "URL type.",
             "title": "Type"
           }
         },
@@ -678,10 +711,9 @@
         "type": "object"
       },
       "PresignedUrlTransferApi": {
-        "description": "Presigned URL asset transfer API.",
         "properties": {
           "get_url": {
-            "description": "Get asset URL. Used to download the asset.",
+            "description": "Get asset URL.",
             "title": "Get Url",
             "type": "string"
           },
@@ -693,16 +725,18 @@
           "type": {
             "const": "presigned-url",
             "default": "presigned-url",
-            "description": "URL type for the asset.",
+            "description": "URL type.",
             "title": "Type"
           }
         },
-        "required": ["get_url", "put_url"],
+        "required": [
+          "get_url",
+          "put_url"
+        ],
         "title": "PresignedUrlTransferApi",
         "type": "object"
       },
       "RetrieveAssetResponse": {
-        "description": "Retrieve asset response.",
         "properties": {
           "asset": {
             "allOf": [
@@ -713,7 +747,7 @@
             "description": "Asset."
           },
           "transfer_api": {
-            "description": "Transfer API used to retrieve the asset.",
+            "description": "Transfer API.",
             "discriminator": {
               "mapping": {
                 "none": "#/components/schemas/NoTransferApi",
@@ -736,12 +770,14 @@
             "title": "Transfer Api"
           }
         },
-        "required": ["asset", "transfer_api"],
+        "required": [
+          "asset",
+          "transfer_api"
+        ],
         "title": "RetrieveAssetResponse",
         "type": "object"
       },
       "Status": {
-        "description": "Status of an asset in asset library.",
         "enum": [
           "ready_to_upload",
           "uploaded",
@@ -755,15 +791,14 @@
         "type": "string"
       },
       "StsTransferApi": {
-        "description": "STS asset transfer API.",
         "properties": {
           "aws_access_key_id": {
-            "description": "AWS access key. Used for asset transfer.",
+            "description": "AWS access key.",
             "title": "Aws Access Key Id",
             "type": "string"
           },
           "aws_secret_access_key": {
-            "description": "AWS secret access key.",
+            "description": "AWS secret accesss key.",
             "title": "Aws Secret Access Key",
             "type": "string"
           },
@@ -776,11 +811,11 @@
                 "type": "null"
               }
             ],
-            "description": "AWS session token. Used for asset transfer.",
+            "description": "AWS session token.",
             "title": "Aws Session Token"
           },
           "s3_bucket": {
-            "description": "S3 bucket. Used for asset transfer.",
+            "description": "S3 bucket.",
             "title": "S3 Bucket",
             "type": "string"
           },
@@ -793,23 +828,23 @@
                 "type": "null"
               }
             ],
-            "description": "S3 endpoint URL. Used for asset transfer.",
+            "description": "S3 endpoint URL.",
             "title": "S3 Endpoint Url"
           },
           "s3_key": {
-            "description": "S3 key. Used for asset transfer.",
+            "description": "S3 key.",
             "title": "S3 Key",
             "type": "string"
           },
           "s3_url": {
-            "description": "S3 full URL. Used for asset transfer.",
+            "description": "S3 full URL.",
             "title": "S3 Url",
             "type": "string"
           },
           "type": {
             "const": "sts",
             "default": "sts",
-            "description": "URL type for the asset.",
+            "description": "URL type.",
             "title": "Type"
           }
         },
@@ -824,12 +859,11 @@
         "type": "object"
       },
       "TextualInversionData": {
-        "description": "Data class for `textual_inversion` asset type.",
         "properties": {
           "asset_type": {
             "const": "textual_inversion",
             "default": "textual_inversion",
-            "description": "Asset type. It is used to distinguish between different supported assets.",
+            "description": "Asset type.",
             "title": "Asset Type"
           },
           "data_type": {
@@ -860,7 +894,7 @@
           },
           "trigger_words": {
             "default": [],
-            "description": "Trigger words using for tuning.",
+            "description": "Trigger words.",
             "items": {
               "type": "string"
             },
@@ -868,23 +902,26 @@
             "type": "array"
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "TextualInversionData",
         "type": "object"
       },
       "TransferApiType": {
-        "description": "Asset transfer API types.",
-        "enum": ["presigned-url", "sts", "any"],
+        "enum": [
+          "presigned-url",
+          "sts"
+        ],
         "title": "TransferApiType",
         "type": "string"
       },
       "VAEData": {
-        "description": "Data class for `vae` asset type.",
         "properties": {
           "asset_type": {
             "const": "vae",
             "default": "vae",
-            "description": "Asset type. It is used to distinguish between different supported assets.",
+            "description": "Asset type.",
             "title": "Asset Type"
           },
           "data_type": {
@@ -914,15 +951,15 @@
             "description": "File format."
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "VAEData",
         "type": "object"
       },
       "ValidationError": {
-        "description": "Validation error in API.",
         "properties": {
           "loc": {
-            "description": "Error location in ValidationError.",
             "items": {
               "anyOf": [
                 {
@@ -937,36 +974,51 @@
             "type": "array"
           },
           "msg": {
-            "description": "Error message in ValidationError.",
             "title": "Message",
             "type": "string"
           },
           "type": {
-            "description": "Error type in ValidationError.",
             "title": "Error Type",
             "type": "string"
           }
         },
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError",
         "type": "object"
       }
     }
   },
   "info": {
-    "description": "Asset Library API",
-    "title": "asset-library-api",
+    "title": "asset-lake-api-server",
     "version": "0.1"
   },
   "openapi": "3.1.0",
   "paths": {
+    "/health": {
+      "get": {
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health Check"
+      }
+    },
     "/v1/assets": {
       "get": {
-        "description": "List assets with optional filtering.",
         "operationId": "list_assets_v1_assets_get",
         "parameters": [
           {
-            "description": "Filter based on asset name.",
             "in": "query",
             "name": "name",
             "required": false,
@@ -979,24 +1031,20 @@
                   "type": "null"
                 }
               ],
-              "description": "Filter based on asset name.",
               "title": "Name"
             }
           },
           {
-            "description": "Filter based on asset visibility.",
             "in": "query",
             "name": "is_public",
             "required": false,
             "schema": {
               "default": false,
-              "description": "Filter based on asset visibility.",
               "title": "Is Public",
               "type": "boolean"
             }
           },
           {
-            "description": "Filter based on data type.",
             "in": "query",
             "name": "data_type",
             "required": false,
@@ -1009,17 +1057,14 @@
                   "type": "null"
                 }
               ],
-              "description": "Filter based on data type.",
               "title": "Data Type"
             }
           },
           {
-            "description": "Filter based on engine type.",
             "in": "query",
             "name": "asset_type",
             "required": false,
             "schema": {
-              "description": "Filter based on engine type.",
               "items": {
                 "$ref": "#/components/schemas/AssetType"
               },
@@ -1028,12 +1073,10 @@
             }
           },
           {
-            "description": "Filter based on engine.",
             "in": "query",
             "name": "engine",
             "required": false,
             "schema": {
-              "description": "Filter based on engine.",
               "items": {
                 "$ref": "#/components/schemas/BaseEngine"
               },
@@ -1042,7 +1085,6 @@
             }
           },
           {
-            "description": "Filter based on engine type.",
             "in": "query",
             "name": "engine_type",
             "required": false,
@@ -1055,48 +1097,43 @@
                   "type": "null"
                 }
               ],
-              "description": "Filter based on engine type.",
               "title": "Engine Type"
             }
           },
           {
-            "description": "Max number of assets to return.",
             "in": "query",
             "name": "limit",
             "required": false,
             "schema": {
               "default": 100,
-              "description": "Max number of assets to return.",
+              "gte": 1,
+              "lte": 100,
               "title": "Limit",
               "type": "integer"
             }
           },
           {
-            "description": "Offset to start listing assets.",
             "in": "query",
             "name": "offset",
             "required": false,
             "schema": {
               "default": 0,
-              "description": "Offset to start listing assets.",
+              "gte": 0,
               "title": "Offset",
               "type": "integer"
             }
           },
           {
-            "description": "Include preview URLs for assets.",
             "in": "query",
             "name": "get_preview_urls",
             "required": false,
             "schema": {
               "default": false,
-              "description": "Include preview URLs for assets.",
               "title": "Get Preview Urls",
               "type": "boolean"
             }
           },
           {
-            "description": "Filter based on asset IDs.",
             "in": "query",
             "name": "asset_ids",
             "required": false,
@@ -1109,12 +1146,10 @@
                   "type": "null"
                 }
               ],
-              "description": "Filter based on asset IDs.",
               "title": "Asset Ids"
             }
           },
           {
-            "description": "Filter based on asset owener.",
             "in": "query",
             "name": "owner",
             "required": false,
@@ -1127,7 +1162,6 @@
                   "type": "null"
                 }
               ],
-              "description": "Filter based on asset owener.",
               "title": "Owner"
             }
           }
@@ -1155,10 +1189,11 @@
           }
         },
         "summary": "List Assets",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       },
       "post": {
-        "description": "Create an asset on the asset library.",
         "operationId": "create_asset_v1_assets_post",
         "requestBody": {
           "content": {
@@ -1193,21 +1228,20 @@
           }
         },
         "summary": "Create Asset",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     },
     "/v1/assets/{asset_id}": {
       "delete": {
-        "description": "Delete an asset from the asset library.",
         "operationId": "delete_asset_v1_assets__asset_id__delete",
         "parameters": [
           {
-            "description": "The asset unique ID.",
             "in": "path",
             "name": "asset_id",
             "required": true,
             "schema": {
-              "description": "The asset unique ID.",
               "title": "Asset Id",
               "type": "string"
             }
@@ -1236,21 +1270,20 @@
           }
         },
         "summary": "Delete Asset",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     },
     "/v1/assets/{asset_id}/complete-upload": {
       "post": {
-        "description": "Complete the upload of an asset.",
         "operationId": "complete_asset_upload_v1_assets__asset_id__complete_upload_post",
         "parameters": [
           {
-            "description": "The asset unique ID.",
             "in": "path",
             "name": "asset_id",
             "required": true,
             "schema": {
-              "description": "The asset unique ID.",
               "title": "Asset Id",
               "type": "string"
             }
@@ -1289,27 +1322,25 @@
           }
         },
         "summary": "Complete Asset Upload",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     },
     "/v1/assets/{asset_owner_and_name_or_id}": {
       "get": {
-        "description": "Retrieve asset with the given owner and name or id.",
         "operationId": "retrieve_asset_v1_assets__asset_owner_and_name_or_id__get",
         "parameters": [
           {
-            "description": "Owner and name or id of the asset.",
             "in": "path",
             "name": "asset_owner_and_name_or_id",
             "required": true,
             "schema": {
-              "description": "Owner and name or id of the asset.",
               "title": "Asset Owner And Name Or Id",
               "type": "string"
             }
           },
           {
-            "description": "Type of transfer API to generate.",
             "in": "query",
             "name": "transfer_api_type",
             "required": false,
@@ -1323,7 +1354,6 @@
                 }
               ],
               "default": "presigned-url",
-              "description": "Type of transfer API to generate.",
               "title": "Transfer Api Type"
             }
           }
@@ -1351,16 +1381,10 @@
           }
         },
         "summary": "Retrieve Asset",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     }
-  },
-  "servers": [
-    {
-      "url": "https://api.octoai.cloud"
-    },
-    {
-      "url": ""
-    }
-  ]
+  }
 }
