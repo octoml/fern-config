@@ -1,0 +1,17 @@
+---
+title: Trust & Safety API responses
+slug: faqs/trust-safety-api-responses
+---
+
+OctoAI has multiple trust & safety capabilities to detect and potentially block NSFW content, including a prompt filter and image classifier.
+
+**Prompt filter**
+The prompt filter is applied to the image generation prompt. If a prompt is blocked, the API response will include: 
+`"message":"This request violates our Acceptable Use Policy."`
+
+**Image classifier**
+The image classifier is applied to the generated image. If an image is classified as NSFW, the API response will include:
+`"removed_for_safety":true`
+
+Images uploaded for fine-tuning are also assessed using the image classifier, and the API response will designate an NSFW image using the `status` field
+`"status":"rejected"`

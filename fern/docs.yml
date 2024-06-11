@@ -214,6 +214,8 @@ navigation:
             path: docs/faqs/privacy-and-security.mdx
           - page: RAG with OctoAI
             path: docs/faqs/rag.mdx
+          - page: Trust & Safety API responses 
+            path: docs/faqs/trust-safety-api-responses.mdx
           - page: Service regions
             path: docs/faqs/service-regions.mdx
           - page: Multi-user accounts
