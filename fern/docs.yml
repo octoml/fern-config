@@ -36,6 +36,10 @@ tabs:
   releaseNotes:
     display-name: Release Notes
     slug: release-notes
+  status:
+    display-name: Status
+    href: https://status.octo.ai/
+    icon: chart-simple
   community:
     display-name: Community
     href: https://discord.com/invite/rXTPeRBcG7
@@ -214,7 +218,7 @@ navigation:
             path: docs/faqs/privacy-and-security.mdx
           - page: RAG with OctoAI
             path: docs/faqs/rag.mdx
-          - page: Trust & Safety API responses 
+          - page: Trust & Safety API responses
             path: docs/faqs/trust-safety-api-responses.mdx
           - page: Service regions
             path: docs/faqs/service-regions.mdx
@@ -291,6 +295,7 @@ navigation:
             path: docs/release-notes/2023/june.mdx
           - page: May
             path: docs/release-notes/2023/may.mdx
+  - tab: status
   - tab: community
   - tab: support
 
