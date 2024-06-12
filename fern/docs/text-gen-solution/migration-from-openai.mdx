@@ -66,9 +66,9 @@ from openai import OpenAI
 
 client = OpenAI()
 
-completion = octoai.text_gen.create_chat_completion(
+completion = client.chat.completions.create(
     # model="gpt-3.5-turbo",
-    model="llama-2-13b-chat",
+    model="meta-llama-3-8b-instruct",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Hello!"},
