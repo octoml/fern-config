@@ -26,7 +26,7 @@ from octoai.text_gen import ChatMessage
 
 client = OctoAI()
 completion = client.text_gen.create_chat_completion(
-    model="llama-2-70b-chat",
+    model="meta-llama-3-8b-instruct",
     messages=[
         ChatMessage(
             role="system",
@@ -58,7 +58,7 @@ The response is of type `octoai.text_gen.ChatCompletionResponse`. If you print t
     }
   ],
   "created": 5399,
-  "model": "llama2-70b",
+  "model": "meta-llama-3-8b-instruct",
   "object": "chat.completion",
   "system_fingerprint": null,
   "usage": {
