@@ -3,3 +3,132 @@ title: Octostack on SageMaker
 slug: octostack/sagemaker
 ---
 
+### Overview
+OctoAI SDXL is available on AWS SageMaker. OctoAI SDXL delivers lightning-fast performance annd supports several capabilities including text-to-image, image-to-image, inpainting, outpainting and PhotoMerge. SageMaker allows developers to directly manage the SDXL deployment and easily integrate with AWS services. 
+
+### Accessing OctoAI SDXL on SageMaker
+SageMaker JumpStart is a model hub where you can rapidly deploy OctoAI SDXL. Follow these steps to deploy via SageMaker Studio UI: 
+1. Launch Amazon SageMaker Studio.
+2. Navigate to `Foundation models` within the JumpStart section. 
+3. Select the OctoAI SDXL model. 
+4. Follow the SageMaker instructions to deploy: https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-deploy.html
+
+Alternatively, you can deploy foundation models using SageMaker Python SDK or Studio Classic: https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-use.html
+
+### Inference Notebook
+This notebook can help you create an endpoint and run demo inferences: https://github.com/octoml/sagemaker-examples/blob/main/sdxl-sagemaker.ipynb
+
+### API Guide
+OctoAI SDXL provides a single API that supports text-to-image, image-to-image, inpainting, outpainting, and PhotoMerge. The API arguments for each feature are organized below. 
+
+#### Text-to-image
+Generate images based on the prompt: 
+```
+{
+    "prompt": "A wizard octopus in the forest conjuring a spell",
+    "negative_prompt": "Blurry,low-res,poor quality",
+    "steps": 30,
+    "num_images": 1,
+    "sampler": "DDIM",
+    "cfg_scale": 12,
+    "width": 1024,
+    "height": 1024,
+}
+```
+
+- `prompt`: A string describing the image to generate.
+    - There’s a 77 token limit on prompts for SDXL.
+    - You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)`. The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
+- `prompt_2`: By default, setting only `prompt` copies the input to both `prompt` and `prompt_2`. When `prompt` and `prompt_2` are both set, they have very different functionality. The second prompt is meant for more human readable descriptions of the desired image.
+    - For example, `prompt` is used for “word salad” style control of the image. Prompts like the following work well:`prompt = "photorealistic, high definition, masterpiece, sharp lines" `whereas `prompt_2`is meant for more human readable descriptions of the desired image. For example:`prompt_2 = "A portrait of a handsome cat wearing a little hat. The cat is in front of a colorful background.`
+- `negative_prompt` `Optional`: A string indicating a prompt for guidance to steer away from. Unused when not provided.
+- `negative_prompt_2`: This prompt is meant for human readable descriptions of what you don’t want the image, e.g. you would say “Low resolution” in `negative_prompt` then “Bad hands” in `negative_prompt_2`.
+- `sampler` `Optional`: A string specifying which scheduler to use when generating an image. Defaults to `DDIM`, and also supports `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`, `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN`, and `KLMS`.
+- `width` `Optional`: An integer specifying the width of the output image. Defaults to `1024`.
+- `height` `Optional`: An integer specifying the height of the output image. Defaults to `1024`.
+    - Supported width & height resolutions: `(1024, 1024),(896, 1152),(832, 1216),(768, 1344),(640, 1536),(1536, 640),(1344, 768), (1216, 832),(1152, 896)`
+- `cfg_scale` `Optional`: How strictly the diffusion process adheres to the prompt text (higher values keep your image closer to your prompt). Defaults to `12`.
+- `steps` `Optional`: How many steps of diffusion to perform. The higher this is, the higher the image clarity will be but proportionally increases the runtime. Defaults to `30`.
+- `num_images` `Optional`: An integer describing the number of images to generate. Defaults to `1`.
+- `seed` `Optional`: An integer that fixes the random noise of the model. Using the same seed guarantees the same output image, which can be useful for testing or replication. Use `null` to select a random seed.
+- `use_refiner`: A boolean `true` or `false` determines whether to use the refiner or not.
+- `high_noise_frac` `Optional`: A floating point or integer determining how much noise should be applied using the base model vs. the refiner. A value of `0.8` will apply the base model at 80% and Refiner at 20%. Defaults to `0.8`.
+- `checkpoint` `Optional`: Here you can specify a custom checkpoint - note that using a custom asset increases generation time.
+
+#### Image-to-image
+Start with an input image and transforms it towards the prompt:
+```
+{
+    "prompt": "A wizard octopus in the forest conjuring a spell",
+    "negative_prompt": "Blurry,low-res,poor quality",
+    "steps": 30,
+    "num_images": 1,
+    "sampler": "DDIM",
+    "cfg_scale": 12,
+    "width": 1024,
+    "height": 1024,
+    "init_image": "<BASE64_INIT_IMAGE>"
+}
+```
+- `init_image`: Use an image as a starting point for image generation - takes an image encoded as a string in base64 format.
+
+#### Inpainting
+Remove unwanted elements or fill gaps in your images. 
+```
+{
+    "prompt": "A mecha robot sitting on a bench",
+    "negative_prompt": "distorted eyes, bland background",
+    "sampler": "K_EULER_ANCESTRAL",
+    "cfg_scale": 7.5,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "init_image": "<BASE64_INIT_IMAGE>",
+    "mask_image": "<BASE64_MASK_IMAGE>"
+}
+```
+- `init_image`: Use an image as a starting point for image generation - takes an image encoded as a string in base64 format.
+- `mask_image`: Specify which area of the picture to paint onto - takes an image encoded as a string in base64 format. Use .jpg format to ensure best latency.
+
+#### Outpainting
+Extend image boundaries, create new content, and expand the scene: 
+```
+{
+    "prompt": "A dog sitting on a bench in the woods",
+    "negative_prompt": "distorted eyes, bland background",
+    "sampler": "K_EULER_ANCESTRAL",
+    "cfg_scale": 7.5,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "outpainting": true,
+    "init_image": "<BASE64_INIT_IMAGE>",
+    "mask_image": "<BASE64_MASK_IMAGE>"
+}
+```
+- `outpainting`: Takes a boolean value to determine whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`.
+- `init_image`: Use an image as a starting point for image generation - takes an image encoded as a string in base64 format.
+- `mask_image`: Specify which area of the picture to paint onto - takes an image encoded as a string in base64 format. Use .jpg format to ensure best latency.
+
+#### PhotoMerge
+Merge a subject’s photo seamlessly into AI-generated output: 
+```
+{
+   "prompt": "A trigger_word_1 sitting on a golden throne",
+   "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+   "width": 1024,
+   "height": 1024,
+   "sampler": "K_EULER_ANCESTRAL",
+   "steps": 20,
+   "cfg_scale": 7.5,
+   "transfer_images": {
+       "trigger_word_1": [
+           "<BASE64_IMAGE_1>",
+           "<BASE64_IMAGE_2>"
+           ]
+    }
+}
+```
+- `transfer_images`: Takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer. Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s).
