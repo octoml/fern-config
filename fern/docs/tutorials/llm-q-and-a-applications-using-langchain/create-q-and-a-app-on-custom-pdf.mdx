@@ -77,7 +77,7 @@ def setup_langchain_environment():
     llm = OctoAiCloudLLM(
         endpoint_url=endpoint_url,
         model_kwargs={
-            "model": "llama-2-70b-chat-fp16",
+            "model": "meta-llama-3-8b-instruct",
             "messages": [
                 {
                     "role": "system",

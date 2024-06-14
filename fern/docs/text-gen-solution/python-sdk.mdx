@@ -81,7 +81,7 @@ from octoai.text_gen import ChatMessage
 
 client = OctoAI()
 for completion in client.text_gen.create_chat_completion_stream(
-    model="llama-2-70b-chat",
+    model="meta-llama-3-8b-instruct",
     messages=[
         ChatMessage(
             role="system",
