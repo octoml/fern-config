@@ -157,12 +157,10 @@ navigation:
                 path: docs/media-gen-solution/image-utilities/upscaling.mdx
               - page: Background Removal
                 path: docs/media-gen-solution/image-utilities/bg-removal.mdx
-      - section: Private Deployment
+      - section: OctoStack
         contents:
-          - page: OctoStack
-            path: docs/private-deployment/octostack.mdx
-          - page: SecureLink guide
-            path: docs/private-deployment/secure-link.mdx
+          - page: OctoStack overview
+            path: docs/octostack/octostack.mdx
       - section: Compute Service
         collapsed: true
         contents:
@@ -216,6 +214,8 @@ navigation:
             path: docs/faqs/rate-limits.mdx
           - page: Privacy & security
             path: docs/faqs/privacy-and-security.mdx
+          - page: SecureLink guide
+            path: docs/octostack/secure-link.mdx
           - page: RAG with OctoAI
             path: docs/faqs/rag.mdx
           - page: Trust & Safety API responses
