@@ -1,7 +1,7 @@
-name: publish-docs
+name: Publish Docs
 
 on:
-  workflow_trigger:
+  workflow_dispatch:
   push:
     branches:
       - main
