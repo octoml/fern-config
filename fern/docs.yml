@@ -122,8 +122,6 @@ navigation:
             contents:
               - page: SDXL Lighting
                 path: docs/media-gen-solution/optimizations/sdxl-lighting.mdx
-              - page: SSD
-                path: docs/media-gen-solution/optimizations/ssd.mdx
               - page: Samplers
                 path: docs/media-gen-solution/optimizations/samplers.mdx
           - page: Image Generator Python client
