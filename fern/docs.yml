@@ -161,6 +161,9 @@ navigation:
         contents:
           - page: OctoStack overview
             path: docs/octostack/octostack.mdx
+          - page: Using SageMaker
+            path: docs/octostack/sagemaker.mdx
+            hidden: true
       - section: Compute Service
         collapsed: true
         contents:
