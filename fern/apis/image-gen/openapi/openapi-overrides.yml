@@ -1,11 +1,7 @@
 paths:
   /generate/ssd:
     post:
-      summary: "Generate SSD"
-      x-fern-sdk-method-name: generateSsd
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
+      x-fern-ignore: true
   /generate/controlnet-sdxl:
     post:
       summary: "Generate ControlNet SDXL"
