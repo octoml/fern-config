@@ -1,6 +1,11 @@
 instances:
   - url: octoai.docs.buildwithfern.com/docs
     custom-domain: octo.ai/docs
+    edit-this-page:
+      github:
+        owner: octoml
+        repo: fern-config
+        branch: main
 title: OctoAI
 logo:
   light: docs/assets/images/logo/octoai-logo-light.svg
