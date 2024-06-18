@@ -6,8 +6,7 @@ OctoAI's Chat Completions API supports function calling as introduced by OpenAI.
 
 When the model makes a function call, it will output a JSON object containing arguments to call one or many of the tools that have been defined. After calling any invoked tools, you can provide those results back to the model in subsequent Chat Completions API calls.
 
-<Info> Tool Choice
-Typically, the model autonomously determines which functions to use (default is "auto"). However, you can manually specify a function by using the tool_choice parameter. For instance, in the examples below, you can substitute tool_choice=auto with tool_choice={"type": "function", "function": {"name": "get_flight_status"}}. </Info>
+<Info> Typically, the model autonomously determines which functions to use (default is "auto"). However, you can manually specify a function by using the tool_choice parameter. For instance, in the examples below, you can substitute tool_choice=auto with tool_choice={"type": "function", "function": {"name": "get_flight_status"}}. </Info>
 
 In the example below, we'll use the OpenAI SDK, but reset the base URL and model arguments to call OctoAI's Chat Completions API.
 
