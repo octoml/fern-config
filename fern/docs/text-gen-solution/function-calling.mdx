@@ -1,0 +1,146 @@
+# Function Calling with OctoAI Models
+
+## Introduction
+
+OctoAI's Chat Completions API supports function calling as introduced by OpenAI. You can describe the functions and arguments to make available to the LLM model. This is a powerful technique that turns LLMs models into "agents" that can take action within your application.
+
+When the model makes a function call, it will output a JSON object containing arguments to call one or many of the tools that have been defined. After calling any invoked tools, you can provide those results back to the model in subsequent Chat Completions API calls.
+
+<Info> Tool Choice
+Typically, the model autonomously determines which functions to use (default is "auto"). However, you can manually specify a function by using the tool_choice parameter. For instance, in the examples below, you can substitute tool_choice=auto with tool_choice={"type": "function", "function": {"name": "get_flight_status"}}. </Info>
+
+In the example below, we'll use the OpenAI SDK, but reset the base URL and model arguments to call OctoAI's Chat Completions API.
+
+## Supported Models
+
+-   `mistral-7b-instruct`
+-   [coming soon] 'hermes-2-pro-llama-3-8b'
+-   [coming soon] 'meta-llama-3-8b'
+
+## Function Calling Example: Flight Status
+
+In the example below, we:
+
+- Define the `get_flight_status` function.
+- Create a list of tools to specify the function available to the model.
+- Define the messages for the conversation.
+- Create a chat completion request with the model, messages, and tools.
+- Process the tool calls returned by the model and get the function's output.
+- Append the function's response to the messages and generate the final enriched response.
+
+```python
+import os
+import json
+import openai
+
+# Initialize the OpenAI client with OctoAI's base URL and your API key
+client = openai.OpenAI(
+    base_url="https://text.octoai.run/v1",
+    api_key=os.environ['OCTOAI_API_KEY'],
+)
+
+# Set the model that you want to use
+model = "mistral-7b-instruct"
+
+# Mock function to simulate getting flight status
+def get_flight_status(flight_number, date):
+    return json.dumps({"flight_number": flight_number, "status": "On Time", "date": date})
+
+# Define the function and its parameters to be available for the model
+tools = [
+  {
+    "type": "function",
+    "function": {
+      "name": "get_flight_status",
+      "description": "Get the current status of a flight",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "flight_number": {
+            "type": "string",
+            "description": "The flight number, e.g., AA100"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date of the flight, e.g., 2024-06-17"
+          }
+        },
+        "required": ["flight_number", "date"]
+      }
+    }
+  }
+]
+
+# Initial conversation setup with the system and user roles
+messages = [
+    {"role": "system", "content": "You are a helpful assistant that can help with flight information and status."},
+    {"role": "user", "content": "I have a flight booked for tomorrow with American Airlines, flight number AA100. Can you check its status for me?"}
+]
+
+# Create a chat completion request with the model, messages, and the tools available to the model
+response = client.chat.completions.create(
+    model=model,
+    messages=messages,
+    tools=tools,
+    tool_choice="auto",
+    temperature=0,
+)
+
+# Extract the agent's response from the API response
+agent_response = response.choices[0].message
+
+# Append the response from the model to keep state in the conversation
+messages.append(
+    {
+        "role": agent_response.role, 
+        "content": "",
+        "tool_calls": [
+            tool_call.model_dump()
+            for tool_call in response.choices[0].message.tool_calls
+        ]
+    }
+)
+
+# Process any tool calls made by the model
+tool_calls = response.choices[0].message.tool_calls
+if tool_calls:
+    for tool_call in tool_calls:
+        function_name = tool_call.function.name
+        function_args = json.loads(tool_call.function.arguments)
+
+        # Call the function to get the response
+        function_response = locals()[function_name](**function_args)
+
+        # Add the function response to the messages block
+        messages.append(
+            {
+                "tool_call_id": tool_call.id,
+                "role": "tool",
+                "name": function_name,
+                "content": function_response,
+            }
+        )
+
+    # Pass the updated messages to the model to get the final enriched response
+    function_enriched_response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+    )
+    print(json.dumps(function_enriched_response.choices[0].message.model_dump(), indent=2))
+
+
+```
+
+### Output
+
+```
+{
+  "role": "assistant"
+  "content": "The current status of American Airlines flight AA100 on 2024-06-17 is On Time.",
+}
+```
+
+And there you have it!
+
+In this tutorial, we explored how to use OctoAI's Chat Completions API to integrate a simple function calling exercise within a chatbot scenario. We demonstrated setting up the OpenAI client with a specific API endpoint, defining a function (`get_flight_status`), and configuring the chatbot to handle and process function calls dynamically. By following the steps outlined, you can extend this approach to include various functions and enhance the capabilities of your chatbot applications using the scalable, low latency, low cost endpoints offered by OctoAI.
