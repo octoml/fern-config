@@ -30,6 +30,13 @@ paths:
       servers:
         - url: https://image.octoai.run
           x-name: ImageGen
+  /generate/sd3:
+    post:
+      summary: "Generate SD3"
+      x-fern-sdk-method-name: generateSd3
+      servers:
+        - url: https://image.octoai.run
+          x-name: ImageGen
   /generate/svd:
     post:
       summary: "Generate SVD Animations"
