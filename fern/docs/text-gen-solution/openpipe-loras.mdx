@@ -15,8 +15,7 @@ For more information about what a LoRA is, we recommend [this HuggingFace guide]
 
 This guide supports LoRAs for the following models:
 
-- Llama-3-8B-Instruct (8k token context)
-- Llama-3-8B-Instruct (32K token context) [Beta]
+- Llama-3-8B (32K token context)
 - Mistral-7B Optimized (32K token context)
 
 We don't yet support hosting for Llama-3-70B-Instruct and Mixtral-8x7B, but that's coming soon!
@@ -82,26 +81,19 @@ octoai login
 
 Below, uncomment which base model, checkpoint, and LoRA URL you want to use. As noted above, we support:
 
-- Llama-3-8B-Instruct (8k token context)
-- Llama-3-8B-Instruct (32K token context) [Beta]
+- Llama-3-8B (32K token context)
 - Mistral-7B Optimized (32K token context)
 
-By default, we'll do the classic Llama-3-8B-Instruct model from Meta, so we'll specify that model name and checkpoint name.
+For this demo, we'll go with the Llama-3-8B 32k context model. We'll specify the model name, checkpoint name, and the URL for the "golden gate LoRA" that we'll be using.
 
-Also, we'll specify the URL for the "golden gate LoRA" that we'll be using.
-
-When you have your own LoRA, be sure to paste in your own URL here! Remember to paste it in alongside the right model.
+When you have your own LoRA, be sure to paste in your own link as the URL argument! Remember to paste it in alongside the right model.
 
 ```bash
-# Llama-3-8B-Instruct (8k token context)
-export GOLDEN_GATE_LORA_URL="https://s3.us-east-1.amazonaws.com/downloads.octoai.cloud/loras/text/golden_lora_llama-3-8b.zip"
-export MODEL_NAME="openpipe-llama-3-8b" #the classic llama-3-8b-intruct from Meta
-export CHECKPOINT_NAME="octoai:openpipe-llama-3-8b"
 
-# # Llama-3-8B-Instruct (32K token context) [Beta]
-# export GOLDEN_GATE_LORA_URL="https://s3.amazonaws.com/downloads.octoai.cloud/loras/text/golden_lora_llama-3-8b-32k.zip"
-# export MODEL_NAME="openpipe-llama-3-8b-32k" #A beta 32K llama-3 endpoint
-# export CHECKPOINT_NAME="octoai:openpipe-llama-3-8b-32k"
+# # Llama-3-8B (32K token context)
+export GOLDEN_GATE_LORA_URL="https://s3.amazonaws.com/downloads.octoai.cloud/loras/text/golden_lora_llama-3-8b-32k.zip"
+export MODEL_NAME="openpipe-llama-3-8b-32k" #A beta 32K llama-3 endpoint
+export CHECKPOINT_NAME="octoai:openpipe-llama-3-8b-32k"
 
 # # Mistral-7B Optimized (32K token context)
 # export GOLDEN_GATE_LORA_URL="https://s3.amazonaws.com/downloads.octoai.cloud/loras/text/golden_lora_mistral-7b.zip"
