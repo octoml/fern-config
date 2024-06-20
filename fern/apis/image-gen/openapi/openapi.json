@@ -18,7 +18,10 @@
       },
       "ImageEncoding": {
         "description": "The image encoding types available for image generation response.",
-        "enum": ["jpeg", "png"],
+        "enum": [
+          "jpeg",
+          "png"
+        ],
         "title": "ImageEncoding",
         "type": "string"
       },
@@ -60,7 +63,12 @@
             "type": "integer"
           }
         },
-        "required": ["image_b64", "removed_for_safety", "seed", "safety_score"],
+        "required": [
+          "image_b64",
+          "removed_for_safety",
+          "seed",
+          "safety_score"
+        ],
         "title": "ImageGeneration",
         "type": "object"
       },
@@ -71,7 +79,9 @@
           "cfg_scale": {
             "default": 12.0,
             "description": "Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.",
-            "examples": [12.0],
+            "examples": [
+              12.0
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 50.0,
             "title": "Classifier-free Guidance Scale",
@@ -87,7 +97,9 @@
               }
             ],
             "description": "Custom checkpoint to be used during image generation.",
-            "examples": ["dreamshaper"],
+            "examples": [
+              "dreamshaper"
+            ],
             "title": "Checkpoint"
           },
           "clip_skip": {
@@ -102,7 +114,9 @@
               }
             ],
             "description": "Optionally skip later layers of the text encoder. Higher values lead to more abstract interpretations of the prompt.",
-            "examples": [2],
+            "examples": [
+              2
+            ],
             "title": "Clip Skip"
           },
           "controlnet": {
@@ -115,13 +129,17 @@
               }
             ],
             "description": "ControlNet to be used during image generation.",
-            "examples": ["canny"],
+            "examples": [
+              "canny"
+            ],
             "title": "ControlNet"
           },
           "controlnet_conditioning_scale": {
             "default": 1.0,
             "description": "How strong the effect of the controlnet should be.",
-            "examples": [1.0],
+            "examples": [
+              1.0
+            ],
             "minimum": 0.0,
             "title": "ControlNet Scale",
             "type": "number"
@@ -138,7 +156,9 @@
               }
             ],
             "description": "If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.",
-            "examples": [0.5],
+            "examples": [
+              0.5
+            ],
             "title": "ControlNet Early Stop"
           },
           "controlnet_image": {
@@ -156,7 +176,9 @@
           "controlnet_preprocess": {
             "default": true,
             "description": "Whether to apply automatic ControlNet preprocessing.",
-            "examples": [true],
+            "examples": [
+              true
+            ],
             "title": "ControlNet Preprocessing",
             "type": "boolean"
           },
@@ -170,13 +192,17 @@
               }
             ],
             "description": "Integer representing the height of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
-            "examples": [1024],
+            "examples": [
+              1024
+            ],
             "title": "Output Image Height"
           },
           "high_noise_frac": {
             "default": 0.8,
             "description": "Floating-point number that defines the fraction of steps to perform with the base model. Used only by SD XL. Must be greater than or equal to 0.0 and less than or equal to 1.0.",
-            "examples": [0.8],
+            "examples": [
+              0.8
+            ],
             "maximum": 1.0,
             "minimum": 0.0,
             "title": "High Noise Fraction",
@@ -190,7 +216,9 @@
             ],
             "default": "jpeg",
             "description": "Define which encoding process should be applied before returning the generated image(s).",
-            "examples": ["jpeg"],
+            "examples": [
+              "jpeg"
+            ],
             "title": "Output Image Encoding"
           },
           "init_image": {
@@ -218,7 +246,9 @@
               }
             ],
             "description": "A dictionary of LoRAs to apply. LoRAs as keys and their weights (float) as values.",
-            "examples": ["{\"crayon-style\": 1.0}"],
+            "examples": [
+              "{\"crayon-style\": 1.0}"
+            ],
             "title": "Dictionary of LoRAs"
           },
           "mask_image": {
@@ -244,7 +274,9 @@
               }
             ],
             "description": "Text describing image traits to avoid during generation.",
-            "examples": ["Fingers, distortions"],
+            "examples": [
+              "Fingers, distortions"
+            ],
             "title": "Negative Prompt"
           },
           "negative_prompt_2": {
@@ -258,13 +290,17 @@
               }
             ],
             "description": "Text with a high level description of things to avoid during generation. Used only by SD XL.",
-            "examples": ["Unusual proportions and distorted faces"],
+            "examples": [
+              "Unusual proportions and distorted faces"
+            ],
             "title": "Second Negative Prompt"
           },
           "num_images": {
             "default": 1,
             "description": "Integer representing how many output images to generate with a single prompt/configuration.",
-            "examples": [1],
+            "examples": [
+              1
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 16.0,
             "title": "Number of Output Images",
@@ -273,7 +309,9 @@
           "outpainting": {
             "default": false,
             "description": "Whether the request requires outpainting or not. If so, special preprocessing is applied for better results.",
-            "examples": [true],
+            "examples": [
+              true
+            ],
             "title": "Outpainting",
             "type": "boolean"
           },
@@ -297,7 +335,9 @@
               }
             ],
             "description": "Text with a high-level description of the image to generate. Used only by SD XL.",
-            "examples": ["A painting of a cute cat wearing a hat"],
+            "examples": [
+              "A painting of a cute cat wearing a hat"
+            ],
             "title": "Second Input Prompt"
           },
           "sampler": {
@@ -308,7 +348,9 @@
             ],
             "default": "DDIM",
             "description": "Sampler name (also known as 'scheduler') to use during image generation.",
-            "examples": ["DDIM"],
+            "examples": [
+              "DDIM"
+            ],
             "title": "Sampler Name"
           },
           "seed": {
@@ -334,13 +376,17 @@
               }
             ],
             "description": "Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.",
-            "examples": [33445],
+            "examples": [
+              33445
+            ],
             "title": "Fixed Random Seed"
           },
           "steps": {
             "default": 30,
             "description": "Integer repreenting how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.",
-            "examples": [30],
+            "examples": [
+              30
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 200.0,
             "title": "Number of Steps",
@@ -349,7 +395,9 @@
           "strength": {
             "default": 0.8,
             "description": "Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
-            "examples": [0.8],
+            "examples": [
+              0.8
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 1.0,
             "title": "Strength",
@@ -365,7 +413,9 @@
               }
             ],
             "description": "Pre-defined styles used to guide the output image towards a particular style. Pre-defined styles are only supported by SDXL.",
-            "examples": ["low-poly"],
+            "examples": [
+              "low-poly"
+            ],
             "title": "Pre-defined Styles"
           },
           "textual_inversions": {
@@ -381,7 +431,9 @@
               }
             ],
             "description": "A dictionary of textual inversions to be used during image generation. Textual inversions as keys and trigger words as values.",
-            "examples": ["{\"name\": \"trigger_word\"}"],
+            "examples": [
+              "{\"name\": \"trigger_word\"}"
+            ],
             "title": "Dictionary of Textual Inversions"
           },
           "transfer_images": {
@@ -405,7 +457,9 @@
           "use_refiner": {
             "default": true,
             "description": "Whether to enable and apply the SDXL refiner model to the image generation.",
-            "examples": [true],
+            "examples": [
+              true
+            ],
             "title": "Use Refiner",
             "type": "boolean"
           },
@@ -419,7 +473,9 @@
               }
             ],
             "description": "Custom VAE to be used during image generation.",
-            "examples": ["my_vae"],
+            "examples": [
+              "my_vae"
+            ],
             "title": "VAE"
           },
           "width": {
@@ -432,11 +488,15 @@
               }
             ],
             "description": "Integer representing the width of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
-            "examples": [1024],
+            "examples": [
+              1024
+            ],
             "title": "Output Image Width"
           }
         },
-        "required": ["prompt"],
+        "required": [
+          "prompt"
+        ],
         "title": "ImageGenerationRequest",
         "type": "object"
       },
@@ -457,7 +517,10 @@
             "type": "number"
           }
         },
-        "required": ["images", "prediction_time_ms"],
+        "required": [
+          "images",
+          "prediction_time_ms"
+        ],
         "title": "ImageGenerationResponse",
         "type": "object"
       },
@@ -603,7 +666,11 @@
             "type": "string"
           }
         },
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError",
         "type": "object"
       },
@@ -645,7 +712,12 @@
             "title": "Serialized Video/Animation"
           }
         },
-        "required": ["video", "removed_for_safety", "seed", "safety_score"],
+        "required": [
+          "video",
+          "removed_for_safety",
+          "seed",
+          "safety_score"
+        ],
         "title": "VideoGeneration",
         "type": "object"
       },
@@ -656,7 +728,9 @@
           "cfg_scale": {
             "default": 3.0,
             "description": "Floating-point number represeting how closely to adhere to 'image'. Must be a positive number no greater than 10.0.",
-            "examples": [3.0],
+            "examples": [
+              3.0
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 10.0,
             "title": "Classifier-free Guidance Scale",
@@ -665,7 +739,9 @@
           "constant_rate_factor": {
             "default": 23,
             "description": "Integer representing the quality of the video encoding. Higher quality means the file will be larger.The range of the CRF scale is [0,51], where 0 is lossless, 23 is the default, and 51 is worst quality possible.",
-            "examples": [23],
+            "examples": [
+              23
+            ],
             "maximum": 51.0,
             "minimum": 0.0,
             "title": "Constant Rate Factor",
@@ -674,7 +750,9 @@
           "fps": {
             "default": 7,
             "description": "Integer representing how fast the generated frames should play back.",
-            "examples": [7],
+            "examples": [
+              7
+            ],
             "maximum": 25.0,
             "minimum": 1.0,
             "title": "Frames per Second",
@@ -690,7 +768,9 @@
               }
             ],
             "description": "Integer representing the height of video/animation to generate.If not provided, the output height will be inferred from the input 'image', and the closest resolution supported will be chosen. Supported resolutions (w,h): {(576, 1024), (1024, 576), (768, 768)}.",
-            "examples": [576],
+            "examples": [
+              576
+            ],
             "title": "Output Video/Animation Height"
           },
           "image": {
@@ -701,7 +781,9 @@
           "motion_scale": {
             "default": 0.5,
             "description": "A floating point number between 0.0 and 1.0 indicating how much motion should be in the generated video/animation.",
-            "examples": [0.5],
+            "examples": [
+              0.5
+            ],
             "maximum": 1.0,
             "minimum": 0.0,
             "title": "Motion Scale",
@@ -710,7 +792,9 @@
           "noise_aug_strength": {
             "default": 0.02,
             "description": "A floating point number between 0.0 and 1.0 indicatiing how much noise to add to the initial image. Higher values encourage creativity.",
-            "examples": [0.02],
+            "examples": [
+              0.02
+            ],
             "maximum": 1.0,
             "minimum": 0.0,
             "title": "Noise Augmentation",
@@ -719,7 +803,9 @@
           "num_videos": {
             "default": 1,
             "description": "Integer representing how many output videos/animations to generate with a single 'image' and configuration.",
-            "examples": [1],
+            "examples": [
+              1
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 16.0,
             "title": "Number of Output Images",
@@ -748,13 +834,17 @@
               }
             ],
             "description": "Integer number or list of integers representing the seeds of random generators.Fixing random seed is useful when attempting to generate a specific video/animation (or set of videos/animations). Must be greater than 0 and less than 2^32.",
-            "examples": [33445],
+            "examples": [
+              33445
+            ],
             "title": "Fixed Random Seed"
           },
           "steps": {
             "default": 25,
             "description": "Integer repreenting how many steps of diffusion to run. Must be greater than 0 and less than or equal to 50.",
-            "examples": [25],
+            "examples": [
+              25
+            ],
             "exclusiveMinimum": 0.0,
             "maximum": 50.0,
             "title": "Number of Steps",
@@ -770,11 +860,15 @@
               }
             ],
             "description": "Integer representing the width of video/animation to generate.If not provided, the output width will be inferred from the input 'image', and the closest resolution supported will be chosen. Supported resolutions (w,h): {(576, 1024), (1024, 576), (768, 768)}.",
-            "examples": [1024],
+            "examples": [
+              1024
+            ],
             "title": "Output Video/Animation Width"
           }
         },
-        "required": ["image"],
+        "required": [
+          "image"
+        ],
         "title": "VideoGenerationRequest",
         "type": "object"
       },
@@ -795,7 +889,10 @@
             "type": "array"
           }
         },
-        "required": ["videos", "prediction_time_ms"],
+        "required": [
+          "videos",
+          "prediction_time_ms"
+        ],
         "title": "VideoGenerationResponse",
         "type": "object"
       }
@@ -890,6 +987,45 @@
       "post": {
         "description": "Generate images in response to the given request.",
         "operationId": "generate_images_generate_sd_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Generate Images"
+      }
+    },
+    "/generate/sd3": {
+      "post": {
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_sd3_post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1049,4 +1185,3 @@
     }
   ]
 }
-
