@@ -2,9 +2,8 @@ groups:
   python-sdk-local:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 1.5.2-rc0
+        version: 2.10.2
         config:
-          inline_request_params: true
           client:
             class_name: BaseOctoAI
             filename: base_client.py
@@ -20,7 +19,7 @@ groups:
   python-sdk:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 1.5.2-rc0
+        version: 2.10.2
         output:
           location: pypi
           package-name: "octoai"
@@ -28,7 +27,6 @@ groups:
         github:
           repository: octoml/octoai-python-sdk-fern
         config:
-          inline_request_params: true
           client:
             class_name: BaseOctoAI
             filename: base_client.py
@@ -41,7 +39,7 @@ groups:
   ts-sdk-local:
     generators:
       - name: fernapi/fern-typescript-node-sdk
-        version: 0.18.2
+        version: 0.25.2
         output:
           location: local-file-system
           path: ../../../generated/octoai-typescript-sdk-fern
@@ -60,7 +58,7 @@ groups:
   ts-sdk:
     generators:
       - name: fernapi/fern-typescript-node-sdk
-        version: 0.18.2
+        version: 0.25.2
         output:
           location: npm
           package-name: "@octoai/sdk"
