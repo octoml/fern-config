@@ -7,15 +7,15 @@ slug: text-gen-solution/llama-guard
 
 # Introduction
 
-LlamaGuard is a 7B parameter LLM designed for moderating content in Human-AI interactions, able to focus on safety risks in both prompts and responses.
+Llama Guard 2 is a 8B parameter LLM designed for moderating content in Human-AI interactions, able to focus on safety risks in both prompts and responses.
 
-Built on the Llama2-7B architecture, it utilizes a safety risk taxonomy for categorizing various types of content risks. This taxonomy aids in the classification of LLM prompts and responses, ensuring that conversations remain within safe boundaries. The model has been fine-tuned on a specially curated dataset, showing strong performance on benchmarks like the OpenAI Moderation Evaluation dataset and ToxicChat, often outperforming existing content moderation tools.
+Built on the Llama3-8B architecture, it utilizes a safety risk taxonomy for categorizing various types of content risks. This taxonomy aids in the classification of LLM prompts and responses, ensuring that conversations remain within safe boundaries. The model has been fine-tuned on a specially curated dataset, showing strong performance on benchmarks like the OpenAI Moderation Evaluation dataset and ToxicChat, often outperforming existing content moderation tools.
 
-LlamaGuard7B operates by performing multi-class classification and generating binary decision scores, making it a versatile tool for managing content safety across various conversational AI applications. Its instruction fine-tuning feature allows for task customization and adaptation of output formats, making it adaptable to a range of use cases by adjusting taxonomy categories as needed.
+Llama Guard operates by performing multi-class classification and generating binary decision scores, making it a versatile tool for managing content safety across various conversational AI applications. Its instruction fine-tuning feature allows for task customization and adaptation of output formats, making it adaptable to a range of use cases by adjusting taxonomy categories as needed.
 
 # Prompt Template
 
-LlamaGuard requires a *very* specific prompt template to function properly. Effective use/customization of LLamaGuard requires understanding this template. Here is a helpful illustration from Meta's paper on the subject:
+Llama Guard requires a *very* specific prompt template to function properly. Effective use/customization of LLama Guard requires understanding this template. Here is a helpful illustration from Meta's paper on the subject:
 
 ![](https://www.datocms-assets.com/45680/1707943861-llama_guard.jpg)
 
@@ -116,7 +116,7 @@ for prompt in [
         "https://text.octoai.run/v1/completions",
         headers={"Authorization": f"Bearer {token}"},
         json={
-            "model": "llamaguard-7b",
+            "model": "llamaguard-2-8b",
             "prompt": format_prompt("User", prompt), #Submit the prompt and specify the role as "user" for this exercise
             "max_tokens": 100,
             "top_p": 0.9,
@@ -220,7 +220,7 @@ for prompt in [
         "https://text.octoai.run/v1/completions",
         headers={"Authorization": f"Bearer {token}"},
         json={
-            "model": "llamaguard-7b",
+            "model": "llamaguard-2-8b",
             "prompt": format_prompt("User", prompt),
             "max_tokens": 100,
             "top_p": 0.9,
@@ -236,6 +236,6 @@ for prompt in [
 [{'finish_reason': 'stop', 'index': 0, 'logprobs': None, 'text': ' safe'}]
 ```
 
-With the controllled substances policy removed, the model deems a question about the creation of crystal meth to be "safe".  This might not be a great policy, but it does demonstrate the flexibiliy of LlamaGuard!
+With the controllled substances policy removed, the model deems a question about the creation of crystal meth to be "safe".  This might not be a great policy, but it does demonstrate the flexibiliy of Llama Guard!
 
 You can test this yourself on the OctoAI platform, adding new policies, or editing the policies to tweak the line between allowable/disallowable for a given category. Try out safe/unsafe prompts and see how flexible Llama Guard can be!
