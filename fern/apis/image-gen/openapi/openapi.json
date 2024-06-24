@@ -87,6 +87,101 @@
             "title": "Classifier-free Guidance Scale",
             "type": "number"
           },
+          "checkpoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] Custom checkpoint to be used during image generation.",
+            "examples": [
+              "dreamshaper"
+            ],
+            "title": "Checkpoint"
+          },
+          "clip_skip": {
+            "anyOf": [
+              {
+                "maximum": 12.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] Optionally skip later layers of the text encoder. Higher values lead to more abstract interpretations of the prompt.",
+            "examples": [
+              2
+            ],
+            "title": "Clip Skip"
+          },
+          "controlnet": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] ControlNet to be used during image generation.",
+            "examples": [
+              "canny"
+            ],
+            "title": "ControlNet"
+          },
+          "controlnet_conditioning_scale": {
+            "default": 1.0,
+            "description": "[Not supported on SD3] How strong the effect of the controlnet should be.",
+            "examples": [
+              1.0
+            ],
+            "minimum": 0.0,
+            "title": "ControlNet Scale",
+            "type": "number"
+          },
+          "controlnet_early_stop": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.",
+            "examples": [
+              0.5
+            ],
+            "title": "ControlNet Early Stop"
+          },
+          "controlnet_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] Controlnet image encoded in b64 string for guiding image generation. Required for controlnet engines.",
+            "title": "ControlNet Image"
+          },
+          "controlnet_preprocess": {
+            "default": true,
+            "description": "[Not supported on SD3] Whether to apply automatic ControlNet preprocessing.",
+            "examples": [
+              true
+            ],
+            "title": "ControlNet Preprocessing",
+            "type": "boolean"
+          },
           "height": {
             "anyOf": [
               {
@@ -96,11 +191,22 @@
                 "type": "null"
               }
             ],
-            "description": "Integer representing the height of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
+            "description": "Integer representing the height of image to generate. None will default to 512 for SD 1.5 and 1024 for SD3, SDXL, and SSD. Supported resolutions (w,h): SD3={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
             "examples": [
               1024
             ],
             "title": "Output Image Height"
+          },
+          "high_noise_frac": {
+            "default": 0.8,
+            "description": "[Not supported on SD3] Floating-point number that defines the fraction of steps to perform with the base model. Used only by SD XL. Must be greater than or equal to 0.0 and less than or equal to 1.0.",
+            "examples": [
+              0.8
+            ],
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "High Noise Fraction",
+            "type": "number"
           },
           "image_encoding": {
             "allOf": [
@@ -127,6 +233,36 @@
             "description": "Starting point image encoded in b64 string for Image to Image generation mode.",
             "title": "Initial Image"
           },
+          "loras": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] A dictionary of LoRAs to apply. LoRAs as keys and their weights (float) as values.",
+            "examples": [
+              "{\"crayon-style\": 1.0}"
+            ],
+            "title": "Dictionary of LoRAs"
+          },
+          "mask_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] b64 encoded mask image for inpainting. White area should indicate where to paint.",
+            "title": "Mask Image"
+          },
           "negative_prompt": {
             "anyOf": [
               {
@@ -143,6 +279,22 @@
             ],
             "title": "Negative Prompt"
           },
+          "negative_prompt_2": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] Text with a high level description of things to avoid during generation. Used only by SD XL.",
+            "examples": [
+              "Unusual proportions and distorted faces"
+            ],
+            "title": "Second Negative Prompt"
+          },
           "num_images": {
             "default": 1,
             "description": "Integer representing how many output images to generate with a single prompt/configuration.",
@@ -154,6 +306,15 @@
             "title": "Number of Output Images",
             "type": "integer"
           },
+          "outpainting": {
+            "default": false,
+            "description": "[Not supported on SD3] Whether the request requires outpainting or not. If so, special preprocessing is applied for better results.",
+            "examples": [
+              true
+            ],
+            "title": "Outpainting",
+            "type": "boolean"
+          },
           "prompt": {
             "description": "Text describing the image content to generate.",
             "examples": [
@@ -162,6 +323,35 @@
             "maxLength": 10000,
             "title": "Input Prompt",
             "type": "string"
+          },
+          "prompt_2": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] Text with a high-level description of the image to generate. Used only by SD XL.",
+            "examples": [
+              "A painting of a cute cat wearing a hat"
+            ],
+            "title": "Second Input Prompt"
+          },
+          "sampler": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Scheduler"
+              }
+            ],
+            "default": "DDIM",
+            "description": "[Not supported on SD3] Sampler name (also known as 'scheduler') to use during image generation.",
+            "examples": [
+              "DDIM"
+            ],
+            "title": "Sampler Name"
           },
           "seed": {
             "anyOf": [
@@ -213,6 +403,81 @@
             "title": "Strength",
             "type": "number"
           },
+          "style_preset": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SDXLStyles"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] Pre-defined styles used to guide the output image towards a particular style. Pre-defined styles are only supported by SDXL.",
+            "examples": [
+              "low-poly"
+            ],
+            "title": "Pre-defined Styles"
+          },
+          "textual_inversions": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] A dictionary of textual inversions to be used during image generation. Textual inversions as keys and trigger words as values.",
+            "examples": [
+              "{\"name\": \"trigger_word\"}"
+            ],
+            "title": "Dictionary of Textual Inversions"
+          },
+          "transfer_images": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not supported on SD3] A dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object or style to transfer.",
+            "title": "Image Content Style Transfer Triggers and Samples."
+          },
+          "use_refiner": {
+            "default": true,
+            "description": "[Not supported on SD3] Whether to enable and apply the SDXL refiner model to the image generation.",
+            "examples": [
+              true
+            ],
+            "title": "Use Refiner",
+            "type": "boolean"
+          },
+          "vae": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "[Not Supported on SD3] Custom VAE to be used during image generation.",
+            "examples": [
+              "my_vae"
+            ],
+            "title": "VAE"
+          },
           "width": {
             "anyOf": [
               {
@@ -222,7 +487,7 @@
                 "type": "null"
               }
             ],
-            "description": "Integer representing the width of image to generate. None will default to 512 for SD 1.5 and 1024 for SD XL and SSD. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
+            "description": "Integer representing the width of image to generate. None will default to 512 for SD 1.5 and 1024 for SD3, SDXL, and SSD. Supported resolutions (w,h): SD3={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}, SD1.5={(768, 576), (1024, 576), (640, 512), (384, 704), (640, 768), (640, 640), (1024, 768), (1536, 1024), (768, 1024), (576, 448), (1024, 1024), (896, 896), (704, 1216), (512, 512), (448, 576), (832, 512), (512, 704), (576, 768), (1216, 704), (512, 768), (512, 832), (1024, 1536), (576, 1024), (704, 384), (768, 512)}, SSD={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}.",
             "examples": [
               1024
             ],
@@ -258,6 +523,91 @@
         ],
         "title": "ImageGenerationResponse",
         "type": "object"
+      },
+      "SDXLStyles": {
+        "description": "The supported SDXL styles.",
+        "enum": [
+          "base",
+          "3d-model",
+          "analog-film",
+          "anime",
+          "cinematic",
+          "comic-book",
+          "Craft Clay",
+          "modeling-compound",
+          "digital-art",
+          "enhance",
+          "fantasy-art",
+          "isometric",
+          "line-art",
+          "low-poly",
+          "neon-punk",
+          "origami",
+          "photographic",
+          "pixel-art",
+          "tile-texture",
+          "Advertising",
+          "Food Photography",
+          "Real Estate",
+          "Abstract",
+          "Cubist",
+          "Graffiti",
+          "Hyperrealism",
+          "Impressionist",
+          "Pointillism",
+          "Pop Art",
+          "Psychedelic",
+          "Renaissance",
+          "Steampunk",
+          "Surrealist",
+          "Typography",
+          "Watercolor",
+          "Fighting Game",
+          "GTA",
+          "Super Mario",
+          "Minecraft",
+          "Pok\u00e9mon",
+          "Retro Arcade",
+          "Retro Game",
+          "RPG Fantasy Game",
+          "Strategy Game",
+          "Street Fighter",
+          "Legend of Zelda",
+          "Architectural",
+          "Disco",
+          "Dreamscape",
+          "Dystopian",
+          "Fairy Tale",
+          "Gothic",
+          "Grunge",
+          "Horror",
+          "Minimalist",
+          "Monochrome",
+          "Nautical",
+          "Space",
+          "Stained Glass",
+          "Techwear Fashion",
+          "Tribal",
+          "Zentangle",
+          "Collage",
+          "Flat Papercut",
+          "Kirigami",
+          "Paper Mache",
+          "Paper Quilling",
+          "Papercut Collage",
+          "Papercut Shadow Box",
+          "Stacked Papercut",
+          "Thick Layered Papercut",
+          "Alien",
+          "Film Noir",
+          "HDR",
+          "Long Exposure",
+          "Neon Noir",
+          "Silhouette",
+          "Tilt-Shift"
+        ],
+        "title": "SDXLStyles",
+        "type": "string"
       },
       "Scheduler": {
         "description": "The schedulers available for image generation.",
