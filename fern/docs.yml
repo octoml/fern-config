@@ -158,6 +158,8 @@ navigation:
                 path: docs/media-gen-solution/image-utilities/outpainting.mdx
               - page: Adetailer
                 path: docs/media-gen-solution/image-utilities/adetailer.mdx
+              - page: Image Prompt (IP) Adapter
+                path: docs/media-gen-solution/image-utilities/ip-adapter.mdx
               - page: Photo Merge
                 path: docs/media-gen-solution/image-utilities/photo-merge.mdx
               - page: Upscaling

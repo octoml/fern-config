@@ -1,0 +1,191 @@
+---
+title: IP Adapter
+subtitle: >-
+  Use images as prompts and transfer subject matter, style, and composition to new generations. 
+slug: media-gen-solution/image-utilities/ip-adapter
+---
+
+IP Adapter revolutionizes image generation by allowing images to serve as prompts, thus seamlessly transferring subject matter or style to new generations.
+IP Adapter can be accessed through ENDPOINT_URL `https://image.octoai.run/generate/ip-adapter-sdxl` with the following API parameters: 
+- `ip_adapter_method`, supported values `full`, `style`, `composition`
+- `ip_adapter_scale`, supported range between 0.1 to 1
+- `ip_adapter_image` : BASE_64 image
+OctoAI’s IP Adapter integrates with SDXL models, enhancing its adaptability and functionality when used with style presets, checkpoints, and LoRAs. However, it currently does not support ControlNets.
+
+
+**1. Full Transfer of Style and Composition**
+
+For our first example, we will take an embroidery pattern from a fabric and impose a similar pattern on a garment.
+
+- **Parameter Settings:**
+    - `ip_adapter_method`: `full`
+    - `ip_adapter_scale`: Adjust for optimal results.
+    - `ip_adapter_image` : BASE_64 image.
+    - `prompt`: Desired text prompt.
+
+**Output:** A garment featuring the transferred embroidery pattern, retaining both the style and composition of the original fabric.
+
+**IP Adapter Method: full** 
+![](https://www.datocms-assets.com/45680/1719351558-ip-adapter-method-full-examples.png?max-w=2000&auto=compress)
+
+**Sample Code Snippet**
+```Python Python
+{
+    "prompt": "A mannequin wearing a long v-neck dress, sleeveless. The mannequin is black, minimalistic, and headless, set against a neutral background.",
+    "negative_prompt": "deformed, ugly, wrong proportion, low res, bad anatomy, worst quality, low quality",
+    "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "checkpoint": "octoai:RealVisXL",
+    "cfg_scale": 7,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "use_refiner": "False",
+    "high_noise_frac": 0.8,
+    "ip_adapter_scale": 0.9,
+    "ip_adapter_method": "full",
+    "ip_adapter_image": <BASE_64>
+    }
+```
+**2. Style Transfer Only**
+
+Next, we’ll generate apparel that embodies the style of a golden spherical ball with intricate patterns, without replicating its composition.
+
+- **Parameter Settings:**
+    - `ip_adapter_method`: `style`
+    - `ip_adapter_scale`: Adjust for optimal results.
+    - `ip_adapter_image` : BASE_64 image.
+    - `prompt`: Desired text prompt.
+
+**Output:** A garment reflecting the intricate style and colors of the golden sphere.
+
+**IP Adapter Method: style**
+![](https://www.datocms-assets.com/45680/1719351745-ip-adapter-method-style-examples.png?max-w=2000&auto=compress)
+
+**Sample Code Snippet**
+```Python Python
+{
+    "prompt": "A mannequin wearing a long v-neck dress, sleeveless. The mannequin is black, minimalistic, and headless, set against a neutral background.",
+    "negative_prompt": "deformed, ugly, wrong proportion, low res, bad anatomy, worst quality, low quality",
+    "sampler": "DDIM",
+    "checkpoint": "octoai:default-sdxl",
+     "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "checkpoint": "octoai:RealVisXL",
+    "cfg_scale": 7,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "use_refiner": "False",
+    "high_noise_frac": 0.8,
+    "ip_adapter_scale": 0.9,
+    "ip_adapter_method": "style",
+    "ip_adapter_image":<BASE_64>
+    }
+```
+
+**3. Color Palette Transfer**
+
+For our third example, we’ll apply a color palette to generate apparel by transferring only the colors.
+
+- **Parameter Settings:**
+    - `ip_adapter_method`: `style`
+    - `ip_adapter_scale`: Adjust for optimal results.
+    - `ip_adapter_image` : BASE_64 image.
+    - `prompt`: Desired text prompt.
+
+**Output:** Garments displaying colors from the provided palette, with variations based on the `ip_adapter_scale`.
+
+**IP Adapter Method: style**
+![](https://www.datocms-assets.com/45680/1719351829-ip-adapter-method-style-examples2.png?max-w=2000&auto=compress)
+
+**Sample Code Snippet**
+```Python Python
+{
+    "prompt": "A mannequin wearing a long v-neck dress, sleeveless. Background is ((neutral)).",
+    "negative_prompt": "deformed, ugly, wrong proportion, low res, bad anatomy, worst quality, low quality",
+    "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "checkpoint": "octoai:RealVisXL",
+    "cfg_scale": 7,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "use_refiner": "False",
+    "high_noise_frac": 0.8,
+    "ip_adapter_scale": 0.99,
+    "ip_adapter_method": "style",
+    "ip_adapter_image":<BASE_64>
+    }
+```
+
+**4. Composition Transfer**
+
+Lastly, let’s focus on transferring the composition from a fluffy ballroom gown and fairy wings to generate new apparel.
+
+- **Parameter Settings:**
+    - `ip_adapter_method`: `composition`
+    - `ip_adapter_scale`: Adjust to achieve the desired outline and structure.
+    - `ip_adapter_image` : BASE_64 image.
+    - `prompt`: Desired text prompt.
+
+**Output:** New designs showcasing the transferred composition while allowing for style variations.
+
+**IP Adapter Method: composition**
+![](https://www.datocms-assets.com/45680/1719351886-ip-adapter-method-composition-examples.png?max-w=2000&auto=compress)
+
+**Sample Code Snippet**
+```Python Python
+{
+    "prompt": "A mannequin wearing a blue dress. Background is ((neutral)).",
+    "negative_prompt": "deformed, ugly, wrong proportion, low res, bad anatomy, worst quality, low quality",
+    "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "checkpoint": "octoai:RealVisXL",
+    "cfg_scale": 7,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "use_refiner": "False",
+    "high_noise_frac": 0.8,
+    "ip_adapter_scale": 0.8,
+    "ip_adapter_method": "composition",
+    "ip_adapter_image":<BASE_64>
+    }
+```
+
+**5. Generating Variations Without Text Prompts**
+
+To generate variations of a reference apparel without using text prompts:
+
+- Use the reference image directly as a prompt and experiment with different parameters for diverse outputs.
+- **Parameter Settings:**
+    - `ip_adapter_method`: full
+    - `ip_adapter_scale`: Adjust for optimal results.
+    - `ip_adapter_image` : BASE_64 image
+    - `prompt`: None
+
+**Output:** Multiple variations of the original apparel, reflecting different styles or minor tweaks.
+
+**IP Adapter Method: full, No text prompt**
+![](https://www.datocms-assets.com/45680/1719351960-ip-adapter-method-no-prompt-examples.png?max-w=2000&auto=compress)
+
+**Sample Code Snippet**
+```Python Python
+{
+    "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+    "checkpoint": "octoai:RealVisXL",
+    "cfg_scale": 7,
+    "num_images": 1,
+    "width": 1024,
+    "height": 1024,
+    "steps": 30,
+    "use_refiner": "False",
+    "high_noise_frac": 0.8,
+    "ip_adapter_scale": 0.8,
+    "ip_adapter_method": "full",
+    "ip_adapter_image":<BASE_64>
+    }
+```
+
+By leveraging the IP Adapter, businesses can generate consistent, visually appealing images across various applications—from fashion and gaming to marketing and beyond.
