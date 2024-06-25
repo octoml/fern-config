@@ -82,7 +82,7 @@
             "examples": [
               12.0
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 50.0,
             "title": "Classifier-free Guidance Scale",
             "type": "number"
@@ -301,7 +301,7 @@
             "examples": [
               1
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 16.0,
             "title": "Number of Output Images",
             "type": "integer"
@@ -387,7 +387,7 @@
             "examples": [
               30
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 200.0,
             "title": "Number of Steps",
             "type": "integer"
@@ -398,7 +398,7 @@
             "examples": [
               0.8
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 1.0,
             "title": "Strength",
             "type": "number"
@@ -731,7 +731,7 @@
             "examples": [
               3.0
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 10.0,
             "title": "Classifier-free Guidance Scale",
             "type": "number"
@@ -806,7 +806,7 @@
             "examples": [
               1
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 16.0,
             "title": "Number of Output Images",
             "type": "integer"
@@ -845,7 +845,7 @@
             "examples": [
               25
             ],
-            "exclusiveMinimum": false,
+            "exclusiveMinimum": 0.0,
             "maximum": 50.0,
             "title": "Number of Steps",
             "type": "integer"
