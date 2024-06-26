@@ -295,6 +295,8 @@ navigation:
             slug: adetailer
           - endpoint: POST /upscaling
             slug: upscaling
+          - endpoint: POST /ip-adapter-sdxl
+            slug: ip-adapter
   - tab: integrations
     layout:
       - section: Integrations

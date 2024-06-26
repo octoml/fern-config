@@ -9,6 +9,9 @@ paths:
     post:
       summary: "Adetailer"
       x-fern-sdk-method-name: generate_images
+  /ip-adapter-sdxl:
+      summary: "IP Adapter"
+      x-fern-sdk-method-name: ip_adapter
   /healthcheck:
     get:
       x-fern-ignore: true
@@ -45,3 +48,8 @@ components:
       x-fern-type-name: UpscalingRequest
     ValidationError:
       x-fern-type-name: ValidationError
+    IPAdapterMethod:
+      x-fern-type-name: IPAdapterMethod
+    IPAdapterMode:
+      x-fern-type-name: IPAdapterMode
+      
