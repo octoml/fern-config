@@ -1,0 +1,89 @@
+---
+title: Image Prompt (IP) API
+slug: media-gen-solution/rest-apis/ip-adapter
+---
+Use images as prompts to transfer subject matter, style, and composition to new generations.
+
+IP Adapter revolutionizes image generation by allowing images to serve as prompts, thus seamlessly transferring subject matter or style to new generations. 
+
+IP Adapter can be accessed through ENDPOINT_URL https://image.octoai.run/generate/ip-adapter-sdxl with the following IP Adapter specific API parameters:
+
+`ip_adapter_image` (string, required) : IP Adapter image encoded in b64 string for guiding image generation. Required for ip adapter engines.
+`ip_adapter_method` (string, optional): Define which ip adapter method should be applied during the image generation. Supported modes: full, style, and composition. Defaults to full if not specified.
+`ip_adapter_scale` (number, optional): How strong the effect of the ip adapter should be. supported range between 0.1 to 1
+`ip_adapter_mode` (string, optional): Define which ip adapter mode should be applied during the image generation. Supported modes: base. Defaults to base if not specified.
+`ip_adapter_mask_image` (string, optional) b64 encoded mask image for ip adapter. White area should indicate where to paint.
+
+OctoAI’s IP Adapter integrates with SDXL models, enhancing its adaptability and functionality when used with style presets, checkpoints, and LoRAs. However, it currently does not support ControlNets.
+
+
+## Request payload
+**Parameters:**
+
+- `prompt` `Optional`: A string describing the image to generate.
+  - We currently have a 77 token limit on prompts for SDXL
+  - You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)` . The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
+- `negative_prompt` `Optional`: A string indicating a prompt for guidance to steer away from. Unused when not provided.
+- `ip_adapter_image` `Required` : IP Adapter image encoded in b64 string for guiding image generation. Required for ip adapter engines.
+- ip_adapter_mask_image `Optional: b64 encoded mask image for ip adapter. White area should indicate where to paint.
+- ip_adapter_method `Optional`: Define which ip adapter method should be applied during the image generation. Supported modes: full, style, and composition
+Allowed values:`full`, `style`,`composition`. Defaults to `full` when not specified.
+- ip_adapter_mode `Optional`: Define which ip adapter mode should be applied during the image generation. Supported modes: `base`. Defaults to `base` when not specified. 
+- ip_adapter_scale `Optional`:How strong the effect of the ip adapter should be.Supported range 0.1 to 1. Defaults to 1. 
+- `sampler` `Optional`: A string specifying which scheduler to use when generating an image. Defaults to `DDIM`. Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
+- `height` `Optional`: An integer specifying the height of the output image. Defaults to `1024` for SDXL.
+- `width` `Optional`: An integer specifying the width of the output image. Defaults to `1024` for SDXL.
+**Supported Output Resolutions (Width x Height)** are as follows:
+For SDXL:
+```
+(1024, 1024),(896, 1152),(832, 1216),(768,
+1344),(640, 1536),(1536, 640),(1344, 768),
+(1216, 832),(1152, 896)
+```
+- `cfg_scale` `Optional`: How strictly the diffusion process adheres to the prompt text (higher values keep your image closer to your prompt). When not set defaults to `12`.
+- `steps` `Optional`: How many steps of diffusion to perform. The higher this is, the higher the image clarity will be but proportionally increases the runtime. Defaults to `30` when not set.
+- `num_images`: An integer describing the number of images to generate. Defaults to `1`
+- `seed` `Optional`: An integer that fixes the random noise of the model. Using the same seed guarantees the same output image, which can be useful for testing or replication. Use `null` to select a random seed.
+- `use_refiner`: This only applies to SDXL. A boolean `true` or `false` determines whether to use the refiner or not
+- `high_noise_frac` `Optional`: This only applies to SDXL. A floating point or integer determining how much noise should be applied using the base model vs. the refiner. A value of `0.8` will apply the base model at 80% and Refiner at 20%. Defaults to `0.8` when not set.
+- `checkpoint`: Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+- `loras`: Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+- `style_preset` `Optional`: This only applies to SDXL. Used to guide the output image towards a particular style. Defaults to `None`. Supported values for styles present include `base`, `3d-model`, `Abstract`,`Advertising`, `Alien`, `analog-film`, `anime`,`Architectural`, `cinematic`, `Collage`,`comic-book`, `Craft Clay`, `Cubist`,`digital-art`, `Disco`,`Dreamscape`,`Dystopian`, `enhance`, `Fairy Tale`,`fantasy-art`, `Fighting Game`, `Film Noir`, `Flat Papercut`, `Food Photography`, `Gothic`, `Graffiti`, `Grunge`, `HDR`, `Horror`, `Hyperrealism`, `Impressionist`, `isometric`, `Kirigami`, `line-art`,`Long Exposure`,`low-poly`,`Minimalist`,`modeling-compound`,`Monochrome`,`Nautical`,
+  `Neon Noir`,`neon-punk`,`origami`,`Paper Mache`, `Paper Quilling`,`Papercut Collage`,`Papercut Shadow Box`,`photographic`,`pixel-art`,`Pointillism`,`Pop Art`,`Psychedelic`,`Real Estate`,`Renaissance`,`Retro Arcade`,`Retro Game`,`RPG Fantasy`,`Game`,`Silhouette`,`Space`,`Stacked Papercut`,`Stained Glass`,`Steampunk`,`Strategy Game`,`Surrealist`,`Techwear Fashion`,`Thick Layered Papercut`,`tile-texture`,`Tilt-Shift`,
+  `Tribal`,`Typography`,`Watercolor`,`Zentangle`
+- `init_image` `Optional`: Only applicable for Img2Img and inpainting use cases i.e. to use an image as a starting point for image generation. Argument takes an image encoded as a string in base64 format.
+  <Note>Use .jpg format to ensure best latency </Note>
+- `strength` `Optional`: Only applicable for img2img use cases. A floating point or integer determines how much noise should be applied. Values that approach `1.0` allow for high variation i.e. ignoring the image entirely, but will also produce images that are not semantically consistent with the input and `0.0` keeps the input image as-is. Defaults to `0.8` when not set.
+- `mask_image` `Optional`: Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
+  - Use .jpg format to ensure best latency
+- `outpainting` `Optional`: Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
+
+## Response
+
+* `image_b64` (string) - Base64-encoded png containing the processed image.
+
+### cURL example
+
+
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/ip-adapter-sdxl" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "a cat catching a ball",
+        "negative_prompt": "deformed, ugly, wrong proportion, low res, bad anatomy, worst quality, low quality",
+        "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+        "checkpoint": "octoai:RealVisXL",
+        "cfg_scale": 7,
+        "num_images": 1,
+        "seed": 8675309,
+        "width": 1024,
+        "height": 1024,
+        "steps": 30,
+        "use_refiner": "false",
+        "ip_adapter_scale": 0.6,
+        "ip_adapter_mode": "base",
+        "ip_adapter_method": "full",
+        "ip_adapter_image": "<BASE_64_IMAGE>"
+    }' > response.json
+```

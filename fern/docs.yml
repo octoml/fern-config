@@ -78,6 +78,8 @@ navigation:
                 path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
               - page: Video Gen
                 path: docs/media-gen-solution/rest-apis/video-gen.mdx
+              - page: Image Prompt Adapter
+                path: docs/media-gen-solution/rest-apis/ip-adapter.mdx
               - page: Background Removal
                 path: docs/media-gen-solution/rest-apis/background-removal.mdx
               - page: Upscaling
