@@ -258,9 +258,43 @@ navigation:
         snippets:
           python: "octoai"
           typescript: "@octoai/sdk"
+        layout:
+          - text-gen:
+              title: Text Generation API
+          - image-gen:
+              title: Media Generation API
+              slug: media-gen
+              contents:
+                - endpoint: POST /generate/sd
+                  title: Generate SD1.5
+                  slug: sd15
+                - endpoint: POST /generate/sdxl
+                  title: Generate SDXL
+                  slug: sdxl
+                - endpoint: POST /generate/sd3
+                  title: Generate SD3
+                  slug: sd3
+                - endpoint: POST /generate/controlnet-sd15
+                  title: Generate ControlNet 1.5
+                  slug: controlnet-sd15
+                - endpoint: POST /generate/controlnet-sdxl
+                  title: Generate ControlNet SDXL
+                  slug: controlnet-sdxl
+                - endpoint: POST /generate/svd
+                  title: Generate SVD
+                  slug: svd
+          - fine-tuning:
+              title: Fine Tuning API
+          - asset-library:
+              title: Asset Library API
       - api: Media Utilities API
         api-name: image-gen-util
         slug: media-util
+        layout:
+          - endpoint: POST /adetailer
+            slug: adetailer
+          - endpoint: POST /upscaling
+            slug: upscaling
   - tab: integrations
     layout:
       - section: Integrations
