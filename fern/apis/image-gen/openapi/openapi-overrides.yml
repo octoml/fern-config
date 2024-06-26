@@ -6,51 +6,30 @@ paths:
     post:
       summary: "Generate ControlNet SDXL"
       x-fern-sdk-method-name: generateControlnetSdxl
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/controlnet-sd15:
     post:
       summary: "Generate ControlNet SD1.5"
       x-fern-sdk-method-name: generateControlnetSd15
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/sdxl:
     post:
       summary: "Generate SDXL"
       x-fern-sdk-method-name: generateSdxl
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/sd:
     post:
       summary: "Generate SD1.5"
       x-fern-sdk-method-name: generateSd
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/sd3:
     post:
       summary: "Generate SD3"
       x-fern-sdk-method-name: generateSd3
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/svd:
     post:
       summary: "Generate SVD Animations"
       x-fern-sdk-method-name: generateSvd
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/ip-adapter-sdxl:
     post:
       summary: "IP Adapter"
       x-fern-sdk-method-name: ip_adapter
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   # Hide healthcheck
   /healthcheck:
     get:
