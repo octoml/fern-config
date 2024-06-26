@@ -44,7 +44,7 @@ paths:
       servers:
         - url: https://image.octoai.run
           x-name: ImageGen
-  /ip-adapter-sdxl:
+  /generate/ip-adapter-sdxl:
     post:
       summary: "IP Adapter"
       x-fern-sdk-method-name: ip_adapter
