@@ -16,6 +16,22 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "IPAdapterMethod": {
+        "description": "The ip adapter method for image generation response.",
+        "enum": [
+          "full",
+          "style",
+          "composition"
+        ],
+        "title": "IPAdapterMethod",
+        "type": "string"
+      },
+      "IPAdapterMode": {
+        "const": "base",
+        "description": "The ip adapter mode for image generation response.",
+        "title": "IPAdapterMode",
+        "type": "string"
+      },
       "ImageEncoding": {
         "description": "The image encoding types available for image generation response.",
         "enum": [
@@ -128,7 +144,7 @@
                 "type": "null"
               }
             ],
-            "description": "[Not supported on SD3] ControlNet to be used during image generation.",
+            "description": "[Not supported on SD3 or IPAdapter] ControlNet to be used during image generation.",
             "examples": [
               "canny"
             ],
@@ -136,7 +152,7 @@
           },
           "controlnet_conditioning_scale": {
             "default": 1.0,
-            "description": "[Not supported on SD3] How strong the effect of the controlnet should be.",
+            "description": "[Not supported on SD3 or IPAdapter] How strong the effect of the controlnet should be.",
             "examples": [
               1.0
             ],
@@ -155,7 +171,7 @@
                 "type": "null"
               }
             ],
-            "description": "[Not supported on SD3] If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.",
+            "description": "[Not supported on SD3 or IPAdapter] If provided, indicates fraction of steps at which to stop applying controlnet. This can be used to sometimes generate better outputs.",
             "examples": [
               0.5
             ],
@@ -170,12 +186,12 @@
                 "type": "null"
               }
             ],
-            "description": "[Not supported on SD3] Controlnet image encoded in b64 string for guiding image generation. Required for controlnet engines.",
+            "description": "[Not supported on SD3 or IPAdapter] Controlnet image encoded in b64 string for guiding image generation. Required for controlnet engines.",
             "title": "ControlNet Image"
           },
           "controlnet_preprocess": {
             "default": true,
-            "description": "[Not supported on SD3] Whether to apply automatic ControlNet preprocessing.",
+            "description": "[Not supported on SD3 or IPAdapter] Whether to apply automatic ControlNet preprocessing.",
             "examples": [
               true
             ],
@@ -232,6 +248,61 @@
             ],
             "description": "Starting point image encoded in b64 string for Image to Image generation mode.",
             "title": "Initial Image"
+          },
+          "ip_adapter_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "IP Adapter image encoded in b64 string for guiding image generation. Required for ip adapter engines.",
+            "title": "IP Adapter Image"
+          },
+          "ip_adapter_mask_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "b64 encoded mask image for ip adapter. White area should indicate where to paint.",
+            "title": "IP Adapter Mask Image"
+          },
+          "ip_adapter_method": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IPAdapterMethod"
+              }
+            ],
+            "default": "full",
+            "description": "Define which ip adapter method should be applied during the image generation. Supported modes: full, style, and composition",
+            "example": "full",
+            "title": "IP Adapter Method"
+          },
+          "ip_adapter_mode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IPAdapterMode"
+              }
+            ],
+            "default": "base",
+            "description": "Define which ip adapter mode should be applied during the image generation. Supported modes: base",
+            "example": "base",
+            "title": "IP Adapter Mode"
+          },
+          "ip_adapter_scale": {
+            "default": 1.0,
+            "description": "How strong the effect of the ip adapter should be.",
+            "example": 1.0,
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "IP Adapter Scale",
+            "type": "number"
           },
           "loras": {
             "anyOf": [
@@ -948,6 +1019,45 @@
       "post": {
         "description": "Generate images in response to the given request.",
         "operationId": "generate_images_generate_controlnet_sdxl_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Generate Images"
+      }
+    },
+    "/generate/ip-adapter-sdxl": {
+      "post": {
+        "description": "Generate images in response to the given request.",
+        "operationId": "generate_images_generate_ip_adapter_sdxl_post",
         "requestBody": {
           "content": {
             "application/json": {

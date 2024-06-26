@@ -283,6 +283,9 @@ navigation:
                 - endpoint: POST /generate/svd
                   title: Generate SVD
                   slug: svd
+                - endpoint: POST /generate/ip-adapter-sdxl
+                  title: IP Adapter
+                  slug: ip-adapter
           - fine-tuning:
               title: Fine Tuning API
           - asset-library:
@@ -295,6 +298,8 @@ navigation:
             slug: adetailer
           - endpoint: POST /upscaling
             slug: upscaling
+          - endpoint: POST /ip-adapter-sdxl
+            slug: ip-adapter
   - tab: integrations
     layout:
       - section: Integrations

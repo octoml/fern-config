@@ -45,3 +45,4 @@ components:
       x-fern-type-name: UpscalingRequest
     ValidationError:
       x-fern-type-name: ValidationError
+      
