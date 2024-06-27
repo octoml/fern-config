@@ -74,6 +74,8 @@ navigation:
             path: docs/text-gen-solution/migration-from-openai.mdx
           - section: Media Gen REST APIs
             contents:
+              - page: SD3
+                path: docs/media-gen-solution/rest-apis/Generate/Images/sd3.mdx
               - page: Image Gen
                 path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
               - page: Video Gen
