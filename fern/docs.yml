@@ -86,16 +86,12 @@ navigation:
                 path: docs/media-gen-solution/rest-apis/upscaling.mdx
               - page: Adetailer
                 path: docs/media-gen-solution/rest-apis/adetailer.mdx
-            contents:
               - section: Generate
                 contents: 
                   - section: Images     
                     contents: 
                       - page: Stable Diffusion 3
                         path: docs/media-gen-solution/rest-apis/generate/images/sd3.mdx
-              - section: Videos
-            - section: Edit
-            - section: Control
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
