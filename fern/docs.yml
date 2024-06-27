@@ -249,7 +249,7 @@ navigation:
           - page: Multi-user accounts
             path: docs/faqs/multi-user-accounts.mdx
           - page: Copyright
-            path: /docs/faqs/copyright.mdx
+            path: docs/faqs/copyright.mdx
           - page: Open source licenses
             path: docs/faqs/open-source-licenses.mdx
   - tab: apiReference
