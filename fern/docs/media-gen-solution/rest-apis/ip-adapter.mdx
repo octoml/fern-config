@@ -6,13 +6,7 @@ Use images as prompts to transfer subject matter, style, and composition to new 
 
 IP Adapter revolutionizes image generation by allowing images to serve as prompts, thus seamlessly transferring subject matter or style to new generations. 
 
-IP Adapter can be accessed through ENDPOINT_URL https://image.octoai.run/generate/ip-adapter-sdxl with the following IP Adapter specific API parameters:
-
-`ip_adapter_image` (string, required) : IP Adapter image encoded in b64 string for guiding image generation. Required for ip adapter engines.
-`ip_adapter_method` (string, optional): Define which ip adapter method should be applied during the image generation. Supported modes: full, style, and composition. Defaults to full if not specified.
-`ip_adapter_scale` (number, optional): How strong the effect of the ip adapter should be. supported range between 0.1 to 1
-`ip_adapter_mode` (string, optional): Define which ip adapter mode should be applied during the image generation. Supported modes: base. Defaults to base if not specified.
-`ip_adapter_mask_image` (string, optional) b64 encoded mask image for ip adapter. White area should indicate where to paint.
+IP Adapter can be accessed through ENDPOINT_URL `https://image.octoai.run/generate/ip-adapter-sdxl`.
 
 OctoAI’s IP Adapter integrates with SDXL models, enhancing its adaptability and functionality when used with style presets, checkpoints, and LoRAs. However, it currently does not support ControlNets.
 
@@ -25,11 +19,11 @@ OctoAI’s IP Adapter integrates with SDXL models, enhancing its adaptability an
   - You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)` . The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
 - `negative_prompt` `Optional`: A string indicating a prompt for guidance to steer away from. Unused when not provided.
 - `ip_adapter_image` `Required` : IP Adapter image encoded in b64 string for guiding image generation. Required for ip adapter engines.
-- ip_adapter_mask_image `Optional: b64 encoded mask image for ip adapter. White area should indicate where to paint.
-- ip_adapter_method `Optional`: Define which ip adapter method should be applied during the image generation. Supported modes: full, style, and composition
+- `ip_adapter_mask_image` `Optional: b64 encoded mask image for ip adapter. White area should indicate where to paint.
+- `ip_adapter_method` `Optional`: Define which ip adapter method should be applied during the image generation. Supported modes: full, style, and composition
 Allowed values:`full`, `style`,`composition`. Defaults to `full` when not specified.
-- ip_adapter_mode `Optional`: Define which ip adapter mode should be applied during the image generation. Supported modes: `base`. Defaults to `base` when not specified. 
-- ip_adapter_scale `Optional`:How strong the effect of the ip adapter should be.Supported range 0.1 to 1. Defaults to 1. 
+- `ip_adapter_mode` `Optional`: Define which ip adapter mode should be applied during the image generation. Supported modes: `base`. Defaults to `base` when not specified. 
+- `ip_adapter_scale` `Optional`:How strong the effect of the ip adapter should be.Supported range 0.1 to 1. Defaults to 1. 
 - `sampler` `Optional`: A string specifying which scheduler to use when generating an image. Defaults to `DDIM`. Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
 - `height` `Optional`: An integer specifying the height of the output image. Defaults to `1024` for SDXL.
 - `width` `Optional`: An integer specifying the width of the output image. Defaults to `1024` for SDXL.
