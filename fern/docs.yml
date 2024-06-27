@@ -74,18 +74,18 @@ navigation:
             path: docs/text-gen-solution/migration-from-openai.mdx
           - section: Media Gen REST APIs
             contents:
-              - page: Image Gen
-                path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
-              - page: Video Gen
-                path: docs/media-gen-solution/rest-apis/video-gen.mdx
-              - page: Image Prompt Adapter
-                path: docs/media-gen-solution/rest-apis/ip-adapter.mdx
-              - page: Background Removal
-                path: docs/media-gen-solution/rest-apis/background-removal.mdx
-              - page: Upscaling
-                path: docs/media-gen-solution/rest-apis/upscaling.mdx
-              - page: Adetailer
-                path: docs/media-gen-solution/rest-apis/adetailer.mdx
+              # - page: Image Gen
+              #   path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
+              # - page: Video Gen
+              #   path: docs/media-gen-solution/rest-apis/video-gen.mdx
+              # - page: Image Prompt Adapter
+              #   path: docs/media-gen-solution/rest-apis/ip-adapter.mdx
+              # - page: Background Removal
+              #   path: docs/media-gen-solution/rest-apis/background-removal.mdx
+              # - page: Upscaling
+              #   path: docs/media-gen-solution/rest-apis/upscaling.mdx
+              # - page: Adetailer
+              #   path: docs/media-gen-solution/rest-apis/adetailer.mdx
               - section: Generate
                 contents: 
                   - section: Images     
