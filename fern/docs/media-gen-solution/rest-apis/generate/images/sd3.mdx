@@ -3,82 +3,77 @@ title: SD3 REST API
 slug: media-gen-solution/rest-apis/generate/images
 ---
 
-### 1. **Overview and Introduction (Stable Diffusion 3 API)
+### **Stable Diffusion 3 API**
 
 - **Purpose and Scope**: 
-Generate an image using a Stable Diffusion 3 (SD3 Medium - the 2 billion parameter model).
+Generate an image using a Stable Diffusion 3 (SD3 Medium), a 2 billion parameter model.
 It excels in photorealism, processes complex prompts, and generates clear text.
 
 OctoAI's SD3 API supports both text-to-image and image-to-image use cases. 
 
 - **Authentication**: You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
-### 2. **Endpoint Structure**
-
-### How to use
+### ** How to use**
 
 Invoke `https://image.octoai.run/generate/sd3` endpoint with a `POST` request.
 
 The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
 
-**Generating with a prompt**
-Commonly referred to as **text-to-image**, this mode generates an image from text alone. While the only required
+- **Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. While the only required
 parameter is the `prompt`, it also supports a `width` and `height` parameter which can be used to control the aspect ratio of the generated image.
 
-**Generating with a prompt and an image**
-Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
+- **Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
 
-`prompt` - text to generate the image from
-`init_image` - the image to use as the starting point for the generation
-`strength` - controls how much influence the image parameter has on the output image
-
+- `prompt` - text to generate the image from
+- `init_image` - the image to use as the starting point for the generation
+- `strength` - controls how much influence the image parameter has on the output image
 
 Optional Parameters:
 
-`image_encoding` - the the format of the output image
-`seed` - the randomness seed to use for the generation
-`negative_prompt` - keywords of what you do not wish to see in the output image
+- `image_encoding` - the the format of the output image
+- `seed` - the randomness seed to use for the generation
+- `negative_prompt` - keywords of what you do not wish to see in the output image
 
 <Note>
     Note: for more details about these and additional parameters, please see the request schema below.
 </Note>
 
 
-### Output
+### **Output**
 
 The resolution of the generated image will be 1 megapixel. The default resolution is 1024x1024.
 
-### 3. **Request Details**
+### **Request Details**
 
 - **Headers**: 
-| Authorization | required | Your `OCTOAI_TOKEN` used to authenticate your requests. |
-| --- | --- | --- |
-| Content-Type | required | Always the value “application/json” |
+
+  - `Authorization` (Required): Your `OCTOAI_TOKEN` used to authenticate your requests. 
+  - `Content-Type` (Required): `application/json`
 
 - **Parameters**: 
 
-- `prompt` (string [ 1 .. 10000 ] characters, Required): A string of text describing the image to generate. A strong, descriptive prompt that clearly defines elements, colors, and subjects will lead to better results.
-- `negative_prompt` (string, Optional): Text describing image traits to avoid during generation.
-- `cfg_scale (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Defaults to 12.
-- `image_encoding (enum, Optional): Define which encoding process should be applied before returning the generated image(s). Allowed values: `jpeg` `png`
-- `num_images` (integer, Optional): Integer representing how many output images to generate with a single prompt/configuration. Defaults to 1. Allowed values: 1-16.
-- `seed (union, Optional): Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
-- `steps (integer, Optional Defaults to 30): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.
-- `init_image (string, Optional): The image (encoded in b64 string) to use as the starting point for the generation. This parameter is for Image-to-Image generation. 
-- `strength (double,Optional): Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0. Defaults to 0.8. This parameter is for Image-to-Image generation. 
-- `height (integer, Optional): Integer representing the height of image to generate. Default to 1024. 
-- `width (integer, Optional): Integer representing the width of image to generate. Default to 1024. 
+  - `prompt` (string [ 1 .. 10000 ] characters, Required): A string of text describing the image to generate. A strong, descriptive prompt that clearly defines elements, colors, and subjects will lead to better results.
+  - `negative_prompt` (string, Optional): Text describing image traits to avoid during generation.
+  - `cfg_scale (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Defaults to 12.
+  - `image_encoding (enum, Optional): Define which encoding process should be applied before returning the generated image(s). Allowed values: `jpeg` `png`
+  - `num_images` (integer, Optional): Integer representing how many output images to generate with a single prompt/configuration. Defaults to 1. Allowed values: 1-16.
+  - `seed (union, Optional): Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
+  - `steps (integer, Optional Defaults to 30): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.
+  - `init_image (string, Optional): The image (encoded in b64 string) to use as the starting point for the generation. This parameter is for Image-to-Image generation. 
+  - `strength (double,Optional): Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0. Defaults to 0.8. This parameter is for Image-to-Image generation. 
+  - `height (integer, Optional): Integer representing the height of image to generate. Default to 1024. 
+  - `width (integer, Optional): Integer representing the width of image to generate. Default to 1024. 
 
-**Supported Output Resolutions (Width x Height)** are as follows:
+  **Supported Output Resolutions (Width x Height)** are as follows:
 
-SD3:
- 
-```(1536, 640), (768, 1344), (832, 1216), (1344, 768),
-(1152, 896),(640, 1536), (1216, 832), (896, 1152), (1024, 1024)
-```
+  SD3:
+  
+  ```(1536, 640), (768, 1344), (832, 1216), (1344, 768),
+  (1152, 896),(640, 1536), (1216, 832), (896, 1152), (1024, 1024)
+  ```
 
 
-### 4. **Request Examples**
+### **Request Examples**
 
 - **Sample Requests**: 
 
