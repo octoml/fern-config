@@ -73,9 +73,15 @@ navigation:
           - page: Migrate from OpenAI to OctoAI in 3 lines of code
             path: docs/text-gen-solution/migration-from-openai.mdx
           - section: Media Gen REST APIs
+            - section: Generate
+              - section: Images
+                contents: 
+                  - page: SD3
+                    path: docs/media-gen-solution/rest-apis/generate/images/sd3.mdx
+              - section: Videos
+            - section: Edit
+            - section: Control
             contents:
-              - page: SD3
-                path: docs/media-gen-solution/rest-apis/Generate/Images/sd3.mdx
               - page: Image Gen
                 path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
               - page: Video Gen
