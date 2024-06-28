@@ -1,0 +1,201 @@
+---
+title: Stable Diffusion 1.5
+slug: media-gen-solution/rest-apis/generate/images
+---
+
+Generate an image using a Stable Diffusion 1.5 (SD1.5) model.
+
+OctoAI's SD1.5 API supports both text-to-image, image-to-image use cases and, adding custom assests like LoRAs, checkpoints, VAES, textual inversions.
+It also support ControlNets. For more details, refer [SD15-ControlNets].
+
+You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
+
+### **How to use**
+
+Invoke `https://image.octoai.run/generate/sd` endpoint with a `POST` request.
+
+The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
+
+**Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. While the only required
+parameter is the `prompt`, it also supports a `width` and `height` parameter which can be used to control the aspect ratio of the generated image.
+
+**Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
+  - `strength` - controls how much influence the image parameter has on the output image
+
+**Generating with a prompt and a custom asset**: This mode generates an image from text but uses either a custom checkpoint, LoRA, textual inversion, or VAE. Note that using a custom asset increases generation time.
+
+  - `prompt` - text to generate the image from
+  - `checkpoint` -  Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. 
+  - `loras` -  Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. 
+  - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 
+  - `vae` -  Here you can specify variational autoencoders. 
+
+**Inpainting with a prompt **: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
+  - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
+
+**Outpainting with a prompt **: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `init_image` - the existing image you’d like to outpaint. You need to create a source image that places your original image within a larger canvas. Argument takes an image encoded as a string in base64 format.
+  - `mask_image` - a black and white mask representing the extended area. Argument takes an image encoded as a string in base64 format.
+  - `outpainting` -  Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`. This needs to be set to `true`, if you wish to use outpainting. 
+    
+*** Transfer faces from source image to new generation Parameter aka [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature. ***
+    - `prompt` - text to generate the image from
+    - `transfer_images` (dict, Optional):  Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s). It works best for face transfer use cases. Argument takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer.
+
+<Note>
+    For more details about all parameters, please see the request schema below.
+</Note>
+
+
+### **Output**
+
+The default resolution of the generated image is 512x512.
+
+### **Pricing**
+
+
+
+*** SD1.5 Base ***: $0.0015 per image, SD1.5, 512x512, 30 steps; billed per image 
+*** SD1.5 custom asset ***: $0.0015 per image, 512x512, 30 steps; billed per image 
+*** Fine tuning job SD1.5 ***: $0.1 per tune, using the 500 step default
+*** Inpainting ***: Same price as corresponding SD1.5 image
+*** Outpainting ***: Same price as corresponding SD1.5 image
+
+
+Check [Pricing Page](getting-started/pricing-and-billing) for more details.
+
+### **Request Details**
+
+  **Headers**: 
+
+    `Authorization` (Required): Your `OCTOAI_TOKEN`  
+    `Content-Type` (Required): Set to `application/json`
+
+  **Parameters**: 
+
+    - `prompt` (string [ upto 77 tokens], Required): A string of text describing the image to generate. You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)` . The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
+    - `negative_prompt` (string, Optional): Text describing image traits to avoid during generation.
+    - `sampler` (string, Optional): A string specifying which scheduler to use when generating an image. Defaults to `DDIM`. Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
+    - `cfg_scale` (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Defaults to 12.
+    - `image_encoding` (enum, Optional): Define which encoding process should be applied before returning the generated image(s). Allowed values: `jpeg` `png`
+    - `num_images` (integer, Optional): Integer representing how many output images to generate with a single prompt/configuration. Defaults to 1. Allowed values: 1-16.
+    - `seed` (union, Optional): Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
+    - `steps` (integer, Optional Defaults to 30): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.
+    - `init_image` (string, Optional): The image (encoded in b64 string) to use as the starting point for the generation. This parameter is for Image-to-Image generation and Inpainting. 
+    <Note> Use .jpg format to ensure best latency </Note>
+    - `strength` (double,Optional): Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0. Defaults to 0.8. This parameter is for Image-to-Image generation. 
+    - `height` (integer, Optional): Integer representing the height of image to generate. Default to 512. 
+    - `width` (integer, Optional): Integer representing the width of image to generate. Default to 512. 
+    
+    **Supported Output Resolutions (Width x Height)** are as follows:
+
+    SD1.5
+
+    ```
+    (512, 512),(640, 512),(768, 512),(512, 704),
+    (512, 768),(576, 768),(640, 768),(576, 1024),
+    (1024, 576)
+    ```
+    
+    *** Custom Assets ***
+    - `checkpoint` (string, Optional): Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+    - `loras`(string, Optional): Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+    - `textual_inversions` (string, Optional): Here you can specify textual inversions and their corresponding trigger words. Note that using a custom asset increases generation time.
+    - `vae` (string, Optional): Here you can specify variational autoencoders. Note that using a custom asset increases generation time.
+
+    *** Inpainting and Outpating Parameters ***
+    - `mask_image` (string, Optional): Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
+    <Note>Use .jpg format to ensure best latency</Note>
+    - `outpainting` (boolean, Optional): Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
+        
+
+### **Request Examples**
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/sd" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
+        "negative_prompt": "Blurry, low-res, poor quality",
+        "checkpoint": "octoai:crystal-clear",
+        "loras": {
+            "octoai:add-detail": 0.5
+        },
+        "width": 1344,
+        "height": 768,
+        "num_images": 4,
+        "sampler": "DPM_PLUS_PLUS_2M_KARRAS",
+        "steps": 30,
+        "cfg_scale": 7.5
+    }' | jq -r ".images[0].image_b64" | base64 -d > result.jpg
+```
+
+```Python Python
+from octoai.client import OctoAI
+
+client = OctoAI(
+    api_key="YOUR_API_KEY",
+)        
+client.image_gen.generate_sd(
+	cfg_scale=7.5,
+	checkpoint="octoai:crystal-clear",
+	height=768,
+	loras={
+		"octoai:add-detail": 0.5
+	},
+	negative_prompt="Blurry, low-res, poor quality",
+	num_images=4,
+	prompt="A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
+	steps=30,
+	width=1344
+)
+```
+
+```typescript TypeScript
+import fs from "node:fs";
+import { OctoAIClient } from "@octoai/sdk";
+
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
+});
+
+const { images } = await client.imageGen.generateSd(
+	{
+		{
+			cfgScale: 7.5,
+			checkpoint: "octoai:crystal-clear",
+			height: 768,
+			loras: {
+				"octoai:add-detail": 0.5
+			},
+			negativePrompt: "Blurry, low-res, poor quality",
+			numImages: 4,
+			prompt: "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
+			steps: 30,
+			width: 1344
+		}
+	}
+);
+
+    
+images.forEach((output, i) => {
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
+});
+```
+
+</CodeGroup>
+
+
