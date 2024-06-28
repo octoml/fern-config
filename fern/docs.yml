@@ -92,6 +92,8 @@ navigation:
                     contents: 
                       - page: Stable Diffusion 3
                         path: docs/media-gen-solution/rest-apis/generate/images/sd3.mdx
+                      - page: Stable Diffusion XL
+                        path: docs/media-gen-solution/rest-apis/generate/images/sdxl.mdx
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
