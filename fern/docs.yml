@@ -90,10 +90,10 @@ navigation:
                 contents: 
                   - section: Images     
                     contents: 
-                      # - page: Stable Diffusion 3
-                      #   path: docs/media-gen-solution/rest-apis/generate/images/sd3.mdx
-                      # - page: Stable Diffusion XL
-                      #   path: docs/media-gen-solution/rest-apis/generate/images/sdxl.mdx
+                      - page: Stable Diffusion 3
+                        path: docs/media-gen-solution/rest-apis/generate/images/sd3.mdx
+                      - page: Stable Diffusion XL
+                        path: docs/media-gen-solution/rest-apis/generate/images/sdxl.mdx
                       - page: Stable Diffusion 1.5
                         path: docs/media-gen-solution/rest-apis/generate/images/sd15.mdx                     
           - page: Inference models
