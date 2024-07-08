@@ -43,7 +43,7 @@ A good start and in our next example, we'll use more features to help guide our 
 
 #### Text to Image Generation Example
 
-One of the simplest ways to customize your outputs is a style preset, negative_prompt, loras, and model selection.
+One of the simplest ways to customize your outputs is a `style_preset`, `negative_prompt`, `loras`, and through image generation model selection.
 
 ```Python Python
 from octoai.util import to_file
@@ -71,7 +71,7 @@ if __name__ == "__main__":
 
 ```
 
-![astropus.png](https://www.datocms-assets.com/45680/1703719814-white-photo-realistic-poodle.jpeg?max-w=2000&auto=compress)
+![Photorealistic, intricately detailed, and colorful poodle against a colorful background](https://www.datocms-assets.com/45680/1703719814-white-photo-realistic-poodle.jpeg?max-w=2000&auto=compress)
 
 Much more realistic! Now that we have our cinematic poodle, let's go ahead and use this image as part of an image-to-image workflow.
 
@@ -98,4 +98,4 @@ if __name__ == "__main__":
     to_file(images[0], "rain_corgi.jpeg")
 ```
 
-![astropus.png](https://www.datocms-assets.com/45680/1703719904-ai-generated-rain_corgi.jpeg?max-w=2000&auto=compress)
+![An anime-style brown-and-white corgi in a cute rain jacket and black collar.](https://www.datocms-assets.com/45680/1703719904-ai-generated-rain_corgi.jpeg?max-w=2000&auto=compress)
