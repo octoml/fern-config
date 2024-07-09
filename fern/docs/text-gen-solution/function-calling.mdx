@@ -15,8 +15,10 @@ In the example below, we'll use the OpenAI SDK, but reset the base URL and model
 ## Supported Models
 
 - `mistral-7b-instruct`
-- [coming soon] `hermes-2-pro-llama-3-8b`
-- [coming soon] `meta-llama-3-70b`
+- `hermes-2-pro-llama-3-8b`
+- `meta-llama-3-8b`
+- `meta-llama-3-70b`
+
 
 ## Function Calling Example: Flight Status in Python
 
@@ -41,7 +43,7 @@ client = openai.OpenAI(
 )
 
 # Set the model that you want to use
-model = "mistral-7b-instruct"
+model = "meta-llama-3-70b"
 
 # Mock function to simulate getting flight status
 def get_flight_status(flight_number, date):
