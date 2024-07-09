@@ -97,7 +97,9 @@ navigation:
                       - page: Stable Diffusion 1.5
                         path: docs/media-gen-solution/rest-apis/generate/images/sd15.mdx  
                       - page: Juggernaut XI
-                        path: docs/media-gen-solution/rest-apis/generate/images/juggernautXI.mdx                  
+                        path: docs/media-gen-solution/rest-apis/generate/images/juggernautXI.mdx    
+                      - page: Juggernaut v9
+                        path: docs/media-gen-solution/rest-apis/generate/images/juggernautv9.mdx              
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
