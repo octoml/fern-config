@@ -33,20 +33,20 @@ parameter is the `prompt`, it also supports a `width` and `height` parameter whi
   - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 
   - `vae` -  Here you can specify variational autoencoders. 
 
-**Inpainting with a prompt **: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+**Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
 
-**Outpainting with a prompt **: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
+**Outpainting with a prompt**: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `init_image` - the existing image you’d like to outpaint. You need to create a source image that places your original image within a larger canvas. Argument takes an image encoded as a string in base64 format.
   - `mask_image` - a black and white mask representing the extended area. Argument takes an image encoded as a string in base64 format.
   - `outpainting` -  Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`. This needs to be set to `true`, if you wish to use outpainting. 
     
-*** Transfer faces from source image to new generation Parameter aka [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature. ***
+**Transfer faces from source image to new generation Parameter aka [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature.**
     - `prompt` - text to generate the image from
     - `transfer_images` (dict, Optional):  Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s). It works best for face transfer use cases. Argument takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer.
 
@@ -116,18 +116,18 @@ Check [Pricing Page](/getting-started/pricing-and-billing) for more details.
     `Neon Noir`,`neon-punk`,`origami`,`Paper Mache`, `Paper Quilling`,`Papercut Collage`,`Papercut Shadow Box`,`photographic`,`pixel-art`,`Pointillism`,`Pop Art`,`Psychedelic`,`Real Estate`,`Renaissance`,`Retro Arcade`,`Retro Game`,`RPG Fantasy`,`Game`,`Silhouette`,`Space`,`Stacked Papercut`,`Stained Glass`,`Steampunk`,`Strategy Game`,`Surrealist`,`Techwear Fashion`,`Thick Layered Papercut`,`tile-texture`,`Tilt-Shift`,
     `Tribal`,`Typography`,`Watercolor`,`Zentangle`
     
-    *** Custom Assets ***
+    **Custom Assets**
     - `checkpoint` (string, Optional): Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
     - `loras`(string, Optional): Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
     - `textual_inversions` (string, Optional): Here you can specify textual inversions and their corresponding trigger words. Note that using a custom asset increases generation time.
     - `vae` (string, Optional): Here you can specify variational autoencoders. Note that using a custom asset increases generation time.
 
-    *** Inpainting and Outpating Parameters ***
+    **Inpainting and Outpating Parameters**
     - `mask_image` (string, Optional): Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
     <Note>Use .jpg format to ensure best latency</Note>
     - `outpainting` (boolean, Optional): Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
     
-    *** Photo Merge Parameter ***
+    **Photo Merge Parametes**
     - `transfer_images` (dict, Optional): This is our [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature. Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s). It works best for face transfer use cases. Argument takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer.
     
 

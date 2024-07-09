@@ -11,7 +11,8 @@ It also support ControlNets. For more details, refer [SDXL-ControlNets].
 Recommended values to get optimal results from Juggernaut XI models are: 
   - `steps` -  Between 20 to 30 for Juggernaut XI Full checkpoint and 4 to 6 for Juggernaut XI Lighting checkpoint. 
   - `cfg_scale` -  Between 3 to 6 for Juggernaut XI Full checkpoint and 1 to 2 for Juggernaut XI Lighting checkpoint. 
-  - `sampler` -  `DPM_PLUS_PLUS_2M_KARRAS` though others will work as well.  Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
+  - `sampler` -  `DPM_PLUS_PLUS_2M_KARRAS`, though others will work as well.  Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. 
+    Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
 
 
 You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
@@ -42,14 +43,14 @@ The headers of the request must include an Authentication Token in the authoriza
   - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 
   - `vae` -  Here you can specify variational autoencoders. 
 
-**Inpainting with a prompt **: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+**Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
 
-**Outpainting with a prompt **: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
+**Outpainting with a prompt**: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
@@ -114,12 +115,12 @@ Check [Pricing Page](/getting-started/pricing-and-billing) for more details.
     `Neon Noir`,`neon-punk`,`origami`,`Paper Mache`, `Paper Quilling`,`Papercut Collage`,`Papercut Shadow Box`,`photographic`,`pixel-art`,`Pointillism`,`Pop Art`,`Psychedelic`,`Real Estate`,`Renaissance`,`Retro Arcade`,`Retro Game`,`RPG Fantasy`,`Game`,`Silhouette`,`Space`,`Stacked Papercut`,`Stained Glass`,`Steampunk`,`Strategy Game`,`Surrealist`,`Techwear Fashion`,`Thick Layered Papercut`,`tile-texture`,`Tilt-Shift`,
     `Tribal`,`Typography`,`Watercolor`,`Zentangle`
     
-    *** Custom Assets ***
+    **Custom Assets**
     - `loras`(string, Optional): Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
     - `textual_inversions` (string, Optional): Here you can specify textual inversions and their corresponding trigger words. Note that using a custom asset increases generation time.
     - `vae` (string, Optional): Here you can specify variational autoencoders. Note that using a custom asset increases generation time.
 
-    *** Inpainting and Outpating Parameters ***
+    **Inpainting and Outpating Parameters ***
     - `mask_image` (string, Optional): Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
     <Note>Use .jpg format to ensure best latency</Note>
     - `outpainting` (boolean, Optional): Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
