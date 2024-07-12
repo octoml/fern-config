@@ -42,14 +42,14 @@ The headers of the request must include an Authentication Token in the authoriza
   - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 
   - `vae` -  Here you can specify variational autoencoders. 
 
-**Inpainting with a prompt **: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+**Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `checkpoint` -  Here you can specify the Juggernaur v9 checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-v9` , `octoai:rundiffusion-juggernaut-v9-lightning`
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
 
-**Outpainting with a prompt **: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an ev9sting image. Outpainting is very similar to inpainting, but instead of generating a region within an ev9sting image, the model generates a region outside of it. The required parameters are:
+**Outpainting with a prompt**: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an ev9sting image. Outpainting is very similar to inpainting, but instead of generating a region within an ev9sting image, the model generates a region outside of it. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `checkpoint` -  Here you can specify the Juggernaur v9 checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-v9` , `octoai:rundiffusion-juggernaut-v9-lightning`
