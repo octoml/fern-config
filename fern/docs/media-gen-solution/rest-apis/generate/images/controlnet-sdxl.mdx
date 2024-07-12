@@ -25,22 +25,22 @@ The headers of the request must include an Authentication Token in the authoriza
 
 **Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. 
  - `prompt` - text to generate the image from
- - `controlnet`: Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. 
- - `controlnet_image`: Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation.
+ - `controlnet`- Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. 
+ - `controlnet_image`- Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation.
 
 **Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `strength` - controls how much influence the image parameter has on the output image
-  - `controlnet`: Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. 
-  - `controlnet_image`: Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation. 
+  - `controlnet`- Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. 
+  - `controlnet_image`- Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation. 
 
 **Generating with a prompt and a custom asset**: This mode generates an image from text but uses either a custom checkpoint, LoRA, textual inversion, or VAE. Note that using a custom asset increases generation time.
 
   - `prompt` - text to generate the image from
-  - `controlnet`: Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. 
-  - `controlnet_image`: Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation.
+  - `controlnet`- Required if using a controlnet engine. Argument takes in the value of ControlNet to be used during image generation. 
+  - `controlnet_image`- Required if using a controlnet engine. Controlnet image encoded in b64 string for guiding image generation.
   - `checkpoint` -  Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. 
   - `loras` -  Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. 
   - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 

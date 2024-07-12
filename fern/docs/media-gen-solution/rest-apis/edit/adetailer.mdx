@@ -1,79 +1,90 @@
 ---
-title: Adetailer REST API
-subtitle: >-
-  Adetailer takes an existing image you provide, detects faces and hands and
-  fixes them.
-slug: media-gen-solution/rest-apis/adetailer
+title: Adetailer REST API.
+slug: media-gen-solution/rest-apis/edit/adetailer
 ---
 
+Fix faces and hands in your existing image using a Adetailer. 
 
-Adetailer takes an existing image you provide, detects faces and hands and fixes them.
+OctoAI's Adetailer API supports various detection models such as `face_yolov8n`, `hand_yolov8n`, `face_full_mediapipe`, `face_short_mediapipe`, `face_mesh_mediapipe`, `eyes_mesh_mediapipe`. 
 
-## Request payload
-**Parameters:**
-* `init_image` (str, required) \- A base64-encoded image. Resolution must be supported by inpainting_base_model: 
-sdxl:  `640x1536`, `768x1344`, `832x1216`, `896x1152`, `1024x1024`, `1152x896`, `1216x832`, `1344x768`, `1536x640`, `1664x2432`, `2048x2048`, `2432x1664`
-sd15: `384x704`, `448x576`, `512x512`, `512x704`, `512x768`, `512x832`, `576x448`, `576x768`, `576x768`, `576x1024`, `640x512`, `640x640`, `640x768`, `704x384`, `704x1216`, `768x512`, `768x576`, `768x1024`, `832x512`, `896x896`, `1024x576`, `1024x768`, `1024x1024`, `1024x1536`, `1216x704`, `1536x1024`
+You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
-* `init_image_url `(string, required if init_image not specified) \- If given, download init_image from this URL.
+### **How to use**
 
-* `detector` (str,required) \- Detection model to use. Configures whether e.g. faces or hands or people are targeted for after-detailing.
-Available options: `face_yolov8n`, `hand_yolov8n`, `face_full_mediapipe`, `face_short_mediapipe`, `face_mesh_mediapipe`, `eyes_mesh_mediapipe `
+Invoke `https://image.octoai.run/adetailer` endpoint with a `POST` request.
 
-* `inpainting_base_model` (str, required) \-
-The base model to be used for inpainting. Typically should match the model used to generate init_image.
-Available options: `sdxl`, `sd15 `
+The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
 
-* `cfg_scale` (number,optional default: 7.5)\- 
-Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.
+The required parameters are:
+  - `init_image` (string, required) - A base64-encoded image. Resolution must be supported by inpainting_base_model: 
+      SDXL:  `640x1536`, `768x1344`, `832x1216`, `896x1152`, `1024x1024`, `1152x896`, `1216x832`, `1344x768`, `1536x640`, `1664x2432`, `2048x2048`, `2432x1664`
+      SD15: `384x704`, `448x576`, `512x512`, `512x704`, `512x768`, `512x832`, `576x448`, `576x768`, `576x768`, `576x1024`, `640x512`, `640x640`, `640x768`, `704x384`, `704x1216`, `768x512`, `768x576`, `768x1024`, `832x512`, `896x896`, `1024x576`, `1024x768`, `1024x1024`, `1024x1536`, `1216x704`, `1536x1024`
+  - `init_image_url` (string, required if init_image not specified) - If given, download init_image from this URL.
+  - `detector` (string,required) - Detection model to use. Configures whether e.g. faces or hands or people are targeted for after-detailing.
+      Available options: `face_yolov8n`, `hand_yolov8n`, `face_full_mediapipe`, `face_short_mediapipe`, `face_mesh_mediapipe`, `eyes_mesh_mediapipe `
+  - `inpainting_base_model` (string, required) - The base model to be used for inpainting. Typically should match the model used to generate init_image.
+      Available options: `sdxl`, `sd15 `
 
-* `checkpoint`(string, optional)\-  Name of a checkpoint to use for inpainting.
+<Note>
+    For more details about all parameters, please see the request schema below.
+</Note>
 
-* `confidence` (number,optional, default: 0.3) \- 
-Inpainted areas are determined using a detector. This setting adjusts the sensitivity of the detector (lower considers more image fragments for inpainting).
 
-* `image_encoding` (string,optional)\- 
-Define which encoding process should be applied before returning the modified image.
-Available options: `jpeg`, `png `
+### **Output**
 
-* `loras` (object | optional) \- A dict mapping the name of a LoRA to apply to its weight.
+Adetailed image with the same resolution as the input image.
 
-* `mask_blur` (integer, optional,default: 4) \- A mask is created for each inpainted area in the image. After dilation (see mask_dilation parameter), the mask is blurred. This technique is typically used to smoothly blend the inpainted area with the original image. This option specifies the radius, in pixels, of the gaussian blur kernel. The higher the value, the wider the blur. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.
+### **Pricing**
 
-* `mask_dilation` (integer,optional,default: 4) \- A mask is created for each inpainted area in the image. Mask Dilation allows you to expand the size of the mask while maintaining its shape. This technique is typically used to reduce artifacts near borders in the mask. This parameter is the size, in pixels, of the dilation kernel to apply. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.
+***$0.0004 *** per object detected  
 
-* `mask_padding` (integer,optional,default: 32) -\ Each inpainted area is passed to the image-to-image generator with some surrounding context. The contextual area is created by padding the area occupied by the blurred, dilated mask. This technique improves inpainting quality, and the contextual area is not modified. This parameter specifies the amount of padding, in pixels, to apply around the processed mask. When the computed padding goes off the edge of the image, the padded area is slid towards the center of the image. Must be greater than or equal to 0 and recommended to be less than 10% the size of an inpainting mask.
+Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
 
-* `max_num_detections` (integer,optional) \- Inpaint at most this many objects, starting with the most confident matches.
+### **Request Details**
 
-* `negative_prompt` (string,optional)
+  **Headers**: 
 
-* `prompt` (string | optional)
+    `Authorization` (Required): Your `OCTOAI_TOKEN`  
+    `Content-Type` (Required): Set to `application/json`
 
-* `sampler` (string | optional) - The schedulers available for image generation.
-Available options: `PNDM`, `LMS`, `KLMS`, `DDIM`, `DDPM`, `HEUN`, `K_HEUN`, `K_EULER`, `K_EULER_ANCESTRAL`, `DPM_SOLVER_MULTISTEP`, `DPM_PLUS_PLUS_2M_KARRAS`, `DPM_SINGLE`, `DPM_2`, `DPM_2_ANCESTRAL`, `DPM_PLUS_PLUS_SDE_KARRAS`, `UNI_PC`,` LCM `
+  **Parameters**: 
 
-* `seed` (integer,optional) \- Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
-
-* `steps` (integer, optional,default: 20)
-* `strength` (number,optional, default 0.9`) 
-* `style_preset`(string,optional,default: base) 
-* `union_masks` (boolean, optional,default: false) \- When true, create a single mask by unioning the mask for each detected object together, then send a single inpainting request to the backing model.
-* `use_refiner` (boolean,optional,default: false) 
-
+  - `init_image` (str, required):  A base64-encoded image. Resolution must be supported by inpainting_base_model: 
+      sdxl:  `640x1536`, `768x1344`, `832x1216`, `896x1152`, `1024x1024`, `1152x896`, `1216x832`, `1344x768`, `1536x640`, `1664x2432`, `2048x2048`, `2432x1664`
+      sd15: `384x704`, `448x576`, `512x512`, `512x704`, `512x768`, `512x832`, `576x448`, `576x768`, `576x768`, `576x1024`, `640x512`, `640x640`, `640x768`, `704x384`, `704x1216`, `768x512`, `768x576`, `768x1024`, `832x512`, `896x896`, `1024x576`, `1024x768`, `1024x1024`, `1024x1536`, `1216x704`, `1536x1024`
+  - `init_image_url `(string, required if init_image not specified): If given, download init_image from this URL.
+  - `detector` (str,required):  Detection model to use. Configures whether e.g. faces or hands or people are targeted for after-detailing.
+      Available options: `face_yolov8n`, `hand_yolov8n`, `face_full_mediapipe`, `face_short_mediapipe`, `face_mesh_mediapipe`, `eyes_mesh_mediapipe `
+  - `inpainting_base_model` (str, required) - The base model to be used for inpainting. Typically should match the model used to generate init_image.
+       Available options: `sdxl`, `sd15 `
+  - `cfg_scale` (float,optional default: 7.5): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.
+  - `checkpoint`(string, optional): Name of a checkpoint to use for inpainting.
+  - `confidence` (float,optional, default: 0.3): Inpainted areas are determined using a detector. This setting adjusts the sensitivity of the detector (lower considers more image fragments for inpainting).
+  - `image_encoding` (string,optional): Define which encoding process should be applied before returning the modified image.
+      Available options: `jpeg`, `png `
+  - `loras` (object, optional): A dict mapping the name of a LoRA to apply to its weight.
+  - `mask_blur` (integer, optional,default: 4): A mask is created for each inpainted area in the image. After dilation (see mask_dilation parameter), the mask is blurred. This technique is typically used to smoothly blend the inpainted area with the original image. This option specifies the radius, in pixels, of the gaussian blur kernel. The higher the value, the wider the blur. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.
+  - `mask_dilation` (integer,optional,default: 4): A mask is created for each inpainted area in the image. Mask Dilation allows you to expand the size of the mask while maintaining its shape. This technique is typically used to reduce artifacts near borders in the mask. This parameter is the size, in pixels, of the dilation kernel to apply. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.
+  - `mask_padding` (integer,optional,default: 32):  Each inpainted area is passed to the image-to-image generator with some surrounding context. The contextual area is created by padding the area occupied by the blurred, dilated mask. This technique improves inpainting quality, and the contextual area is not modified. This parameter specifies the amount of padding, in pixels, to apply around the processed mask. When the computed padding goes off the edge of the image, the padded area is slid towards the center of the image. Must be greater than or equal to 0 and recommended to be less than 10% the size of an inpainting mask.
+  - `max_num_detections` (integer,optional):  Inpaint at most this many objects, starting with the most confident matches.
+  - `union_masks` (boolean, optional,default: false): When true, create a single mask by unioning the mask for each detected object together, then send a single inpainting request to the backing model.
+  - `negative_prompt` (string,optional): Text describing image traits to avoid during generation.
+  - `prompt` (string, optional): A string of text describing the image to generate.
+  - `sampler` (string, optional):  The schedulers available for image generation. Available options: `PNDM`, `LMS`, `KLMS`, `DDIM`, `DDPM`, `HEUN`, `K_HEUN`, `K_EULER`, `K_EULER_ANCESTRAL`, `DPM_SOLVER_MULTISTEP`, `DPM_PLUS_PLUS_2M_KARRAS`, `DPM_SINGLE`, `DPM_2`, `DPM_2_ANCESTRAL`, `DPM_PLUS_PLUS_SDE_KARRAS`, `UNI_PC`,` LCM `
+  - `seed` (integer,optional):  Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
+  - `steps` (integer, optional,default: 20)
+  - `strength` (number,optional, default 0.9) 
+  - `style_preset`(string,optional,default: base) 
+  - `use_refiner` (boolean,optional,default: false) 
 
 ## Response
 
-* `image_b64` (string) - The modified image or None if it was removed for safety.
+- `image_b64` (string): The modified image or None if it was removed for safety.
+- `num_objects_detected` (integer): The number of objects that were successfully detected.
+- `num_objects_inpainted` (integer): The number of objects that were successfully inpainted.
+- `num_removed_for_safety` (integer): Number of inpainting requests that violated the OctoAI Terms of Service.
 
-* `num_objects_detected` (integer) - The number of objects that were successfully detected.
-
-* `num_objects_inpainted` (integer) - The number of objects that were successfully inpainted.
-
-* `num_removed_for_safety` (integer) - Number of inpainting requests that violated the OctoAI Terms of Service.
-
-
-### cURL example
+### **Request Examples**
 
 ```bash
 curl -X POST "https://image.octoai.run/adetailer" \
