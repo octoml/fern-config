@@ -101,7 +101,11 @@ navigation:
                       - page: Juggernaut XI
                         path: docs/media-gen-solution/rest-apis/generate/images/juggernautXI.mdx    
                       - page: Juggernaut v9
-                        path: docs/media-gen-solution/rest-apis/generate/images/juggernaut-v9.mdx              
+                        path: docs/media-gen-solution/rest-apis/generate/images/juggernaut-v9.mdx 
+                      - page: SDXL Controlnet
+                        path: docs/media-gen-solution/rest-apis/generate/images/controlnet-sdxl.mdx   
+                      - page: SD1.5 Controlnet
+                        path: docs/media-gen-solution/rest-apis/generate/images/controlnet-sd15.mdx                                                          
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
