@@ -1,18 +1,47 @@
 ---
 title: Stable Video Diffusion REST API
 subtitle: Animate and add motion to your images
-slug: media-gen-solution/rest-apis/video-gen
+slug: media-gen-solution/rest-apis/generate/videos/svd
 ---
 
-Our video generation model is accessible via REST API. Below, you'll find straightforward examples using cURL/Python SDK and TypeScript SDK for our video generation endpoints, complete with explanations of all parameters.
+Generate an videos using a Stable Video Diffusion (SVD) model.
 
-The endpoint URL for video generation is `https://image.octoai.run/generate/svd`.
+OctoAI's SVDL API supports image-to-video use cases. For text-to-video use cases, utilize our Image Gen APIs such as SDXL, SD15, SD3, Juggernaut XI APIs followed by the SVD API.
 
-This encompasses image-to-video conversion. Additionally, we offer support for a text-to-video workflow, which involves utilizing the text-to-image API (Image Gen API) followed by the image-to-video API.
+You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
-## Request payload
+### **How to use**
 
-**Parameters:**
+Invoke `https://image.octoai.run/generate/svd` endpoint with a `POST` request.
+
+The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
+
+**Generating a video with an image**: The only required parameter is `image`. It should be in base64 encoded string format.
+
+<Note>
+    For more details about all parameters, please see the request schema below.
+</Note>
+
+
+### **Output**
+
+3-4 secs long video with resolution closest to the input image. For all supported resolutions, refer `Parameters` section below. 
+
+### **Pricing**
+
+***$0.15*** per video, any resolution, 25 steps; billed per video
+
+
+Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
+
+### **Request Details**
+
+  **Headers**: 
+
+    `Authorization` (Required): Your `OCTOAI_TOKEN`  
+    `Content-Type` (Required): Set to `application/json`
+
+  **Parameters**: 
 
 - `image` (base64 encoded image, required) - Starting point image encoded in base64 string
 - `height` (int; optional) - Integer representing the height of video/animation to generate- If not provided, the output height will be inferred from the input 'image', and the closest resolution supported will be chosen.

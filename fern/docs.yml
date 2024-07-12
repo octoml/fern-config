@@ -105,7 +105,12 @@ navigation:
                       - page: SDXL Controlnet
                         path: docs/media-gen-solution/rest-apis/generate/images/controlnet-sdxl.mdx   
                       - page: SD1.5 Controlnet
-                        path: docs/media-gen-solution/rest-apis/generate/images/controlnet-sd15.mdx                                                          
+                        path: docs/media-gen-solution/rest-apis/generate/images/controlnet-sd15.mdx
+                  - section: Videos
+                    contents: 
+                      - page: Stable Video Diffusion
+                        path: docs/media-gen-solution/rest-apis/generate/videos/svd.mdx
+                                                                                 
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
