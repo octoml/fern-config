@@ -1,34 +1,78 @@
 ---
 title: Upscaling REST API
-subtitle: >-
-  In addition to image generation, OctoAI can also upscale images to higher
-  resolutions.
 slug: media-gen-solution/rest-apis/upscaling
 ---
 
+---
+title: Background Removal REST API
+slug: media-gen-solution/rest-apis/edit/background-removal
+---
 
-### API
+Upscale your images to a higher resolution with the Upscaling API. Your input image can have a minimum resolution of 256x256 and a maximum resolution of 2048x2048, and can be upscaled to a maximum resolution of 8192x8192.                                                                                              
 
-Upscaling takes an existing image you provide and upscales it to a higher resolution.
+OctoAI's Upscaling API supports models `real-esrgan-x4-plus` ,`real-esrgan-x4-v3`, `real-esrgan-x4-v3-wdn`, `real-esrgan-animevideo-v3`, `real-esrgan-x4-plus-anime` ,`real-esrgan-x2-plus`
 
-Parameters:
+You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
-* `init_image_url` / `init_image` \- The URL to an image or a base64-encoded image (respectively) to upscale. Specify only one of these.
-* `scale` / `output_image_height` / `output_image_width` \- determined how much to upscale the provided image. Specify only one of these.  
-   * `scale` \- floating point value indicating how much to scale the input resolution by (e.g., `scale: 2.0` would double the input width and height)  
-   * `output_image_height` \- height of the desired upscaled image in pixels. The corresponding width will be computed off of this value to preserve the aspect ratio.  
-   * `output_image_width` \- width of the desired upscaled image in pixels. The corresponding height will be computed off of this value to preserve the aspect ratio.
-* `model` (optional): The model to use for upscaling faces. Default value is `real-esrgan-x4-plus`. Options:  
-   * `real-esrgan-x4-plus`  
-   * `real-esrgan-x4-v3`  
-   * `real-esrgan-x4-v3-wdn`  
-   * `real-esrgan-animevideo-v3`  
-   * `real-esrgan-x4-plus-anime`  
-   * `real-esrgan-x2-plus`
+### **How to use**
 
-### cURL example
+Invoke `https://image.octoai.run/upscaling` endpoint with a `POST` request.
 
-```Bash Bash
+The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
+
+Required parameters are:
+  - `init_image` (string, required):  base64-encoded image to upscale. 
+  - `init_image_url` (string, required if init_image not provided): The URL to an image to upscale.
+  - `scale` (float,required): Factor by which to scale the input resolution by (e.g., `scale: 2.0` would double the input width and height)  
+  - `output_image_height` (integer, required if scale not provided): height of the desired upscaled image in pixels. The corresponding width will be computed off of this value to preserve the aspect ratio.  
+  - `output_image_width` (integer, required if scale not provided): width of the desired upscaled image in pixels. The corresponding height will be computed off of this value to preserve the aspect ratio.
+
+<Note>
+    For more details about all parameters, please see the request schema below.
+</Note>
+
+
+### **Output**
+
+Upscaled image. Max support resolution 8192X8192.
+
+### **Pricing**
+
+*** $0.004*** per API request
+
+Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
+
+### **Request Details**
+
+  **Headers**: 
+
+    `Authorization` (Required): Your `OCTOAI_TOKEN`  
+    `Content-Type` (Required): Set to `application/json`
+
+  **Parameters**: 
+
+  - `init_image` (string, required):  base64-encoded image to upscale. 
+  - `init_image_url` (string, required if init_image not provided): The URL to an image to upscale.
+  - `scale` (float,required): Factor by which to scale the input resolution by (e.g., `scale: 2.0` would double the input width and height)  
+  - `output_image_height` (integer, required if scale not provided): height of the desired upscaled image in pixels. The corresponding width will be computed off of this value to preserve the aspect ratio.  
+  - `output_image_width` (integer, required if scale not provided): width of the desired upscaled image in pixels. The corresponding height will be computed off of this value to preserve the aspect ratio.
+  - `model` (string, optional): The model to use for upscaling faces. Default value is `real-esrgan-x4-plus`. 
+  
+    Supported models:  
+      ```
+      real-esrgan-x4-plus
+      real-esrgan-x4-v3
+      real-esrgan-x4-v3-wdn
+      real-esrgan-animevideo-v3 
+      real-esrgan-x4-plus-anime
+      real-esrgan-x2-plus
+  ```
+## Response
+  - `image_b64` (string):  Base64-encoded png containing the processed image.
+
+
+### **Request Examples**
+```
 curl -H 'Content-Type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN" -X POST "https://image.octoai.run/upscaling" \
     -d '{
         "init_image": "$BASE64_IMAGE_HERE",
@@ -36,3 +80,5 @@ curl -H 'Content-Type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN
         "model": "real-esrgan-x4-v3"
     }'
 ```
+
+

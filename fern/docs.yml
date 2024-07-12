@@ -112,7 +112,8 @@ navigation:
                     path: docs/media-gen-solution/rest-apis/edit/adetailer.mdx  
                   - page: Remove background 
                     path: docs/media-gen-solution/rest-apis/edit/background-removal.mdx 
-
+                  - page: Upscale
+                    path: docs/media-gen-solution/rest-apis/edit/upscaling.mdx 
           - page: Inference models
             path: docs/getting-started/inference-models.mdx
           - page: Create an API token
