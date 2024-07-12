@@ -1,30 +1,62 @@
 ---
 title: Background Removal REST API
-subtitle: >-
-  Background removal takes an existing image you provide and removes those parts
-  of the image considered to be “background.
-slug: media-gen-solution/rest-apis/background-removal
+slug: media-gen-solution/rest-apis/edit/background-removal
 ---
 
+Seamlessly remove the background of an image using Background removal API. 
 
-Background removal takes an existing image you provide and removes those parts of the image considered to be “background.”
+OctoAI's Background Removal API supports models such as `IS-NET`. 
 
-## Request payload
-**Parameters:**
-* `init_image` (str, required) - A base64-encoded image whose background should get removed.
-* `alpha_matting` (bool; false) - If true, apply matting on the alpha channel.
-* `alpha_matting_foreground_threshold` (number in [0, 255]; 240) - When `alpha_matting` is `true`, mask pixels larger than this value are considered foreground pixels.
-* `alpha_matting_background_threshold` (number in [0, 255]; 10) - When `alpha_matting` is `true`, mask pixels smaller than this value are considered background pixels.
-* `alpha_matting_erode_size` (number; 10) - When `alpha_matting` is true, size of the erosion structure to apply, in pixels.
-* `only_mask` (bool; false) - When true, return only a single-channel image containing a foreground-background mask. Foreground pixels have values closer to 255, and background pixels have values closer to 0.
-* `post_process_mask` (bool; true) - When `true`, apply morphological operations to the mask to smooth it.
-* `bgcolor` (list[int]; optional) - When given, replace background pixels with this color in the output image.
+You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
+
+### **How to use**
+
+Invoke `https://image.octoai.run/background-removal` endpoint with a `POST` request.
+
+The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
+
+The only required parameter is `init_image`. This is the base64-encoded image whose background needs to removed.
+
+<Note>
+    For more details about all parameters, please see the request schema below.
+</Note>
+
+
+### **Output**
+
+Image with the background removed. The resolution will remain the same as the input image. Using the available parameters, you can change the background color. Additionally, you can also retrieve the mask of the foreground element.
+
+### **Pricing**
+
+*** $0.002*** per API request
+
+
+Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
+
+### **Request Details**
+
+  **Headers**: 
+
+    `Authorization` (Required): Your `OCTOAI_TOKEN`  
+    `Content-Type` (Required): Set to `application/json`
+
+  **Parameters**: 
+
+  - `init_image` (string, required): A base64-encoded image whose background should get removed.
+  - `only_mask` (boolean, optional): Default set to false. When true, return only a single-channel image containing a foreground-background mask. Foreground pixels have values closer to 255, and background pixels have values closer to 0.
+  - `post_process_mask` (boolean, optional): Default set to true. When `true`, apply morphological operations to the mask to smooth it.
+  - `bgcolor` (list[int], optional):  When given, replace background pixels with this color in the output image.
+  - `alpha_matting` (boolean, optional): Default set to false. If true, apply matting on the alpha channel.
+  - `alpha_matting_foreground_threshold` (integer, optional): Values in [0, 255]. Defaults to 240. When `alpha_matting` is `true`, mask pixels larger than this value are considered foreground pixels.
+  - `alpha_matting_background_threshold` (integer, optional): Values in [0, 255]. Defaults to 10. When `alpha_matting` is `true`, mask pixels smaller than this value are considered background pixels.
+  - `alpha_matting_erode_size` (integer, optional) - Defaults to 10. When `alpha_matting` is true, size of the erosion structure to apply, in pixels.
 
 ## Response
-* `image_b64` (str) - Base64-encoded png containing the processed image.
-* `removed_for_safety` (bool) - When `true`, background removal was not performed because `init_image` was found to have violated our terms of service.
+  - `image_b64` (string):  Base64-encoded png containing the processed image.
+  - `removed_for_safety` (boolean):  When `true`, background removal was not performed because `init_image` was found to have violated our terms of service.
 
-### cURL example
+
+### **Request Examples**
 
 ```bash
 curl -X POST "https://image.octoai.run/background-removal" \

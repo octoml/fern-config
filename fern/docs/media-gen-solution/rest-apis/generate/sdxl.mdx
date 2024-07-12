@@ -1,17 +1,12 @@
 ---
 title: Stable Diffusion XL API
-slug: media-gen-solution/rest-apis/generate/images/sdxl-lighting
+slug: media-gen-solution/rest-apis/generate/sdxl
 ---
 
-Generate an image using a Stable Diffusion XL (SDXL) Lighting model.
+Generate an image using a Stable Diffusion XL (SDXL) model.
 
-OctoAI's SDXL-Lightning model is a lightning-fast text-to-image generation model (checkpoint). It can generate high-quality 1024px images in a few steps (4-8 steps) within sub seconds.
-
-Recommended values to get optimal results from SDXL lighting model are: 
-    - Set steps between 4-8 steps (8 steps recommended) 
-    - Keep CFG Scale low, ranging from 1.4 to 4.0 (ideally 3.0)
-    - Use any sampler, textual inversion, or style preset.
-    - Adding extra LoRAs and VAEs increases inference time.
+OctoAI's SDXL API supports both text-to-image, image-to-image use cases and, adding custom assests like LoRAs, checkpoints, VAES, textual inversions.
+It also support ControlNets. For more details, refer [SDXL-ControlNets](https://octo.ai/docs/media-gen-solution/rest-apis/generate/images/controlnet-sdxl).
 
 You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
@@ -24,22 +19,16 @@ The headers of the request must include an Authentication Token in the authoriza
 **Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. While the only required
 parameter is the `prompt`, it also supports a `width` and `height` parameter which can be used to control the aspect ratio of the generated image.
 
-**Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. The required parameters are:
-
-  - `prompt` - text to generate the image from
-  - `checkpoint` -  Here you can specify the SDXL Lighting checkpoint. Supported value `octoai:lightning_sdxl`
-
 **Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
 
   - `prompt` - text to generate the image from
-  - `checkpoint` -  `octoai:lightning_sdxl`
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `strength` - controls how much influence the image parameter has on the output image
 
 **Generating with a prompt and a custom asset**: This mode generates an image from text but uses either a custom checkpoint, LoRA, textual inversion, or VAE. Note that using a custom asset increases generation time.
 
   - `prompt` - text to generate the image from
-  - `checkpoint` -  `octoai:lightning_sdxl`
+  - `checkpoint` -  Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. 
   - `loras` -  Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. 
   - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 
   - `vae` -  Here you can specify variational autoencoders. 
@@ -47,18 +36,19 @@ parameter is the `prompt`, it also supports a `width` and `height` parameter whi
 **Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
 
   - `prompt` - text to generate the image from
-  - `checkpoint` -  `octoai:lightning_sdxl`
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
 
 **Outpainting with a prompt**: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
 
   - `prompt` - text to generate the image from
-  - `checkpoint` -  `octoai:lightning_sdxl`
   - `init_image` - the existing image you’d like to outpaint. You need to create a source image that places your original image within a larger canvas. Argument takes an image encoded as a string in base64 format.
   - `mask_image` - a black and white mask representing the extended area. Argument takes an image encoded as a string in base64 format.
   - `outpainting` -  Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`. This needs to be set to `true`, if you wish to use outpainting. 
     
+**Transfer faces from source image to new generation Parameter aka [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature.**
+    - `prompt` - text to generate the image from
+    - `transfer_images` (dict, Optional):  Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s). It works best for face transfer use cases. Argument takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer.
 
 <Note>
     For more details about all parameters, please see the request schema below.
@@ -71,8 +61,12 @@ The resolution of the generated image will be 1 megapixel. The default resolutio
 
 ### **Pricing**
 
-    - SDXL Lighting: ***$0.001*** per image, 1024x1024, 4 steps; billed per image 
-    - SDXL Lighting using a custom asset,LoRA, or ControlNet: ***$0.005*** per image, 1024X1024, 4 steps; billed per image 
+    - SDXL Base: ***$0.004*** per image, 1024x1024, 30 steps; billed per image 
+    - SDXL custom asset: ***$0.008*** per image, 1024x1024, 30 steps; billed per image 
+    - Fine tuning job SDXL: ***$0.25*** per tune, using the 500 step default
+    - Inpainting: Same price as corresponding SDXL image
+    - Outpainting: Same price as corresponding SDXL image
+    - Photomerge: ***$0.015*** per image, 1024x1024, 30 steps; billed per image
 
 
 Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
@@ -87,13 +81,21 @@ Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) f
   **Parameters**: 
 
     - `prompt` (string [ upto 77 tokens], Required): A string of text describing the image to generate. You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)` . The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
+    - `prompt_2` (string, Optional): This only applies to SDXL. By default, setting only `prompt` copies the input to both `prompt` and `prompt_2`. When `prompt` and `prompt_2` are both set, they have very different functionality. The second prompt is meant for more human readable descriptions of the desired image.
+    - For example, `prompt` is used for "word salad" style control of the image. This is the type of prompting you are likely familiar with from SD 1.5\. Prompts like the following work well:  
+        `prompt = "photorealistic, high definition, masterpiece, sharp lines"  
+    `  
+        whereas `prompt_2` is meant for more human readable descriptions of the desired image. For example:  
+        `prompt_2 = "A portrait of a handsome cat wearing a little hat. The cat is in front of a colorful background.  
+    `
     - `negative_prompt` (string, Optional): Text describing image traits to avoid during generation.
+    - `negative_prompt_2` (string, Optional): This only applies to SDXL. This prompt is meant for human readable descriptions of what you don’t want the image, e.g. you would say “Low resolution” in `negative_prompt` then “Bad hands” in `negative_prompt_2`.
     - `sampler` (string, Optional): A string specifying which scheduler to use when generating an image. Defaults to `DDIM`. Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
-    - `cfg_scale` (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Defaults to 3 when `octoai:lightning_sdxl` checkpoint is set. 
+    - `cfg_scale` (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Defaults to 12.
     - `image_encoding` (enum, Optional): Define which encoding process should be applied before returning the generated image(s). Allowed values: `jpeg` `png`
     - `num_images` (integer, Optional): Integer representing how many output images to generate with a single prompt/configuration. Defaults to 1. Allowed values: 1-16.
     - `seed` (union, Optional): Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
-    - `steps` (integer, Optional): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200. Defaults to 8 when `octoai:lightning_sdxl` checkpoint is set. 
+    - `steps` (integer, Optional Defaults to 30): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.
     - `init_image` (string, Optional): The image (encoded in b64 string) to use as the starting point for the generation. This parameter is for Image-to-Image generation and Inpainting. 
     <Note> Use .jpg format to ensure best latency </Note>
     - `strength` (double,Optional): Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0. Defaults to 0.8. This parameter is for Image-to-Image generation. 
@@ -115,6 +117,7 @@ Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) f
     `Tribal`,`Typography`,`Watercolor`,`Zentangle`
     
     **Custom Assets**
+    - `checkpoint` (string, Optional): Here you can specify a checkpoint either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
     - `loras`(string, Optional): Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
     - `textual_inversions` (string, Optional): Here you can specify textual inversions and their corresponding trigger words. Note that using a custom asset increases generation time.
     - `vae` (string, Optional): Here you can specify variational autoencoders. Note that using a custom asset increases generation time.
@@ -124,48 +127,71 @@ Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) f
     <Note>Use .jpg format to ensure best latency</Note>
     - `outpainting` (boolean, Optional): Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
     
-   
+    **Photo Merge Parametes**
+    - `transfer_images` (dict, Optional): This is our [Photo Merge](https://octo.ai/blog/businesses-can-generate-customizable-avatars-using-octoais-photo-merge-feature/) feature. Applicable for use cases where you wish to transfer the subject in the uploaded image(s) to the output image(s). It works best for face transfer use cases. Argument takes a dictionary containing a mapping of trigger words to a list of sample images which demonstrate the desired object to transfer.
+    
 
 ### **Request Examples**
 
 <CodeGroup>
 ```bash cURL
-curl -X POST "https://image.octoai.run/generate/sdxl" \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $OCTOAI_TOKEN" \
-    --data-raw '{
-        "prompt": "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
-        "negative_prompt": "Blurry, low-res, poor quality",
-        "checkpoint": "octoai:lightning_sdxl",
-        "width": 1024,
-        "height": 1024,
-        "num_images": 1,
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN" -X POST "https://image.octoai.run/generate/sdxl" \
+    -d '{
+        "prompt": "The angel of death Hyperrealistic, splash art, concept art, mid shot, intricately detailed, color depth, dramatic, 2/3 face angle, side light, colorful background",
+        "negative_prompt": "ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, signature, cut off, draft",
         "sampler": "DDIM",
-        "steps": 8,
-        "cfg_scale": 3,
-        "seed": 468754778,
-        "use_refiner": false,
-        "style_preset": "base"
-    }' | jq -r ".images[0].image_b64" | base64 -d > result.jpg
+        "cfg_scale": 11,
+        "height": 1024,
+        "width": 1024,
+        "seed": 2748252853,
+        "steps": 20,
+        "num_images": 1,
+        "high_noise_frac": 0.7,
+        "strength": 0.92,
+        "use_refiner": true,
+        "style_preset": "3d-model"
+    }' > response.json
 ```
 
 ```Python Python
-from octoai.client import OctoAI
+import requests
+import os
+import base64
+import io
+import PIL.Image
 
-client = OctoAI(
-    api_key="YOUR_API_KEY",
-)        
-client.image_gen.generate_sdxl(
-	cfg_scale=3,
-	checkpoint="octoai:lightning_sdxl",
-	height=1024,
-	negative_prompt="Blurry, low-res, poor quality",
-	num_images=1,
-	prompt="A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
-	steps=8,
-	use_refiner=false,
-	width=1024
-)
+def _process_test(url):
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "Face of a yellow cat, high resolution, sitting on a park bench",
+        "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+        "steps": 30,
+        "width": 1024,
+        "height": 1024,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sdxl")
 ```
 
 ```typescript TypeScript
@@ -176,21 +202,19 @@ const octoai = new OctoAIClient({
   apiKey: process.env.OCTOAI_TOKEN,
 });
 
-const { images } = await client.imageGen.generateSdxl(
-	{
-		{
-			cfgScale: 3,
-			checkpoint: "octoai:lightning_sdxl",
-			height: 1024,
-			negativePrompt: "Blurry, low-res, poor quality",
-			numImages: 1,
-			prompt: "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
-			steps: 8,
-			useRefiner: false,
-			width: 1024
-		}
-	}
-);
+const { images } = await octoai.imageGen.generateSdxl({
+  prompt: "A photo of a cute cat astronaut in space",
+  negativePrompt: "Blurry photo, distortion, low-res, poor quality",
+  width: 1024,
+  height: 1024,
+  numImages: 1,
+  sampler: "DDIM",
+  steps: 30,
+  cfgScale: 12,
+  useRefiner: true,
+  highNoiseFrac: 0.8,
+  stylePreset: "base",
+});
 
 images.forEach((output, i) => {
   if (output.imageB64) {
@@ -203,3 +227,38 @@ images.forEach((output, i) => {
 </CodeGroup>
 
 
+Here’s an example of how to mix OctoAI assets (checkpoints, loras, and textual_inversions) in the same API request.
+
+```json
+payload = {
+    ...
+	"checkpoint": "octoai:realcartoon",
+    "loras": {
+        "octoai:crayon-style": 0.7,
+        "your-custom-lora": 0.3
+    },
+    "textual_inversions": {
+        "octoai:NegativeXL": "negativeXL_D",
+    },
+	"vae": "your_vae_name"
+    ...
+}
+```
+
+
+```json
+payload = {
+    ...
+        "prompt": "A trigger_word_1 sitting on a golden throne",
+        "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+        "checkpoint": "octoai:RealVisXL",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 2,
+        "sampler": "K_EULER_ANCESTRAL",
+        "steps": 20,
+        "cfg_scale": 7.5,
+        "transfer_images": {"trigger_word_1": ["$BASE64_IMAGE_1", "$BASE64_IMAGE_2"]
+    ...
+}
+```
