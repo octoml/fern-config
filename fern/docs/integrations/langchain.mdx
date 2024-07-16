@@ -61,9 +61,28 @@ influence artists and thinkers to this day. Some of his most famous works includ
 The Last Supper, and Vitruvian Man.
 ```
 
+## Using OctoAI's Embeddings and LangChain
+Using OctoAI's Embeddings endpoint is easy with LangChain.
+
+We require the following dependencies:
+```bash
+pip install langchain langchain-community openai transformers
+```
+
+And now you can run the code example below:
+```python
+from langchain_community.embeddings.octoai_embeddings import OctoAIEmbeddings
+
+embeddings = OctoAIEmbeddings()
+text = "This is a test query."
+query_result = embeddings.embed_query(text)
+print(query_result)
+```
+
 ### Learn with our demo apps
 
 Get started today by following along with one of our demo apps:
 
 - [DocTalk](https://octo.ai/demos/doctalk/)
 - [Q&A app on a custom PDF](https://octo.ai/demos/q-a-on-custom-pdf/)
+- [OctoAI Text Generation Cookbook](https://github.com/octoml/octoai-textgen-cookbook/)
