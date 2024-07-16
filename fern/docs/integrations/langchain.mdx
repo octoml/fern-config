@@ -13,19 +13,20 @@ to access efficient, fast, and reliable compute.
 
 ## Using OctoAI's LLMs and LangChain
 
-To use OctoAI LLMs with LangChain, first [obtain an OctoAI API Token](/docs/getting-started/how-to-create-octoai-access-token).
-Then paste your API token in the code example below:
+To use OctoAI LLMs with LangChain, first install the following dependencies in your environment:
+```bash
+pip install langchain langchain-community openai
+```
+
+Secondly, [obtain an OctoAI API Token](/docs/getting-started/how-to-create-octoai-access-token).
+Then paste your API token and run the code example below:
 
 ```python
 import os
 
 os.environ["OCTOAI_API_TOKEN"] = "OCTOAI_API_TOKEN"
 os.environ["ENDPOINT_URL"] = "https://text.octoai.run/v1/chat/completions"
-```
 
-Next, run the following Python script:
-
-```python
 from langchain.chains import LLMChain
 from langchain_community.llms.octoai_endpoint import OctoAIEndpoint
 from langchain_core.prompts import PromptTemplate
@@ -34,19 +35,11 @@ template = """Below is an instruction that describes a task. Write a response th
 prompt = PromptTemplate.from_template(template)
 
 llm = OctoAIEndpoint(
-    model_kwargs={
-        "model": "meta-llama-3-8b-instruct",
-        "max_tokens": 128,
-        "presence_penalty": 0,
-        "temperature": 0.1,
-        "top_p": 0.9,
-        "messages": [
-            {
-                "role": "system",
-                "content": "You are a helpful assistant. Keep your responses limited to one short paragraph if possible.",
-            },
-        ],
-    },
+    model="meta-llama-3-8b-instruct",
+    max_tokens=128,
+    presence_penalty=0,
+    temperature=0.1,
+    top_p=0.9,
 )
 
 question = "Who was leonardo davinci?"
