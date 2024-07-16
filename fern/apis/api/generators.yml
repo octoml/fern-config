@@ -51,6 +51,7 @@ groups:
           includeApiReference: true
           extraDependencies:
             '@aws-sdk/client-s3': '^3.540.0'
+            'glob': '^10.4.5'
           extraDevDependencies:
             'aws-sdk-client-mock': '^4.0.0'
             'aws-sdk-client-mock-jest': '^4.0.0'
@@ -72,6 +73,7 @@ groups:
           includeApiReference: true
           extraDependencies:
             '@aws-sdk/client-s3': '^3.540.0'
+            'glob': '^10.4.5'
           extraDevDependencies:
             'aws-sdk-client-mock': '^4.0.0'
             'aws-sdk-client-mock-jest': '^4.0.0'
