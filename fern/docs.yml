@@ -59,6 +59,11 @@ layout:
   header-height: 69px
   page-width: 1440px
   sidebar-width: 292px
+
+redirects:
+  - source: /getting-started/how-to-create-an-octoai-access-token
+    destination: /getting-started/how-to-create-octoai-access-token
+
 navigation:
   - tab: documentation
     layout:
