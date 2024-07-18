@@ -61,8 +61,8 @@ layout:
   sidebar-width: 292px
 
 redirects:
-  - source: /getting-started/how-to-create-an-octoai-access-token
-    destination: /getting-started/how-to-create-octoai-access-token
+  - source: /docs/getting-started/how-to-create-an-octoai-access-token
+    destination: /docs/getting-started/how-to-create-octoai-access-token
 
 navigation:
   - tab: documentation
