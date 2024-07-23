@@ -25,7 +25,7 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
                 "content": "Hello world"
             }
         ],
-        "model": "meta-llama-3-8b-instruct",
+        "model": "meta-llama-3.1-8b-instruct",
         "max_tokens": 128,
         "presence_penalty": 0,
         "temperature": 0.1,
@@ -38,6 +38,9 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
 - **model** _(string)_: The model to be used for chat completion. Here is the complete list of presently supported model arguments. For more information regarding these models, see [this description.](/docs/text-gen-solution/getting-started#self-service-models)
 
 ```
+"meta-llama-3.1-8b-instruct",
+"meta-llama-3.1-70b-instruct",
+"meta-llama-3.1-405b-instruct",
 "meta-llama-3-8b-instruct",
 "hermes-2-pro-llama-3-8b",
 "meta-llama-3-70b-instruct",
@@ -75,7 +78,7 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
     }
   ],
   "created": 5399,
-  "model": "meta-llama-3-8b-instruct",
+  "model": "meta-llama-3.1-8b-instruct",
   "object": "chat.completion",
   "system_fingerprint": null,
   "usage": {
@@ -116,7 +119,7 @@ Once parsed to JSON, you will see the content of the streaming response similar 
   "id":"cmpl-994f6307a891454cb0f57b7027f5f113",
   "object":"chat.completion.chunk",
   "created":1700527881,
-  "model":"llama-2-13b-chat",
+  "model":"meta-llama-3.1-8b-instruct",
   "choices":
   [
     {
