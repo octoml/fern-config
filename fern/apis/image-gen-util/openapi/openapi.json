@@ -1,149 +1,8 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "FastAPI",
-    "version": "0.1.0"
-  },
-  "paths": {
-    "/upscaling": {
-      "post": {
-        "summary": "Upscaling",
-        "description": "Upscale the given image.",
-        "operationId": "upscaling_upscaling_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpscalingRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/background-removal": {
-      "post": {
-        "summary": "Remove Background",
-        "description": "Remove background from the given image.",
-        "operationId": "remove_background_background_removal_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BackgroundRemovalRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/adetailer": {
-      "post": {
-        "summary": "Generate Images",
-        "description": "Detail the given image.",
-        "operationId": "generate_images_adetailer_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ADetailerRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ADetailerResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/healthcheck": {
-      "get": {
-        "summary": "Healthcheck",
-        "description": "Respond that the server is healthy.\n\nAll our setup is done in the lifespan manager prior to yielding,\nso by the time FastAPI starts taking any requests at all, we are\nby construction ready to handle them.",
-        "operationId": "healthcheck_healthcheck_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "components": {
     "schemas": {
       "ADetailerDetector": {
-        "type": "string",
+        "description": "ADetailer detector models available.",
         "enum": [
           "face_yolov8n",
           "hand_yolov8n",
@@ -154,119 +13,28 @@
           "face_hair_mediapipe"
         ],
         "title": "ADetailerDetector",
-        "description": "ADetailer detector models available."
+        "type": "string"
       },
       "ADetailerInpaintingBaseModel": {
-        "type": "string",
-        "enum": ["sdxl", "sd15"],
+        "description": "Base model which ADetailer should use for inpainting.",
+        "enum": [
+          "sdxl",
+          "sd15"
+        ],
         "title": "ADetailerInpaintingBaseModel",
-        "description": "Base model which ADetailer should use for inpainting."
+        "type": "string"
       },
       "ADetailerRequest": {
+        "additionalProperties": false,
+        "description": "Generate one or more images based on the given parameters.",
         "properties": {
-          "init_image": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Initial Image",
-            "description": "base64-encoded image to modify. Resolution must be supported by inpainting_base_model: sdxl: 640x1536, 768x1344, 832x1216, 896x1152, 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 1664x2432, 2048x2048, 2432x1664; sd15: 384x704, 448x576, 512x512, 512x704, 512x768, 512x832, 576x448, 576x768, 576x768, 576x1024, 640x512, 640x640, 640x768, 704x384, 704x1216, 768x512, 768x576, 768x1024, 832x512, 896x896, 1024x576, 1024x768, 1024x1024, 1024x1536, 1216x704, 1536x1024."
-          },
-          "init_image_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Image URL",
-            "description": "If given, download init_image from this URL."
-          },
-          "image_encoding": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ImageEncoding"
-              }
-            ],
-            "title": "Output Image Encoding",
-            "description": "Define which encoding process should be applied before returning the modified image.",
-            "default": "jpeg",
-            "examples": ["jpeg"]
-          },
-          "transfer_images": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Transfer Images",
-            "description": "If given, a dict whose keys are strings containing the index of the face to modify (faces 0-indexed top-to-bottom, left-to-right; faces with 75% vertical overlap with the leftmost image in a row are counted in that row). Values are a list of base64 example faces which are together used to replace the indexed face."
-          },
-          "prompt": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Inpainting prompt",
-            "default": ""
-          },
-          "negative_prompt": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Inpainting negative prompt",
-            "default": "Blurry photo, distortion, low-res, bad quality"
-          },
-          "sampler": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Scheduler"
-              }
-            ],
-            "title": "Sampler used for inpainting",
-            "default": "K_EULER_ANCESTRAL"
-          },
-          "steps": {
-            "type": "integer",
-            "title": "Number of SDXL inference steps",
-            "default": 20
-          },
-          "inpainting_base_model": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ADetailerInpaintingBaseModel"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Inpainting Base Model",
-            "description": "The base model to be used for inpainting. Typically should match the model used to generate init_image.",
-            "default": "sdxl"
+          "cfg_scale": {
+            "default": 7.5,
+            "description": "Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.",
+            "exclusiveMinimum": 0.0,
+            "maximum": 50.0,
+            "title": "Classifier-free Guidance Scale",
+            "type": "number"
           },
           "checkpoint": {
             "anyOf": [
@@ -277,8 +45,73 @@
                 "type": "null"
               }
             ],
-            "title": "Checkpoint to apply",
-            "description": "Name of a checkpoint to use for inpainting."
+            "description": "Name of a checkpoint to use for inpainting.",
+            "title": "Checkpoint to Apply"
+          },
+          "confidence": {
+            "default": 0.3,
+            "description": "Inpainted areas are determined using a detector. This setting adjusts the sensitivity of the detector (lower considers more image fragments for inpainting).",
+            "title": "Confidence Threshold for Detector",
+            "type": "number"
+          },
+          "detector": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ADetailerDetector"
+              }
+            ],
+            "description": "Detection model to use. Configures whether e.g. faces or hands or people are targeted for after-detailing.",
+            "title": "Detector"
+          },
+          "image_encoding": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageEncoding"
+              }
+            ],
+            "default": "jpeg",
+            "description": "Define which encoding process should be applied before returning the modified image.",
+            "examples": [
+              "jpeg"
+            ],
+            "title": "Output Image Encoding"
+          },
+          "init_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "base64-encoded image to modify. Resolution must be supported by inpainting_base_model: sdxl: 640x1536, 768x1344, 832x1216, 896x1152, 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 1664x2432, 2048x2048, 2432x1664; sd15: 384x704, 448x576, 512x512, 512x704, 512x768, 512x832, 576x448, 576x768, 576x768, 576x1024, 640x512, 640x640, 640x768, 704x384, 704x1216, 768x512, 768x576, 768x1024, 832x512, 896x896, 1024x576, 1024x768, 1024x1024, 1024x1536, 1216x704, 1536x1024.",
+            "title": "Initial Image"
+          },
+          "init_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If given, download init_image from this URL.",
+            "title": "Image URL"
+          },
+          "inpainting_base_model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ADetailerInpaintingBaseModel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "sdxl",
+            "description": "The base model to be used for inpainting. Typically should match the model used to generate init_image.",
+            "title": "Inpainting Base Model"
           },
           "loras": {
             "anyOf": [
@@ -292,33 +125,77 @@
                 "type": "null"
               }
             ],
-            "title": "LoRAs to apply",
-            "description": "A dict mapping the name of a LoRA to apply to its weight."
+            "description": "A dict mapping the name of a LoRA to apply to its weight.",
+            "title": "LoRAs to Apply"
           },
-          "use_refiner": {
-            "type": "boolean",
-            "title": "Whether to apply the SDXL refiner",
-            "default": false
+          "mask_blur": {
+            "default": 4,
+            "description": "A mask is created for each inpainted area in the image. After dilation (see mask_dilation parameter), the mask is blurred. This technique is typically used to smoothly blend the inpainted area with the original image. This option specifies the radius, in pixels, of the gaussian blur kernel. The higher the value, the wider the blur. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.",
+            "minimum": 0.0,
+            "title": "Mask Blur",
+            "type": "integer"
           },
-          "style_preset": {
-            "type": "string",
-            "title": "Used to guide the SDXL inpainter towards a particular style",
-            "default": "base"
+          "mask_dilation": {
+            "default": 4,
+            "description": "A mask is created for each inpainted area in the image. Mask Dilation allows you to expand the size of the mask while maintaining its shape. This technique is typically used to reduce artifacts near borders in the mask. This parameter is the size, in pixels, of the dilation kernel to apply. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.",
+            "minimum": 0.0,
+            "title": "Mask Dilation",
+            "type": "integer"
           },
-          "strength": {
-            "type": "number",
-            "maximum": 1.0,
-            "exclusiveMinimum": 0.0,
-            "title": "Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
-            "default": 0.9
+          "mask_padding": {
+            "default": 32,
+            "description": "Each inpainted area is passed to the image-to-image generator with some surrounding context. The contextual area is created by padding the area occupied by the blurred, dilated mask. This technique improves inpainting quality, and the contextual area is not modified. This parameter specifies the amount of padding, in pixels, to apply around the processed mask. When the computed padding goes off the edge of the image, the padded area is slid towards the center of the image. Must be greater than or equal to 0 and recommended to be less than 10% the size of an inpainting mask.",
+            "minimum": 0.0,
+            "title": "Mask Bounding-Box Padding",
+            "type": "integer"
           },
-          "cfg_scale": {
-            "type": "number",
-            "maximum": 50.0,
-            "exclusiveMinimum": 0.0,
-            "title": "Classifier-free Guidance Scale",
-            "description": "Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0.",
-            "default": 7.5
+          "max_num_detections": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Inpaint at most this many objects, starting with the most confident matches.",
+            "title": "Maximum Number of Detections"
+          },
+          "negative_prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "Blurry photo, distortion, low-res, bad quality",
+            "description": "Inpainting negative prompt.",
+            "title": "Inpainting Negative Prompt"
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "",
+            "description": "Inpainting input prompt.",
+            "title": "Inpainting Prompt"
+          },
+          "sampler": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Scheduler"
+              }
+            ],
+            "default": "K_EULER_ANCESTRAL",
+            "description": "Sampler used for inpainting.",
+            "title": "Sampler Used for Inpainting"
           },
           "seed": {
             "anyOf": [
@@ -342,72 +219,69 @@
                 "type": "null"
               }
             ],
-            "title": "Fixed Random Seed",
             "description": "Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.",
-            "example": 33445
+            "example": 33445,
+            "title": "Fixed Random Seed"
           },
-          "mask_dilation": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Mask dilation",
-            "description": "A mask is created for each inpainted area in the image. Mask Dilation allows you to expand the size of the mask while maintaining its shape. This technique is typically used to reduce artifacts near borders in the mask. This parameter is the size, in pixels, of the dilation kernel to apply. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.",
-            "default": 4
+          "steps": {
+            "default": 20,
+            "description": "Number of SDXL inference steps.",
+            "title": "Number of SDXL inference steps",
+            "type": "integer"
           },
-          "mask_blur": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Mask blur",
-            "description": "A mask is created for each inpainted area in the image. After dilation (see mask_dilation parameter), the mask is blurred. This technique is typically used to smoothly blend the inpainted area with the original image. This option specifies the radius, in pixels, of the gaussian blur kernel. The higher the value, the wider the blur. Defaults to 4. Must be greater than or equal to 0 and recommended to be less than 64.",
-            "default": 4
+          "strength": {
+            "default": 0.9,
+            "description": "Floating-point number indicating how creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Image to image Creativeness Factor",
+            "type": "number"
           },
-          "mask_padding": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Mask bounding-box padding",
-            "description": "Each inpainted area is passed to the image-to-image generator with some surrounding context. The contextual area is created by padding the area occupied by the blurred, dilated mask. This technique improves inpainting quality, and the contextual area is not modified. This parameter specifies the amount of padding, in pixels, to apply around the processed mask. When the computed padding goes off the edge of the image, the padded area is slid towards the center of the image. Must be greater than or equal to 0 and recommended to be less than 10% the size of an inpainting mask.",
-            "default": 32
+          "style_preset": {
+            "default": "base",
+            "description": "Used to guide the SDXL inpainter towards a particular style.",
+            "title": "SDXL Inpainter Styler",
+            "type": "string"
           },
-          "max_num_detections": {
+          "transfer_images": {
             "anyOf": [
               {
-                "type": "integer"
+                "additionalProperties": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "type": "object"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Maximum Number of Detections",
-            "description": "Inpaint at most this many objects, starting with the most confident matches."
-          },
-          "confidence": {
-            "type": "number",
-            "title": "Confidence Threshold for Detector",
-            "description": "Inpainted areas are determined using a detector. This setting adjusts the sensitivity of the detector (lower considers more image fragments for inpainting). ",
-            "default": 0.3
-          },
-          "detector": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ADetailerDetector"
-              }
-            ],
-            "title": "Detector",
-            "description": "Detection model to use. Configures whether e.g. faces or hands or people are targeted for after-detailing."
+            "description": "If given, a dict whose keys are strings containing the index of the face to modify (faces 0-indexed top-to-bottom, left-to-right; faces with 75% vertical overlap with the leftmost image in a row are counted in that row). Values are a list of base64 example faces which are together used to replace the indexed face.",
+            "title": "Transfer Images"
           },
           "union_masks": {
-            "type": "boolean",
-            "title": "Union Masks",
+            "default": false,
             "description": "When true, create a single mask by unioning the mask for each detected object together, then send a single inpainting request to the backing model.",
-            "default": false
+            "title": "Union Masks",
+            "type": "boolean"
+          },
+          "use_refiner": {
+            "default": false,
+            "description": "Whether to apply the SDXL refiner.",
+            "title": "Enable SDXL Refiner",
+            "type": "boolean"
           }
         },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["detector"],
+        "required": [
+          "detector"
+        ],
         "title": "ADetailerRequest",
-        "description": "Generate one or more images based on the given parameters."
+        "type": "object"
       },
       "ADetailerResponse": {
+        "description": "Represent an adetailed image.",
         "properties": {
           "image_b64": {
             "anyOf": [
@@ -418,68 +292,44 @@
                 "type": "null"
               }
             ],
-            "title": "Image in Base64",
-            "description": "The modified image or None if it was removed for safety."
+            "description": "The modified image or None if it was removed for safety.",
+            "title": "Image in Base64"
           },
-          "num_objects_inpainted": {
-            "type": "integer",
-            "title": "Number of Inpainted Objects",
-            "description": "The number of objects that were successfully inpainted."
+          "init_image_removed_for_safety": {
+            "description": "True when the init_image failed the safety checker, so no processing was done.",
+            "title": "Init image safety trigger",
+            "type": "boolean"
           },
           "num_objects_detected": {
-            "type": "integer",
+            "description": "The number of objects that were successfully detected.",
             "title": "Number of Detected Objects",
-            "description": "The number of objects that were successfully detected."
+            "type": "integer"
+          },
+          "num_objects_inpainted": {
+            "description": "The number of objects that were successfully inpainted.",
+            "title": "Number of Inpainted Objects",
+            "type": "integer"
           },
           "num_removed_for_safety": {
-            "type": "integer",
+            "description": "Number of inpainting requests that violated the OctoAI Terms of Service.",
             "title": "Number of inpainting safety triggers",
-            "description": "Number of inpainting requests that violated the OctoAI Terms of Service."
+            "type": "integer"
           }
         },
-        "type": "object",
         "required": [
           "image_b64",
+          "init_image_removed_for_safety",
           "num_objects_inpainted",
           "num_objects_detected",
           "num_removed_for_safety"
         ],
         "title": "ADetailerResponse",
-        "description": "Represent an adetailed image."
+        "type": "object"
       },
       "BackgroundRemovalRequest": {
+        "additionalProperties": false,
+        "description": "Generate one or more images based on the given parameters.",
         "properties": {
-          "init_image": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Initial Image",
-            "description": "Image to modify."
-          },
-          "init_image_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Image URL",
-            "description": "If given, download init_image from this URL."
-          },
-          "output_image_encoding": {
-            "const": "png",
-            "title": "Output Image Encoding",
-            "description": "Define which encoding process should be applied before returning the modified image. Only png is accepted.",
-            "default": "png",
-            "examples": ["png"]
-          },
           "alpha_matting": {
             "anyOf": [
               {
@@ -489,84 +339,60 @@
                 "type": "null"
               }
             ],
-            "title": "Alpha Matting",
-            "description": "Flag indicating whether to use alpha matting.",
-            "default": false
-          },
-          "alpha_matting_foreground_threshold": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "maximum": 255.0,
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Alpha Matting Foreground Threshold",
-            "description": "Foreground threshold for alpha matting.",
-            "default": 240
+            "default": false,
+            "description": "True to use alpha matting. May be true only only for rembg driver.",
+            "title": "Alpha Matting"
           },
           "alpha_matting_background_threshold": {
             "anyOf": [
               {
-                "type": "integer",
                 "maximum": 255.0,
-                "minimum": 0.0
+                "minimum": 0.0,
+                "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Alpha Matting Background Threshold",
-            "description": "Background threshold for alpha matting.",
-            "default": 10
+            "default": 10,
+            "description": "Background threshold for alpha matting. Applies only when alpha_matting is true.",
+            "title": "Alpha Matting Background Threshold"
           },
           "alpha_matting_erode_size": {
             "anyOf": [
               {
-                "type": "integer",
                 "maximum": 255.0,
-                "minimum": 0.0
+                "minimum": 0.0,
+                "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Alpha Matting Erode Size",
-            "description": "Erosion size for alpha matting.",
-            "default": 10
+            "default": 10,
+            "description": "Erosion size for alpha matting. Applies only when alpha_matting is true.",
+            "title": "Alpha Matting Erode Size"
           },
-          "only_mask": {
+          "alpha_matting_foreground_threshold": {
             "anyOf": [
               {
-                "type": "boolean"
+                "maximum": 255.0,
+                "minimum": 0.0,
+                "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Only Mask",
-            "description": "Flag indicating whether to return only the binary masks.",
-            "default": false
-          },
-          "post_process_mask": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Post Process Mask",
-            "description": "Flag indicating whether to post-process the masks.",
-            "default": true
+            "default": 240,
+            "description": "Foreground threshold for alpha matting. Applies only when alpha_matting is true.",
+            "title": "Alpha Matting Foreground Threshold"
           },
           "bgcolor": {
             "anyOf": [
               {
+                "maxItems": 4,
+                "minItems": 4,
                 "prefixItems": [
                   {
                     "type": "integer"
@@ -581,43 +407,460 @@
                     "type": "integer"
                   }
                 ],
-                "type": "array",
-                "maxItems": 4,
-                "minItems": 4
+                "type": "array"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Bgcolor",
-            "description": "Background color for the cutout image."
+            "description": "If given, return the foreground pasted onto an image with this background color.",
+            "title": "Bgcolor"
+          },
+          "driver": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "birefnet",
+            "description": "Identifies the background removal technique to use. Valid options are rembg or birefnet.",
+            "title": "Background Removal Driver"
+          },
+          "init_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Input image to modify.",
+            "title": "Initial Image"
+          },
+          "init_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If given, download init_image from this URL.",
+            "title": "Image URL"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Identifies the model to use for background removal. Valid values depend on the value of the \"driver\" field. When driver is \"birefnet,\" model must be \"birefnet-dis-epoch540.\" When driver is \"rembg,\" model must be \"isnet-general-use\", \"u2net\", \"u2netp\", \"u2net_human_seg\", or \"u2net_cloth_seg.\"",
+            "title": "Background Removal Model"
+          },
+          "only_mask": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": false,
+            "description": "Flag indicating whether to return only the binary masks.",
+            "title": "Only Mask"
+          },
+          "output_image_encoding": {
+            "const": "png",
+            "default": "png",
+            "description": "Define which encoding process should be applied before returning the modified image. Only png is accepted.",
+            "enum": [
+              "png"
+            ],
+            "examples": [
+              "png"
+            ],
+            "title": "Output Image Encoding",
+            "type": "string"
+          },
+          "post_process_mask": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": true,
+            "description": "Flag indicating whether to post-process the masks. Applies only when driver is rembg; ignored otherwise.",
+            "title": "Post Process Mask"
           }
         },
-        "additionalProperties": false,
-        "type": "object",
         "title": "BackgroundRemovalRequest",
-        "description": "Generate one or more images based on the given parameters."
+        "type": "object"
+      },
+      "Bound": {
+        "properties": {
+          "box": {
+            "description": "Coordinates of the bounding box that surrounds this object in the given image, in ((left, top), (right, bottom)) form.",
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "title": "Bounding Box",
+            "type": "array"
+          },
+          "phrase": {
+            "description": "A phrase describing the bounded object.",
+            "title": "Descriptive Phrase",
+            "type": "string"
+          },
+          "score": {
+            "description": "A score in [0, 1] that reflects the model's confidence that the bounding box accurately encloses the described object.",
+            "title": "Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "phrase",
+          "box",
+          "score"
+        ],
+        "title": "Bound",
+        "type": "object"
+      },
+      "CreativeGeneratorRequest": {
+        "additionalProperties": false,
+        "description": "An API request to the Creative Generator service.",
+        "properties": {
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 1024,
+            "description": "Integer representing the height of image to generate. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}",
+            "title": "Output Image Height"
+          },
+          "loras": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A dictionary of LoRAs to apply. LoRAs as keys and their weights (float) as values.",
+            "title": "Dictionary of LoRAs"
+          },
+          "negative_prompt": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Text describing image traits to avoid during generation.",
+            "title": "Negative Prompt"
+          },
+          "num_images": {
+            "default": 1,
+            "description": "Integer representing how many output images to generate with this prompt.",
+            "exclusiveMinimum": 0.0,
+            "maximum": 16.0,
+            "title": "Number of Output Images",
+            "type": "integer"
+          },
+          "product_image_b64": {
+            "description": "The original product image to place in the creative. Image should feature a plain background and should be larger than target_product_size_px.",
+            "title": "base64-encoded Product Image",
+            "type": "string"
+          },
+          "prompt": {
+            "description": "Text describing the image content to generate.",
+            "maxLength": 10000,
+            "title": "Input Prompt",
+            "type": "string"
+          },
+          "rotate_deg": {
+            "default": 0,
+            "description": "Number of degrees to rotate product_image_b64.",
+            "maximum": 360.0,
+            "minimum": -360.0,
+            "title": "Product rotation (degrees)",
+            "type": "number"
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32. If None, a random seed is chosen. The value used for each image is returned in the response.",
+            "title": "Fixed Random Seed"
+          },
+          "style_preset": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SDXLStyles"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "cinematic",
+            "description": "Pre-defined styles used to guide the output image towards a particular style. Pre-defined styles are only supported by SDXL.",
+            "title": "Pre-defined Styles"
+          },
+          "target_product_height_px": {
+            "description": "Target product height, in pixels. The product width will be scaled so the target product dimensions match the original aspect ratio of product_image_b64.",
+            "minimum": 10.0,
+            "title": "Target product height",
+            "type": "integer"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 1024,
+            "description": "Integer representing the width of image to generate. Supported resolutions (w,h): SDXL={(1536, 640), (768, 1344), (832, 1216), (1344, 768), (1152, 896), (640, 1536), (1216, 832), (896, 1152), (1024, 1024)}",
+            "title": "Output Image Width"
+          }
+        },
+        "required": [
+          "product_image_b64",
+          "target_product_height_px",
+          "prompt"
+        ],
+        "title": "CreativeGeneratorRequest",
+        "type": "object"
+      },
+      "CreativeGeneratorResponse": {
+        "properties": {
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/GeneratedImage"
+            },
+            "title": "Images",
+            "type": "array"
+          }
+        },
+        "required": [
+          "images"
+        ],
+        "title": "CreativeGeneratorResponse",
+        "type": "object"
+      },
+      "GeneratedImage": {
+        "properties": {
+          "image_b64": {
+            "description": "Base64-encoded PNG image.",
+            "title": "Generated image",
+            "type": "string"
+          },
+          "seed": {
+            "description": "Seed used to generate this image",
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "image_b64",
+          "seed"
+        ],
+        "title": "GeneratedImage",
+        "type": "object"
       },
       "HTTPValidationError": {
+        "description": "HTTP validation error in API.",
         "properties": {
           "detail": {
+            "description": "Detail of the http validation error.",
             "items": {
               "$ref": "#/components/schemas/ValidationError"
             },
-            "type": "array",
-            "title": "Detail"
+            "title": "Detail",
+            "type": "array"
           }
         },
-        "type": "object",
-        "title": "HTTPValidationError"
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "IdeaGeneratorRequest": {
+        "additionalProperties": false,
+        "description": "An API request to the Creative Generator service.",
+        "properties": {
+          "brand_values": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "",
+            "description": "If specified, brand values to emphasize in the creative",
+            "title": "Brand Values"
+          },
+          "microseason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "",
+            "description": "If specified, tailor the creative theme to this microseason",
+            "title": "Microseason"
+          },
+          "num_prompts_per_scene": {
+            "default": 5,
+            "description": "Generate this many prompts for each scene idea.",
+            "title": "Number of Prompts per Scene",
+            "type": "integer"
+          },
+          "num_scenes": {
+            "default": 3,
+            "description": "Generate this many scene ideas for the given scenario.",
+            "title": "Number of Scenes",
+            "type": "integer"
+          },
+          "product_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "",
+            "description": "Description of the product to generate.",
+            "title": "Product Description"
+          },
+          "product_listing_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": "",
+            "description": "Title of the product listing.",
+            "title": "Product Listing Title"
+          },
+          "temperature": {
+            "default": 0.1,
+            "description": "LLM temperature parameter, which controls the randomness of the response sampling. With temperature=0, the response should be repeatable. With temperature>0, randomness in the response sampling will allow the model to return different results.",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Temperature",
+            "type": "number"
+          }
+        },
+        "title": "IdeaGeneratorRequest",
+        "type": "object"
+      },
+      "IdeaGeneratorResponse": {
+        "properties": {
+          "scenes": {
+            "description": "A list of the generated scene ideas for this scenario.",
+            "items": {
+              "$ref": "#/components/schemas/SceneIdea"
+            },
+            "title": "Generated Scene Ideas",
+            "type": "array"
+          }
+        },
+        "required": [
+          "scenes"
+        ],
+        "title": "IdeaGeneratorResponse",
+        "type": "object"
       },
       "ImageEncoding": {
-        "type": "string",
-        "enum": ["jpeg", "png"],
+        "description": "The image encoding types available for image modification response.",
+        "enum": [
+          "jpeg",
+          "png"
+        ],
         "title": "ImageEncoding",
-        "description": "The image encoding types available for image modification response."
+        "type": "string"
       },
       "ImageResponse": {
+        "description": "Represent a generated image.",
         "properties": {
           "image_b64": {
             "anyOf": [
@@ -628,22 +871,127 @@
                 "type": "null"
               }
             ],
-            "title": "Image in Base64",
-            "description": "The modified image or None if it was removed for safety."
+            "description": "The modified image or None if it was removed for safety.",
+            "title": "Image in Base64"
           },
           "removed_for_safety": {
-            "type": "boolean",
+            "description": "True if the image was removed for safety, False otherwise.",
             "title": "Removed For Safety",
-            "description": "True if the image was removed for safety, False otherwise."
+            "type": "boolean"
           }
         },
-        "type": "object",
-        "required": ["image_b64", "removed_for_safety"],
+        "required": [
+          "image_b64",
+          "removed_for_safety"
+        ],
         "title": "ImageResponse",
-        "description": "Represent a generated image."
+        "type": "object"
+      },
+      "Mask": {
+        "properties": {
+          "bound_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Index into the bounds list of the Bound object that was used to produce this mask. When prompt was not specified in the list, this property will always be None.",
+            "title": "Bound Index"
+          },
+          "bounding_box": {
+            "description": "A bounding box enclosing the white portions of mask_b64.",
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              }
+            ],
+            "title": "Detection Bounding Box",
+            "type": "array"
+          },
+          "mask_b64": {
+            "description": "Base64-encoded greyscale PNG containing a mask which overlays this object. White areas of image are considered to be part of the mask and black areas are not. The dimensions of this image match the dimensions of the image supplied to the request.",
+            "title": "Detection Mask",
+            "type": "string"
+          },
+          "score": {
+            "description": "A score in [0, 1] describing the relevance of this detection to the point or bounding box in the request (or the bounding box inferred based on prompt). A higher number indicates a more relevant detection.",
+            "title": "Relevance Score",
+            "type": "number"
+          }
+        },
+        "required": [
+          "bound_index",
+          "mask_b64",
+          "score",
+          "bounding_box"
+        ],
+        "title": "Mask",
+        "type": "object"
+      },
+      "SDXLStyles": {
+        "description": "The supported SDXL styles.",
+        "enum": [
+          "base",
+          "cinematic",
+          "photographic",
+          "Advertising"
+        ],
+        "title": "SDXLStyles",
+        "type": "string"
+      },
+      "SceneIdea": {
+        "properties": {
+          "prompts": {
+            "description": "A list of generated prompts for this scene.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Generated Prompts",
+            "type": "array"
+          },
+          "scene": {
+            "description": "The LLM-generated scene idea for the creative background.",
+            "title": "Scene Description",
+            "type": "string"
+          }
+        },
+        "required": [
+          "scene",
+          "prompts"
+        ],
+        "title": "SceneIdea",
+        "type": "object"
       },
       "Scheduler": {
-        "type": "string",
+        "description": "The schedulers available for image generation.",
         "enum": [
           "PNDM",
           "LMS",
@@ -664,10 +1012,238 @@
           "LCM"
         ],
         "title": "Scheduler",
-        "description": "The schedulers available for image generation."
+        "type": "string"
+      },
+      "SegmenterRequest": {
+        "description": "A request to the segmenter service.",
+        "properties": {
+          "background_points": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "items": {
+                  "maxItems": 2,
+                  "minItems": 2,
+                  "prefixItems": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Coordinates of point(s) outside the object in the image to be segmented. Coordinates are given in the form (x, y). Multiple points may be given. A mask will be generated based on objects detected that do not contain the points given. Only one of prompt, bounding_box, and (foreground_points, background_points) may be given.",
+            "title": "Segmentation Background Points"
+          },
+          "bounding_box": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "maxItems": 2,
+                    "minItems": 2,
+                    "prefixItems": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ],
+                    "type": "array"
+                  },
+                  {
+                    "maxItems": 2,
+                    "minItems": 2,
+                    "prefixItems": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ],
+                    "type": "array"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Coordinates of a bounding box which encloses the object in the image to be segmented. The 0th entry in the tuple is the top left point, and the 1st entry in the tuple is the bottom right point of the bounding box. Each point is specified as a 2-tuple of the form (x, y). A mask will be generated based on objects detected inside this bounding box. Only one of prompt, bounding_box, and point may be given.",
+            "title": "Segmentation Bounding Box"
+          },
+          "foreground_points": {
+            "anyOf": [
+              {
+                "maxItems": 2,
+                "minItems": 2,
+                "prefixItems": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "items": {
+                  "maxItems": 2,
+                  "minItems": 2,
+                  "prefixItems": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ],
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Coordinates of point(s) inside the object in the image to be segmented. Coordinates are given in the form (x, y). Multiple points may be given. A mask will be generated based on objects detected that contain the points given. Only one of prompt, bounding_box, and (foreground_points, background_points) may be given.",
+            "title": "Segmentation Foreground Points"
+          },
+          "image_b64": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The image which should be segmented.",
+            "title": "Image in Base64"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If given, download image_b64 from this URL.",
+            "title": "Image URL"
+          },
+          "max_num_bounds": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": 0,
+            "description": "The maximum number of Bounds to use when prompt is supplied. When more Bounds than this are generated, the extra lowest-scoring ones will be dropped. When set to 0, all generated Bounds are used.",
+            "title": "Maximum Number of Bounds"
+          },
+          "max_num_masks": {
+            "default": 0,
+            "description": "The maximum number of masks generated for each request or, if prompt is specified, for each Bound generated. If 0, all masks are returned.",
+            "title": "Maximum Number of Masks",
+            "type": "integer"
+          },
+          "prompt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "When given, a prompt that describes the object in the image that should be segmented. A mask will be generated to match this object. Only one of prompt, bounding_box, and point may be given.",
+            "title": "Segmentation Prompt"
+          },
+          "prompt_object_detection_threshold": {
+            "default": 0.35,
+            "description": "When prompt is specified, an object detection model produces a list of bounding boxes that enclose objects described by the prompt. Each bounding box is given a score. Only boxes which score above this threshold are reported.",
+            "title": "Object Detection Threshold",
+            "type": "number"
+          },
+          "prompt_token_detection_threshold": {
+            "default": 0.25,
+            "description": "When prompt is specified, an object detection model produces a list of bounding boxes that enclose objects described by the prompt. Each token in the prompt is scored against the bounding box, and those exceeding this threshold are included in summary text. This allows a single prompt to describe multiple unrelated objects while preserving the ability for users to determine which object a box belongs to.",
+            "title": "Token Detection Threshold",
+            "type": "number"
+          }
+        },
+        "required": [
+          "image_b64"
+        ],
+        "title": "SegmenterRequest",
+        "type": "object"
+      },
+      "SegmenterResponse": {
+        "description": "A response from the segmenter service.",
+        "properties": {
+          "bounds": {
+            "description": "A list of bounding boxes computed based on prompt, ordered from highest to lowest score. When prompt is not given, this list is empty.",
+            "items": {
+              "$ref": "#/components/schemas/Bound"
+            },
+            "title": "Detected Bounds",
+            "type": "array"
+          },
+          "masks": {
+            "description": "A list of detected masks, ordered from highest to lowest score.",
+            "items": {
+              "$ref": "#/components/schemas/Mask"
+            },
+            "title": "Detected Masks",
+            "type": "array"
+          },
+          "removed_for_safety": {
+            "description": "True if the input image was removed for safety, False otherwise.",
+            "title": "Removed For Safety",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "bounds",
+          "masks",
+          "removed_for_safety"
+        ],
+        "title": "SegmenterResponse",
+        "type": "object"
       },
       "UpscalingModel": {
-        "type": "string",
+        "description": "Specifies models either in the API or in server config.",
         "enum": [
           "real-esrgan-x4-plus",
           "real-esrgan-x4-v3",
@@ -677,28 +1253,20 @@
           "real-esrgan-x2-plus"
         ],
         "title": "UpscalingModel",
-        "description": "Specifies models either in the API or in server config."
+        "type": "string"
       },
       "UpscalingRequest": {
+        "additionalProperties": false,
+        "description": "Generate one or more images based on the given parameters.",
         "properties": {
           "face_enhance": {
-            "type": "boolean",
-            "title": "Enable face enhancer",
-            "description": "True to enable the face enhancer model variant",
             "default": false,
-            "examples": [true]
-          },
-          "init_image_url": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
+            "description": "True to enable the face enhancer model variant.",
+            "examples": [
+              true
             ],
-            "title": "Image URL",
-            "description": "If given, download init_image from this URL."
+            "title": "Enable Face Enhancer",
+            "type": "boolean"
           },
           "init_image": {
             "anyOf": [
@@ -709,8 +1277,20 @@
                 "type": "null"
               }
             ],
-            "title": "Initial Image",
-            "description": "Image to modify."
+            "description": "Input image to modify.",
+            "title": "Initial Image"
+          },
+          "init_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "If given, download init_image from this URL.",
+            "title": "Image URL"
           },
           "model": {
             "allOf": [
@@ -718,9 +1298,22 @@
                 "$ref": "#/components/schemas/UpscalingModel"
               }
             ],
-            "title": "Upscaling model",
+            "default": "real-esrgan-x4-plus",
             "description": "One of UpscalingModel, identifies the upscaling model to use.",
-            "default": "real-esrgan-x4-plus"
+            "title": "Upscaling Model"
+          },
+          "output_image_encoding": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ImageEncoding"
+              }
+            ],
+            "default": "jpeg",
+            "description": "Define which encoding process should be applied before returning the modified image.",
+            "examples": [
+              "jpeg"
+            ],
+            "title": "Output Image Encoding"
           },
           "output_image_height": {
             "anyOf": [
@@ -731,8 +1324,8 @@
                 "type": "null"
               }
             ],
-            "title": "Output image height",
-            "description": "Height in pixels of the output image. If given, neither scale nor output_image_width should be specified."
+            "description": "Height in pixels of the output image. If given, neither scale nor output_image_width should be specified.",
+            "title": "Output Image Height"
           },
           "output_image_width": {
             "anyOf": [
@@ -743,19 +1336,8 @@
                 "type": "null"
               }
             ],
-            "title": "Output image width",
-            "description": "Width in pixels of the output image. If given, neither scale nor output_image_height should be specified."
-          },
-          "output_image_encoding": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ImageEncoding"
-              }
-            ],
-            "title": "Output Image Encoding",
-            "description": "Define which encoding process should be applied before returning the modified image.",
-            "default": "jpeg",
-            "examples": ["jpeg"]
+            "description": "Width in pixels of the output image. If given, neither scale nor output_image_height should be specified.",
+            "title": "Output Image Width"
           },
           "scale": {
             "anyOf": [
@@ -766,19 +1348,21 @@
                 "type": "null"
               }
             ],
-            "title": "Upscaling factor",
             "description": "Upscale the init image dimensions by this multiplier. If given, neither output_image_height nor output_image_width should be given.",
-            "examples": [4.0]
+            "examples": [
+              4.0
+            ],
+            "title": "Upscaling Factor"
           }
         },
-        "additionalProperties": false,
-        "type": "object",
         "title": "UpscalingRequest",
-        "description": "Generate one or more images based on the given parameters."
+        "type": "object"
       },
       "ValidationError": {
+        "description": "Validation error in API.",
         "properties": {
           "loc": {
+            "description": "Error location in ValidationError.",
             "items": {
               "anyOf": [
                 {
@@ -789,22 +1373,272 @@
                 }
               ]
             },
-            "type": "array",
-            "title": "Location"
+            "title": "Location",
+            "type": "array"
           },
           "msg": {
-            "type": "string",
-            "title": "Message"
+            "description": "Error message in ValidationError.",
+            "title": "Message",
+            "type": "string"
           },
           "type": {
-            "type": "string",
-            "title": "Error Type"
+            "description": "Error type in ValidationError.",
+            "title": "Error Type",
+            "type": "string"
           }
         },
-        "type": "object",
-        "required": ["loc", "msg", "type"],
-        "title": "ValidationError"
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
       }
     }
-  }
+  },
+  "info": {
+    "description": "Media Utilities API.",
+    "title": "media-utilities-api",
+    "version": "0.1"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/adetailer": {
+      "post": {
+        "description": "Detail the given image.",
+        "operationId": "adetailer_adetailer_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ADetailerRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ADetailerResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Adetailer"
+      }
+    },
+    "/background-removal": {
+      "post": {
+        "description": "Remove background from the given image.",
+        "operationId": "remove_background_background_removal_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackgroundRemovalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove Background"
+      }
+    },
+    "/creative-generator": {
+      "post": {
+        "operationId": "creative_generator_creative_generator_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreativeGeneratorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreativeGeneratorResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Creative Generator"
+      }
+    },
+    "/idea-generator": {
+      "post": {
+        "operationId": "generate_ideas_idea_generator_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IdeaGeneratorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdeaGeneratorResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Generate Ideas"
+      }
+    },
+    "/segment": {
+      "post": {
+        "operationId": "segment_segment_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SegmenterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmenterResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Segment"
+      }
+    },
+    "/upscaling": {
+      "post": {
+        "description": "Upscale the given image.",
+        "operationId": "upscaling_upscaling_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpscalingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upscaling"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://image.octoai.run"
+    }
+  ]
 }

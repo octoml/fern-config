@@ -12,6 +12,15 @@ paths:
   /healthcheck:
     get:
       x-fern-ignore: true
+  /segment:
+    post:
+      x-fern-ignore: true
+  /creative-generator:
+    post:
+      x-fern-ignore: true
+  /idea-generator:
+    post:
+      x-fern-ignore: true
 components:
   securitySchemes:
     BearerAuth:
