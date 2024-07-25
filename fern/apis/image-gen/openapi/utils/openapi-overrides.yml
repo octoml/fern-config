@@ -2,13 +2,22 @@ paths:
   /upscaling:
     post:
       x-fern-sdk-method-name: upscale
+      servers:
+        - url: https://image.octoai.run
+          x-name: ImageGen
   /background-removal:
     post:
       x-fern-sdk-method-name: remove_background
+      servers:
+        - url: https://image.octoai.run
+          x-name: ImageGen
   /adetailer:
     post:
       summary: "Adetailer"
       x-fern-sdk-method-name: generate_images
+      servers:
+        - url: https://image.octoai.run
+          x-name: ImageGen
   /healthcheck:
     get:
       x-fern-ignore: true
