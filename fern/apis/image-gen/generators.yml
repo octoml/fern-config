@@ -1,2 +1,5 @@
-openapi: ./openapi/openapi.json
-openapi-overrides: ./openapi/openapi-overrides.yml
+api:
+  - openapi: ./openapi/image-gen/openapi.json
+    openapi-overrides: ./openapi/image-gen/openapi-overrides.yml
+  - openapi: ./openapi/utils/openapi.json
+  - openapi-overrides: ./openapi/utils/openapi-overrides.json
