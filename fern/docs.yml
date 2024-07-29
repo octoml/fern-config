@@ -133,6 +133,8 @@ navigation:
             path: docs/text-gen-solution/typescript-sdk.mdx
           - page: Using JSON mode with Text Gen endpoints
             path: docs/text-gen-solution/json-mode.mdx
+          - page: Calling Built-in Tools with Llama 3.1
+            path: docs/text-gen-solution/using-built-ins.mdx
           - page: Function Calling using OctoAI Models
             path: docs/text-gen-solution/function-calling.mdx
           - page: Using Llama Guard to moderate text
