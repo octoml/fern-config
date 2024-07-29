@@ -14,7 +14,7 @@ The models have enhanced support for a set of functions by default, without extr
 Let's take a look in the next section at how to use them. Each section will contain snippets of code that you can copy and test in your environment.
 
 ### Built-In Tools
-These are the following built-in tools available in Llama 3.1 models, with their respective code tool name:
+These are the built-in tools available in Llama 3.1 models, with their respective code tool name:
 * Brave Search: `brave_search`
     * Used to perform web searches.
 * Wolfram Alpha: `wolfram_alpha`
@@ -403,12 +403,14 @@ With our mocked function you can expect the final response to be like this:
 This is an image of a green field with a few trees and a blue sky with white clouds.
 ```
 
-Also note that you can use OctoAI's Image Generation service to implement the actual image generation capability in your application!
+<Note>
+You can use OctoAI's Image Generation service to implement the actual image generation capability in your application!
+</Note>
 
 ## Implementation Notes
 Care must be taken in order to handle the possiblity of the model calling the `code_interpreter` at any point if any of the other buil-in tools are active. This is expected behavior and your implementation needs to handle this case.
 
-You are in charge of doing the final implementation of these functions. This provide interesting opportunities to create new and innovative experiences. Still, we will be providing examples of implementations of these functions for the default cases in our [Text-Gen Cookbook](https://github.com/octoml/octoai-textgen-cookbook) repository soon.
+You are in charge of doing the final implementation of these functions. This provides interesting opportunities to create new and innovative experiences. Still, we will be providing examples of implementations of these functions for the default cases in our [Text-Gen Cookbook](https://github.com/octoml/octoai-textgen-cookbook) repository soon.
 
 ## Conclusion
 In this tutorial we have seen how to use Llama 3.1's Built-in Tools. You can easily take advantage of them using OctoAI's convenient API, wihtout having to worry about low-level implementation or cumbersome tool definitions.
