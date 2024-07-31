@@ -67,7 +67,9 @@ redirects:
   - source: /docs/documentation/*
     destination: /docs/*
   - source: /docs/media-gen-solution/rest-apis/generate/sdxl-lighting
-    destination: /docs/media-gen-solution/rest-apis/generate/sdxl-lightning   
+    destination: /docs/media-gen-solution/rest-apis/generate/sdxl-lightning
+  - source: /docs/media-gen-solution/optimizations/sdxl-lighting
+    destination: /docs/media-gen-solution/optimizations/sdxl-lightning
 
 navigation:
   - tab: documentation
