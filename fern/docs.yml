@@ -66,6 +66,8 @@ redirects:
     destination: /docs/getting-started/how-to-create-octoai-access-token
   - source: /docs/documentation/*
     destination: /docs/*
+  - source: /docs/media-gen-solution/rest-apis/generate/sdxl-lighting
+    destination: /docs/media-gen-solution/rest-apis/generate/sdxl-lightning   
 
 navigation:
   - tab: documentation
