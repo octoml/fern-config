@@ -1,13 +1,13 @@
 ---
-title: Stable Diffusion XL Lighting API
+title: Stable Diffusion XL Lightning API
 slug: media-gen-solution/rest-apis/generate/sdxl-lighting
 ---
 
-Generate an image using a Stable Diffusion XL (SDXL) Lighting model.
+Generate an image using a Stable Diffusion XL (SDXL) Lightning model.
 
 OctoAI's SDXL-Lightning model is a lightning-fast text-to-image generation model (checkpoint). It can generate high-quality 1024px images in a few steps (4-8 steps) within sub seconds.
 
-Recommended values to get optimal results from SDXL lighting model are: 
+Recommended values to get optimal results from SDXL lightning model are: 
     - Set steps between 4-8 steps (8 steps recommended) 
     - Keep CFG Scale low, ranging from 1.4 to 4.0 (ideally 3.0)
     - Use any sampler, textual inversion, or style preset.
@@ -27,7 +27,7 @@ parameter is the `prompt`, it also supports a `width` and `height` parameter whi
 **Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. The required parameters are:
 
   - `prompt` - text to generate the image from
-  - `checkpoint` -  Here you can specify the SDXL Lighting checkpoint. Supported value `octoai:lightning_sdxl`
+  - `checkpoint` -  Here you can specify the SDXL Lightning checkpoint. Supported value `octoai:lightning_sdxl`
 
 **Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
 
@@ -71,8 +71,8 @@ The resolution of the generated image will be 1 megapixel. The default resolutio
 
 ### **Pricing**
 
-    - SDXL Lighting: ***$0.001*** per image, 1024x1024, 4 steps; billed per image 
-    - SDXL Lighting using a custom asset,LoRA, or ControlNet: ***$0.005*** per image, 1024X1024, 4 steps; billed per image 
+    - SDXL Lightning: ***$0.001*** per image, 1024x1024, 4 steps; billed per image 
+    - SDXL Lightning using a custom asset,LoRA, or ControlNet: ***$0.005*** per image, 1024X1024, 4 steps; billed per image 
 
 
 Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
