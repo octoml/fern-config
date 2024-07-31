@@ -21,8 +21,6 @@ These are the built-in tools available in Llama 3.1 models, with their respectiv
     * Used to perform complex mathematical calculations.
 * Code Interpeter: `code_interpreter`
     * Used to evaluate the generated Python code.
-* Photogen: `photogen`
-    * Used to create images.
 
 Built-in support only means that the models are better trained at triggering the use of these functions. The functions still need to be implemented locally. In the following sections we cover how you can trigger each of the Llama 3.1 Built-in tools.
 
@@ -313,99 +311,6 @@ With our mocked function you can expect the final response to be like this:
 ```
 This code creates a sine wave with amplitude 1 and frequency 1, and plots it using matplotlib. The `np.linspace(0, 4 * np.pi, 1000)` function creates an array of 1000 x values from 0 to 4π, and the `np.sin(x)` function calculates the corresponding y values. The `plt.plot(x, y)` function creates the plot, and the `plt.title()`, `plt.xlabel()`, and `plt.ylabel()` functions add a title and labels to the plot. Finally, the `plt.show()` function displays the plot.
 ```
-
-## Photogen Tool
-The Photogen tool gets triggered by the model whenever the user request creating a picture of some form. We will mock the function to get us up and running quickly.
-
-## Using the Photogen Tool
-The following snippet of code shows how to handle a chat interaction that uses the Photogen tool:
-```python
-import os
-from openai import OpenAI
-import json
-
-
-# Code interpreter definition
-def photogen(query: str) -> str:
-    return "Imaged generated and save to img.png"
-
-
-tools = [
-    {"type": "function", "function": {"name": "photogen"}},
-]
-
-client = OpenAI(
-    base_url="https://text.octoai.run/v1",
-    api_key=os.environ["OCTOAI_API_KEY"],
-)
-model = "meta-llama-3.1-8b-instruct"
-
-messages = [
-    {
-        "role": "user",
-        "content": "generate an image of a green field in a sunny day",
-    },
-]
-
-# First LLM inference
-completion = client.chat.completions.create(
-    model=model,
-    messages=messages,
-    temperature=0.1,
-    max_tokens=512,
-    tools=tools,
-)
-
-# Append the assistant response to messages
-assistant_response = completion.choices[0].message
-
-# If there are function calls, handle the calls
-if assistant_response.tool_calls:
-    print("Function call detected")
-    # Append the assistant response to messages
-    messages.append(
-        {
-            "role": "assistant",
-            "content": "",
-            "tool_calls": assistant_response.tool_calls,
-        }
-    )
-
-    # Get tool call information
-    tool_call = assistant_response.tool_calls[0]
-    function_name = tool_call.function.name
-    function_params = json.loads(tool_call.function.arguments)
-
-    # Call the function
-    function_result = photogen(**function_params)
-
-    # Append to the tools response
-    messages.append({"role": "tool", "content": function_result})
-
-    # Second LLM inference
-    completion = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=0.1,
-        max_tokens=512,
-        tools=tools,
-    )
-    assistant_response = completion.choices[0].message
-
-print(assistant_response.content)
-
-```
-
-Similarly to the Code Interpreter tool, one does not require to define the parameters of the function. Also, custom functions can not use the `photogen` identifier.
-
-With our mocked function you can expect the final response to be like this:
-```
-This is an image of a green field with a few trees and a blue sky with white clouds.
-```
-
-<Note>
-You can use OctoAI's Image Generation service to implement the actual image generation capability in your application!
-</Note>
 
 ## Implementation Notes
 Care must be taken in order to handle the possiblity of the model calling the `code_interpreter` at any point if any of the other buil-in tools are active. This is expected behavior and your implementation needs to handle this case.
