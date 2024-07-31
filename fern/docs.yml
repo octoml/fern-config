@@ -32,6 +32,7 @@ navbar-links:
 tabs:
   documentation:
     display-name: Documentation
+    skip-slug: true
   apiReference:
     display-name: API Reference
     slug: api-reference
@@ -63,6 +64,8 @@ layout:
 redirects:
   - source: /docs/getting-started/how-to-create-an-octoai-access-token
     destination: /docs/getting-started/how-to-create-octoai-access-token
+  - source: /docs/documentation/*
+    destination: /docs/*
 
 navigation:
   - tab: documentation
