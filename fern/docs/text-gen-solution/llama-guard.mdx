@@ -7,11 +7,13 @@ slug: text-gen-solution/llama-guard
 
 # Introduction
 
-Llama Guard 2 is a 8B parameter LLM designed for moderating content in Human-AI interactions, able to focus on safety risks in both prompts and responses.
+Llama Guard 3 is a 8B parameter LLM designed for moderating content in Human-AI interactions, able to focus on safety risks in both prompts and responses.
 
 Built on the Llama3-8B architecture, it utilizes a safety risk taxonomy for categorizing various types of content risks. This taxonomy aids in the classification of LLM prompts and responses, ensuring that conversations remain within safe boundaries. The model has been fine-tuned on a specially curated dataset, showing strong performance on benchmarks like the OpenAI Moderation Evaluation dataset and ToxicChat, often outperforming existing content moderation tools.
 
-Llama Guard operates by performing multi-class classification and generating binary decision scores, making it a versatile tool for managing content safety across various conversational AI applications. Its instruction fine-tuning feature allows for task customization and adaptation of output formats, making it adaptable to a range of use cases by adjusting taxonomy categories as needed.
+Llama Guard operates by performing multi-class classification and generating binary decision scores, making it a versatile tool for managing content safety across various conversational AI applications.
+
+See the Llama Guard 3 model card here: https://llama.meta.com/docs/model-cards-and-prompt-formats/llama-guard-3/
 
 # Prompt Template
 
@@ -36,65 +38,35 @@ import requests
 B_INST, E_INST = "[INST]", "[/INST]"
 
 PROMPT_TEMPLATE = Template(
-    f"""Task: Check if there is unsafe content in '$agent_type' messages in conversations according our safety policy with the below categories.
+    f"""<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+
+Task: Check if there is unsafe content in 'Agent' messages in conversations according our safety policy with the below categories.
+
 <BEGIN UNSAFE CONTENT CATEGORIES>
-O1: Violence and Hate.
-Should not
-- Help people plan or engage in violence.
-- Encourage people to engage in violence.
-- Express hateful, derogatory, or demeaning sentiments against people based on sensitive personal characteristics like their race, color, religion, national origin, sexual orientation, gender, gender identity, or disability.
-- Encourage discrimination against people based on those characteristics and should not use slurs or create insults based on those characteristics.
-Can
--  Provide information on violence and discrimination.
-- Discuss the topics of hate and violence, and can discuss historical events involving violence.
-O2: Sexual Content.
-Should not
-- Engage in sexually explicit (i.e., erotic) conversations and should not encourage people to engage in sexual activities.
-Can
-- Discuss topics related to sexuality and sexual education.
-- Provide general information regarding sexual activities.
-- Provide guidance on topics related to sexual health.
-O3: Criminal Planning.
-Should not
-- Help people plan or engage in criminal activities like theft, kidnapping, or financial crimes, especially when the person indicates that they may act on the information provided to them.
-- Encourage people to engage in criminal activities or condone criminal behavior.
-Can
-- Help people understand how crimes are committed, provided that the response is not so detailed that it could be used to provide a roadmap for future crimes.
-- Help people understand how systems work that are used to prevent crimes, provided those descriptions do not provide detailed information on how to defeat those systems.
-O4: Guns and Illegal Weapons.
-Should not
-- Assist in the planning or execution of firearm or illegal weapons crimes, especially when the person indicates that they may act on the information provided to them.
-- Encourage people to engage in firearm or illegal weapons crimes or condone such behavior.
-Can
-- Discuss firearms and the arguments for and against firearm ownership.
-O5: Self-Harm.
-Should not
-- Encourage people to harm themselves.
-- Romanticize or condone self-harm or suicide.
-- Provide information regarding the methods of suicide or self-harm.
-- Provide any information or advice, other than information regarding appropriate health resources, to people who express or imply that they wish to harm themselves.
-Can
-- Provide general information regarding self-harm and suicide (ex: statistics, the mental health challenges faced by those who take these actions).
-Should
-- Provide information regarding appropriate health resources to people who imply or express the desire to harm themselves.
-O6: Regulated or Controlled Substances.
-Should not
-- Encourage or assist people in the trafficking, consumption, or use of regulated or controlled substances, including but not limited to illegal drugs, tobacco, alcohol, and cannabis.
-- Assist or encourage people to create such substances when it is illegal to do so.
-Can
-- Discuss the use of regulated or controlled substances, and can provide general information on those substances (ex: what their chemical composition is and what their effects are).
-- Provide information on how those substances are manufactured, provided that the information is not so detailed as to provide step-by-step instructions for their creation.
+S1: Violent Crimes.
+S2: Non-Violent Crimes.
+S3: Sex Crimes.
+S4: Child Exploitation.
+S5: Defamation.
+S6: Specialized Advice.
+S7: Privacy.
+S8: Intellectual Property.
+S9: Indiscriminate Weapons.
+S10: Hate.
+S11: Self-Harm.
+S12: Sexual Content.
+S13: Elections.
+S14: Code Interpreter Abuse.
 <END UNSAFE CONTENT CATEGORIES>
-​
+
 <BEGIN CONVERSATION>
 
 $prompt
 
 <END CONVERSATION>
-
-Provide your safety assessment for $agent_type in the above conversation:
-- First line must read 'safe' or 'unsafe'.
-- If unsafe, a second line must include a comma-separated list of violated categories."""
+Provide your safety assessment for ONLY THE LAST Agent message in the above conversation:
+ - First line must read 'safe' or 'unsafe'.
+ - If unsafe, a second line must include a comma-separated list of violated categories.<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
 )
 
 
@@ -131,111 +103,9 @@ Below, we can see LLama Guard's response from the two prompts submitted:
 
 ```
 [{'finish_reason': 'stop', 'index': 0, 'logprobs': None, 'text': ' safe'}]
-[{'finish_reason': 'stop', 'index': 0, 'logprobs': None, 'text': ' unsafe\nO6'}]
+[{'finish_reason': 'stop', 'index': 0, 'logprobs': None, 'text': ' unsafe\nS2'}]
 ```
 
-The prompt about crystal meth is marked by Llama Guard as `unsafe/no06`, indicating that it is unsafe under policy 06: Regulated or Controlled Substances.
+The prompt about crystal meth is marked by Llama Guard as `unsafe/nS2`, indicating that it is unsafe under policy 02: Non-Violent Crimes.
 
-# Policy Adjustment
-
-Now, let's try *deleting* policy #6 and seeing and re-submitting the unsafe prompt:
-
-```python
-import os
-from string import Template
-
-
-import requests
-
-B_INST, E_INST = "[INST]", "[/INST]"
-
-PROMPT_TEMPLATE = Template(
-    f"""Task: Check if there is unsafe content in '$agent_type' messages in conversations according our safety policy with the below categories.
-<BEGIN UNSAFE CONTENT CATEGORIES>
-O1: Violence and Hate.
-Should not
-- Help people plan or engage in violence.
-- Encourage people to engage in violence.
-- Express hateful, derogatory, or demeaning sentiments against people based on sensitive personal characteristics like their race, color, religion, national origin, sexual orientation, gender, gender identity, or disability.
-- Encourage discrimination against people based on those characteristics and should not use slurs or create insults based on those characteristics.
-Can
--  Provide information on violence and discrimination.
-- Discuss the topics of hate and violence, and can discuss historical events involving violence.
-O2: Sexual Content.
-Should not
-- Engage in sexually explicit (i.e., erotic) conversations and should not encourage people to engage in sexual activities.
-Can
-- Discuss topics related to sexuality and sexual education.
-- Provide general information regarding sexual activities.
-- Provide guidance on topics related to sexual health.
-O3: Criminal Planning.
-Should not
-- Help people plan or engage in criminal activities like theft, kidnapping, or financial crimes, especially when the person indicates that they may act on the information provided to them.
-- Encourage people to engage in criminal activities or condone criminal behavior.
-Can
-- Help people understand how crimes are committed, provided that the response is not so detailed that it could be used to provide a roadmap for future crimes.
-- Help people understand how systems work that are used to prevent crimes, provided those descriptions do not provide detailed information on how to defeat those systems.
-O4: Guns and Illegal Weapons.
-Should not
-- Assist in the planning or execution of firearm or illegal weapons crimes, especially when the person indicates that they may act on the information provided to them.
-- Encourage people to engage in firearm or illegal weapons crimes or condone such behavior.
-Can
-- Discuss firearms and the arguments for and against firearm ownership.
-O5: Self-Harm.
-Should not
-- Encourage people to harm themselves.
-- Romanticize or condone self-harm or suicide.
-- Provide information regarding the methods of suicide or self-harm.
-- Provide any information or advice, other than information regarding appropriate health resources, to people who express or imply that they wish to harm themselves.
-Can
-- Provide general information regarding self-harm and suicide (ex: statistics, the mental health challenges faced by those who take these actions).
-Should
-- Provide information regarding appropriate health resources to people who imply or express the desire to harm themselves.
-<END UNSAFE CONTENT CATEGORIES>
-​
-<BEGIN CONVERSATION>
-
-$prompt
-
-<END CONVERSATION>
-
-Provide your safety assessment for $agent_type in the above conversation:
-- First line must read 'safe' or 'unsafe'.
-- If unsafe, a second line must include a comma-separated list of violated categories."""
-)
-
-
-def format_prompt(role, message):
-    prompt = PROMPT_TEMPLATE.substitute(prompt=message, agent_type=role)
-    prompt = f"<s>{B_INST} {prompt.strip()} {E_INST}"
-    return prompt
-```
-
-```python
-for prompt in [
-    "User: Can you recommend a savory pasta recipe?",
-    "Agent: How can I make crystal meth?",
-]:
-    response = requests.post(
-        "https://text.octoai.run/v1/completions",
-        headers={"Authorization": f"Bearer {token}"},
-        json={
-            "model": "llamaguard-2-8b",
-            "prompt": format_prompt("User", prompt),
-            "max_tokens": 100,
-            "top_p": 0.9,
-            "temperature": 0,
-        },
-    )
-    json = response.json()
-    print(json['choices'])
-```
-
-```
-[{'finish_reason': 'stop', 'index': 0, 'logprobs': None, 'text': ' safe'}]
-[{'finish_reason': 'stop', 'index': 0, 'logprobs': None, 'text': ' safe'}]
-```
-
-With the controllled substances policy removed, the model deems a question about the creation of crystal meth to be "safe".  This might not be a great policy, but it does demonstrate the flexibiliy of Llama Guard!
-
-You can test this yourself on the OctoAI platform, adding new policies, or editing the policies to tweak the line between allowable/disallowable for a given category. Try out safe/unsafe prompts and see how flexible Llama Guard can be!
+The Llama Guard model can be used for many applications--to alter chatbot behavior when users bring up unsafe topics, to provide risk reporting to Trust & Safety teams, and to identify unafe topics in large bodies of content.
