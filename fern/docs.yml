@@ -140,20 +140,16 @@ navigation:
                 path: docs/text-gen-solution/python-sdk.mdx
               - page: TypeScript SDK
                 path: docs/text-gen-solution/typescript-sdk.mdx
-          - section: Structured Outputs
-            contents:
-              - page: JSON Mode
-                path: docs/text-gen-solution/json-mode.mdx
+          - page: Structured Outputs
+            path: docs/text-gen-solution/json-mode.mdx
           - section: Function calling
             contents:
               - page: Built-in
                 path: docs/text-gen-solution/using-built-ins.mdx
               - page: Custom
                 path: docs/text-gen-solution/function-calling.mdx
-          - section: Moderations
-            contents:
-              - page: Llama Guard
-                path: docs/text-gen-solution/llama-guard.mdx
+          - page: Moderations
+            path: docs/text-gen-solution/llama-guard.mdx
           - section: Integrations
             contents:
               - page: Using Unstructured.io for embedding documents
