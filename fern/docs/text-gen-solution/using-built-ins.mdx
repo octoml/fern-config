@@ -29,7 +29,7 @@ The Brave Search tool gets triggered by the model when the response benefits fro
 
 ### Using the Brave Search Tool
 The following snippet of code shows how to handle a chat interaction that uses the Brave Search tool:
-```python
+```python maxLines=0
 import os
 from openai import OpenAI
 import json
@@ -113,7 +113,7 @@ The Wolfram Alpha tool gets triggered by the model when the response benefits fr
 
 ### Using the Wolfram Alpha Tool
 The following snippet of code shows how to handle a chat interaction that uses the Wolfram Alpha tool:
-```python
+```python maxLines=0
 import os
 from openai import OpenAI
 import json
@@ -200,7 +200,7 @@ The Code Interpreter tool gets triggered by the model when the response requires
 
 ### Using the Code Interpreter Tool
 The following snippet of code shows how to handle a chat interaction that uses the Code Interpreter tool:
-```python
+```python maxLines=0
 import os
 from openai import OpenAI
 import json
@@ -285,7 +285,7 @@ print(assistant_response.content)
 Similarly to the Wolfram Alpha tool, one does not require to define the parameters of the function. Also, custom functions can not use the `code_interpreter` identifier.
 
 From this request you can expect the model to generate the following code:
-```python
+```python maxLines=0
 import numpy as np
 import matplotlib.pyplot as plt
 
