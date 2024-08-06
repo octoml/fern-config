@@ -135,7 +135,7 @@ navigation:
           - page: Getting started
             path: docs/text-gen-solution/getting-started.mdx
           - section: Structured Outputs
-            contents: SDKs
+            contents:
               - page: Python SDK
                 path: docs/text-gen-solution/python-sdk.mdx
               - page: TypeScript SDK
