@@ -148,7 +148,7 @@ navigation:
                 path: docs/text-gen-solution/using-built-ins.mdx
               - page: Custom
                 path: docs/text-gen-solution/function-calling.mdx
-          - page: Moderations
+          - page: Moderation
             path: docs/text-gen-solution/llama-guard.mdx
           - section: Integrations
             contents:
