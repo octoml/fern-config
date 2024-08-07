@@ -134,23 +134,29 @@ navigation:
         contents:
           - page: Getting started
             path: docs/text-gen-solution/getting-started.mdx
-          - page: Text Gen Python SDK
-            path: docs/text-gen-solution/python-sdk.mdx
-          - page: Text Gen TypeScript SDK
-            path: docs/text-gen-solution/typescript-sdk.mdx
-          - page: Using JSON mode with Text Gen endpoints
+          - section: SDKs
+            contents:
+              - page: Python SDK
+                path: docs/text-gen-solution/python-sdk.mdx
+              - page: TypeScript SDK
+                path: docs/text-gen-solution/typescript-sdk.mdx
+          - page: Structured Outputs
             path: docs/text-gen-solution/json-mode.mdx
-          - page: Calling Built-in Tools with Llama 3.1
-            path: docs/text-gen-solution/using-built-ins.mdx
-          - page: Function Calling using OctoAI Models
-            path: docs/text-gen-solution/function-calling.mdx
-          - page: Using Llama Guard to moderate text
+          - section: Function calling
+            contents:
+              - page: Built-in
+                path: docs/text-gen-solution/using-built-ins.mdx
+              - page: Custom
+                path: docs/text-gen-solution/function-calling.mdx
+          - page: Moderation
             path: docs/text-gen-solution/llama-guard.mdx
-          - page: Using Unstructured.io for embedding documents
-            path: >-
-              docs/text-gen-solution/using-unstructured-io-for-embedding-documents.mdx
-          - page: Use OpenPipe LoRAs on OctoAI
-            path: docs/text-gen-solution/openpipe-loras.mdx
+          - section: Integrations
+            contents:
+              - page: Using Unstructured.io for embedding documents
+                path: >-
+                  docs/text-gen-solution/using-unstructured-io-for-embedding-documents.mdx
+              - page: Use OpenPipe LoRAs on OctoAI
+                path: docs/text-gen-solution/openpipe-loras.mdx
       - section: Media Gen Solution
         contents:
           - page: Getting started
