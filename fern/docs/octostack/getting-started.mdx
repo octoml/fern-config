@@ -1,0 +1,78 @@
+---
+title: OctoStack Getting Started
+subtitle: Getting Started with OctoStack.
+slug: octostack/getting-started
+---
+
+# Overview
+OctoStack can be installed on your existing GPU infrastructure either in a VPC contained within your preferred cloud provider, or on premise. 
+
+### Deploy With Docker Compose
+
+OctoAI will provide an auth token which will be used to pull container images, and a `docker-compose.yaml` file that will contain the necessary configuration for your chosen model and the hardward that you've chosen for hosting.
+
+#### Prerequisites
+
+1. NVIDIA drivers (version 550-server) and CUDA kernels (version 12.4) are installed on your host server
+2. Docker is [installed](https://docs.docker.com/engine/install/)
+3. NVIDIA container toolkit is [installed](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) and [tested](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/sample-workload.html)
+
+#### Installation Procedures
+
+1. Create a folder to store the `docker-compose.yaml` file
+2. Authenticate with OctoAI's private container repository <br>
+
+    `cat token.txt | docker login --username AWS --password-stdin 258175030240.dkr.ecr.us-east-1.amazonaws.com`
+
+3. Start the OctoStack service<br>
+
+    `docker compose up -d`
+
+> [!NOTE]
+> On first run, a short lived initialization container will download the initial model weights and other assets required to host your chosen model.  The service spec and dependencies can be removed from the docker compose file if the service needs to be relaunched later.
+
+4. Once all containers are up, running and healthy, test the system with your first inference<br>
+
+    ``` Bash
+    curl -X POST "http://localhost:9001/v1/chat/completions" -H "Content-Type: application/json" --data-raw '{ 
+        "messages": [ 
+            { 
+                "role": "system", 
+                "content": "You are a helpful assistant." 
+            },
+            { 
+                "role": "user", 
+                "content": "Why is the sky blue?" 
+            } 
+        ], 
+        "model": "meta-llama-3.1-8b-instruct", 
+        "max_tokens": 512, 
+        "presence_penalty": 0, 
+        "temperature": 0, 
+        "top_p": 1 
+    }'
+    ```
+
+#### Troubleshooting
+
+#### Checking logs
+
+These example commands will print the logs associated with a specific container to stdout
+>`docker compose logs inference [-f]`<br>
+ `docker compose logs sidecar [-f]`
+
+### Stopping  OctoStack
+
+Bring down all octostack containers:
+>`docker compose down`
+
+Force containers down. Only use in the event that `docker compose down` isn't working:
+>`docker compose kill`
+
+Restart a specific container:
+>`docker compose restart <service-name>`<br>
+example: `docker compose restart inference`
+
+### Deploying With Helm
+
+#### PLACEHOLDER
