@@ -223,6 +223,9 @@ navigation:
           - page: Using SageMaker
             path: docs/octostack/sagemaker.mdx
             hidden: true
+          - page: Getting Started
+            path: docs/octostack/getting-started.mdx
+            hidden: true
       - section: Compute Service
         collapsed: true
         contents:
