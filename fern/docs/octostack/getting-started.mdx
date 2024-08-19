@@ -9,7 +9,7 @@ OctoStack can be installed on your existing GPU infrastructure either in a VPC c
 
 ### Deploy With Docker Compose
 
-OctoAI will provide an auth token which will be used to pull container images, and a `docker-compose.yaml` file that will contain the necessary configuration for your chosen model and the hardward that you've chosen for hosting.
+OctoAI will provide an auth token which will be used to pull container images, and a `docker-compose.yaml` file that will contain the necessary configuration for your chosen model and the hardware that you'll host on.
 
 #### Prerequisites
 
@@ -28,8 +28,8 @@ OctoAI will provide an auth token which will be used to pull container images, a
 
     `docker compose up -d`
 
-> [!NOTE]
-> On first run, a short lived initialization container will download the initial model weights and other assets required to host your chosen model.  The service spec and dependencies can be removed from the docker compose file if the service needs to be relaunched later.
+
+> **Note:** On first run, a short lived initialization container will download the initial model weights and other assets required to host your chosen model.  The service spec and dependencies can be removed from the docker compose file if the service needs to be relaunched later.
 
 4. Once all containers are up, running and healthy, test the system with your first inference\
 
@@ -75,4 +75,20 @@ example: `docker compose restart inference`
 
 ### Deploying With Helm
 
-#### PLACEHOLDER
+OctoAI will provide an auth token which will be used to pull container images, and a Helm chart project will contain the necessary configuration for your chosen model and the hardware that you'll host on.
+
+#### Prerequisites
+
+1. Kubernetes >=1.16, Helm >=3.0
+2. GPU worker node(s) with:
+    * NVIDIA drivers (version 550-server)
+    * CUDA kernels (version 12.4)
+    * NVIDIA Container Toolkit installed, and containerd configured to use NVIDIA runtimes
+3. NVIDIA GPU Operator [installed](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html)
+
+#### Installation Procedures
+
+1. Create a namespace for the OctoStack solution
+2. Create a docker respository secret
+3. Install the helm chart\
+`helm upgrade --install -n <namespace> octostack .`
