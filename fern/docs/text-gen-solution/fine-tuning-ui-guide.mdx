@@ -30,6 +30,7 @@ We accept JSONL files in which each line is a JSON object. Prepare your JSONL da
 See the following for examples of different data formats:
 
 **a. Chat Completion Format Example:**
+
 Each message object has a role (either system, user, or assistant) and content.
 - The system message (optional): Can be used to set the behavior of the assistant.
 - The user messages (required): Provide requests or comments for the assistant to respond to.
@@ -37,6 +38,7 @@ Each message object has a role (either system, user, or assistant) and content.
 - Tool calls (optional): Allow for triggering specific actions or functions within the assistant or integrating external functionalities to enhance the conversation.
 
 Here are some examples in chat completion format.
+
 Single-turn example:
 
 ```json
@@ -85,13 +87,13 @@ After completing all the required information and clicking on “Start Tuning”
 
 # 3. Inference with your LoRA
 
-On the “Fine-tune” Page, when you click on a certain “Fine-tune” job, there is a “Test it” button, which navigates you to the Inference page.
+On the [“Fine-tune” Page](https://octoai.cloud/tuning), when you click on a certain fine-tuning job, there is a “Test it” button. Click on that button, it will navigate you to the Inference Page with your LoRA loaded.
 
 ![](../assets/images/fine-tuning-imgs/ui-guide/fine-tuning-UI-4.jpeg)
 
-You can inference on “meta-llama-3.1-70b-instruct” or  “meta-llama-3.1-8b-instruct”.
+You can inference on “meta-llama-3.1-70b-instruct” or  “meta-llama-3.1-8b-instruct” with your fine-tuned LoRA.
 
-![Untitled](../assets/images/fine-tuning-imgs/ui-guide/fine-tuning-inference-1.jpeg)
+![](../assets/images/fine-tuning-imgs/ui-guide/fine-tuning-inference-1.jpeg)
 
 You have 2 options to start the LoRA inference:
 
