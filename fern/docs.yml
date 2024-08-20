@@ -88,6 +88,8 @@ navigation:
             contents:
               - section: Generate
                 contents: 
+                  - page: FLUX.1 [Schnell]
+                    path: docs/media-gen-solution/rest-apis/generate/flux-schnell.mdx                
                   - page: Stable Diffusion 3
                     path: docs/media-gen-solution/rest-apis/generate/sd3.mdx
                   - page: Stable Diffusion XL
