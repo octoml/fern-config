@@ -264,6 +264,8 @@ navigation:
             path: docs/cli/cli-and-sdk-installation.mdx
           - page: CLI reference
             path: docs/cli/cli-reference-guide.mdx
+          - page: Text Gen Fine-tuning CLI reference
+            path: docs/cli/text-gen-fine-tuning-cli-reference.mdx
       - section: Python SDK
         collapsed: true
         contents:
@@ -379,6 +381,8 @@ navigation:
             path: docs/integrations/openrouter.mdx
           - page: LlamaIndex
             path: docs/integrations/llamaindex.mdx
+          - page: Weights & Biases
+            path: docs/integrations/weights-and-biases.mdx
   - tab: releaseNotes
     layout:
       - section: "2024"
