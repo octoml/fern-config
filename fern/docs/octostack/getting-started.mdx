@@ -80,15 +80,26 @@ OctoAI will provide an auth token which will be used to pull container images, a
 #### Prerequisites
 
 1. Kubernetes >=1.16, Helm >=3.0
+
 2. GPU worker node(s) with:
+
     * NVIDIA drivers (version 550-server)
+
     * CUDA kernels (version 12.4)
+
     * NVIDIA Container Toolkit installed, and containerd configured to use NVIDIA runtimes
+
 3. NVIDIA GPU Operator [installed](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html)
 
 #### Installation Procedures
 
 1. Create a namespace for the OctoStack solution
+
 2. Create a docker respository secret
-3. Install the helm chart\
-`helm upgrade --install -n <namespace> octostack .`
+
+3. Install the helm chart
+    
+    ``` bash
+    helm dependency build`
+    helm upgrade --install -n <namespace> octostack .
+    ```
