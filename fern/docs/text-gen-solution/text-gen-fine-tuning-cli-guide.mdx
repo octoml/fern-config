@@ -34,7 +34,7 @@ Assuming the dataset is already prepared in the required format (see the next se
 
 Here are the three steps all presented together for fine tuning Llama-3.1 8B and Chat Completion data:
 
-```bash
+```bash bash
 # (1) Upload the fine tuning data (make sure it's in Chat Completion format).
 octoai asset create --name NAME_FOR_THE_DATA --type file --upload-from-file DATA_FILEPATH --wait
 
@@ -44,7 +44,7 @@ octoai tune text --name NAME_FOR_THE_TUNE --checkpoint octoai:meta-llama-3-1-8b-
 
 Once fine-tuning is complete, the tune is ready for inference. Note: You can specify the name of your fine-tuning in the “peft” field. Please ensure the name you use matches your completed fine-tuning.
 
-```bash
+```bash bash
 # (3) Make an inference with the fine-tune
 curl -X POST "https://text.octoai.run/v1/completions" \
 -H "Content-Type: application/json" \
@@ -113,7 +113,7 @@ Multi-turn example:
 
 Run the following command to upload the asset. Wait for the asset’s status to change to “uploaded”.
 
-```bash
+```bash bash
 octoai asset create \
     --name $dataset_name \
     --type file \
@@ -137,7 +137,7 @@ To start a fine-tuning job, several elements need to be provided:
 
 Use this command to start a tune:
 
-```python
+```bash bash
 octoai tune create \
    --name $tune_name \
    --tune-type text \
@@ -169,7 +169,7 @@ Once you see the status of your LoRA model is “ready” and fine-tuning status
 
 Example of Chat Completion Request:
 
-```python
+```bash bash
 curl -X POST "
 https://text.octoai.run/v1/completions" \
 -H "Content-Type: application/json" \
