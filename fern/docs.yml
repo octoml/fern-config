@@ -142,7 +142,7 @@ navigation:
                 path: docs/text-gen-solution/python-sdk.mdx
               - page: TypeScript SDK
                 path: docs/text-gen-solution/typescript-sdk.mdx
-           - section: Fine-tuning
+          - section: Fine-tuning
             contents:
               - page: UI Guide
                 path: docs/text-gen-solution/fine-tuning-ui-guide.mdx
