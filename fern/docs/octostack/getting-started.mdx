@@ -95,11 +95,25 @@ OctoAI will provide an auth token which will be used to pull container images, a
 
 1. Create a namespace for the OctoStack solution
 
+    ``` bash
+    kubectl create namespace my-octostack
+    ```
+
 2. Create a docker respository secret
+
+    ``` bash
+    TOKEN=$(cat ecr_token)
+    kubectl create secret -n octostack docker-registry regcred \
+      --docker-server=258175030240.dkr.ecr.us-east-1.amazonaws.com \
+      --docker-username=AWS \
+      --docker-password=$TOKEN \
+      --namespace=-my-octostack
+    kubectl patch serviceaccount default -p '{"imagePullSecrets":[{"name":"'regcred'"}]}' -n my-octostack
+    ```
 
 3. Install the helm chart
     
     ``` bash
-    helm dependency build`
-    helm upgrade --install -n <namespace> octostack .
+    helm dependency build
+    helm upgrade --install -n my-octostack octostack .
     ```
