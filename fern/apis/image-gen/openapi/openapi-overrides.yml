@@ -51,6 +51,16 @@ paths:
       servers:
         - url: https://image.octoai.run
           x-name: ImageGen
+  /generate/flux-schnell:
+    post:
+      summary: "Generate FLUX.1 [schnell]"
+      x-fern-sdk-method-name: generateFluxSchnell
+      servers:
+        - url: https://image.octoai.run
+          x-name: ImageGen
+  /generate/flux-dev:
+    post:
+      x-fern-ignore: true
   # Hide healthcheck
   /healthcheck:
     get:
