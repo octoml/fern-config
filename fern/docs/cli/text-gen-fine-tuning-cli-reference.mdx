@@ -24,15 +24,15 @@ octoai tune text --checkpoint <CHECKPOINT_NAME> --dataset <DATASET_ID> --name <T
 
 ### Flags
 
-- `-b`, `--checkpoint <string>` (required) This helps the tuning job to relate to the model. Checkpoint for Llama 3.1 8B Instruct is “octoai:meta-llama-3-1-8b-Instruct”. Checkpoint for Llama 3.1 70B Instruct is “octoai:meta-llama-3-1-70b-Instruct”.
-- `-f`, `--dataset <strings>` (required) Datasets used for text fine-tuning. Datasets can be retrieved by using asset IDs or names. It is possible to submit multiple datasets at one time.
-- `-n`, `--name <string>` (required) Name of the text generation fine-tuning. It should be unique.
-- `-l`, `--learning-rate <float32>` (optional) The learning rate. Default is 0.0001.
-- `-r`, `--lora-rank <int32>` (optional) Rank of LoRa (Low Rank Adaptation). Default is 8.
-- `-e`, `--epochs <int32>` (optional) Number of epochs. Default is 3.
-- `--wandb-project-name <string>` (optional) Weights & Biases project name.
-- `--wandb-secret-key <string>` (optional) Name of OctoAI secret containing Weights & Biases token. Note: This is the “key” of OctoAI secret, not the value.
-- `-d`, `--description <float32>` (optional) Description of text generation fine-tuning.
+- `-b`, `--checkpoint <string> (required)` This helps the tuning job to relate to the model. Checkpoint for Llama 3.1 8B Instruct is “octoai:meta-llama-3-1-8b-Instruct”. Checkpoint for Llama 3.1 70B Instruct is “octoai:meta-llama-3-1-70b-Instruct”.
+- `-f`, `--dataset <strings> (required)` Datasets used for text fine-tuning. Datasets can be retrieved by using asset IDs or names. It is possible to submit multiple datasets at one time.
+- `-n`, `--name <string> (required)` Name of the text generation fine-tuning. It should be unique.
+- `-l`, `--learning-rate <float32> (optional)` The learning rate. Default is 0.0001.
+- `-r`, `--lora-rank <int32> (optional)` Rank of LoRa (Low Rank Adaptation). Default is 8.
+- `-e`, `--epochs <int32> (optional)` Number of epochs. Default is 3.
+- `--wandb-project-name <string> (optional)` Weights & Biases project name.
+- `--wandb-secret-key <string> (optional)` Name of OctoAI secret containing Weights & Biases token. Note: This is the “key” of OctoAI secret, not the value.
+- `-d`, `--description <float32> (optional)` Description of text generation fine-tuning.
 
 ## octoai tune list
 
