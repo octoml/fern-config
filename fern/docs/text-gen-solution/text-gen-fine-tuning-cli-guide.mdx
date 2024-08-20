@@ -133,7 +133,7 @@ To start a fine-tuning job, several elements need to be provided:
 3. **checkpoint** (required): Specify a checkpoint for a particular model. Presently, we support only Llama-3.1 8B and Llama-3.1 70B with an 8K token context. For Llama 3.1 8B Instruct, use `"octoai:meta-llama-3-1-8b-instruct"`. For Llama 3.1 70B Instruct, use `"octoai:meta-llama-3-1-70b-instruct"`. 
 4. **dataset** (required): Specify the dataset name or ID from the asset library. OctoAI also provides 3 sample datasets: `“octoai:golden-gate-5k”`, `“octoai:ai-medical-chatbot-20k”`, `“octoai:ai-medical-chatbot-1k”`.
 5. **hyperparameters** (optional): OctoAI will default to the following hyperparameter values: Learning rate = 0.0001, LoRA rank = 8, Epochs = 3. We recommend leaving these as default unless you have expertise. Available LoRA ranks are 8 (default), 16, and 32 (deeper LoRA ranks can increase learning but can also result in overfitting or loss of the model's original knowledge). Note that increasing epochs also increases the amount you will be billed.
-6. **weight and bias parameters** (optional): Enable with "--wandb-project-name" and "--wandb-secret-key”. To use this feature, sign up for [Weights and Biases](https://wandb.ai/site) and follow the [Weight & Biases Setup Guide](../fine-tuning/weight-and-biases-setup-guide) .
+6. **weight and bias parameters** (optional): Enable with "--wandb-project-name" and "--wandb-secret-key”. To use this feature, sign up for [Weights and Biases](https://wandb.ai/site) and follow the [Weight & Biases Setup Guide](/docs/getting-started/weight-and-biases-setup-guide).
 
 Use this command to start a tune:
 
