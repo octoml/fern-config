@@ -6,13 +6,13 @@ slug: text-gen-solution/fine-tuning-ui-guide
 
 # UI Guide
 
-This tutorial will guide you through the process of fine-tuning a Large Language Model (LLM) in UI in 3 steps.
+This tutorial will guide you through the process of fine-tuning a Large Language Model (LLM) in OctoAI WebUI in 3 steps.
 
-1. Prepare the dataset for OctoAI Fine-tuning.
-2. Start a text generation fine-tuning job
-3. Inference with your fine-tuned LoRA asset
+1. Prepare the dataset for OctoAI fine-tuning.
+2. Start a text generation fine-tuning job.
+3. Inference with your fine-tuned LoRA asset.
 
-OctoAI supports LoRA fine-tuning for Llama-3.1-8B-Instruct (8K token context limit) and  Llama-3.1-70B-Instruct (8K token context limit). We encourage you to try Llama 3.1 8B first and try 70B with a small dataset (\<1000 examples).
+OctoAI supports LoRA fine-tuning for Llama-3.1-8B-Instruct (8K token context limit) and  Llama-3.1-70B-Instruct (8K token context limit). We encourage you to try Llama 3.1 8B first and try 70B with a smaller dataset (<1000 examples).
 
 ## 1. Prepare Your Datasets
 
@@ -20,7 +20,7 @@ If you don’t have a dataset yet, you can test with pre-populated datasets Octo
 
 ![](../assets/images/fine-tuning-imgs/ui-guide/fine-tuning-UI-1.png)
 
-When you want to use your own dataset, this section tells you how to prepare that.
+If you want to use your own dataset, this section tells you how to prepare that.
 
 We accept JSONL files in which each line is a JSON object. Prepare your JSONL datasets according to the following requirements. Deviating from these requirements will result in upload failure.
 
