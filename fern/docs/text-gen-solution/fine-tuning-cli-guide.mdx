@@ -15,7 +15,7 @@ Visit our [pricing page](https://octo.ai/pricing/) and [pricing plan](/docs/gett
 OctoAI now supports creating fine-tuned LoRAs for the following models:
 
 - Meta-Llama-3-1-8b-Instruct (8K token context)
-- Meta-Llama-3-1-70b-Instruct (8K token context)
+- Meta-Llama-3-1-70b-Instruct (8K token context) (contact us for access)
 
 ## **Requirements**
 
@@ -135,7 +135,7 @@ To start a fine-tuning job, several elements need to be provided:
 
 2. **tune type** (required): Set `tune_type` to 'text_tune' for text generation.
 
-3. **checkpoint** (required): Specify a checkpoint for a particular model. Presently, we support only Llama-3.1 8B and Llama-3.1 70B with an 8K token context. For Llama 3.1 8B Instruct, use `"octoai:meta-llama-3-1-8b-instruct"`. For Llama 3.1 70B Instruct, use `"octoai:meta-llama-3-1-70b-instruct"`. 
+3. **checkpoint** (required): Specify a checkpoint for a particular model. Presently, we support only Llama-3.1 8B and Llama-3.1 70B with an 8K token context. For Llama 3.1 8B Instruct, use `"octoai:meta-llama-3-1-8b-instruct"`. For Llama 3.1 70B Instruct, use `"octoai:meta-llama-3-1-70b-instruct"`. Please contact us if you want to use Llama 3.1 70B.
 
 4. **dataset** (required): Specify the dataset name or ID from the asset library. OctoAI also provides 3 sample datasets: `“octoai:golden-gate-5k”`, `“octoai:ai-medical-chatbot-20k”`, `“octoai:ai-medical-chatbot-1k”`.
 
@@ -171,7 +171,7 @@ When the job is completed, it becomes a LoRA model. Check your LoRA using `octoa
 Once you see the status of your LoRA model is “ready” and fine-tuning status is "succeeded", you can use it for inference. To do so, you'll need to specify the right "model" and "peft" arguments. A "PEFT" stands for "Parameter-efficient fine-tuning", and LoRAs are a type of “PEFT”.
 
 - Input your `OCTOAI_TOKEN` for authorization.
-- In the `"model"` parameter, use `"meta-llama-3.1-8b-instruct"`or `"meta-llama-3.1-70b-instruct"`.
+- In the "model" parameter, use "meta-llama-3.1-8b-instruct" for Llama 3.1 8B. For Llama 3.1 70B, if you have contacted us for access and have been granted access, use "meta-llama-3.1-70b-instruct".
 - In the `"peft"` field, use the `tune_name` of the fine-tuning job. You can use `octoai tune list` to find a list of tuned jobs.
 - For details of other parameters, refer to the [Inference Guide](/docs/api-reference/octoai-api/inference).
 
@@ -195,7 +195,7 @@ https://text.octoai.run/v1/completions" \
 
 If you used completion data during fine-tuning, you will need to send a completion inference request. Change the `"messages"` to `"prompt": "<Your Prompt>"`.
 
-If you want to send a meta-llama-3.1-70B inference request, change the `"model"` parameter to `"meta-llama-3.1-70b-instruct"`.
+If you were able to fine-tune on Llama 3.1 70B, you will need to inference on Llama 3.1 70B LoRA. To run an inference using this LoRA, set the "model" parameter in your inference request to "meta-llama-3.1-70b-instruct". For Llama 3.1 70B fine-tuning access, please contact us.
 
 
 
