@@ -24,7 +24,7 @@ octoai tune text --checkpoint <CHECKPOINT_NAME> --dataset <DATASET_ID> --name <T
 
 ### Flags
 
-- `-b`, `--checkpoint <string> (required)` This helps the tuning job to relate to the model. Checkpoint for Llama 3.1 8B Instruct is “octoai:meta-llama-3-1-8b-Instruct”. Checkpoint for Llama 3.1 70B Instruct is “octoai:meta-llama-3-1-70b-Instruct”.
+- `-b`, `--checkpoint <string> (required)` This helps the tuning job to relate to the model. Checkpoint for Llama 3.1 8B Instruct is “octoai:meta-llama-3-1-8b-instruct”. Checkpoint for Llama 3.1 70B Instruct is “octoai:meta-llama-3-1-70b-instruct”. For Llama 3.1 70B Instruct access, please contact us.
 - `-f`, `--dataset <strings> (required)` Datasets used for text fine-tuning. Datasets can be retrieved by using asset IDs or names. It is possible to submit multiple datasets at one time.
 - `-n`, `--name <string> (required)` Name of the text generation fine-tuning. It should be unique.
 - `-l`, `--learning-rate <float32> (optional)` The learning rate. Default is 0.0001.
