@@ -171,7 +171,7 @@ When the job is completed, it becomes a LoRA model. Check your LoRA using `octoa
 Once you see the status of your LoRA model is “ready” and fine-tuning status is "succeeded", you can use it for inference. To do so, you'll need to specify the right "model" and "peft" arguments. A "PEFT" stands for "Parameter-efficient fine-tuning", and LoRAs are a type of “PEFT”.
 
 - Input your `OCTOAI_TOKEN` for authorization.
-- In the "model" parameter, use "meta-llama-3.1-8b-instruct" for Llama 3.1 8B. For Llama 3.1 70B, if you have contacted us for access and have been granted access, use "meta-llama-3.1-70b-instruct".
+- In the "model" parameter, use "meta-llama-3.1-8b-instruct" for Llama 3.1 8B. For Llama 3.1 70B, use "meta-llama-3.1-70b-instruct". Contact us if you want to use Llama 3.1 70B.
 - In the `"peft"` field, use the `tune_name` of the fine-tuning job. You can use `octoai tune list` to find a list of tuned jobs.
 - For details of other parameters, refer to the [Inference Guide](/docs/api-reference/octoai-api/inference).
 
