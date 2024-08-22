@@ -27,10 +27,7 @@ paths:
         - account
       x-fern-sdk-method-name: createAccount
     patch:
-      summary: Update fields on an account
-      x-fern-sdk-group-name:
-        - account
-      x-fern-sdk-method-name: patchAccount
+      x-fern-ignore: true
   /v1/endpoint:
     post:
       x-fern-sdk-group-name:
