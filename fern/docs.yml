@@ -373,6 +373,8 @@ navigation:
             path: docs/integrations/openrouter.mdx
           - page: LlamaIndex
             path: docs/integrations/llamaindex.mdx
+          - page: BotDojo
+            path: docs/integrations/botdojo.mdx
   - tab: releaseNotes
     layout:
       - section: "2024"
