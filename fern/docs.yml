@@ -260,11 +260,11 @@ navigation:
       - section: CLI
         collapsed: true
         contents:
-          - page: CLI installation
+          - page: CLI Installation
             path: docs/cli/cli-and-sdk-installation.mdx
-          - page: CLI reference
+          - page: CLI Reference
             path: docs/cli/cli-reference-guide.mdx
-          - page: Text gen fine-tuning CLI reference
+          - page: Text Gen Fine-tuning CLI Reference
             path: docs/cli/text-gen-fine-tuning-cli-reference.mdx
       - section: Python SDK
         collapsed: true
