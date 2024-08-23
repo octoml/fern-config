@@ -264,7 +264,7 @@ navigation:
             path: docs/cli/cli-and-sdk-installation.mdx
           - page: CLI reference
             path: docs/cli/cli-reference-guide.mdx
-          - page: Text Gen Fine-tuning CLI reference
+          - page: Text gen fine-tuning CLI reference
             path: docs/cli/text-gen-fine-tuning-cli-reference.mdx
       - section: Python SDK
         collapsed: true
@@ -383,7 +383,7 @@ navigation:
             path: docs/integrations/llamaindex.mdx
           - page: BotDojo
             path: docs/integrations/botdojo.mdx
-          - page: Weights and Biases
+          - page: Weights-and-Biases
             path: docs/integrations/weights-and-biases.mdx
   - tab: releaseNotes
     layout:
