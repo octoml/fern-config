@@ -265,7 +265,7 @@ navigation:
           - page: CLI reference
             path: docs/cli/cli-reference-guide.mdx
           - page: Text Gen Fine-tuning CLI reference
-            path: fern/docs/cli/text-gen-fine-tuning-cli-reference.mdx
+            path: docs/cli/text-gen-fine-tuning-cli-reference.mdx
       - section: Python SDK
         collapsed: true
         contents:
