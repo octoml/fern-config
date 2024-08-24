@@ -24,7 +24,7 @@ Then paste your API token and run the code example below:
 ```python
 import os
 
-os.environ["OCTOAI_API_TOKEN"] = "OCTOAI_API_TOKEN"
+# Set your api key via the OCTOAI_API_TOKEN environment variable
 from langchain_community.chat_models.octoai import ChatOctoAI
 
 llm = ChatOctoAI(
