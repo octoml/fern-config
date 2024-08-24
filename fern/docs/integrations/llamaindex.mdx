@@ -80,6 +80,8 @@ There are different types of agent classes in LlamaIndex. Each one of these clas
 - ReAct Agents
 - OpenAI Agents
 
+<Note>Note that to build agents we will be using the `OpenAILike` class instead of the `OctoAI` class used above.</Note>
+
 ### LlamaIndex ReAct Agents with OctoAI
 ReAct agents are based in an execution cycle comprised of three steps: Reason, Obersve, Act. This is outlined by the [ReAct research paper](https://react-lm.github.io/). One can build ReAct agents in LlamaIndex by using the `OpenAILike` and `ReActAgent` classes like so:
 ```python
@@ -91,9 +93,10 @@ llm = OpenAILike(
     model="meta-llama-3.1-70b-instruct",
     api_base="https://text.octoai.run/v1",
     api_key=environ["OCTOAI_API_KEY"],
-    context_window=40000,
     is_function_calling_model=True,
     is_chat_model=True,
+    temperature=0.4,
+    max_tokens=60000,
 )
 
 # Here we define a list of tools available to the ReAct agent
@@ -121,9 +124,10 @@ llm = OpenAILike(
     model="meta-llama-3.1-70b-instruct",
     api_base="https://text.octoai.run/v1",
     api_key=environ["OCTOAI_API_KEY"],
-    context_window=10000,
     is_function_calling_model=True,
     is_chat_model=True,
+    temperature=0.4,
+    max_tokens=60000,
 )
 
 # we have pre-defined a set of built-in tools for this example
@@ -140,6 +144,18 @@ agent = OpenAIAgent.from_tools(
 [![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/octoml/octoai-textgen-cookbook)
 
 OpenAI agents are the prefered way to create LlamaIndex agents using OctoAI LLM endpoints. This will guarantee that your requests will benefit from using the enhances and adaptations distributed through our API. For a fully functioning script of the above example take a look at out [Text-Gen Cookbook Recipe](https://github.com/octoml/octoai-textgen-cookbook/tree/main/llama_index).
+
+### The details matter
+If you take a closer look at the constructor of the agent classses on the snippets above you will notice that we are using quite a few parameters:
+```python
+    context_window=10000,
+    is_function_calling_model=True,
+    is_chat_model=True,
+    temperature=0.4,
+    max_tokens=60000,
+```
+
+Setting these parameters is important to guarantee good behavior. Setting a lower temperature, or too few output tokens, will severily hinder the performance of the model.
 
 
 ## Learn with our shared resources
