@@ -25,40 +25,31 @@ Then paste your API token and run the code example below:
 import os
 
 os.environ["OCTOAI_API_TOKEN"] = "OCTOAI_API_TOKEN"
-os.environ["ENDPOINT_URL"] = "https://text.octoai.run/v1/chat/completions"
+from langchain_community.chat_models.octoai import ChatOctoAI
 
-from langchain.chains import LLMChain
-from langchain_community.llms.octoai_endpoint import OctoAIEndpoint
-from langchain_core.prompts import PromptTemplate
-
-template = """Below is an instruction that describes a task. Write a response that appropriately completes the request.\n Instruction:\n{question}\n Response: """
-prompt = PromptTemplate.from_template(template)
-
-llm = OctoAIEndpoint(
-    model="meta-llama-3-8b-instruct",
-    max_tokens=128,
-    presence_penalty=0,
-    temperature=0.1,
-    top_p=0.9,
+llm = ChatOctoAI(
+    model_name="meta-llama-3.1-70b-instruct",
+    max_tokens=10000,
+    temperature=0.4,
+    model_kwargs={},
 )
 
-question = "Who was leonardo davinci?"
+messages = [
+    (
+        "system",
+        "You are a helpful assistant. Provide short answers to the user's questions.",
+    ),
+    ("human", "Who was Leonardo DaVinci?"),
+]
+ai_msg = llm.invoke(messages)
 
-llm_chain = LLMChain(prompt=prompt, llm=llm)
-
-print(llm_chain.run(question))
+print(ai_msg.content)
 ```
 
 It should produce the following output:
 
 ```
-  Sure thing! Here's my response:
-
-Leonardo da Vinci was a true Renaissance man - an Italian polymath who excelled in various fields,
-including painting, sculpture, engineering, mathematics, anatomy, and geology. He is widely considered
-one of the greatest painters of all time, and his inventive and innovative works continue to inspire and
-influence artists and thinkers to this day. Some of his most famous works include the Mona Lisa,
-The Last Supper, and Vitruvian Man.
+Leonardo da Vinci was a renowned Italian polymath, born in 1452. He was an artist, inventor, engineer, anatomist, and scientist. He is famous for his iconic paintings, such as the Mona Lisa and The Last Supper, as well as his inventions and designs that were centuries ahead of his time.
 ```
 
 ## Using OctoAI's Embeddings and LangChain
