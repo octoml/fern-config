@@ -58,6 +58,9 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
 - **frequency_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating repetitive responses.
 - **presence_penalty** _(float, optional)_: A value between 0.0 and 1.0 that controls how much the model penalizes generating responses that contain certain words or phrases.
 - **stream** _(boolean, optional)_: Indicates whether the response should be streamed.
+- **logprobs** _(boolean, int, optional)_: Whether to return log probabilities of the output tokens or not.
+- **top_logprobs** _(int, optional)_: A value between 0 and 5 that controls the number of most probable tokens to return at each token position, each with an associated log probability.
+- **loglikelihood** _(boolean, optional)_: This indicates a special mode that returns the log probabilities of the current message.
 
 ### Non-Streaming Response Sample:
 
@@ -73,6 +76,7 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
         "function_call": null
       },
       "delta": null,
+      "logprobs": null,
       "finish_reason": "length"
     }
   ],
@@ -107,7 +111,8 @@ Once parsed to JSON, you will see the content of the streaming response similar 
         "role":"assistant",
         "content":null
       },
-      "finish_reason":null
+      "finish_reason":null,
+      "logprobs": null
     }
   ]
 }
@@ -129,7 +134,8 @@ Once parsed to JSON, you will see the content of the streaming response similar 
         "content":"",
         "function_call":null
       },
-      "finish_reason":"length"
+      "finish_reason":"length",
+      "logprobs": null
     }
   ]
 }
@@ -138,17 +144,17 @@ Once parsed to JSON, you will see the content of the streaming response similar 
 Without parsing, the text stream will start with `data:` for each chunk. Below is an example. Please note, the final chunk contains simply `data: [DONE]` as text which can break JSON parsing if not accounted for.
 
 ```
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": null}, "finish_reason": null, "logprobs": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null, "logprobs": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "Hello", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "Hello", "function_call": null}, "finish_reason": null, "logprobs": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "!", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "!", "function_call": null}, "finish_reason": null, "logprobs": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null, "logprobs": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": "stop"}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": "stop", "logprobs": null}]}
 
 data: [DONE]
 
@@ -169,7 +175,8 @@ Parameters
      _ **content** *(string)*: The actual text content of the chat completion.  
      _ **function_call** _(object or null)_: An optional field that may contain information about a function call made within the message. It's usually `null` in standard responses.  
      _ **delta** *(object or null)*: An optional field that can contain additional metadata about the message, typically `null`.  
-     _ **finish_reason** _(string)_: The reason why the message generation was stopped, such as reaching the maximum length (`"length"`).
+     _ **finish_reason** _(string)_: The reason why the message generation was stopped, such as reaching the maximum length (`"length"`).  
+     _ **logprobs** _(object)_: An object representing the token, its log probability and the most probable tokens to this one.
 - **created** _(integer)_: The Unix timestamp (in seconds) of when the chat completion was created.
 - **model** _(string)_: The model used for the chat completion.
 - **object** _(string)_: The object type, which is always `chat.completion`.
