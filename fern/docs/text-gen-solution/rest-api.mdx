@@ -41,13 +41,13 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
 "meta-llama-3.1-8b-instruct",
 "meta-llama-3.1-70b-instruct",
 "meta-llama-3.1-405b-instruct",
-"meta-llama-3-8b-instruct",
 "hermes-2-pro-llama-3-8b",
-"meta-llama-3-70b-instruct",
 "mistral-7b-instruct",
+"mistral-nemo-instruct",
 "mixtral-8x7b-instruct",
 "nous-hermes-2-mixtral-8x7b-dpo",
 "wizardlm-2-8x22b",
+"phi-3.5-vision-instruct" (vision-language model"
 ```
 
 - **max_tokens** _(integer, optional)_: The maximum number of tokens to generate for the chat completion.
@@ -97,7 +97,7 @@ Once parsed to JSON, you will see the content of the streaming response similar 
 {
   "id":"cmpl-994f6307a891454cb0f57b7027f5f113",
   "created":1700527881,
-  "model":"meta-llama-3-8b-instruct",
+  "model":"meta-llama-3.1-8b-instruct",
   "choices":
   [
     {
@@ -138,17 +138,17 @@ Once parsed to JSON, you will see the content of the streaming response similar 
 Without parsing, the text stream will start with `data:` for each chunk. Below is an example. Please note, the final chunk contains simply `data: [DONE]` as text which can break JSON parsing if not accounted for.
 
 ```
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "created": 1700527881, "model": "meta-llama-3.1-8b-instruct", "choices": [{"index": 0, "delta": {"role": "assistant", "content": null}, "finish_reason": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "meta-llama-3.1-8b-instruct", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "Hello", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "meta-llama-3.1-8b-instruct", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "Hello", "function_call": null}, "finish_reason": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "!", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "meta-llama-3.1-8b-instruct", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "!", "function_call": null}, "finish_reason": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "meta-llama-3.1-8b-instruct", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": null}]}
 
-data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "llama-2-13b-chat", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": "stop"}]}
+data: {"id": "cmpl-994f6307a891454cb0f57b7027f5f113", "object": "chat.completion.chunk", "created": 1700527881, "model": "meta-llama-3.1-8b-instruct", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "function_call": null}, "finish_reason": "stop"}]}
 
 data: [DONE]
 
