@@ -1,0 +1,233 @@
+---
+title: Juggernaut XII by RunDiffusion API
+slug: media-gen-solution/rest-apis/generate/juggernautXI
+---
+
+Generate an image using a Juggernaut XII model (SDXL based checkpoint).
+
+OctoAI's Juggernaut XII API supports both `Full` and `Lighting` checkpoints for text-to-image, image-to-image use cases, and works with custom assests like LoRAs, VAES, and textual inversions.
+It also support ControlNets. For more details, refer [SDXL-ControlNets](https://octo.ai/docs/media-gen-solution/rest-apis/generate/images/controlnet-sdxl).
+
+Recommended values to get optimal results from Juggernaut XII models are: 
+  - `steps` -  Between 20 to 30 for Juggernaut XII Full checkpoint and 4 to 6 for Juggernaut XII Lighting checkpoint. 
+  - `cfg_scale` -  Between 3 to 6 for Juggernaut XII Full checkpoint and 1 to 2 for Juggernaut XII Lighting checkpoint. 
+  - `sampler` -  `DPM_PLUS_PLUS_2M_KARRAS`, though others will work as well.  Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. 
+    Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
+
+
+You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
+
+### **How to use**
+
+Invoke `https://image.octoai.run/generate/sdxl` endpoint with a `POST` request.
+
+The headers of the request must include an Authentication Token in the authorization field. The accept header should be set to `application/json` to receive the image encoded as base64 in a JSON response.
+
+**Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
+
+**Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
+  - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
+  - `strength` - controls how much influence the image parameter has on the output image
+
+**Generating with a prompt and a custom asset**: This mode generates an image from text but uses either a custom checkpoint, LoRA, textual inversion, or VAE. Note that using a custom asset increases generation time.
+
+  - `prompt` - text to generate the image from
+  - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
+  - `loras` -  Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. 
+  - `textual_inversions` - Here you can specify textual inversions and their corresponding trigger words. 
+  - `vae` -  Here you can specify variational autoencoders. 
+
+**Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
+  - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
+  - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
+
+**Outpainting with a prompt**: Outpainting is the process of using an image generation model like Stable Diffusion to extend beyond the canvas of an existing image. Outpainting is very similar to inpainting, but instead of generating a region within an existing image, the model generates a region outside of it. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `checkpoint` -  Here you can specify the Juggernaur XI checkpoints (full or lighting) from the OctoAI asset library. Supported values `octoai:rundiffusion-juggernaut-xi` , `octoai:rundiffusion-juggernaut-xi-lightning`
+  - `init_image` - the existing image you’d like to outpaint. You need to create a source image that places your original image within a larger canvas. Argument takes an image encoded as a string in base64 format.
+  - `mask_image` - a black and white mask representing the extended area. Argument takes an image encoded as a string in base64 format.
+  - `outpainting` -  Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`. This needs to be set to `true`, if you wish to use outpainting. 
+    
+
+<Note>
+    For more details about all parameters, please see the request schema below.
+</Note>
+
+
+### **Output**
+
+The resolution of the generated image will be 1 megapixel. The default resolution is 1024x1024.
+
+### **Pricing**
+
+    - Juggernaut XII (Full): ***$0.0104*** per image, 1024x1024, 30 steps; billed per image 
+    - Juggernaut XII (Lighting): ***$0.0065*** per image, 1024x1024, 30 steps; billed per image 
+    - Fine tuning job SDXL: ***$0.25*** per tune, using the 500 step default
+    - Inpainting: Same price as corresponding Juggernaut XII image
+    - Outpainting: Same price as corresponding Juggernaut XII image
+
+
+Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) for more details.
+
+### **Request Details**
+
+  **Headers**: 
+
+    `Authorization` (Required): Your `OCTOAI_TOKEN`  
+    `Content-Type` (Required): Set to `application/json`
+
+  **Parameters**: 
+
+    - `prompt` (string [ upto 77 tokens], Required): A string of text describing the image to generate. You can use prompt weighting, e.g. `(A tall (beautiful:1.5) woman:1.0) (some other prompt with weight:0.8)` . The weight will be the product of all brackets a token is a member of. The brackets, colons and weights do not count towards the number of tokens.
+    - `negative_prompt` (string, Optional): Text describing image traits to avoid during generation.
+    - `sampler` (string, Optional): A string specifying which scheduler to use when generating an image. Defaults to `DDIM`. Regular samplers include `DDIM`,`DDPM`,`DPM_PLUS_PLUS_2M_KARRAS`,`DPM_SINGLE`,`DPM_SOLVER_MULTISTEP`,`K_EULER`, `K_EULER_ANCESTRAL`,`PNDM`,`UNI_PC`. Premium samplers (2x price) include `DPM_2`, `DPM_2_ANCESTRAL`,`DPM_PLUS_PLUS_SDE_KARRAS`, `HEUN` and `KLMS`.
+    - `cfg_scale` (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Recommended value is between 3 to 6 for Juggernaut XII Full checkpoint and 1 to 2 for Juggernaut XII Lighting checkpoint. 
+    - `image_encoding` (enum, Optional): Define which encoding process should be applied before returning the generated image(s). Allowed values: `jpeg` `png`
+    - `num_images` (integer, Optional): Integer representing how many output images to generate with a single prompt/configuration. Defaults to 1. Allowed values: 1-16.
+    - `seed` (union, Optional): Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
+    - `steps` (integer, Optional Defaults to 30): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200. Recommended value is between 20 to 30 for Juggernaut XII Full checkpoint and 4 to 6 for Juggernaut XII Lighting checkpoint. 
+    - `init_image` (string, Optional): The image (encoded in b64 string) to use as the starting point for the generation. This parameter is for Image-to-Image generation and Inpainting. 
+    <Note> Use .jpg format to ensure best latency </Note>
+    - `strength` (double,Optional): Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0. Defaults to 0.8. This parameter is for Image-to-Image generation. 
+    - `height` (integer, Optional): Integer representing the height of image to generate. Default to 1024. 
+    - `width` (integer, Optional): Integer representing the width of image to generate. Default to 1024. 
+    
+    **Supported Output Resolutions (Width x Height)** are as follows:
+
+    ```
+    (1024, 1024),(896, 1152),(832, 1216),(768,
+    1344),(640, 1536),(1536, 640),(1344, 768),
+    (1216, 832),(1152, 896)
+    ```
+    - `use_refiner` (Boolean, Optional): A boolean `true` or `false` determines whether to use the refiner or not
+    - `high_noise_frac` (double, Optional): A floating point or integer determining how much noise should be applied using the base model vs. the refiner. A value of `0.8` will apply the base model at 80% and Refiner at 20%. Defaults to `0.8` when not set.
+    - `style_preset` (string, Optional): Used to guide the output image towards a particular style. Defaults to `None`. Supported values for styles present include `base`, `3d-model`, `Abstract`,`Advertising`, `Alien`, `analog-film`, `anime`,`Architectural`, `cinematic`, `Collage`,`comic-book`, `Craft Clay`, `Cubist`,`digital-art`, `Disco`,`Dreamscape`,`Dystopian`, `enhance`, `Fairy Tale`,`fantasy-art`, `Fighting Game`, `Film Noir`, `Flat Papercut`, `Food Photography`, `Gothic`, `Graffiti`, `Grunge`, `HDR`, `Horror`, `Hyperrealism`, `Impressionist`, `isometric`, `Kirigami`, `line-art`,`Long Exposure`,`low-poly`,`Minimalist`,`modeling-compound`,`Monochrome`,`Nautical`,
+    `Neon Noir`,`neon-punk`,`origami`,`Paper Mache`, `Paper Quilling`,`Papercut Collage`,`Papercut Shadow Box`,`photographic`,`pixel-art`,`Pointillism`,`Pop Art`,`Psychedelic`,`Real Estate`,`Renaissance`,`Retro Arcade`,`Retro Game`,`RPG Fantasy`,`Game`,`Silhouette`,`Space`,`Stacked Papercut`,`Stained Glass`,`Steampunk`,`Strategy Game`,`Surrealist`,`Techwear Fashion`,`Thick Layered Papercut`,`tile-texture`,`Tilt-Shift`,
+    `Tribal`,`Typography`,`Watercolor`,`Zentangle`
+    
+    **Custom Assets**
+    - `loras`(string, Optional): Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. Note that using a custom asset increases generation time.
+    - `textual_inversions` (string, Optional): Here you can specify textual inversions and their corresponding trigger words. Note that using a custom asset increases generation time.
+    - `vae` (string, Optional): Here you can specify variational autoencoders. Note that using a custom asset increases generation time.
+
+    **Inpainting and Outpating Parameters**
+    - `mask_image` (string, Optional): Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
+    <Note>Use .jpg format to ensure best latency</Note>
+    - `outpainting` (boolean, Optional): Only applicable for outpainting use cases. Argument takes a boolean value to determine Whether the request requires outpainting or not. If so, special preprocessing is applied for better results. Defaults to `false`
+        
+
+### **Request Examples**
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://image.octoai.run/generate/sdxl" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $OCTOAI_TOKEN" \
+    --data-raw '{
+        "prompt": "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
+        "negative_prompt": "Blurry, low-res, poor quality",
+        "checkpoint": "octoai:rundiffusion-juggernaut-xi",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 1,
+        "sampler": "DDIM",
+        "steps": 30,
+        "cfg_scale": 12,
+        "seed": 18568744,
+        "use_refiner": false,
+        "style_preset": "base"
+    }' | jq -r ".images[0].image_b64" | base64 -d > result.jpg
+```
+
+```Python Python
+import requests
+import os
+import base64
+import io
+import PIL.Image
+
+def _process_test(url):
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
+        "negative_prompt": "Blurry, low-res, poor quality",
+        "checkpoint": "octoai:rundiffusion-juggernaut-xi",
+        "width": 1024,
+        "height": 1024,
+        "num_images": 1,
+        "sampler": "DDIM",
+        "steps": 30,
+        "cfg_scale": 12,
+        "seed": 18568744,
+        "use_refiner": false,
+        "style_preset": "base"
+    }
+
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sdxl")
+```
+
+```typescript TypeScript
+import fs from "node:fs";
+import { OctoAIClient } from "@octoai/sdk";
+
+const octoai = new OctoAIClient({
+  apiKey: process.env.OCTOAI_TOKEN,
+});
+
+const { images } = await octoai.imageGen.generateSdxl({
+        prompt": "A still frame from a commercial of a DeLorean parked in bustling times square, rainy night shot with droplets of water falling",
+        negative_prompt": "Blurry, low-res, poor quality",
+        checkpoint: "octoai:rundiffusion-juggernaut-xi",
+        width: 1024,
+        height: 1024,
+        num_images: 1,
+        sampler: "DDIM",
+        steps: 30,
+        cfg_scale: 12,
+        seed: 18568744,
+        use_refiner: false,
+        style_preset: "base"
+});
+
+images.forEach((output, i) => {
+  if (output.imageB64) {
+    const buffer = Buffer.from(output.imageB64, "base64");
+    fs.writeFileSync(`result${i}.jpg`, buffer);
+  }
+});
+```
+
+</CodeGroup>
+
+
