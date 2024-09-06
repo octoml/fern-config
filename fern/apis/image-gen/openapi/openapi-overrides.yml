@@ -60,7 +60,11 @@ paths:
           x-name: ImageGen
   /generate/flux-dev:
     post:
-      x-fern-ignore: true
+      summary: "Generate FLUX.1 [dev]"
+      x-fern-sdk-method-name: generateFluxDev
+      servers:
+        - url: https://image.octoai.run
+          x-name: ImageGen
   # Hide healthcheck
   /healthcheck:
     get:
