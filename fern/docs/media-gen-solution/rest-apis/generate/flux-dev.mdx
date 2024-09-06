@@ -45,7 +45,7 @@ Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) f
   **Parameters**: 
 
   - `prompt` (string [ 1 .. 10000 ] characters, Required): A string of text describing the image to generate. A strong, descriptive prompt that clearly defines elements, colors, and subjects will lead to better results.
-  - `cfg_scale` (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Recommended values between 4-6. 
+  - `cfg_scale` (double, Optional): Floating-point number represeting how closely to adhere to prompt description. Must be a positive number no greater than 50.0. Recommended values greater than 8. 
   - `num_images` (integer, Optional): Integer representing how many output images to generate with a single prompt/configuration. Defaults to 1. Allowed values: 1-16.
   - `seed` (union, Optional): Integer number or list of integers representing the seeds of random generators. Fixing random seed is useful when attempting to generate a specific image. Must be greater than 0 and less than 2^32.
   - `steps` (integer, Optional Defaults to 30): Integer representing how many steps of diffusion to run. Must be greater than 0 and less than or equal to 200.
@@ -76,7 +76,7 @@ curl -X POST "https://image.octoai.run/generate/flux-dev" \
         "height": 1024,
         "num_images": 4,
         "steps": 30,
-        "cfg_scale": 5.5
+        "cfg_scale": 8
     }' 
 ```
 </CodeGroup>
