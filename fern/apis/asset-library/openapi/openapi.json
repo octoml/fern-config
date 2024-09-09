@@ -177,21 +177,34 @@
           "text/codellama-34b",
           "text/codellama-70b",
           "text/mistral-7b",
+          "text/mistral-nemo",
           "text/mixtral-8x7b",
+          "text/llama-3.1-8b",
+          "text/llama-3.1-70b",
+          "text/llama-3.1-405b",
           "image/controlnet-sd15",
           "image/controlnet-sdxl",
           "image/stable-diffusion-v1-5",
           "image/stable-diffusion-xl-v1-0",
+          "image/stable-diffusion-v3-medium",
           "image/stable-diffusion-ssd",
+          "image/flux-dev",
+          "image/flux-schnell",
           "audio/tortoise-tts",
-          "audio/rvc"
+          "audio/rvc",
+          "video/svd"
         ],
         "title": "BaseEngine",
         "type": "string"
       },
       "BaseEngineType": {
         "description": "Base Engine types supported by asset library.",
-        "enum": ["text", "image", "audio"],
+        "enum": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
         "title": "BaseEngineType",
         "type": "string"
       },
@@ -231,7 +244,9 @@
             "description": "File format."
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "CheckpointData",
         "type": "object"
       },
@@ -275,7 +290,7 @@
         "type": "object"
       },
       "CreateAssetRequest": {
-        "description": "\"Create asset request. It is used to represent the request of create asset API.",
+        "description": "Create asset request.\nIt is used to represent the request of create asset API.",
         "properties": {
           "asset_type": {
             "$ref": "#/components/schemas/AssetType"
@@ -393,12 +408,17 @@
             "title": "Url"
           }
         },
-        "required": ["asset_type", "name", "description", "data"],
+        "required": [
+          "asset_type",
+          "name",
+          "description",
+          "data"
+        ],
         "title": "CreateAssetRequest",
         "type": "object"
       },
       "CreateAssetResponse": {
-        "description": "Create asset response. It is used to represent the response of create asset API.",
+        "description": "Create asset response.\nIt is used to represent the response of create asset API.",
         "properties": {
           "asset": {
             "allOf": [
@@ -419,6 +439,7 @@
             "description": "Asset transfer API type.",
             "discriminator": {
               "mapping": {
+                "gcp-oauth": "#/components/schemas/GcsOauthTransferApi",
                 "none": "#/components/schemas/NoTransferApi",
                 "presigned-url": "#/components/schemas/PresignedUrlTransferApi",
                 "sts": "#/components/schemas/StsTransferApi"
@@ -433,19 +454,30 @@
                 "$ref": "#/components/schemas/StsTransferApi"
               },
               {
+                "$ref": "#/components/schemas/GcsOauthTransferApi"
+              },
+              {
                 "$ref": "#/components/schemas/NoTransferApi"
               }
             ],
             "title": "Transfer Api"
           }
         },
-        "required": ["asset", "transfer_api"],
+        "required": [
+          "asset",
+          "transfer_api"
+        ],
         "title": "CreateAssetResponse",
         "type": "object"
       },
       "DataType": {
         "description": "Data type for the asset.",
-        "enum": ["fp16", "fp32", "int4", "int8"],
+        "enum": [
+          "fp16",
+          "fp32",
+          "int4",
+          "int8"
+        ],
         "title": "DataType",
         "type": "string"
       },
@@ -463,7 +495,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "deleted_at"],
+        "required": [
+          "id",
+          "deleted_at"
+        ],
         "title": "DeleteAssetResponse",
         "type": "object"
       },
@@ -509,21 +544,82 @@
       },
       "FileExtension": {
         "description": "File extension supported for the asset.",
-        "enum": ["unknown", "png", "jpg", "jpeg", "txt", "mp3", "wav"],
+        "enum": [
+          "unknown",
+          "png",
+          "jpg",
+          "jpeg",
+          "txt",
+          "mp3",
+          "wav",
+          "jsonl"
+        ],
         "title": "FileExtension",
         "type": "string"
       },
       "FileFormat": {
         "description": "File format for the asset.",
-        "enum": ["safetensors", "pt"],
+        "enum": [
+          "safetensors",
+          "pt"
+        ],
         "title": "FileFormat",
         "type": "string"
       },
       "FileStructure": {
         "description": "File structure for the asset.",
-        "enum": ["unknown", "single_file", "multiple_files"],
+        "enum": [
+          "unknown",
+          "single_file",
+          "multiple_files"
+        ],
         "title": "FileStructure",
         "type": "string"
+      },
+      "GcsOauthTransferApi": {
+        "description": "STS asset transfer API.",
+        "properties": {
+          "gcp_region": {
+            "description": "GCP region. Used for asset transfer.",
+            "title": "Gcp Region",
+            "type": "string"
+          },
+          "gs_bucket": {
+            "description": "GS bucket. Used for asset transfer.",
+            "title": "Gs Bucket",
+            "type": "string"
+          },
+          "gs_key": {
+            "description": "GS key. Used for asset transfer.",
+            "title": "Gs Key",
+            "type": "string"
+          },
+          "gs_url": {
+            "description": "GS full URL. Used for asset transfer.",
+            "title": "Gs Url",
+            "type": "string"
+          },
+          "token": {
+            "description": "GCS oauth token. Used for asset transfer.",
+            "title": "Token",
+            "type": "string"
+          },
+          "type": {
+            "const": "gcp-oauth",
+            "default": "gcp-oauth",
+            "description": "URL type for the asset.",
+            "title": "Type"
+          }
+        },
+        "required": [
+          "gcp_region",
+          "token",
+          "gs_bucket",
+          "gs_key",
+          "gs_url"
+        ],
+        "title": "GcsOauthTransferApi",
+        "type": "object"
       },
       "HTTPValidationError": {
         "description": "HTTP validation error in API.",
@@ -567,7 +663,9 @@
             "description": "File format."
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "LatentData",
         "type": "object"
       },
@@ -593,7 +691,11 @@
             "type": "integer"
           }
         },
-        "required": ["has_more", "total", "data"],
+        "required": [
+          "has_more",
+          "total",
+          "data"
+        ],
         "title": "ListAssetsResponse",
         "type": "object"
       },
@@ -660,12 +762,14 @@
             "title": "Trigger Words"
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "LoraData",
         "type": "object"
       },
       "NoTransferApi": {
-        "description": "This type exists to avoid Optional[TransferApi] so openapi-generator can work.\n\nIn this class, type is not added to TransferApiType because it is not a valid\nTransferApiType. It exists only to note that no TransferApi is defined.",
+        "description": "Type to avoid Optional[TransferApi] so openapi-generator can work.\n\nIn this class, type is not added to TransferApiType because it is not a valid\nTransferApiType. It exists only to note that no TransferApi is defined.",
         "properties": {
           "type": {
             "const": "none",
@@ -697,7 +801,10 @@
             "title": "Type"
           }
         },
-        "required": ["get_url", "put_url"],
+        "required": [
+          "get_url",
+          "put_url"
+        ],
         "title": "PresignedUrlTransferApi",
         "type": "object"
       },
@@ -716,6 +823,7 @@
             "description": "Transfer API used to retrieve the asset.",
             "discriminator": {
               "mapping": {
+                "gcp-oauth": "#/components/schemas/GcsOauthTransferApi",
                 "none": "#/components/schemas/NoTransferApi",
                 "presigned-url": "#/components/schemas/PresignedUrlTransferApi",
                 "sts": "#/components/schemas/StsTransferApi"
@@ -730,13 +838,19 @@
                 "$ref": "#/components/schemas/StsTransferApi"
               },
               {
+                "$ref": "#/components/schemas/GcsOauthTransferApi"
+              },
+              {
                 "$ref": "#/components/schemas/NoTransferApi"
               }
             ],
             "title": "Transfer Api"
           }
         },
-        "required": ["asset", "transfer_api"],
+        "required": [
+          "asset",
+          "transfer_api"
+        ],
         "title": "RetrieveAssetResponse",
         "type": "object"
       },
@@ -760,6 +874,11 @@
           "aws_access_key_id": {
             "description": "AWS access key. Used for asset transfer.",
             "title": "Aws Access Key Id",
+            "type": "string"
+          },
+          "aws_region": {
+            "description": "AWS region. Used for asset transfer.",
+            "title": "Aws Region",
             "type": "string"
           },
           "aws_secret_access_key": {
@@ -814,6 +933,7 @@
           }
         },
         "required": [
+          "aws_region",
           "aws_access_key_id",
           "aws_secret_access_key",
           "s3_bucket",
@@ -868,13 +988,20 @@
             "type": "array"
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "TextualInversionData",
         "type": "object"
       },
       "TransferApiType": {
         "description": "Asset transfer API types.",
-        "enum": ["presigned-url", "sts", "any"],
+        "enum": [
+          "presigned-url",
+          "sts",
+          "gcp-oauth",
+          "any"
+        ],
         "title": "TransferApiType",
         "type": "string"
       },
@@ -914,7 +1041,9 @@
             "description": "File format."
           }
         },
-        "required": ["engine"],
+        "required": [
+          "engine"
+        ],
         "title": "VAEData",
         "type": "object"
       },
@@ -947,7 +1076,11 @@
             "type": "string"
           }
         },
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError",
         "type": "object"
       }
@@ -1067,6 +1200,8 @@
             "schema": {
               "default": 100,
               "description": "Max number of assets to return.",
+              "maximum": 100,
+              "minimum": 1,
               "title": "Limit",
               "type": "integer"
             }
@@ -1079,6 +1214,7 @@
             "schema": {
               "default": 0,
               "description": "Offset to start listing assets.",
+              "minimum": 0,
               "title": "Offset",
               "type": "integer"
             }
@@ -1130,6 +1266,27 @@
               "description": "Filter based on asset owener.",
               "title": "Owner"
             }
+          },
+          {
+            "description": "Filter based on file format.",
+            "in": "query",
+            "name": "file_format",
+            "required": false,
+            "schema": {
+              "description": "Filter based on file format.",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/FileFormat"
+                  },
+                  {
+                    "$ref": "#/components/schemas/FileExtension"
+                  }
+                ]
+              },
+              "title": "File Format",
+              "type": "array"
+            }
           }
         ],
         "responses": {
@@ -1155,7 +1312,9 @@
           }
         },
         "summary": "List Assets",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       },
       "post": {
         "description": "Create an asset on the asset library.",
@@ -1193,7 +1352,9 @@
           }
         },
         "summary": "Create Asset",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     },
     "/v1/assets/{asset_id}": {
@@ -1236,7 +1397,9 @@
           }
         },
         "summary": "Delete Asset",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     },
     "/v1/assets/{asset_id}/complete-upload": {
@@ -1289,7 +1452,9 @@
           }
         },
         "summary": "Complete Asset Upload",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     },
     "/v1/assets/{asset_owner_and_name_or_id}": {
@@ -1351,7 +1516,9 @@
           }
         },
         "summary": "Retrieve Asset",
-        "tags": ["assets"]
+        "tags": [
+          "assets"
+        ]
       }
     }
   },
