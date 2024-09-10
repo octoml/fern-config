@@ -230,7 +230,7 @@
                 "type": "null"
               }
             ],
-            "description": "[Not supported on FLUX] Starting point image encoded in b64 string for Image to Image generation mode.",
+            "description": "Starting point image encoded in b64 string for Image to Image generation mode.",
             "title": "Initial Image"
           },
           "inpaint_full_res": {
@@ -269,7 +269,7 @@
                 "type": "null"
               }
             ],
-            "description": "[Not supported on SD3, FLUX] A dictionary of LoRAs to apply. LoRAs as keys and their weights (float) as values.",
+            "description": "[Not supported on SD3] A dictionary of LoRAs to apply. LoRAs as keys and their weights (float) as values.",
             "examples": [
               "{\"crayon-style\": 1.0}"
             ],
@@ -284,7 +284,7 @@
                 "type": "null"
               }
             ],
-            "description": "[Not supported on SD3, FLUX] b64 encoded mask image for inpainting. White area should indicate where to paint.",
+            "description": "[Not supported on SD3] b64 encoded mask image for inpainting. White area should indicate where to paint.",
             "title": "Mask Image"
           },
           "negative_prompt": {
@@ -418,7 +418,7 @@
           },
           "strength": {
             "default": 0.8,
-            "description": "[Not supported on FLUX] Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
+            "description": "Floating-point number indicating how much creative the Image to Image generation mode should be. Must be greater than 0 and less than or equal to 1.0.",
             "examples": [
               0.8
             ],
@@ -929,45 +929,6 @@
   },
   "openapi": "3.1.0",
   "paths": {
-    "/generate/controlnet-sd15": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_controlnet_sd15_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
     "/generate/controlnet-sdxl": {
       "post": {
         "description": "Generate images in response to the given request.",
@@ -1050,45 +1011,6 @@
       "post": {
         "description": "Generate images in response to the given request.",
         "operationId": "generate_images_generate_flux_schnell_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImageGenerationResponse"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Generate Images"
-      }
-    },
-    "/generate/sd": {
-      "post": {
-        "description": "Generate images in response to the given request.",
-        "operationId": "generate_images_generate_sd_post",
         "requestBody": {
           "content": {
             "application/json": {
