@@ -78,3 +78,5 @@ components:
       x-fern-bearer:
         name: apiKey
         env: OCTOAI_API_KEY
+security:
+  - BearerAuth: []
