@@ -23,7 +23,7 @@ This section covers the new JSON mode compatible with OpenAI's new response form
 
 First, set up the OpenAI client and set it to run with OctoAI base and tokens.
 
-```python
+```python maxLines=0
 from openai import OpenAI
 import os
 
@@ -39,7 +39,7 @@ model = "meta-llama-3.1-8b-instruct"
 
 If you want the response as a JSON object but without any specific schema:
 
-```python
+```python maxLines=0
 import json
 
 def generate_json_object():
@@ -69,7 +69,7 @@ def generate_json_object():
 For generating JSON that adheres to a simple schema, but without strict (guarenteed) schema following (see the "strict": False below). 
 This mode is faster and works on both Llama-3.1-8B-Instruct and Llama-3.1-70B-Instruct. For most use cases, it is sufficient and recommended.
 
-```python
+```python maxLines=0
 from pydantic import BaseModel
 from jsonschema import validate
 
@@ -103,7 +103,7 @@ def generate_json_schema_strict_false():
 
 When you need strict adherence to a JSON schema, you can activate this mode on Llama-3.1-8b-Instruct *only*. This is recommended for more complex schemas. Activating this mode can create a latency increase.
 
-```python
+```python maxLines=0
 from textwrap import dedent
 
 math_tutor_prompt = """
@@ -167,13 +167,13 @@ This section covers the "legacy" JSON mode, which is still supported for the fol
 
 Setup credentials:
 
-```bash
+```bash maxLines=0
 export OCTOAI_TOKEN=YOUR_TOKEN_HERE
 ```
 
 Curl example (Mistral-7B): Let's say that you want to ensure that your LLM responses format user feedback about cars into a usable JSON format. To do so, you provide the LLM with a response schema ensuring that it knows it must provide "color" and "maker" in a structured format--see "response format below":
 
-```bash
+```bash maxLines=0
 curl -X POST "https://text.octoai.run/v1/chat/completions" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OCTOAI_TOKEN" \
@@ -202,7 +202,7 @@ curl -X POST "https://text.octoai.run/v1/chat/completions" \
 
 The LLM will respond in the exact schema specified:
 
-```bash
+```bash maxLines=0
 {
   "id": "chatcmpl-d5d81b7c80b249ea8177f95f68a51d8e",
   "object": "chat.completion",
@@ -233,7 +233,7 @@ Pydantic is a popular Python library for data validation and settings management
 
 First, make sure you have the required packages installed:
 
-```bash
+```bash maxLines=0
 python3 -m pip install openai pydantic==2.5.3
 ```
 
@@ -241,7 +241,7 @@ python3 -m pip install openai pydantic==2.5.3
 
 Let's start with a basic example to demonstrate how Pydantic and the OctoAI SDK work together. In this example, we'll define a simple Car model with color and maker attributes, and ask the LLM to generate a response that fits this schema.
 
-```python
+```python maxLines=0
 from octoai.client import OctoAI
 from octoai.text_gen import ChatCompletionResponseFormat, ChatMessage
 from pydantic import BaseModel, Field
@@ -280,7 +280,7 @@ The key points to note here are:
 
 The output will be a JSON object adhering to the specified schema:
 
-```json
+```json maxLines=0
 { "color": "black", "maker": "Toyota" }
 ```
 
@@ -288,7 +288,7 @@ The output will be a JSON object adhering to the specified schema:
 
 Next, let's look at an example involving arrays. Suppose we want the LLM to generate a list of names based on a given prompt. We can define a Meeting model with a names attribute of type List[str].
 
-```python
+```python maxLines=0
 from octoai.client import OctoAI
 from octoai.text_gen import ChatCompletionResponseFormat, ChatMessage
 from pydantic import BaseModel, Field
@@ -318,7 +318,7 @@ print(chat_completion.choices[0].message.content)
 
 The LLM will generate a response containing an array of names:
 
-```json
+```json maxLines=0
 { "names": ["John", "Jane"] }
 ```
 
@@ -326,7 +326,7 @@ The LLM will generate a response containing an array of names:
 
 Finally, let's explore a more complex example involving nested models. In this case, we'll define a Person model with name and age attributes, and a Result model containing a sorted list of Person objects.
 
-```python
+```python maxLines=0
 class Person(BaseModel):
     """The object representing a person with name and age"""
 
@@ -373,7 +373,7 @@ In this example:
 
 The LLM will generate a response containing a sorted list of Person objects:
 
-```json
+```json maxLines=0
 {
   "sorted_list": [
     { "name": "Carol", "age": 2 },
@@ -389,13 +389,13 @@ Instructor makes it easy to reliably get structured data like JSON from Large La
 
 #### Install
 
-```bash
+```bash maxLines=0
 python3 -m pip install instructor
 ```
 
 #### Example
 
-```python
+```python maxLines=0
 import os
 import openai
 from pydantic import BaseModel
@@ -440,7 +440,7 @@ After importing the necessary modules and setting the clients, we:
 
 The output will be a JSON object containing the extracted user information, adhering to the specified UserExtract schema:
 
-```json
+```json maxLines=0
 {
   "name": "jason",
   "age": 25
