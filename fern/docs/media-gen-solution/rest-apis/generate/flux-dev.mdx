@@ -6,7 +6,7 @@ slug: media-gen-solution/rest-apis/generate/flux-dev
 Generate images using a FLUX.1 [Dev], a 12 billion parameter model using text descriptions. 
 It excels in photorealism, processes complex prompts, and generates clear text.
 
-OctoAI's FLUX.1 [Dev] API supports text-to-image, image-to-image, and inpainting use cases. 
+OctoAI's FLUX.1 [Dev] API supports **text-to-image**, **image-to-image**, and **inpainting** use cases. 
 
 You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
@@ -25,7 +25,7 @@ parameter is the `prompt`, it also supports a `width` and `height` parameter whi
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
   - `strength` - controls how much influence the image parameter has on the output image
 
-**Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+**Inpainting with a prompt**: **Inpainting** replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
 
   - `prompt` - text to generate the image from
   - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
