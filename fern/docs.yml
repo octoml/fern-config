@@ -98,8 +98,6 @@ navigation:
                     path: docs/media-gen-solution/rest-apis/generate/sdxl.mdx
                   - page: Stable Diffusion XL Lightning
                     path: docs/media-gen-solution/rest-apis/generate/sdxl-lightning.mdx
-                  - page: Stable Diffusion 1.5
-                    path: docs/media-gen-solution/rest-apis/generate/sd15.mdx  
                   - page: Juggernaut XII
                     path: docs/media-gen-solution/rest-apis/generate/juggernautXII.mdx  
                   - page: Juggernaut XI
@@ -108,8 +106,6 @@ navigation:
                     path: docs/media-gen-solution/rest-apis/generate/juggernaut-v9.mdx 
                   - page: SDXL Controlnet
                     path: docs/media-gen-solution/rest-apis/generate/controlnet-sdxl.mdx   
-                  - page: SD1.5 Controlnet
-                    path: docs/media-gen-solution/rest-apis/generate/controlnet-sd15.mdx
                   - page: Stable Video Diffusion
                     path: docs/media-gen-solution/rest-apis/generate/svd.mdx
               - section: Edit
