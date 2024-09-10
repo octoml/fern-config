@@ -1,21 +1,169 @@
 ---
-title: Using JSON mode with Text Gen endpoints
+title: Using Structured Outputs (JSON mode) with Text Gen endpoints
 subtitle: Ensure Text Gen outputs fit into your desired JSON schema.
 slug: text-gen-solution/json-mode
 ---
 
-OctoAIs Large Language Models (LLMs) can generate generate outputs that not only adhere to JSON format but also align with your unique schema specifications.
+OctoAI's Large Language Models (LLMs) can generate outputs that not only adhere to JSON format but also align with your unique schema specifications. This guide covers two approaches to JSON mode: OpenAI Compatible JSON mode for Llama-3.1-8B and 70B, and Legacy JSON mode.
 
-**Supported models (Updated September 5, 2024 5PM PT)**
-* Llama 3.1 8B
+**Supported models
+* Llama 3.1 8B 
 * Llama 3.1 70B
+* Hermes 2 Pro Llama 3 8B (Legacy mode)
+* Mistral 7B (Legacy mode)
+* Nous Hermes Mixtral 8x7B  (Legacy mode)
+* Mixtral 8x7B (Legacy mode)
+* WizardLM 8x22B (Legacy mode)
+
+## OpenAI Compatible JSON mode for Llama-3.1-8B and 70B
+
+This section covers the new JSON mode compatible with OpenAI's new response format standard, specifically for Llama-3.1-8B and 70B models.
+
+### Setup
+
+First, set up the OpenAI client and set it to run with OctoAI base and tokens.
+
+```python
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    base_url="https://text.octoai.run/v1",
+    api_key=os.environ["OCTOAI_API_KEY"],
+)
+
+model = "meta-llama-3.1-8b-instruct"
+```
+
+### Generate JSON without adhering to any schema (json_object)
+
+If you want the response as a JSON object but without any specific schema:
+
+```python
+import json
+
+def generate_json_object():
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": "Generate a JSON object, without any additional text or comments.",
+            },
+            {"role": "user", "content": "who won the world cup in 2022? answer in JSON"},
+        ],
+        max_tokens=max_tokens,
+        response_format={
+            "type": "json_object",
+        },
+        temperature=0,
+    )
+
+    content = response.choices[0].message.content
+    data = json.loads(content)
+    return data
+```
+
+### Generating JSON adhering to schema (without constrained decoding):
+
+For generating JSON that adheres to a simple schema, but without strict (guarenteed) schema following (see the "strict": False below). 
+This mode is faster and works on both Llama-3.1-8B-Instruct and Llama-3.1-70B-Instruct. For most use cases, it is sufficient and recommended.
+
+```python
+from pydantic import BaseModel
+from jsonschema import validate
+
+class Output(BaseModel):
+    answer: str
+
+def generate_json_schema_strict_false():
+    schema = Output.model_json_schema()
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {
+                "role": "system",
+                "content": "Generate a JSON object, without any additional text or comments.",
+            },
+            {"role": "user", "content": "who won the world cup in 2022?"},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {"name": "output", "schema": schema, "strict": False},
+        },
+        temperature=0,
+    )
+    content = response.choices[0].message.content
+    data = json.loads(content)
+    validate(instance=data, schema=schema)
+    return data
+```
+
+### Generating JSON adhering to schema (with constrained decoding):
+
+When you need strict adherence to a JSON schema, you can activate this mode on Llama-3.1-8b-Instruct *only*. This is recommended for more complex schemas. Activating this mode can create a latency increase.
+
+```python
+from textwrap import dedent
+
+math_tutor_prompt = """
+    You are a helpful math tutor. You will be provided with a math problem,
+    and your goal will be to output a step by step solution, along with a final answer.
+    For each step, just provide the output as an equation use the explanation field to detail the reasoning.
+"""
+
+question = "how can I solve 8x + 7 = -23"
+
+schema = {
+    "type": "object",
+    "properties": {
+        "steps": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "explanation": {"type": "string"},
+                    "output": {"type": "string"},
+                },
+                "required": ["explanation", "output"],
+                "additionalProperties": False,
+            },
+        },
+        "final_answer": {"type": "string"},
+    },
+    "required": ["steps", "final_answer"],
+    "additionalProperties": False,
+}
+
+def generate_json_schema_strict_true():
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": dedent(math_tutor_prompt)},
+            {"role": "user", "content": question},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {"name": "math_reasoning", "schema": schema, "strict": True},
+        },
+        temperature=0,
+    )
+    content = response.choices[0].message.content
+    data = json.loads(content)
+    validate(instance=data, schema=schema)
+    return data
+```
+
+## Legacy JSON mode
+
+This section covers the "legacy" JSON mode, which is still supported for the following models:
 * Hermes 2 Pro Llama 3 8B
 * Mistral 7B
 * Nous Hermes Mixtral 8x7B
 * Mixtral 8x7B
 * WizardLM 8x22B
 
-## Getting started
+### Getting started
 
 Setup credentials:
 
@@ -23,7 +171,7 @@ Setup credentials:
 export OCTOAI_TOKEN=YOUR_TOKEN_HERE
 ```
 
-Curl example (Mistral-7B): Let's say that you want to ensure that your LLM responses format user feedback about cars into a usable JSON format. To do so, you provide the LLM with a reponse schema ensuring that it knows it must provide "color" and "maker" in a structured format--see "response format below":
+Curl example (Mistral-7B): Let's say that you want to ensure that your LLM responses format user feedback about cars into a usable JSON format. To do so, you provide the LLM with a response schema ensuring that it knows it must provide "color" and "maker" in a structured format--see "response format below":
 
 ```bash
 curl -X POST "https://text.octoai.run/v1/chat/completions" \
@@ -65,7 +213,7 @@ The LLM will respond in the exact schema specified:
       "index": 0,
       "message": {
         "role": "assistant",
-        "content": "{\"color\": \"black\", \"maker\": \"Toyota”, \"}",
+        "content": "{\"color\": \"black\", \"maker\": \"Toyota\"}",
         "function_call": null
       },
       "finish_reason": "stop"
@@ -79,7 +227,7 @@ The LLM will respond in the exact schema specified:
 }
 ```
 
-## Pydantic and OctoAI's Python SDK
+### Pydantic and OctoAI's Python SDK
 
 Pydantic is a popular Python library for data validation and settings management using Python type annotations. By combining Pydantic with the OctoAI SDK, you can easily define the desired JSON schema for your LLM responses and ensure that the generated content adheres to that structure.
 
@@ -89,7 +237,7 @@ First, make sure you have the required packages installed:
 python3 -m pip install openai pydantic==2.5.3
 ```
 
-### Basic example
+#### Basic example
 
 Let's start with a basic example to demonstrate how Pydantic and the OctoAI SDK work together. In this example, we'll define a simple Car model with color and maker attributes, and ask the LLM to generate a response that fits this schema.
 
@@ -127,9 +275,7 @@ print(completion.choices[0].message.content)
 The key points to note here are:
 
 1. We import the necessary classes from the OctoAI SDK: Client, TextModel, and ChatCompletionResponseFormat.
-
 2. We define a Car class inheriting from BaseModel, specifying the color and maker attributes with their expected types.
-
 3. When creating the chat completion, we set the response_format using ChatCompletionResponseFormat and include the JSON schema generated from our Car model using Car.model_json_schema().
 
 The output will be a JSON object adhering to the specified schema:
@@ -138,7 +284,7 @@ The output will be a JSON object adhering to the specified schema:
 { "color": "black", "maker": "Toyota" }
 ```
 
-### Array example
+#### Array example
 
 Next, let's look at an example involving arrays. Suppose we want the LLM to generate a list of names based on a given prompt. We can define a Meeting model with a names attribute of type List[str].
 
@@ -176,7 +322,7 @@ The LLM will generate a response containing an array of names:
 { "names": ["John", "Jane"] }
 ```
 
-### Nested example
+#### Nested example
 
 Finally, let's explore a more complex example involving nested models. In this case, we'll define a Person model with name and age attributes, and a Result model containing a sorted list of Person objects.
 
@@ -237,17 +383,17 @@ The LLM will generate a response containing a sorted list of Person objects:
 }
 ```
 
-## Instructor
+### Instructor
 
 Instructor makes it easy to reliably get structured data like JSON from Large Language Models (LLMs). Read more [here](https://jxnl.github.io/instructor/)
 
-### Install
+#### Install
 
 ```bash
 python3 -m pip install instructor
 ```
 
-### Example
+#### Example
 
 ```python
 import os
@@ -288,11 +434,8 @@ Let's break down the code step by step:
 After importing the necessary modules and setting the clients, we:
 
 1. We use the instructor.patch function to patch the ChatCompletion.create method of the OctoAI client. This allows us to use the response_model parameter directly with a Pydantic model.
-
 2. We define a Pydantic model called UserExtract that represents the desired structure of the extracted user information. In this case, it has two fields: name (a string) and age (an integer).
-
 3. We call the chat.completions.create method of the patched OctoAI client, specifying the model (mistral-7b-instruct), the response_model (our UserExtract model), and the user message that contains the information we want to extract.
-
 4. Finally, we print the extracted user information using the model_dump_json method, which serializes the Pydantic model to a JSON string with indentation for better readability.
 
 The output will be a JSON object containing the extracted user information, adhering to the specified UserExtract schema:
