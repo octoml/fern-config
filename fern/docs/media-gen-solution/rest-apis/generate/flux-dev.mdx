@@ -6,7 +6,7 @@ slug: media-gen-solution/rest-apis/generate/flux-dev
 Generate images using a FLUX.1 [Dev], a 12 billion parameter model using text descriptions. 
 It excels in photorealism, processes complex prompts, and generates clear text.
 
-OctoAI's FLUX.1 [Dev] API supports text-to-image use cases. 
+OctoAI's FLUX.1 [Dev] API supports text-to-image, image-to-image, and inpainting use cases. 
 
 You need to create an [OctoAI Authentication Token](getting-started/how-to-create-octoai-access-token) to access this API.
 
@@ -18,6 +18,18 @@ The headers of the request must include an Authentication Token in the authoriza
 
 **Generating with a prompt**: Commonly referred to as **text-to-image**, this mode generates an image from text alone. While the only required
 parameter is the `prompt`, it also supports a `width` and `height` parameter which can be used to control the aspect ratio of the generated image.
+
+**Generating with a prompt and an image**: Commonly referred to as **image-to-image**, this mode also generates an image from text but uses an existing image as the starting point. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
+  - `strength` - controls how much influence the image parameter has on the output image
+
+**Inpainting with a prompt**: Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in. The required parameters are:
+
+  - `prompt` - text to generate the image from
+  - `init_image` - the image to use as the starting point for the generation. Argument takes an image encoded as a string in base64 format.
+  - `mask_image` -  area of the picture to inpaint. Argument takes an image encoded as a string in base64 format.
 
 
 <Note>
@@ -52,6 +64,11 @@ Check [Pricing Page](https://octo.ai/docs/getting-started/pricing-and-billing) f
   - `height` (integer, Optional): Integer representing the height of image to generate. Default to 1024. 
   - `width` (integer, Optional): Integer representing the width of image to generate. Default to 1024. 
   - `loras` (string,Optional): Here you can specify LoRAs, in name-weight pairs, either from the OctoAI asset library or your private asset library. 
+  - `init_image` (string, Optional): The image (encoded in b64 string) to use as the starting point for the generation. This parameter is for Image-to-Image generation and Inpainting. 
+    <Note> Use .jpg format to ensure best latency </Note>
+  - `strength` (double,Optional): Floating-point number indicating how much creative the Image-to-Image generation mode should be. Must be greater than 0 and less than or equal to 1.0. Defaults to 0.8. This parameter is for Image-to-Image generation. 
+  - `mask_image` (string, Optional): Only applicable for inpainting use cases i.e. to specify which area of the picture to paint onto. Argument takes an image encoded as a string in base64 format.
+    <Note> Use .jpg format to ensure best latency </Note>
 
   **Supported Output Resolutions (Width x Height)** are as follows:
 
