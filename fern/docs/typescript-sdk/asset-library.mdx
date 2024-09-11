@@ -29,7 +29,7 @@ console.log(JSON.stringify(assetListResponse.data, undefined, 2));
 const assetListStableDiffusion = await octoai.assetLibrary.list({
     isPublic: true,
     owner: "octoai",
-    engine: "image/stable-diffusion-v1-5",
+    engine: "image/stable-diffusion-xl-v1-0",
 });
 console.log(JSON.stringify(assetListStableDiffusion, undefined, 2));
 
@@ -61,7 +61,7 @@ await octoai.assetLibrary.upload("origami-paper.safetensors", {
     data: {
         assetType: "lora",
         dataType: "fp16",
-        engine: "image/stable-diffusion-v1-5",
+        engine: "image/stable-diffusion-xl-v1-0",
         fileFormat: "safetensors",
         triggerWords: ["origami", "paper"],
     },

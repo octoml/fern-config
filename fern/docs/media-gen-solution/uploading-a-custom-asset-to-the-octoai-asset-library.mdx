@@ -37,7 +37,7 @@ Use "octoai asset [command] --help" for more information about a command.
 
 1. Run `octoai login` to cache your token and authenticate to your account.
 2. We can now use the `octoai asset create` subcommand to upload assets (you can run `octoai asset create --help` to learn more on the options).
-   1. `--engine` denotes whether this is an asset for SDXL or SD1.5
+   1. `--engine` denotes whether this is an asset for SDXL or SD3
    2. `--upload-from-file` flag denotes the path of the file on your local machine that you’re trying to upload.
    3. `--upload-from-url` flag is an alternative to `upload-from-file` allowing you to upload an asset from a public URL; OctoAI will fetch and upload the file.
    4. `—type` can be lora, checkpoint, or textual_inversion (VAEs coming soon)
@@ -53,7 +53,7 @@ As an example, you could use this command to upload a checkpoint from your local
 octoai asset create \
   --upload-from-file LCM_Dreamshaper_v7.safetensors \
   --name Dreamshaper_v7 \
-  --engine image/stable-diffusion-v1-5 \
+  --engine image/stable-diffusion-xl-v1-0 \
   --format safetensors \
   --data-type fp16 \
   --type checkpoint \
@@ -66,7 +66,7 @@ You can alternatively upload the file via public URL using `upload-from-url`:
 octoai asset create \
   --upload-from-url https://huggingface.co/SimianLuo/LCM_Dreamshaper_v7/resolve/main/LCM_Dreamshaper_v7_4k.safetensors?download=true \
   --name Dreamshaper_v7 \
-  --engine image/stable-diffusion-v1-5 \
+  --engine image/stable-diffusion-xl-v1-0 \
   --format safetensors \
   --data-type fp16 \
   --type checkpoint \
