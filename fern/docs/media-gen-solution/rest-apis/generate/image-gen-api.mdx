@@ -8,9 +8,7 @@ All of our image generation models are accessible via REST API. Below you can se
 Our URL for image generations is at `https://image.octoai.run/generate/{engine_id}`, where engine_id is one of the following:
 
 1. `sdxl`: Stable DiffusionXL v1.0
-2. `sd`: Stable Diffusion v1.5
 3. `controlnet-sdxl`: ControlNet SDXL
-4. `controlnet-sd15`: ControlNet SD1.5
 
 This includes text-to-image, image-to-image, controlnets, photo merge, inpainting and outpainting.
 
@@ -135,14 +133,6 @@ For SDXL:
 (1024, 1024),(896, 1152),(832, 1216),(768,
 1344),(640, 1536),(1536, 640),(1344, 768),
 (1216, 832),(1152, 896)
-```
-
-For SD1.5
-
-```
-(512, 512),(640, 512),(768, 512),(512, 704),
-(512, 768),(576, 768),(640, 768),(576, 1024),
-(1024, 576)
 ```
 
 <Note>

@@ -87,11 +87,11 @@ navigation:
           - section: Media Gen REST APIs
             contents:
               - section: Generate
-                contents: 
+                contents:
                   - page: FLUX.1 [Dev]
-                    path: docs/media-gen-solution/rest-apis/generate/flux-dev.mdx  
+                    path: docs/media-gen-solution/rest-apis/generate/flux-dev.mdx
                   - page: FLUX.1 [Schnell]
-                    path: docs/media-gen-solution/rest-apis/generate/flux-schnell.mdx                
+                    path: docs/media-gen-solution/rest-apis/generate/flux-schnell.mdx
                   - page: Stable Diffusion 3
                     path: docs/media-gen-solution/rest-apis/generate/sd3.mdx
                   - page: Stable Diffusion XL
@@ -99,23 +99,23 @@ navigation:
                   - page: Stable Diffusion XL Lightning
                     path: docs/media-gen-solution/rest-apis/generate/sdxl-lightning.mdx
                   - page: Juggernaut XII
-                    path: docs/media-gen-solution/rest-apis/generate/juggernautXII.mdx  
+                    path: docs/media-gen-solution/rest-apis/generate/juggernautXII.mdx
                   - page: Juggernaut XI
-                    path: docs/media-gen-solution/rest-apis/generate/juggernautXI.mdx    
+                    path: docs/media-gen-solution/rest-apis/generate/juggernautXI.mdx
                   - page: Juggernaut v9
-                    path: docs/media-gen-solution/rest-apis/generate/juggernaut-v9.mdx 
+                    path: docs/media-gen-solution/rest-apis/generate/juggernaut-v9.mdx
                   - page: SDXL Controlnet
-                    path: docs/media-gen-solution/rest-apis/generate/controlnet-sdxl.mdx   
+                    path: docs/media-gen-solution/rest-apis/generate/controlnet-sdxl.mdx
                   - page: Stable Video Diffusion
                     path: docs/media-gen-solution/rest-apis/generate/svd.mdx
               - section: Edit
-                contents:   
+                contents:
                   - page: Fix faces and hands
-                    path: docs/media-gen-solution/rest-apis/edit/adetailer.mdx  
-                  - page: Remove background 
-                    path: docs/media-gen-solution/rest-apis/edit/background-removal.mdx 
+                    path: docs/media-gen-solution/rest-apis/edit/adetailer.mdx
+                  - page: Remove background
+                    path: docs/media-gen-solution/rest-apis/edit/background-removal.mdx
                   - page: Upscale
-                    path: docs/media-gen-solution/rest-apis/edit/upscaling.mdx 
+                    path: docs/media-gen-solution/rest-apis/edit/upscaling.mdx
               # - page: Image Gen
               #   path: docs/media-gen-solution/rest-apis/image-gen-api.mdx
               # - page: Video Gen
@@ -330,18 +330,12 @@ navigation:
               title: Media Generation API
               slug: media-gen
               contents:
-                - endpoint: POST /generate/sd
-                  title: Generate SD1.5
-                  slug: sd15
                 - endpoint: POST /generate/sdxl
                   title: Generate SDXL
                   slug: sdxl
                 - endpoint: POST /generate/sd3
                   title: Generate SD3
                   slug: sd3
-                - endpoint: POST /generate/controlnet-sd15
-                  title: Generate ControlNet 1.5
-                  slug: controlnet-sd15
                 - endpoint: POST /generate/controlnet-sdxl
                   title: Generate ControlNet SDXL
                   slug: controlnet-sdxl

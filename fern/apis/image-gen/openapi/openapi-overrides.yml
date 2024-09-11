@@ -9,24 +9,10 @@ paths:
       servers:
         - url: https://image.octoai.run
           x-name: ImageGen
-  /generate/controlnet-sd15:
-    post:
-      summary: "Generate ControlNet SD1.5"
-      x-fern-sdk-method-name: generateControlnetSd15
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
   /generate/sdxl:
     post:
       summary: "Generate SDXL"
       x-fern-sdk-method-name: generateSdxl
-      servers:
-        - url: https://image.octoai.run
-          x-name: ImageGen
-  /generate/sd:
-    post:
-      summary: "Generate SD1.5"
-      x-fern-sdk-method-name: generateSd
       servers:
         - url: https://image.octoai.run
           x-name: ImageGen

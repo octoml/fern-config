@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # There is also TextualInversionData, VAEData, and CheckpointData.
     lora_data = Data_Lora(
         data_type="fp16",
-        engine="image/stable-diffusion-v1-5",
+        engine="image/stable-diffusion-xl-v1-0",
         file_format="safetensors",
     )
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         file="origami-paper.safetensors",
         data=lora_data,
         name=asset_name,
-        description="origami-paper stable diffusion 1.5",
+        description="origami-paper sdxl",
     )
 
     image_gen_resp = image_gen.generate_sd(

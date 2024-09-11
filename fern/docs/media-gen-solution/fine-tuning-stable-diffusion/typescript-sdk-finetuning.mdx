@@ -74,10 +74,10 @@ After this completes, all assets will hopefully be in the ready state, or you sh
 
 #### 2) Get a checkpoint asset to use for tuning our LoRA
 
-Next, you'll need a checkpoint to use to tune your asset. In this example, we will just use the default checkpoint using Stable Diffusion 1.5, but you can also use other public OctoAI checkpoints or create your own using the Asset Library.
+Next, you'll need a checkpoint to use to tune your asset. In this example, we will just use the default checkpoint using Stable Diffusion XL, but you can also use other public OctoAI checkpoints or create your own using the Asset Library.
 
 ```TypeScript TypeScript
-const checkpoint = await octoai.assetLibrary.get("octoai:default-sd15");
+const checkpoint = await octoai.assetLibrary.get("octoai:default-sdxl");
 ```
 
 #### 3) Creating a tune
