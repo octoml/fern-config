@@ -25,10 +25,6 @@ navbar-links:
     text: Login
     url: >-
       https://identity.octo.ai/oauth/account/login?redirectUrl=https://octoai.cloud
-  - type: filled
-    text: Sign up
-    url: >-
-      https://identity.octo.ai/oauth/account/sign-up?redirectUrl=https://octoai.cloud
 tabs:
   documentation:
     display-name: Documentation
