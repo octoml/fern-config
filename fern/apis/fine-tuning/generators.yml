@@ -1,2 +1,3 @@
-openapi: ./openapi/openapi.json
-openapi-overrides: ./openapi/openapi-overrides.yml
+api:
+  path: ./openapi/openapi.json
+  overrides: ./openapi/openapi-overrides.yml
