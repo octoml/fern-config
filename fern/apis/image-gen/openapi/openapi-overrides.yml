@@ -30,6 +30,9 @@ paths:
       servers:
         - url: https://image.octoai.run
           x-name: ImageGen
+  /generate/ip-adapter-sdxl:
+    post:
+      x-fern-ignore: true
   /generate/flux-schnell:
     post:
       summary: "Generate FLUX.1 [schnell]"
