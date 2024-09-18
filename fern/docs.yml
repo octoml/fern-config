@@ -404,8 +404,6 @@ navigation:
           - page: May
             path: docs/release-notes/2023/may.mdx
   - tab: status
-  - tab: community
-  - tab: support
 
 typography:
   bodyFont:
