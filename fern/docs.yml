@@ -42,14 +42,6 @@ tabs:
     display-name: Status
     href: https://status.octo.ai/
     icon: chart-simple
-  community:
-    display-name: Community
-    href: https://discord.com/invite/rXTPeRBcG7
-    icon: brands discord
-  support:
-    display-name: Support
-    href: https://discord.com/channels/1085222662504194098/1085613782006509600
-    icon: duotone headset
 layout:
   tabs-placement: header
   searchbar-placement: header
@@ -412,8 +404,6 @@ navigation:
           - page: May
             path: docs/release-notes/2023/may.mdx
   - tab: status
-  - tab: community
-  - tab: support
 
 typography:
   bodyFont:
