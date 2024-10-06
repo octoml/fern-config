@@ -16,7 +16,6 @@ For more information about what a LoRA is, we recommend [this HuggingFace guide]
 This guide supports LoRAs for the following models:
 
 - Llama-3-8B (32K token context)
-- Mistral-7B Optimized (32K token context)
 
 We don't yet support hosting for Llama-3-70B-Instruct and Mixtral-8x7B, but that's coming soon!
 
@@ -82,7 +81,6 @@ octoai login
 Below, uncomment which base model, checkpoint, and LoRA URL you want to use. As noted above, we support:
 
 - Llama-3-8B (32K token context)
-- Mistral-7B Optimized (32K token context)
 
 For this demo, we'll go with the Llama-3-8B 32k context model. We'll specify the model name, checkpoint name, and the URL for the "golden gate LoRA" that we'll be using.
 
@@ -95,11 +93,6 @@ export GOLDEN_GATE_LORA_URL="https://s3.amazonaws.com/downloads.octoai.cloud/lor
 export MODEL_NAME="openpipe-llama-3-8b-32k" #A beta 32K llama-3 endpoint
 export CHECKPOINT_NAME="octoai:openpipe-llama-3-8b-32k"
 
-# # Mistral-7B Optimized (32K token context)
-# export GOLDEN_GATE_LORA_URL="https://s3.amazonaws.com/downloads.octoai.cloud/loras/text/golden_lora_mistral-7b.zip"
-# export MODEL_NAME="openpipe-mistral-7b" #An optimized Mistral-7B endpoint
-# export CHECKPOINT_NAME="octoai:openpipe-mistral-7b"
-
 #set LoRA name:
 export LORA_NAME="my_great_lora"
 ```
@@ -108,7 +101,7 @@ export LORA_NAME="my_great_lora"
 
 Now, let's upload and use a LoRA to alter the behavior of the model! Below, we upload the LoRA and its associated config files.
 
-We need to specify what base checkpoint and architecture ("engine") the model corresponds to. **Change the "engine" to mistral-7b if you want to use that model.**
+We need to specify what base checkpoint and architecture ("engine") the model corresponds to. 
 
 The command below uses `--upload-from-url` which lets you upload these files from the OpenPipe download URL. Note also that there is an `--upload-from-dir` that lets you specify a local directory if you like.
 
