@@ -142,9 +142,6 @@ navigation:
                 path: docs/text-gen-solution/function-calling.mdx
           - section: Integrations
             contents:
-              - page: Using Unstructured.io for embedding documents
-                path: >-
-                  docs/text-gen-solution/using-unstructured-io-for-embedding-documents.mdx
               - page: Use OpenPipe LoRAs on OctoAI
                 path: docs/text-gen-solution/openpipe-loras.mdx
       - section: Media Gen Solution
