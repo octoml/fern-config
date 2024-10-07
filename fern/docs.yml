@@ -1,3 +1,5 @@
+announcement:
+  message: OctoAI is now part of NVIDIA. We are winding down the commercial availability of our services by 31 October 2024.
 instances:
   - url: octoai.docs.buildwithfern.com/docs
     custom-domain: octo.ai/docs
