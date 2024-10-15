@@ -4,9 +4,9 @@ display-name: OctoAI
 error-discrimination:
   strategy: status-code
 
-auth: BearerAuthScheme
+auth: BearerAuth
 auth-schemes: 
-  BearerAuthScheme: 
+  BearerAuth: 
     scheme: bearer
     token: 
       name: api_key
